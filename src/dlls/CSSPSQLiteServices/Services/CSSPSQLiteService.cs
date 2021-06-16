@@ -10,9 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using CSSPDBPreferenceModels;
-using CSSPDBCommandLogModels;
-using CSSPDBFilesManagementModels;
+using ManageServices;
 
 namespace CSSPSQLiteServices
 {
@@ -20,14 +18,10 @@ namespace CSSPSQLiteServices
     {
         string Error { get; set; }
 
-        Task<bool> CreateSQLiteCSSPDBCommandLog();
-        Task<bool> CreateSQLiteCSSPDBFilesManagement();
+        Task<bool> CreateSQLiteCSSPDBManage();
         Task<bool> CreateSQLiteCSSPDBLocal();
-        Task<bool> CreateSQLiteCSSPDBPreference();
 
-        Task<bool> CSSPDBCommandLogIsEmpty();
-        Task<bool> CSSPDBFilesManagementIsEmpty();
-        Task<bool> CSSPDBPreferenceIsEmpty();
+        Task<bool> CSSPDBManageIsEmpty();
         Task<bool> CSSPDBLocalIsEmpty();
     }
 
@@ -39,9 +33,7 @@ namespace CSSPSQLiteServices
         #region Properties
         public string Error { get; set; }
         private CSSPDBLocalContext dbLocal { get; }
-        private CSSPDBCommandLogContext dbCommandLog { get; }
-        private CSSPDBPreferenceContext dbLogin { get; }
-        private CSSPDBFilesManagementContext dbFM { get; }
+        private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
@@ -50,35 +42,20 @@ namespace CSSPSQLiteServices
 
         #region Constructors
         public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            CSSPDBLocalContext dbLocal, CSSPDBCommandLogContext dbCommandLog,
-            CSSPDBPreferenceContext dbLogin, CSSPDBFilesManagementContext dbFM)
+            CSSPDBLocalContext dbLocal, CSSPDBManageContext dbManage)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
             this.dbLocal = dbLocal;
-            this.dbCommandLog = dbCommandLog;
-            this.dbLogin = dbLogin;
-            this.dbFM = dbFM;
+            this.dbManage = dbManage;
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task<bool> CreateSQLiteCSSPDBCommandLog()
+        public async Task<bool> CreateSQLiteCSSPDBManage()
         {
-            if (!await DoCreateSQLiteCSSPDBCommandLog()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CreateSQLiteCSSPDBFilesManagement()
-        {
-            if (!await DoCreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CreateSQLiteCSSPDBPreference()
-        {
-            if (!await DoCreateSQLiteCSSPDBPreference()) return await Task.FromResult(false);
+            if (!await DoCreateSQLiteCSSPDBManage()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }
@@ -88,21 +65,9 @@ namespace CSSPSQLiteServices
 
             return await Task.FromResult(true);
         }
-        public async Task<bool> CSSPDBCommandLogIsEmpty()
+        public async Task<bool> CSSPDBManageIsEmpty()
         {
-            if (!await DoCSSPDBCommandLogIsEmpty()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CSSPDBFilesManagementIsEmpty()
-        {
-            if (!await DoCSSPDBFilesManagementIsEmpty()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CSSPDBPreferenceIsEmpty()
-        {
-            if (!await DoCSSPDBPreferenceIsEmpty()) return await Task.FromResult(false);
+            if (!await DoCSSPDBManageIsEmpty()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

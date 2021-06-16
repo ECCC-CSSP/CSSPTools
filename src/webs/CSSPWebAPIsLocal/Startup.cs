@@ -15,22 +15,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DownloadFileServices;
+using FileServices;
 using ReadGzFileServices;
 using Microsoft.AspNetCore.Http.Features;
-using CSSPDBPreferenceModels;
-using CSSPDBFilesManagementModels;
-using CSSPDBCommandLogModels;
 using LoggedInServices;
 using CSSPDBServices;
 using CSSPScrambleServices;
 using CSSPHelperServices;
-using FilesManagementServices;
 using CSSPDBLocalServices;
 using CreateGzFileServices;
-using CreateFileServices;
 using CSSPWebAPIsLocal.Controllers;
-using CSSPLocalFileInfoServices;
+using ManageServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -62,7 +57,7 @@ namespace CSSPWebAPIsLocal
                 });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal 
+             * CSSPDBLocalContext 
              * ---------------------------------------------------------------------------------      
              */
             string CSSPDBLocalFileName = Configuration.GetValue<string>("CSSPDBLocal");
@@ -75,43 +70,16 @@ namespace CSSPWebAPIsLocal
             });
 
             /* ---------------------------------------------------------------------------------
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFileManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-
-            FileInfo fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagementFileName);
-
-            services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBCommandLog
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBCommandLogFileName = Configuration.GetValue<string>("CSSPDBCommandLog");
-
-            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLogFileName);
-
-            services.AddDbContext<CSSPDBCommandLogContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
 
@@ -123,13 +91,12 @@ namespace CSSPWebAPIsLocal
 
             //LoadAllDBServices(services);
 
-            services.AddScoped<IFilesManagementService, FilesManagementService>();
-            services.AddScoped<IDownloadFileService, DownloadFileService>();
+            services.AddScoped<IManageFileService, ManageFileService>();
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
             services.AddScoped<ICreateGzFileService, CreateGzFileService>();
             services.AddScoped<ITVItemLocalService, TVItemLocalService>();
-            services.AddScoped<ICreateFileService, CreateFileService>();
-            services.AddScoped<ILocalFileInfoService, LocalFileInfoService>();
+            services.AddScoped<IFileService, FileService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 

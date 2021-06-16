@@ -14,14 +14,14 @@ namespace CSSPSQLiteServices
     {
         private async Task<bool> DoCreateSQLiteCSSPDBLocal()
         {
-            string CSSPDBLocalText = Configuration.GetValue<string>("CSSPDBLocal");
-            if (string.IsNullOrWhiteSpace(CSSPDBLocalText))
+            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
             {
                 Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBLocal");
                 return await Task.FromResult(false);
             }
 
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocalText);
+            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
             if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal })) return await Task.FromResult(false);
 

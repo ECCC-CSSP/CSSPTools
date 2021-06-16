@@ -1,8 +1,6 @@
 ﻿using GenerateCodeBaseHelper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -91,7 +89,6 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
                     sb.AppendLine(@"using Xunit;");
                     sb.AppendLine(@"using CSSPDBPreferenceServices;");
                     sb.AppendLine(@"using CSSPScrambleServices;");
-                    sb.AppendLine(@"using CSSPDBPreferenceModels;");
                     sb.AppendLine(@"using CSSPDBFilesManagementModels;");
                     sb.AppendLine(@"using CSSPDBCommandLogModels;");
                     sb.AppendLine(@"using CSSPDBSearchModels;");

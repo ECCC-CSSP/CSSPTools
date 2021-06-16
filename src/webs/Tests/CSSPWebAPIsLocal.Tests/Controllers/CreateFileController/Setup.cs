@@ -3,20 +3,18 @@
  *
  */
 
-using CreateFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPDBPreferenceModels;
 using CSSPEnums;
 using CSSPScrambleServices;
+using FileServices;
 using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,7 +31,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private ICreateFileService CreateFileService { get; set; }
+        private IFileService FileService { get; set; }
         private string LocalUrl { get; set; }
         private string CSSPTempFilesPath { get; set; }
         private Contact contact { get; set; }
@@ -68,24 +66,24 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
             Assert.NotNull(CSSPTempFilesPath);
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------
              */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>(); 
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ICreateFileService, CreateFileService>();
+            Services.AddSingleton<IFileService, FileService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -104,8 +102,8 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
 
             contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
 
-            CreateFileService = Provider.GetService<ICreateFileService>();
-            Assert.NotNull(CreateFileService);
+            FileService = Provider.GetService<IFileService>();
+            Assert.NotNull(FileService);
 
             return await Task.FromResult(true);
         }

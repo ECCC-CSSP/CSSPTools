@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPDBPreferenceModels\CSSPDBPreferenceModels.csproj" />
+    <ProjectReference Include="..\CSSPDBManageServices\CSSPDBManageServices.csproj" />
     <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
     <ProjectReference Include="..\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>

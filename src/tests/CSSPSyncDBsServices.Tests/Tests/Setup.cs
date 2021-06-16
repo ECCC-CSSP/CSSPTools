@@ -5,23 +5,15 @@
 
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPDBPreferenceModels;
 using CSSPEnums;
-using CSSPHelperModels;
 using CSSPScrambleServices;
-using CSSPSyncDBsServices;
 using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -59,17 +51,17 @@ namespace CSSPSyncDBsServices.Tests
             Services.AddSingleton<IConfiguration>(Configuration);
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------
              */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             /* ---------------------------------------------------------------------------------

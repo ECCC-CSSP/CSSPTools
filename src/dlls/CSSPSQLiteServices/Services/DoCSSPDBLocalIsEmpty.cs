@@ -28,6 +28,7 @@ namespace CSSPSQLiteServices
                             return await Task.FromResult(false);
                         }
                     }
+                    dbLocal.Database.CloseConnection();
                 }
             }
 

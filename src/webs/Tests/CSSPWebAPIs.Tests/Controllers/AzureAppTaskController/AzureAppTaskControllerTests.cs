@@ -69,7 +69,7 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
                 httpClient.DefaultRequestHeaders.Accept.Add(contentType);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
 
-                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/apptaskmodel").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 string jsonStr = await response.Content.ReadAsStringAsync();
                 List<PostAppTaskModel> appTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
@@ -80,20 +80,20 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
 
                 string stringData = JsonSerializer.Serialize(appTaskModel);
                 var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/apptaskmodel", contentData).Result;
+                response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask", contentData).Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 jsonStr = await response.Content.ReadAsStringAsync();
                 PostAppTaskModel appTaskModelRet = JsonSerializer.Deserialize<PostAppTaskModel>(jsonStr);
                 Assert.NotNull(appTaskModelRet);
 
-                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/apptaskmodel").Result;
+                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 jsonStr = await response.Content.ReadAsStringAsync();
                 appTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
                 Assert.NotNull(appTaskModelList);
                 Assert.Equal(AppTaskModelCount + 1, appTaskModelList.Count);
 
-                response = httpClient.DeleteAsync($"{ CSSPAzureUrl }api/en-CA/apptaskmodel/{ appTaskModelRet.AppTask.AppTaskID }").Result;
+                response = httpClient.DeleteAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask/{ appTaskModelRet.AppTask.AppTaskID }").Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 jsonStr = await response.Content.ReadAsStringAsync();
                 bool boolRet = JsonSerializer.Deserialize<bool>(jsonStr);

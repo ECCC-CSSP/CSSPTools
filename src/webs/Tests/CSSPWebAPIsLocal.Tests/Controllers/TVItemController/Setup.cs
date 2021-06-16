@@ -5,16 +5,15 @@
 
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPDBPreferenceModels;
 using CSSPScrambleServices;
 using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -88,7 +87,7 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
             FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalContext
+             * CSSPDBLocalContext
              * ---------------------------------------------------------------------------------      
              */
 
@@ -98,17 +97,17 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------
              */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();

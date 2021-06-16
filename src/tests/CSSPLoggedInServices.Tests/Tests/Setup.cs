@@ -1,16 +1,14 @@
-using CSSPDBModels;
 using CSSPCultureServices.Services;
+using CSSPDBModels;
+using CSSPScrambleServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
-using CSSPDBPreferenceModels;
-using CSSPScrambleServices;
 
 namespace LoggedInServices.Tests
 {
@@ -33,7 +31,7 @@ namespace LoggedInServices.Tests
         private string FirstName2 { get; set; }
         private string LastName2 { get; set; }
         private string LoginEmail3 { get; set; }
-        private string CSSPDBPreferenceFileName { get; set; }
+        private string CSSPDBManageFileName { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -74,18 +72,18 @@ namespace LoggedInServices.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
-            CSSPDBPreferenceFileName = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreferenceFileName);
+            CSSPDBManageFileName = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManageFileName);
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);
-            Assert.True(fiCSSPDBPreference.Exists);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManageFileName);
+            Assert.True(fiCSSPDBManage.Exists);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();

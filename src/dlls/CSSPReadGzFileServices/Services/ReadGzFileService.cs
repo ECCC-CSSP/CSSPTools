@@ -2,24 +2,16 @@
  * Manually edited
  * 
  */
-using CSSPEnums;
-using CSSPDBModels;
-using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
+using CSSPEnums;
+using CSSPScrambleServices;
+using CSSPWebModels;
+using FileServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-//using CSSPDBFilesManagementServices;
-using DownloadFileServices;
-using CSSPDBFilesManagementModels;
-using CSSPScrambleServices;
-using LoggedInServices;
-using CSSPWebModels;
-using FilesManagementServices;
-using CSSPDBPreferenceModels;
 
 namespace ReadGzFileServices
 {
@@ -37,16 +29,14 @@ namespace ReadGzFileServices
         #region Properties
         public WebAppLoaded webAppLoaded { get; set; } = new WebAppLoaded();
 
-        private CSSPDBFilesManagementContext dbFM { get; }
+        private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private IDownloadFileService DownloadFileService { get; }
-        private IFilesManagementService FilesManagementService { get; }
+        private IFileService FileService { get; }
         private IScrambleService ScrambleService { get; }
-        //private IPreferenceService PreferenceService { get; }
-        private CSSPDBPreferenceContext dbPreference { get; }
+        private IManageFileService ManageFileService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPath { get; set; }
@@ -56,18 +46,17 @@ namespace ReadGzFileServices
 
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IScrambleService ScrambleService, IEnums enums, IDownloadFileService DownloadFileService, 
-            IFilesManagementService CSSPDBFilesManagementService, CSSPDBPreferenceContext dbPreference /*, IPreferenceService PreferenceService*/)
+            IScrambleService ScrambleService, IEnums enums, IFileService FileService, 
+            IManageFileService ManageFileService, CSSPDBManageContext dbManage)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.ScrambleService = ScrambleService;
             this.enums = enums;
-            this.DownloadFileService = DownloadFileService;
-            this.FilesManagementService = CSSPDBFilesManagementService;
-            //this.PreferenceService = PreferenceService;
-            this.dbPreference = dbPreference;
+            this.FileService = FileService;
+            this.ManageFileService = ManageFileService;
+            this.dbManage = dbManage;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));

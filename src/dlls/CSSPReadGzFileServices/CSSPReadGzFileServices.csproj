@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPDownloadFileServices\CSSPDownloadFileServices.csproj" />
+    <ProjectReference Include="..\CSSPFileServices\CSSPFileServices.csproj" />
     <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 

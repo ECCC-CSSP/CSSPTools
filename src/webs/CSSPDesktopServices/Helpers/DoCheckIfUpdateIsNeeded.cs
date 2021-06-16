@@ -11,8 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CSSPDBPreferenceModels;
-using CSSPDBFilesManagementModels;
+using ManageServices;
 
 namespace CSSPDesktopServices.Services
 {
@@ -67,12 +66,12 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                FilesManagement filesManagement = (from c in dbFM.FilesManagements
-                                     where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
-                                     && c.AzureFileName == zipFileName
-                                     select c).FirstOrDefault();
+                ManageFile manageFile = (from c in dbManage.ManageFiles
+                                         where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
+                                         && c.AzureFileName == zipFileName
+                                         select c).FirstOrDefault();
 
-                if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
+                if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, zipFileName)));
                     UpdateIsNeeded = true;
@@ -145,12 +144,12 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(true);
                 }
 
-                FilesManagement filesManagement = (from c in dbFM.FilesManagements
-                                     where c.AzureStorage == "csspjson"
-                                     && c.AzureFileName == jsonFileName
-                                     select c).FirstOrDefault();
+                ManageFile manageFile = (from c in dbManage.ManageFiles
+                                         where c.AzureStorage == "csspjson"
+                                         && c.AzureFileName == jsonFileName
+                                         select c).FirstOrDefault();
 
-                if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
+                if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, jsonFileName)));
                     UpdateIsNeeded = true;

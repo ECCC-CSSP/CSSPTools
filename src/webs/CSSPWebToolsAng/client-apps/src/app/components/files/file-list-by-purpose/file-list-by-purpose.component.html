@@ -1,7 +1,6 @@
 <h2 class="file-purpose">{{ GetFilePurposeEnum_GetIDText(TVFileModelByPurpose.FilePurpose) }}
 </h2>
 <div *ngFor="let tvFileModel of TVFileModelByPurpose.TVFileModelList; let i = index">
-
     <app-file-list-item-menu [TVFileModel]="tvFileModel"></app-file-list-item-menu>
 
     <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]="(i + 1)" [TVFileModel]="tvFileModel">
@@ -11,6 +10,7 @@
 
     <app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="tvFileModel">
     </app-file-list-item-detail>
+
     <app-file-list-item-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
         [TVFileModel]="tvFileModel">
     </app-file-list-item-last-update>

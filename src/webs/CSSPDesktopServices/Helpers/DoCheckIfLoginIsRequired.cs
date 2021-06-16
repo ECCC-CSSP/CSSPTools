@@ -9,7 +9,6 @@ using CSSPDesktopServices.Models;
 using CSSPDBModels;
 using CSSPCultureServices.Resources;
 using System.Runtime.CompilerServices;
-using CSSPDBPreferenceModels;
 
 namespace CSSPDesktopServices.Services
 {
@@ -20,7 +19,7 @@ namespace CSSPDesktopServices.Services
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfLoginIsRequired));
 
             // doing Contact
-            contact = (from c in dbPreference.Contacts
+            contact = (from c in dbManage.Contacts
                        select c).FirstOrDefault();
 
             if (contact == null)

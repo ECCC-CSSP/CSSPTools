@@ -47,7 +47,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
         {
             Assert.True(await Setup(culture));
             Assert.NotNull(contact);
-            Assert.NotNull(CreateFileService);
+            Assert.NotNull(FileService);
         }
         [Theory]
         [InlineData("en-CA")]

@@ -1,205 +1,188 @@
-/* 
- *  Manually Edited
- *  
- */
+///* 
+// *  Manually Edited
+// *  
+// */
 
-using CreateGzFileServices;
-using CSSPCultureServices.Services;
-using CSSPDBFilesManagementModels;
-using CSSPDBModels;
-using CSSPDBPreferenceModels;
-using CSSPEnums;
-using CSSPScrambleServices;
-using DownloadFileServices;
-using FilesManagementServices;
-using LoggedInServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
+//using CreateGzFileServices;
+//using CSSPCultureServices.Services;
+//using CSSPDBModels;
+//using CSSPEnums;
+//using CSSPScrambleServices;
+//using FileServices;
+//using LoggedInServices;
+//using ManageServices;
+//using Microsoft.EntityFrameworkCore;
+//using Microsoft.Extensions.Configuration;
+//using Microsoft.Extensions.DependencyInjection;
+//using ReadGzFileServices;
+//using System;
+//using System.Collections.Generic;
+//using System.IO;
+//using System.Threading.Tasks;
+//using Xunit;
 
-namespace CSSPDBLocalServices.Tests
-{
-    public partial class TVItemLocalServiceTest
-    {
-        #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
-        private ITVItemLocalService PostTVItemModelService { get; set; }
-        private IReadGzFileService ReadGzFileService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string CSSPJSONPath { get; set; }
-        private string CSSPJSONPathLocal { get; set; }
-        private string CSSPAzureUrl { get; set; }
-        #endregion Properties
+//namespace CSSPDBLocalServices.Tests
+//{
+//    public partial class TVItemLocalServiceTest
+//    {
+//        #region Properties
+//        private IConfiguration Configuration { get; set; }
+//        private IServiceProvider Provider { get; set; }
+//        private IServiceCollection Services { get; set; }
+//        private ICSSPCultureService CSSPCultureService { get; set; }
+//        private ILoggedInService LoggedInService { get; set; }
+//        private ITVItemLocalService PostTVItemModelService { get; set; }
+//        private IReadGzFileService ReadGzFileService { get; set; }
+//        private ICreateGzFileService CreateGzFileService { get; set; }
+//        private CSSPDBLocalContext dbLocal { get; set; }
+//        private string AzureStoreCSSPJSONPath { get; set; }
+//        private string CSSPJSONPath { get; set; }
+//        private string CSSPJSONPathLocal { get; set; }
+//        private string CSSPAzureUrl { get; set; }
+//        #endregion Properties
 
-        #region Constructors
-        public TVItemLocalServiceTest()
-        {
+//        #region Constructors
+//        public TVItemLocalServiceTest()
+//        {
 
-        }
-        #endregion Constructors
+//        }
+//        #endregion Constructors
 
-        private async Task<bool> Setup(string culture, bool ClearLocalDB)
-        {
-            Configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspdblocalservicestests.json")
-               .AddUserSecrets("86d17aa8-ffaa-4834-b06c-95bdec59d59b")
-               .Build();
+//        private async Task<bool> Setup(string culture, bool ClearLocalDB)
+//        {
+//            Configuration = new ConfigurationBuilder()
+//               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+//               .AddJsonFile("appsettings_csspdblocalservicestests.json")
+//               .AddUserSecrets("86d17aa8-ffaa-4834-b06c-95bdec59d59b")
+//               .Build();
 
-            Services = new ServiceCollection();
+//            Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Configuration);
+//            Services.AddSingleton<IConfiguration>(Configuration);
 
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            Assert.NotNull(AzureStoreCSSPJSONPath);
+//            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+//            Assert.NotNull(AzureStoreCSSPJSONPath);
 
-            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
-            Assert.NotNull(CSSPJSONPath);
+//            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
+//            Assert.NotNull(CSSPJSONPath);
 
-            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
-            Assert.NotNull(CSSPJSONPathLocal);
+//            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
+//            Assert.NotNull(CSSPJSONPathLocal);
 
-            DirectoryInfo di = new DirectoryInfo($"{ CSSPJSONPathLocal }");
-            Assert.True(di.Exists);
+//            DirectoryInfo di = new DirectoryInfo($"{ CSSPJSONPathLocal }");
+//            Assert.True(di.Exists);
 
-            try
-            {
-                di.Delete(true);
-                di.Create();
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, ex.Message);
-            }
+//            try
+//            {
+//                di.Delete(true);
+//                di.Create();
+//            }
+//            catch (Exception ex)
+//            {
+//                Assert.True(false, ex.Message);
+//            }
 
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
+//            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+//            Assert.NotNull(CSSPDBLocal);
 
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+//            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalContext
-             * ---------------------------------------------------------------------------------      
-             */
+//            /* ---------------------------------------------------------------------------------
+//             * CSSPDBLocalContext
+//             * ---------------------------------------------------------------------------------      
+//             */
 
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+//            Services.AddDbContext<CSSPDBLocalContext>(options =>
+//            {
+//                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+//            });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFilesManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagementFileName = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagementFileName);
+//            /* ---------------------------------------------------------------------------------
+//             * CSSPDBManageContext
+//             * ---------------------------------------------------------------------------------      
+//             */
+//            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+//            Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBFilesManagementFileName = new FileInfo(CSSPDBFilesManagementFileName);
+//            FileInfo fiCSSPDBManageFileName = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagementFileName.FullName }");
-            });
+//            Services.AddDbContext<CSSPDBManageContext>(options =>
+//            {
+//                options.UseSqlite($"Data Source={ fiCSSPDBManageFileName.FullName }");
+//            });
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
-             * ---------------------------------------------------------------------------------
-             */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+//            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+//            Services.AddSingleton<ILoggedInService, LoggedInService>();
+//            Services.AddSingleton<IEnums, Enums>();
+//            Services.AddSingleton<IScrambleService, ScrambleService>();
+//            Services.AddSingleton<IManageFileService, ManageFileService>();
+//            Services.AddSingleton<IFileService, FileService>();
+//            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+//            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+//            Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+//            Provider = Services.BuildServiceProvider();
+//            Assert.NotNull(Provider);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
-            });
+//            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+//            Assert.NotNull(CSSPCultureService);
 
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
-            Services.AddSingleton<IDownloadFileService, DownloadFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
-            Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
+//            CSSPCultureService.SetCulture(culture);
 
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
+//            LoggedInService = Provider.GetService<ILoggedInService>();
+//            Assert.NotNull(LoggedInService);
 
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
+//            Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
 
-            CSSPCultureService.SetCulture(culture);
+//            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+//            Assert.NotNull(dbLocal);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+//            PostTVItemModelService = Provider.GetService<ITVItemLocalService>();
+//            Assert.NotNull(PostTVItemModelService);
 
-            Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
+//            ReadGzFileService = Provider.GetService<IReadGzFileService>();
+//            Assert.NotNull(ReadGzFileService);
 
-            dbLocal = Provider.GetService<CSSPDBLocalContext>();
-            Assert.NotNull(dbLocal);
+//            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+//            Assert.NotNull(CreateGzFileService);
 
-            PostTVItemModelService = Provider.GetService<ITVItemLocalService>();
-            Assert.NotNull(PostTVItemModelService);
+//            if (ClearLocalDB)
+//            {
+//                List<string> ExistingTableList = new List<string>();
 
-            ReadGzFileService = Provider.GetService<IReadGzFileService>();
-            Assert.NotNull(ReadGzFileService);
+//                using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
+//                {
+//                    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
+//                    dbLocal.Database.OpenConnection();
+//                    using (var result = command.ExecuteReader())
+//                    {
+//                        while (result.Read())
+//                        {
+//                            ExistingTableList.Add(result.GetString(0));
+//                        }
+//                    }
+//                }
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
-            Assert.NotNull(CreateGzFileService);
+//                foreach (string tableName in ExistingTableList)
+//                {
+//                    string TableIDName = "";
 
-            if (ClearLocalDB)
-            {
-                List<string> ExistingTableList = new List<string>();
+//                    if (tableName.StartsWith("AspNet") || tableName.StartsWith("DeviceCode") || tableName.StartsWith("Persisted")) continue;
 
-                using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
-                    dbLocal.Database.OpenConnection();
-                    using (var result = command.ExecuteReader())
-                    {
-                        while (result.Read())
-                        {
-                            ExistingTableList.Add(result.GetString(0));
-                        }
-                    }
-                }
+//                    if (tableName == "Addresses")
+//                    {
+//                        TableIDName = tableName.Substring(0, tableName.Length - 2) + "ID";
+//                    }
+//                    else
+//                    {
+//                        TableIDName = tableName.Substring(0, tableName.Length - 1) + "ID";
+//                    }
 
-                foreach (string tableName in ExistingTableList)
-                {
-                    string TableIDName = "";
+//                    dbLocal.Database.ExecuteSqlRaw($"DELETE FROM { tableName }");
+//                }
+//            }
 
-                    if (tableName.StartsWith("AspNet") || tableName.StartsWith("DeviceCode") || tableName.StartsWith("Persisted")) continue;
-
-                    if (tableName == "Addresses")
-                    {
-                        TableIDName = tableName.Substring(0, tableName.Length - 2) + "ID";
-                    }
-                    else
-                    {
-                        TableIDName = tableName.Substring(0, tableName.Length - 1) + "ID";
-                    }
-
-                    dbLocal.Database.ExecuteSqlRaw($"DELETE FROM { tableName }");
-                }
-            }
-
-            return await Task.FromResult(true);
-        }
-    }
-}
+//            return await Task.FromResult(true);
+//        }
+//    }
+//}

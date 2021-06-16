@@ -38,13 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MapInfoLocalServiceTest\" />
-    <Folder Include="Tests\Generated\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPDBModels\CSSPDBModels.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
 </Project>

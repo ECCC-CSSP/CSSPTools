@@ -3,31 +3,25 @@
  *
  */
 
-using CSSPEnums;
+using CSSPAzureAppTaskServices;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
-using CSSPCultureServices.Services;
+using CSSPEnums;
+using CSSPHelperModels;
+using CSSPHelperServices;
+using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using System.Threading.Tasks;
-using Xunit;
-using CSSPWebAPIs.Controllers;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using CSSPWebAPIs;
-using LoggedInServices;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
-using CSSPHelperModels;
-using CSSPScrambleServices;
-using CSSPDBPreferenceModels;
-using CSSPHelperServices;
-using CSSPAzureAppTaskServices;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace CSSPWebAPIs.AppTaskModelController.Tests
 {

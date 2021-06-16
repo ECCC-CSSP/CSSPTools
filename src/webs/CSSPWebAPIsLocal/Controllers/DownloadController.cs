@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
 using System.Threading;
-using DownloadFileServices;
+using FileServices;
 using LoggedInServices;
 
 namespace CSSPWebAPIsLocal.Controllers
@@ -31,16 +31,16 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IDownloadFileService DownloadFileService { get; }
+        private IFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
         public DownloadController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IDownloadFileService DownloadFileService)
+            IFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.DownloadFileService = DownloadFileService;
+            this.FileService = FileService;
 
         }
         #endregion Constructors
@@ -54,7 +54,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await DownloadFileService.DownloadFile(ParentTVItemID, FileName);
+            return await FileService.DownloadFile(ParentTVItemID, FileName);
         }
         #endregion Functions public
 

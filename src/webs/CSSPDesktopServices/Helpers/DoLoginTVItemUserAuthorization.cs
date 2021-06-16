@@ -45,18 +45,17 @@ namespace CSSPDesktopServices.Services
 
                 }
 
-                // Adding TVItemUserAuthorization item in dbPreference
                 List<TVItemUserAuthorization> tvItemUserAuthorizationList = JsonSerializer.Deserialize<List<TVItemUserAuthorization>>(response.Content.ReadAsStringAsync().Result);
 
-                List<TVItemUserAuthorization> tvItemUserAuthorizationToDeleteList = (from c in dbPreference.TVItemUserAuthorizations
+                List<TVItemUserAuthorization> tvItemUserAuthorizationToDeleteList = (from c in dbManage.TVItemUserAuthorizations
                                                                                      select c).ToList();
 
                 if (tvItemUserAuthorizationToDeleteList.Count > 0)
                 {
                     try
                     {
-                        dbPreference.TVItemUserAuthorizations.RemoveRange(tvItemUserAuthorizationToDeleteList);
-                        dbPreference.SaveChanges();
+                        dbManage.TVItemUserAuthorizations.RemoveRange(tvItemUserAuthorizationToDeleteList);
+                        dbManage.SaveChanges();
                     }
                     catch (Exception ex)
                     {
@@ -67,10 +66,10 @@ namespace CSSPDesktopServices.Services
 
                 try
                 {
-                    dbPreference.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
-                    dbPreference.SaveChanges();
+                    dbManage.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
+                    dbManage.SaveChanges();
 
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVItemUserAuthorization", "TVItemUserAuthorizations", "CSSPDBPreference.db")));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVItemUserAuthorization", "TVItemUserAuthorizations", "CSSPDBManage.db")));
                 }
                 catch (Exception ex)
                 {

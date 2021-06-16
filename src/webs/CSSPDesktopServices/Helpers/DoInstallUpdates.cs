@@ -1,27 +1,16 @@
-﻿using CSSPEnums;
-using CSSPDBModels;
+﻿using Azure;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using CSSPDesktopServices.Models;
+using CSSPEnums;
+using ManageServices;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Azure.Storage.Blobs;
 using System.IO;
-using Azure.Storage.Blobs.Models;
-using CSSPDesktopServices.Models;
 using System.IO.Compression;
-using Azure;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net;
-using CSSPDBPreferenceModels;
-using CSSPDBFilesManagementModels;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDesktopServices.Services
 {
@@ -128,41 +117,41 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            FilesManagement filesManagement = (from c in dbFM.FilesManagements
-                                               where c.AzureStorage == "csspjson"
-                                               && c.AzureFileName == jsonFileName
-                                               select c).FirstOrDefault();
+            ManageFile manageFile = (from c in dbManage.ManageFiles
+                                     where c.AzureStorage == "csspjson"
+                                     && c.AzureFileName == jsonFileName
+                                     select c).FirstOrDefault();
 
-            if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
+            if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 
-                if (filesManagement == null)
+                if (manageFile == null)
                 {
-                    int LastID = (from c in dbFM.FilesManagements
-                                  orderby c.FilesManagementID descending
-                                  select c.FilesManagementID).FirstOrDefault();
+                    int LastID = (from c in dbManage.ManageFiles
+                                  orderby c.ManageFileID descending
+                                  select c.ManageFileID).FirstOrDefault();
 
-                    filesManagement = new FilesManagement()
+                    manageFile = new ManageFile()
                     {
-                        FilesManagementID = LastID + 1,
+                        ManageFileID = LastID + 1,
                         AzureStorage = AzureStoreCSSPJSONPath,
                         AzureFileName = jsonFileName,
                         AzureETag = response.Headers.ETag.ToString(),
                         AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
                     };
 
-                    dbFM.FilesManagements.Add(filesManagement);
+                    dbManage.ManageFiles.Add(manageFile);
                 }
                 else
                 {
-                    filesManagement.AzureETag = response.Headers.ETag.ToString();
+                    manageFile.AzureETag = response.Headers.ETag.ToString();
                 }
 
                 try
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, AzureStoreCSSPJSONPath, jsonFileName)));
-                    dbFM.SaveChanges();
+                    dbManage.SaveChanges();
                 }
                 catch (Exception)
                 {
@@ -211,12 +200,12 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            FilesManagement filesManagement = (from c in dbFM.FilesManagements
-                                               where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
-                                               && c.AzureFileName == zipFileName
-                                               select c).FirstOrDefault();
+            ManageFile manageFile = (from c in dbManage.ManageFiles
+                                     where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
+                                     && c.AzureFileName == zipFileName
+                                     select c).FirstOrDefault();
 
-            if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") != filesManagement.AzureETag)
+            if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             {
                 Response response = blobClient.DownloadTo(fi.FullName);
 
@@ -259,37 +248,37 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            FilesManagement filesManagement = (from c in dbFM.FilesManagements
-                                               where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
-                                               && c.AzureFileName == zipFileName
-                                               select c).FirstOrDefault();
+            ManageFile manageFile = (from c in dbManage.ManageFiles
+                                     where c.AzureStorage == AzureStoreCSSPWebAPIsLocalPath
+                                     && c.AzureFileName == zipFileName
+                                     select c).FirstOrDefault();
 
-            if (filesManagement == null)
+            if (manageFile == null)
             {
-                int LastID = (from c in dbFM.FilesManagements
-                              orderby c.FilesManagementID descending
-                              select c.FilesManagementID).FirstOrDefault();
+                int LastID = (from c in dbManage.ManageFiles
+                              orderby c.ManageFileID descending
+                              select c.ManageFileID).FirstOrDefault();
 
-                filesManagement = new FilesManagement()
+                manageFile = new ManageFile()
                 {
-                    FilesManagementID = LastID + 1,
+                    ManageFileID = LastID + 1,
                     AzureStorage = AzureStoreCSSPWebAPIsLocalPath,
                     AzureFileName = zipFileName,
                     AzureETag = response.Headers.ETag.ToString(),
                     AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
                 };
 
-                dbFM.FilesManagements.Add(filesManagement);
+                dbManage.ManageFiles.Add(manageFile);
             }
             else
             {
-                filesManagement.AzureETag = response.Headers.ETag.ToString();
+                manageFile.AzureETag = response.Headers.ETag.ToString();
             }
 
             try
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, AzureStoreCSSPWebAPIsLocalPath, zipFileName)));
-                dbFM.SaveChanges();
+                dbManage.SaveChanges();
             }
             catch (Exception)
             {

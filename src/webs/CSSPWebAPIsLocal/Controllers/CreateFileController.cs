@@ -16,7 +16,7 @@ using CSSPWebModels;
 using LoggedInServices;
 using CSSPDBLocalServices;
 using System.IO;
-using CreateFileServices;
+using FileServices;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 using System;
@@ -40,16 +40,16 @@ namespace CSSPWebAPIsLocal.Controllers
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ICreateFileService CreateFileService { get; }
+        private IFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
         public CreateFileController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            ICreateFileService CreateFileService)
+            IFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.CreateFileService = CreateFileService;
+            this.FileService = FileService;
         }
         #endregion Constructors
 
@@ -61,7 +61,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await CreateFileService.CreateTempCSV(tableConvertToCSVModel);
+            return await FileService.CreateTempCSV(tableConvertToCSVModel);
         }
         [HttpPost]
         [Route("CreateTempPNG")]
@@ -71,7 +71,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            return await CreateFileService.CreateTempPNG(Request);
+            return await FileService.CreateTempPNG(Request);
 
         }
         #endregion Functions public

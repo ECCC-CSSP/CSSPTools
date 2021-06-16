@@ -27,11 +27,19 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await Setup(culture, false));
 
+            Assert.NotNull(db);
+            Assert.NotNull(dbLocal);
+            Assert.NotNull(dbManage);
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
-            Assert.NotNull(dbLocal);
+            Assert.NotNull(FileService);
+            Assert.NotNull(ManageFileService);
+            Assert.NotNull(CreateGzFileService);
+            Assert.NotNull(ReadGzFileService);
             Assert.NotNull(AppTaskLocalService);
+            Assert.NotNull(TVItemLocalService);
+            Assert.NotNull(CSSPSQLiteService);
 
         }
         [Theory]
@@ -40,6 +48,8 @@ namespace CSSPDBLocalServices.Tests
         public async Task AppTaskLocalService_AddOrModifyLocal_Add_Good_Test(string culture)
         {
             Assert.True(await Setup(culture, true));
+
+            await CreateCSSPDBLocal();
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -63,6 +73,8 @@ namespace CSSPDBLocalServices.Tests
         public async Task AppTaskLocalService_AddOrModifyLocal_Modify_Good_Test(string culture)
         {
             Assert.True(await Setup(culture, true));
+
+            await CreateCSSPDBLocal();
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 

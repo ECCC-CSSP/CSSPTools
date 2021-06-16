@@ -21,6 +21,7 @@ namespace CSSPSQLiteServices
                         ExistingTableList.Add(result.GetString(0));
                     }
                 }
+                dbLocal.Database.CloseConnection();
             }
 
             return await Task.FromResult(true);

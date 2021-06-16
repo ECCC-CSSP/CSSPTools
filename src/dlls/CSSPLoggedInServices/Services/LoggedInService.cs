@@ -1,8 +1,8 @@
 ﻿using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPDBPreferenceModels;
 using CSSPHelperModels;
 using CSSPScrambleServices;
+using ManageServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,17 +25,17 @@ namespace LoggedInServices
 
         private ICSSPCultureService CSSPCultureService { get; }
         private CSSPDBContext db { get; }
-        private CSSPDBPreferenceContext dbPreference { get; }
+        private CSSPDBManageContext dbManage { get; }
         private IScrambleService ScrambleService { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInService(ICSSPCultureService CSSPCultureService, IScrambleService ScrambleService, CSSPDBContext db = null, CSSPDBPreferenceContext dbPreference = null)
+        public LoggedInService(ICSSPCultureService CSSPCultureService, IScrambleService ScrambleService, CSSPDBContext db = null, CSSPDBManageContext dbManage = null)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.ScrambleService = ScrambleService;
             this.db = db;
-            this.dbPreference = dbPreference;
+            this.dbManage = dbManage;
             this.LoggedInContactInfo = new LoggedInContactInfo();
         }
         #endregion Constructors
@@ -69,7 +69,7 @@ namespace LoggedInServices
         {
             LoggedInContactInfo = new LoggedInContactInfo();
 
-            LoggedInContactInfo.LoggedInContact = (from c in dbPreference.Contacts
+            LoggedInContactInfo.LoggedInContact = (from c in dbManage.Contacts
                                                    orderby c.LoginEmail
                                                    select c).FirstOrDefault();
 
@@ -80,11 +80,11 @@ namespace LoggedInServices
             }
             else
             {
-                LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbPreference.TVTypeUserAuthorizations
+                LoggedInContactInfo.TVTypeUserAuthorizationList = (from c in dbManage.TVTypeUserAuthorizations
                                                                    where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                    select c).ToList();
 
-                LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbPreference.TVItemUserAuthorizations
+                LoggedInContactInfo.TVItemUserAuthorizationList = (from c in dbManage.TVItemUserAuthorizations
                                                                    where c.ContactTVItemID == LoggedInContactInfo.LoggedInContact.ContactTVItemID
                                                                    select c).ToList();
             }

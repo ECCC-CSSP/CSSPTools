@@ -229,19 +229,6 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task GetUncompressJSON_WebDrogueRun_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
-            int TVItemID = 556;
-
-            var JSONRes = await ReadGzFileService.GetUncompressJSON<WebDrogueRuns>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task GetUncompressJSON_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

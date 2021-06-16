@@ -68,8 +68,6 @@ namespace GenerateAngularCSSPHelperModels
             }
 
             CreateEnumIDAndText();
-            CreatePreference();
-            CreateCSSPFile();
 
             Console.WriteLine("");
             Console.WriteLine($"Done ...");

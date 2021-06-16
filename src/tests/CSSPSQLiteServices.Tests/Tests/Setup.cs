@@ -1,21 +1,13 @@
-﻿using CSSPEnums;
+﻿using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPSQLiteServices;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using CSSPDBCommandLogModels;
-using CSSPDBPreferenceModels;
-using CSSPDBFilesManagementModels;
 
 namespace CSSPSQLiteServices.Tests
 {
@@ -29,12 +21,13 @@ namespace CSSPSQLiteServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBLocalContext dbLocalTest { get; set; }
+        private CSSPDBManageContext dbMTest { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+        private string CSSPDBLocal { get; set; }
+        private string CSSPDBManage { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
-        private FileInfo fiCSSPDBCommandLog { get; set; }
-        private FileInfo fiCSSPDBPreference { get; set; }
-        private FileInfo fiCSSPDBFilesManagement { get; set; }
+        private FileInfo fiCSSPDBManage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -54,22 +47,10 @@ namespace CSSPSQLiteServices.Tests
             Services.AddSingleton<IConfiguration>(Configuration);
 
             /* ---------------------------------------------------------------------------------
-             * using TestDB
+             * CSSPDBLocalTest
              * ---------------------------------------------------------------------------------      
              */
-            string TestDB = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(TestDB);
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             Assert.NotNull(CSSPDBLocal);
 
             fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
@@ -80,45 +61,17 @@ namespace CSSPSQLiteServices.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBCommandLog
+             * CSSPDBManageTest
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
-            Assert.NotNull(CSSPDBCommandLog);
+            CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLog);
+            fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFilesManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagement);
-
-            fiCSSPDBFilesManagement = new FileInfo(CSSPDBFilesManagement);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFilesManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
-
-            fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
-
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();

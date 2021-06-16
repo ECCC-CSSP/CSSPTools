@@ -10,106 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\CreateGzFileController\**" />
-    <Compile Remove="Controllers\TVItemController\**" />
-    <Compile Remove="Controllers\TVItemLanguageController\**" />
-    <EmbeddedResource Remove="Controllers\CreateGzFileController\**" />
-    <EmbeddedResource Remove="Controllers\TVItemController\**" />
-    <EmbeddedResource Remove="Controllers\TVItemLanguageController\**" />
-    <None Remove="Controllers\CreateGzFileController\**" />
-    <None Remove="Controllers\TVItemController\**" />
-    <None Remove="Controllers\TVItemLanguageController\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Controllers\Generated\AddressControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\AppErrLogControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\AppTaskControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\AppTaskLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\BoxModelControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\BoxModelLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\BoxModelResultControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ClassificationControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ClimateDataValueControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ClimateSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\CoCoRaHSSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\CoCoRaHSValueControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ContactPreferenceControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ContactShortcutControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\DocTemplateControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\DrogueRunControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\DrogueRunPositionControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\EmailControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\EmailDistributionListContactControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\EmailDistributionListContactLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\EmailDistributionListControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\EmailDistributionListLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\HelpDocControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\HydrometricDataValueControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\HydrometricSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\InfrastructureControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\InfrastructureLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\LabSheetControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\LabSheetDetailControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\LabSheetTubeMPNDetailControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\LogControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MapInfoControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MapInfoPointControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MikeBoundaryConditionControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MikeScenarioControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MikeScenarioResultControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MikeSourceControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MikeSourceStartEndControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMAnalysisReportParameterControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMLookupMPNControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMRunControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMRunLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMSampleControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMSampleLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMSiteStartEndDateControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMSubsectorControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\MWQMSubsectorLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceGroupingControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceGroupingLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceObservationControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceObservationIssueControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceSiteEffectControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\PolSourceSiteEffectTermControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\RainExceedanceClimateSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\RainExceedanceControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\RatingCurveControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\RatingCurveValueControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ReportSectionControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ReportTypeControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\ResetPasswordControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\SamplingPlanControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\SamplingPlanEmailControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\SamplingPlanSubsectorControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\SamplingPlanSubsectorSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\SpillControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\SpillLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TelControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TideDataValueControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TideLocationControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TideSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVFileControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVFileLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVItemControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVItemLanguageControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVItemLinkControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVItemStatControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVItemUserAuthorizationControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\TVTypeUserAuthorizationControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\UseOfSiteControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\VPAmbientControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\VPResultControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\VPScenarioControllerTestGenerated.cs" />
-    <Compile Remove="Controllers\Generated\VPScenarioLanguageControllerTestGenerated.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings_csspwebapistests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -119,24 +19,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.0.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CSSPWebAPIs\CSSPWebAPIs.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Generated\" />
   </ItemGroup>
 
 </Project>

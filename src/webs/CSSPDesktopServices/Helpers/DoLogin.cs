@@ -31,7 +31,7 @@ namespace CSSPDesktopServices.Services
 
             if (!await DoLoginTVTypeUserAuthorization()) return await Task.FromResult(false);
 
-            if (!await DoLoginPreference(loginModel)) return await Task.FromResult(false);
+            if (!await DoLoginManage(loginModel)) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(""));
 

@@ -29,7 +29,7 @@ namespace CSSPDesktopServices.Services
 
             try
             {
-                dbPreference.SaveChanges();
+                dbManage.SaveChanges();
             }
             catch (Exception ex)
             {

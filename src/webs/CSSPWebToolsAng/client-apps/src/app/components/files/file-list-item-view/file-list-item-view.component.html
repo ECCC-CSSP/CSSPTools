@@ -1,3 +1,27 @@
-<blockquote>
-    <p style="background-color: chartreuse;">This is the file view component</p>
-</blockquote>
+<mat-card class="mat-elevation-z2">
+    <mat-card-content>
+        <button mat-raised-button title="localize"
+            (click)="fileLocalizeAzureFileService.LocalizeAzureFile(TVFileModel)">
+            <span>Localize file</span>
+            <span>{{ appLanguageService.Localize[appLanguageService.LangID] }}</span>
+            <mat-icon>local-ibrary</mat-icon>
+            <span *ngIf="fileLocalizeAzureFileService.Working">
+                <br />
+                <mat-progress-bar></mat-progress-bar>
+                <br />
+            </span>
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button title="download" (click)="fileDownloadService.Download(TVFileModel)">
+            <span>Download file</span>
+            <span>{{ appLanguageService.Download[appLanguageService.LangID] }}</span>
+            <mat-icon>download</mat-icon>
+            <span *ngIf="fileDownloadService.Working">
+                <br />
+                <mat-progress-bar></mat-progress-bar>
+                <br />
+            </span>
+        </button>
+        &nbsp;&nbsp;
+    </mat-card-content>
+</mat-card>

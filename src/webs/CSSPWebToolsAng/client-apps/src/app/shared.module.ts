@@ -6,7 +6,6 @@ import { MaterialModule } from 'src/app/app-material.module';
 import { FileListItemDetailComponent } from 'src/app/components/files/file-list-item-detail/file-list-item-detail.component';
 import { FileListItemComponent } from 'src/app/components/files/file-list-item/file-list-item.component';
 import { FileListComponent } from 'src/app/components/files/file-list/file-list.component';
-//import { FileUploadComponent } from 'src/app/components/files/file-upload/file-upload.component';
 import { BreadCrumbComponent } from 'src/app/components/bread-crumb/bread-crumb.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
@@ -109,6 +108,7 @@ import { TableMonitoringStatsByYearComponent } from './components/table/table-mo
 import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-data/table-mwqm-run-data.component';
 import { FileListByPurposeComponent } from './components/files/file-list-by-purpose/file-list-by-purpose.component';
 import { FileSortMenuComponent } from './components/files/file-sort-menu/file-sort-menu.component';
+import { FileUploadComponent } from './components/files/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +146,7 @@ import { FileSortMenuComponent } from './components/files/file-sort-menu/file-so
     FileListItemMenuOpenComponent,
     FileListItemViewComponent,
     FileSortMenuComponent,
-    //  FileUploadComponent,
+    FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
     HomeTestComponent,
@@ -266,7 +266,7 @@ import { FileSortMenuComponent } from './components/files/file-sort-menu/file-so
     FileListItemMenuOpenComponent,
     FileListItemViewComponent,
     FileSortMenuComponent,
-    //FileUploadComponent,
+    FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
     HomeTestComponent,

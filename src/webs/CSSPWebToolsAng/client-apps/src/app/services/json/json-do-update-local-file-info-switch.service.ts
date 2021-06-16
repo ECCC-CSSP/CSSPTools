@@ -25,37 +25,100 @@ export class JsonDoUpdateLocalFileInfoSwitchService {
         switch (WebType) {
             case WebTypeEnum.WebArea:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebArea.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebArea.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebArea.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             case WebTypeEnum.WebCountry:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebCountry.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebCountry.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebCountry.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             case WebTypeEnum.WebMunicipality:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebMunicipality.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebMunicipality.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebMunicipality.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             case WebTypeEnum.WebProvince:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebProvince.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebProvince.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebProvince.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             case WebTypeEnum.WebRoot:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebRoot.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebRoot.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebRoot.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             case WebTypeEnum.WebSector:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebSector.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebSector.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebSector.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             case WebTypeEnum.WebSubsector:
                 {
-                    let temp = LocalFileInfoList;
+                    for(let i = 0, count = this.appLoadedService.WebSubsector.TVFileModelList.length; i < count; i++)
+                    {
+                        let ServerFileName = this.appLoadedService.WebSubsector.TVFileModelList[i].TVFile.ServerFileName;
+
+                        let LocalFileInfoListFound = LocalFileInfoList.filter(c => c.FileName == ServerFileName);
+                        if (LocalFileInfoListFound != undefined && LocalFileInfoListFound.length > 0)
+                        {
+                            this.appLoadedService.WebSubsector.TVFileModelList[i].IsLocalized = true;
+                        }
+                    }
                 }
                 break;
             default:

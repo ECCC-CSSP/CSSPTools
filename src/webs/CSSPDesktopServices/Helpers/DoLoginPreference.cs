@@ -1,25 +1,16 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPDesktopServices.Models;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Http;
+using CSSPHelperModels;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Mvc;
-using CSSPDBPreferenceModels;
-using CSSPHelperModels;
 
 namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> DoLoginPreference(LoginModel loginModel)
+        private async Task<bool> DoLoginManage(LoginModel loginModel)
         {
             string culture = "fr-CA";
             if (IsEnglish)
@@ -63,7 +54,7 @@ namespace CSSPDesktopServices.Services
 
                 try
                 {
-                    dbPreference.SaveChanges();
+                    dbManage.SaveChanges();
                 }
                 catch (Exception ex)
                 {

@@ -40,6 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings_cssplocaltaskrunnerservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings_csspSyncDBsservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

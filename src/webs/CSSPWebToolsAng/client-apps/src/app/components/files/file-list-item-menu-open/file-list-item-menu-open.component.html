@@ -1,5 +1,22 @@
 <ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
     <p>
+        <button mat-raised-button (click)="SwitchVisibleTo(visible.View)" [ngClass]="ShowView ? 'selected' : ''">
+            {{ appLanguageService.View[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="SwitchVisibleTo(visible.Modify)" [ngClass]="ShowModify ? 'selected' : ''">
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="SwitchVisibleTo(visible.Create)" [ngClass]="ShowCreate ? 'selected' : ''">
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        </button>
+    </p>
+    <app-file-list-item-view *ngIf="ShowView" [TVFileModel]="TVFileModel"> </app-file-list-item-view>
+    <app-file-list-item-modify *ngIf="ShowModify" [TVFileModel]="TVFileModel"> </app-file-list-item-modify>
+    <app-file-list-item-create *ngIf="ShowCreate" [TVFileModel]="TVFileModel"> </app-file-list-item-create>
+    <!--     
+    <p>
         <button mat-raised-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
             View
         </button>
@@ -37,6 +54,6 @@
         <mat-card-content>
             <app-file-list-item-create [TVFileModel]="TVFileModel"> </app-file-list-item-create>
         </mat-card-content>
-    </mat-card>
+    </mat-card> -->
 
 </ng-container>

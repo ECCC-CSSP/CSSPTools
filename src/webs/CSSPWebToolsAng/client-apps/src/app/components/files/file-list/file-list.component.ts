@@ -10,6 +10,7 @@ import { DateFormatService } from 'src/app/services/helpers/date-format.service'
 import { FileIconService } from 'src/app/services/file/file-icon.service';
 import { FileSortByPropService, ShowTVFileService } from 'src/app/services/file';
 import { TVFileModelByPurposeService } from 'src/app/services/file';
+import { FilePurposeEnum_GetIDText } from 'src/app/enums/generated/FilePurposeEnum';
 
 @Component({
   selector: 'app-file-list',
@@ -43,5 +44,9 @@ export class FileListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  GetFilePurposeEnum_GetIDText(filePurposeEnum: number): string {
+    return FilePurposeEnum_GetIDText(filePurposeEnum, this.appLanguageService);
   }
 }

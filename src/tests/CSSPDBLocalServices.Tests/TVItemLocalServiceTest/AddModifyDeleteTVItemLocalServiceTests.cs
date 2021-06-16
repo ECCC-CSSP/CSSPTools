@@ -22,9 +22,33 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task TVItemLocalService_Constructor_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture, false));
+
+            Assert.NotNull(db);
+            Assert.NotNull(dbLocal);
+            Assert.NotNull(dbManage);
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(LoggedInService);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(FileService);
+            Assert.NotNull(ManageFileService);
+            Assert.NotNull(CreateGzFileService);
+            Assert.NotNull(ReadGzFileService);
+            Assert.NotNull(AppTaskLocalService);
+            Assert.NotNull(TVItemLocalService);
+            Assert.NotNull(CSSPSQLiteService);
+
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Area_Add_Modify_Delete_Good_Test(string culture)
         {
             Assert.True(await Setup(culture, true));
+
+            await CreateCSSPDBLocal();
 
             int TVItemID = -1;
             int ParentTVItemID = 629;

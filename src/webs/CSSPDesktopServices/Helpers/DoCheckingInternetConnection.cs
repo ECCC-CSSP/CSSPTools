@@ -1,16 +1,9 @@
-﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
+﻿using CSSPCultureServices.Resources;
 using CSSPDesktopServices.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPDBPreferenceModels;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CSSPDesktopServices.Services
 {
@@ -43,7 +36,7 @@ namespace CSSPDesktopServices.Services
                 HasInternetConnection = false;
             }
 
-            contact = (from c in dbPreference.Contacts
+            contact = (from c in dbManage.Contacts
                        select c).FirstOrDefault();
 
             if (contact == null)
@@ -57,7 +50,7 @@ namespace CSSPDesktopServices.Services
 
             try
             {
-                dbPreference.SaveChanges();
+                dbManage.SaveChanges();
             }
             catch (Exception ex)
             {

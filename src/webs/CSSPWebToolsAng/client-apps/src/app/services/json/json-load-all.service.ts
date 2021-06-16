@@ -37,9 +37,11 @@ import { WebMonitoringOtherStatsCountry } from 'src/app/models/generated/web/Web
 import { WebMonitoringRoutineStatsCountry } from 'src/app/models/generated/web/WebMonitoringRoutineStatsCountry.model';
 import { WebMonitoringOtherStatsProvince } from 'src/app/models/generated/web/WebMonitoringOtherStatsProvince.model';
 import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/web/WebMonitoringRoutineStatsProvince.model';
-import { JsonDoLoadSwitchService, JsonDoUpdateSwitchService, JsonDataIsLoadedService, 
+import {
+    JsonDoLoadSwitchService, JsonDoUpdateSwitchService, JsonDataIsLoadedService,
     JsonDoUpdateBreadCrumbOnlyService, JsonLoadListService, JsonDoUpdateWebMapService,
-    JsonDoLoadLocalFileInfoSwitchService, JsonDoUpdateLocalFileInfoSwitchService } from '.';
+    JsonDoLoadLocalFileInfoSwitchService, JsonDoUpdateLocalFileInfoSwitchService
+} from '.';
 import { of, Subscription } from 'rxjs';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppLanguageService } from '../app/app-language.service';
@@ -147,25 +149,29 @@ export class JsonLoadAllService {
     private DoUpdate(x: any) {
         this.jsonDoUpdateSwitchService.DoUpdateSwitch(this.WebType, x);
 
-        this.DoLoadLocalFileInfo()
-
-        this.appStateService.Status = '';
-        this.appStateService.Working = false;
-        console.debug(x);
-        
-        if (this.jsonLoadListService.JsonToLoadList?.length > 1) {
-            this.jsonLoadListService.JsonToLoadList.shift();
-            this.LoadAll();
+        if (this.jsonDoLoadLocalFileInfoSwitchService.DoLoadLocalFileInfoSwitch(this.WebType) != '') {
+            this.sub = this.DoLoadLocalFileInfo().subscribe();
         }
+        else {
+            this.appStateService.Status = '';
+            this.appStateService.Working = false;
+            console.debug(x);
+
+            if (this.jsonLoadListService.JsonToLoadList?.length > 1) {
+                this.jsonLoadListService.JsonToLoadList.shift();
+                this.LoadAll();
+            }
+        }
+
     }
 
-    private DoUpdateLocalFileInfo(x: LocalFileInfo[]) {
-        this.jsonDoUpdateLocalFileInfoSwitchService.DoUpdateLocalFileInfoSwitch(this.WebType, x);
+    private DoUpdateLocalFileInfo(LocalFileInfoList: LocalFileInfo[]) {
+        this.jsonDoUpdateLocalFileInfoSwitchService.DoUpdateLocalFileInfoSwitch(this.WebType, LocalFileInfoList);
 
         this.appStateService.Status = '';
         this.appStateService.Working = false;
-        console.debug(x);
-        
+        console.debug(LocalFileInfoList);
+
         if (this.jsonLoadListService.JsonToLoadList?.length > 1) {
             this.jsonLoadListService.JsonToLoadList.shift();
             this.LoadAll();
@@ -192,11 +198,11 @@ export class JsonLoadAllService {
 
         let TVItemIDText: string = this.jsonDoLoadLocalFileInfoSwitchService.DoLoadLocalFileInfoSwitch(this.WebType);
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/LocalFileInfo/${TVItemIDText}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/LocalFileInfo${TVItemIDText}`;
 
-        return this.httpClient.get<any>(url).pipe(map((x: any) => { this.DoUpdateLocalFileInfo(x); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
+        return this.httpClient.get<any>(url).pipe(map((x: LocalFileInfo[]) => { this.DoUpdateLocalFileInfo(x); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
     }
-    
+
     private DoError(e: any) {
         this.appStateService.Status = ''
         this.appStateService.Working = false

@@ -1,11 +1,15 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
+using CSSPDBModels;
 using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
-using CSSPDBModels;
+using CSSPHelperModels;
+using CSSPScrambleServices;
 using CSSPSQLiteServices;
-using DownloadFileServices;
+using FileServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,14 +19,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CSSPDBPreferenceModels;
-using CSSPHelperModels;
-using CSSPDBCommandLogModels;
-using CSSPDBFilesManagementModels;
-using CSSPScrambleServices;
-using LoggedInServices;
-using FilesManagementServices;
-//using WebAppLoadedServices;
 
 namespace CSSPDesktop
 {
@@ -35,7 +31,7 @@ namespace CSSPDesktop
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private IFilesManagementService FilesManagementService { get; set; }
+        private IManageFileService ManageFileService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
@@ -464,12 +460,10 @@ namespace CSSPDesktop
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
-            Services.AddSingleton<IDownloadFileService, DownloadFileService>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
+            Services.AddSingleton<IFileService, FileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            //Services.AddSingleton<IPreferenceService, PreferenceService>();
-            //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB
@@ -505,58 +499,23 @@ namespace CSSPDesktop
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBCommandLog
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
-            if (string.IsNullOrWhiteSpace(CSSPDBCommandLog))
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            if (string.IsNullOrWhiteSpace(CSSPDBManage))
             {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBCommandLog", "appsettings_csspdesktop.json"));
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBManage", "appsettings_csspdesktop.json"));
                 return await Task.FromResult(false);
             }
 
-            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLog);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFilesManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBFilesManagement", "appsettings_csspdesktop.json"));
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFilesManagement);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            if (string.IsNullOrWhiteSpace(CSSPDBPreference))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBPreference", "appsettings_csspdesktop.json"));
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
-
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();
@@ -605,12 +564,11 @@ namespace CSSPDesktop
 
             if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
 
-
-            // create CSSPDBPreference if it does not exist
-            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBPreference);
+            // create CSSPDBManage if it does not exist
+            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBManage);
             if (!fi.Exists)
             {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBPreference()) return await Task.FromResult(false);
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBManage()) return await Task.FromResult(false);
             }
 
             await SettingUpAllTextForLanguage();
@@ -620,20 +578,6 @@ namespace CSSPDesktop
             if (!fi.Exists)
             {
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
-            }
-
-            // create CSSPDBCommandLog if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBCommandLog);
-            if (!fi.Exists)
-            {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBCommandLog()) return await Task.FromResult(false);
-            }
-
-            // create CSSPDBFilesManagement if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBFilesManagement);
-            if (!fi.Exists)
-            {
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBFilesManagement()) return await Task.FromResult(false);
             }
 
             splitContainerFirst.Dock = DockStyle.Fill;

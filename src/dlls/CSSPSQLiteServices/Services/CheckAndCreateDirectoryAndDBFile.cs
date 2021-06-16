@@ -30,6 +30,7 @@ namespace CSSPSQLiteServices
                     try
                     {
                         FileStream fs = fiDB.Create();
+                        fs.Flush();
                         fs.Close();
                     }
                     catch (Exception ex)

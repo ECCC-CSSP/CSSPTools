@@ -39,7 +39,7 @@ export class JsonDoLoadLocalFileInfoSwitchService {
                 break;
             case WebTypeEnum.WebRoot:
                 {
-                    this.appLoadedService.WebRoot = <WebRoot>{};
+                    TVItemIDText = `/${this.appStateService.UserPreference.CurrentRootTVItemID}`;
                 }
                 break;
             case WebTypeEnum.WebSector:

@@ -1222,7 +1222,6 @@
       "CSSPCreateGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBFilesManagementModels": "1.0.0",
           "CSSPLoggedInServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
@@ -1263,28 +1262,12 @@
           "CSSPCustomAttributes.dll": {}
         }
       },
-      "CSSPDBFilesManagementModels/1.0.0": {
-        "dependencies": {
-          "CSSPCustomAttributes": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
-        },
-        "runtime": {
-          "CSSPDBFilesManagementModels.dll": {}
-        }
-      },
-      "CSSPDBFilesManagementServices/1.0.0": {
+      "CSSPDBManageServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBFilesManagementModels": "1.0.0",
-          "CSSPLoggedInServices": "1.0.0",
+          "CSSPDBModels": "1.0.0",
+          "CSSPHelperModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
@@ -1296,7 +1279,7 @@
           "Microsoft.Extensions.Configuration.Json": "5.0.0"
         },
         "runtime": {
-          "CSSPDBFilesManagementServices.dll": {}
+          "CSSPDBManageServices.dll": {}
         }
       },
       "CSSPDBModels/1.0.0": {
@@ -1317,49 +1300,35 @@
           "CSSPDBModels.dll": {}
         }
       },
-      "CSSPDBPreferenceModels/1.0.0": {
-        "dependencies": {
-          "CSSPDBModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
-        },
-        "runtime": {
-          "CSSPDBPreferenceModels.dll": {}
-        }
-      },
-      "CSSPDownloadFileServices/1.0.0": {
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.8.0",
-          "Azure.Storage.Files.Shares": "12.6.0",
-          "CSSPDBFilesManagementServices": "1.0.0",
-          "CSSPDBModels": "1.0.0",
-          "CSSPScrambleServices": "1.0.0",
-          "CSSPWebModels": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore": "5.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
-          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
-          "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0"
-        },
-        "runtime": {
-          "CSSPDownloadFileServices.dll": {}
-        }
-      },
       "CSSPEnums/1.0.0": {
         "dependencies": {
           "CSSPCultureServices": "1.0.0"
         },
         "runtime": {
           "CSSPEnums.dll": {}
+        }
+      },
+      "CSSPFileServices/1.0.0": {
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "Azure.Storage.Files.Shares": "12.6.0",
+          "CSSPDBManageServices": "1.0.0",
+          "CSSPDBModels": "1.0.0",
+          "CSSPLoggedInServices": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
+          "CSSPWebModels": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Design": "5.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
+          "Microsoft.EntityFrameworkCore.Tools": "5.0.3",
+          "Microsoft.Extensions.Configuration": "5.0.0",
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
+        },
+        "runtime": {
+          "CSSPFileServices.dll": {}
         }
       },
       "CSSPHelperModels/1.0.0": {
@@ -1382,7 +1351,7 @@
       "CSSPLoggedInServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPDBManageServices": "1.0.0",
           "CSSPHelperModels": "1.0.0",
           "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
@@ -1400,7 +1369,7 @@
       "CSSPReadGzFileServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDownloadFileServices": "1.0.0",
+          "CSSPFileServices": "1.0.0",
           "CSSPWebModels": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
@@ -2329,12 +2298,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBFilesManagementModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPDBFilesManagementServices/1.0.0": {
+    "CSSPDBManageServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -2344,17 +2308,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBPreferenceModels/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "CSSPDownloadFileServices/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "CSSPEnums/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CSSPFileServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

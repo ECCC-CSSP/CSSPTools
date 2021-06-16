@@ -19,6 +19,7 @@ namespace CSSPSQLiteServices
                         command.CommandText = $"DROP TABLE { TableName }";
                         dbLocal.Database.OpenConnection();
                         command.ExecuteNonQuery();
+                        dbLocal.Database.CloseConnection();
                     }
                 }
             }

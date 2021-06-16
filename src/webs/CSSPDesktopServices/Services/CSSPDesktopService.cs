@@ -10,10 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CSSPHelperModels;
-using CSSPDBPreferenceModels;
-using CSSPDBCommandLogModels;
-using CSSPDBFilesManagementModels;
 using CSSPScrambleServices;
+using ManageServices;
 using LoggedInServices;
 
 namespace CSSPDesktopServices.Services
@@ -25,16 +23,13 @@ namespace CSSPDesktopServices.Services
         bool LoginRequired { get; set; }
         bool UpdateIsNeeded { get; set; }
         bool HasCSSPOtherFiles { get; set; }
-        string CSSPDBFilesManagement { get; set; }
-        string CSSPDBPreference { get; set; }
+        string CSSPDBManage { get; set; }
         string CSSPDBLocal { get; set; }
-        string CSSPDBCommandLog { get; set; }
         string CSSPAzureUrl { get; set; }
         string CSSPLocalUrl { get; set; }       
         string CSSPWebAPIsLocalPath { get; set; }
         string CSSPOtherFilesPath { get; set; }
         Contact contact { get; set; }
-        //List<Preference> PreferenceList { get; set; }
 
         // Functions
         Task<bool> CheckIfCSSPOtherFilesExist();
@@ -48,7 +43,6 @@ namespace CSSPDesktopServices.Services
         Task<bool> ReadConfiguration();
         Task<bool> Start();
         Task<bool> Stop();
-        //Task<Preference> GetPreferenceWithVariableName(string VariableName);
 
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -66,10 +60,8 @@ namespace CSSPDesktopServices.Services
         public bool LoginRequired { get; set; } = false;
         public bool UpdateIsNeeded { get; set; } = false;
         public bool HasCSSPOtherFiles { get; set; } = false;
-        public string CSSPDBFilesManagement { get; set; }
-        public string CSSPDBPreference { get; set; }
+        public string CSSPDBManage { get; set; }
         public string CSSPDBLocal { get; set; }
-        public string CSSPDBCommandLog { get; set; }
         public string CSSPAzureUrl { get; set; }
         public string CSSPLocalUrl { get; set; }
         public string CSSPWebAPIsLocalPath { get; set; }
@@ -77,21 +69,17 @@ namespace CSSPDesktopServices.Services
         public string CSSPTempFilesPath { get; set; }
         public string AzureStore { get; set; }
         public Contact contact { get; set; }
-        //public List<Preference> PreferenceList { get; set; }
         #endregion Properties public
 
         #region Properties private
         private CSSPDBLocalContext dbLocal { get; }
-        private CSSPDBCommandLogContext dbCommandLog { get; }
-        private CSSPDBPreferenceContext dbPreference { get; }
-        private CSSPDBFilesManagementContext dbFM { get; }
+        private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         private IScrambleService ScrambleService { get; }
-        //private IPreferenceService PreferenceService { get; }
+        private ILoggedInService LoggedInService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string CSSPDesktopPath { get; set; }
         private string CSSPDatabasesPath { get; set; }
@@ -106,20 +94,17 @@ namespace CSSPDesktopServices.Services
         #endregion Properties private
 
         #region Constructors
-        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
-            CSSPDBLocalContext dbLocal, CSSPDBCommandLogContext dbCommandLog, 
-            CSSPDBPreferenceContext dbPreference, CSSPDBFilesManagementContext dbFM, IReadGzFileService ReadGzFileService, 
-            IScrambleService ScrambleService/*, IPreferenceService PreferenceService*/)
+        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
+            CSSPDBLocalContext dbLocal, CSSPDBManageContext dbManage, IReadGzFileService ReadGzFileService, ILoggedInService LoggedInService,
+            IScrambleService ScrambleService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
             this.dbLocal = dbLocal;
-            this.dbCommandLog = dbCommandLog;
-            this.dbPreference = dbPreference;
-            this.dbFM = dbFM;
+            this.dbManage = dbManage;
             this.ReadGzFileService = ReadGzFileService;
+            this.LoggedInService = LoggedInService;
             this.ScrambleService = ScrambleService;
 
             contact = new Contact();

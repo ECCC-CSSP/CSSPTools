@@ -58,7 +58,7 @@ namespace GenerateCSSPWebAPIsLocal_TestsController
             sb.AppendLine(@"");
             sb.AppendLine(@"            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreferenceFileName);");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<CSSPDBPreferenceContext>(options =>");
+            sb.AppendLine(@"            Services.AddDbContext<PreferenceContext>(options =>");
             sb.AppendLine(@"            {");
             sb.AppendLine($@"                options.UseSqlite($""Data Source={{ fiCSSPDBPreference.FullName }}"");");
             sb.AppendLine(@"            });");

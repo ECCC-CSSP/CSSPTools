@@ -12,8 +12,6 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 export class FileListItemModifyComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel;
 
-
-  
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService) {
   }

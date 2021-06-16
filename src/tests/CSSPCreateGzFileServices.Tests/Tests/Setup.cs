@@ -1,26 +1,23 @@
-using CSSPEnums;
-using CSSPDBModels;
-using CreateGzFileServices;
 using CSSPCultureServices.Services;
+using CSSPDBModels;
+using CSSPDBServices;
+using CSSPEnums;
+using CSSPHelperModels;
+using CSSPHelperServices;
+using CSSPScrambleServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using System.Threading.Tasks;
-using Xunit;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using CSSPDBServices;
-using LoggedInServices;
-using CSSPHelperModels;
-using CSSPScrambleServices;
-using CSSPDBPreferenceModels;
-using CSSPHelperServices;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace CreateGzFileServices.Tests
 {
@@ -75,7 +72,7 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDB
+             * CSSPDBContext
              * ---------------------------------------------------------------------------------      
              */
             string CSSPDB = Configuration.GetValue<string>("CSSPDB");
@@ -87,17 +84,17 @@ namespace CreateGzFileServices.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
+             * CSSPDBManageContext
              * ---------------------------------------------------------------------------------
              */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();

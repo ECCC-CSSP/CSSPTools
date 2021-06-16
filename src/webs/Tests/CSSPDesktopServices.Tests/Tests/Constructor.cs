@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using CSSPCultureServices.Services;
-using CSSPDesktopServices.Models;
+﻿using CSSPCultureServices.Services;
+using CSSPDBModels;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
-using CSSPDBModels;
+using CSSPScrambleServices;
 using CSSPSQLiteServices;
-using DownloadFileServices;
+using FileServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using Xunit;
-using CSSPDBCommandLogModels;
-using CSSPDBFilesManagementModels;
-using CSSPDBPreferenceModels;
-using LoggedInServices;
-using CSSPScrambleServices;
-using FilesManagementServices;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -68,12 +63,10 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IScrambleService, ScrambleService>();
-            //Services.AddSingleton<IPreferenceService, PreferenceService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<IFilesManagementService, FilesManagementService>();
-            Services.AddSingleton<IDownloadFileService, DownloadFileService>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
+            Services.AddSingleton<IFileService, FileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            //Services.AddSingleton<IWebAppLoadedService, WebAppLoadedService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
             /* ---------------------------------------------------------------------------------
@@ -103,45 +96,17 @@ namespace CSSPDesktopServices.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBCommandLog
+             * CSSPDBManage
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
-            Assert.NotNull(CSSPDBCommandLog);
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBCommandLog = new FileInfo(CSSPDBCommandLog);
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBCommandLogContext>(options =>
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBCommandLog.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBFilesManagement
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            Assert.NotNull(CSSPDBFilesManagement);
-
-            FileInfo fiCSSPDBFileManagement = new FileInfo(CSSPDBFilesManagement);
-
-            Services.AddDbContext<CSSPDBFilesManagementContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBFileManagement.FullName }");
-            });
-
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
-
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
-
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();

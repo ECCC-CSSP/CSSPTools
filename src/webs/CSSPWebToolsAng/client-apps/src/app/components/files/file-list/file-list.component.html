@@ -1,4 +1,21 @@
 <div *ngFor="let tvFileModelByPurpose of TVFileModelByPurposeList">
-    <app-file-list-by-purpose [TVFileModelByPurpose]="tvFileModelByPurpose" [FilesSortByProp]="FilesSortByProp">
-    </app-file-list-by-purpose>
+    <h2 class="file-purpose">{{ GetFilePurposeEnum_GetIDText(tvFileModelByPurpose.FilePurpose) }}
+    </h2>
+    <div *ngFor="let tvFileModel of tvFileModelByPurpose.TVFileModelList; let i = index">
+        <app-file-list-item-menu [TVFileModel]="tvFileModel"></app-file-list-item-menu>
+    
+        <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]="(i + 1)" [TVFileModel]="tvFileModel">
+        </app-file-list-item>
+    
+        <app-file-list-item-menu-open [TVFileModel]="tvFileModel"></app-file-list-item-menu-open>
+    
+        <app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="tvFileModel">
+        </app-file-list-item-detail>
+    
+        <app-file-list-item-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
+            [TVFileModel]="tvFileModel">
+        </app-file-list-item-last-update>
+    </div>
+    <!-- <app-file-list-by-purpose [TVFileModelByPurpose]="tvFileModelByPurpose" [FilesSortByProp]="FilesSortByProp">
+    </app-file-list-by-purpose> -->
 </div>

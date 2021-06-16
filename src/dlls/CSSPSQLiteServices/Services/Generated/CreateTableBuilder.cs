@@ -1416,6 +1416,7 @@ namespace CSSPSQLiteServices
                 command.CommandText = CreateTable;
                 dbLocal.Database.OpenConnection();
                 command.ExecuteNonQuery();
+                dbLocal.Database.CloseConnection();
             }
 
             return await Task.FromResult(true);

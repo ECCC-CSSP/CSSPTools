@@ -342,23 +342,6 @@ namespace ReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadJSON_WebDrogueRun_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
-            int TVItemID = 556;
-
-            var actionRes = await ReadGzFileService.ReadJSON<WebDrogueRuns>(webType, TVItemID);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebDrogueRuns webDrogueRun = (WebDrogueRuns)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(webDrogueRun);
-            Assert.NotNull(webDrogueRun.DrogueRunModelList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task ReadJSON_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

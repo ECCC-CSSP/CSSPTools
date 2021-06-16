@@ -7,10 +7,10 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using CSSPCultureServices.Resources;
 using CSSPEnums;
-using CSSPDBModels;
+using CSSPWebModels;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -18,10 +18,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using CSSPDBPreferenceModels;
-using CSSPDBFilesManagementModels;
-using LoggedInServices;
-using CSSPWebModels;
 
 namespace ReadGzFileServices
 {
@@ -50,7 +46,7 @@ namespace ReadGzFileServices
 
             bool HasInternetConnection = false;
 
-            HasInternetConnection = (from c in dbPreference.Contacts
+            HasInternetConnection = (from c in dbManage.Contacts
                                      select c.HasInternetConnection).FirstOrDefault() ?? false;
 
             if (HasInternetConnection)
@@ -107,15 +103,15 @@ namespace ReadGzFileServices
 
                 if (gzExistLocaly)
                 {
-                    FilesManagement filesManagement = null;
+                    ManageFile manageFile = null;
 
-                    var actionCSSPFile = await FilesManagementService.GetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
+                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
                     if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
                     {
-                        filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFile.Result).Value;
+                        manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
                     }
 
-                    if (filesManagement == null || blobProperties.ETag.ToString().Replace("\"", "") == filesManagement.AzureETag)
+                    if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") == manageFile.AzureETag)
                     {
                         gzLocalIsUpToDate = true;
                     }
@@ -123,7 +119,7 @@ namespace ReadGzFileServices
 
                 if (!gzLocalIsUpToDate)
                 {
-                    var actionRes = await DownloadFileService.DownloadGzFile(webType, TVItemID);
+                    var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
 
                     if (((ObjectResult)actionRes.Result).StatusCode != 200)
                     {

@@ -23,24 +23,10 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            CSSPDBCommandLog = Configuration.GetValue<string>("CSSPDBCommandLog");
-            if (string.IsNullOrWhiteSpace(CSSPDBCommandLog))
+            CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            if (string.IsNullOrWhiteSpace(CSSPDBManage))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBCommandLog", "appsettings_csspdesktop.json")));
-                return await Task.FromResult(false);
-            }
-
-            CSSPDBFilesManagement = Configuration.GetValue<string>("CSSPDBFilesManagement");
-            if (string.IsNullOrWhiteSpace(CSSPDBFilesManagement))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBFilesManagement", "appsettings_csspdesktop.json")));
-                return await Task.FromResult(false);
-            }
-
-            CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            if (string.IsNullOrWhiteSpace(CSSPDBPreference))
-            {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBPreference", "appsettings_csspdesktop.json")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPDBManage", "appsettings_csspdesktop.json")));
                 return await Task.FromResult(false);
             }
 
@@ -96,7 +82,7 @@ namespace CSSPDesktopServices.Services
             CSSPTempFilesPath = Configuration.GetValue<string>("CSSPTempFilesPath");
             if (string.IsNullOrWhiteSpace(CSSPTempFilesPath))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPOtherFilesPath", "appsettings_csspdesktop.json")));
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPTempFilesPath", "appsettings_csspdesktop.json")));
                 return await Task.FromResult(false);
             }
 

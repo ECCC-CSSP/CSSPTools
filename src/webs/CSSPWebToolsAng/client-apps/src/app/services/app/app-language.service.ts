@@ -108,6 +108,8 @@ export class AppLanguageService {
   CountryShowRainExceedance: string[] = ['Show rain exceedance', 'Montrer pluie dépassement'];
   CountryRainExceedance: string[] = ['Rain Exceedance', 'Pluie dépassement'];
 
+  Create: string[] = ['Create', 'Créer'];
+
   DegCelciusTitle: string[] = ['Degree Celcius', 'Dégré Celcius'];
 
   DateJanuary: string[] = ['January', 'janvier'];
@@ -187,8 +189,12 @@ export class AppLanguageService {
 
   Loading: string[] = ['Loading', 'Téléchargement'];
 
+  Localize: string[] = ['Localize', 'Localiser'];
+  
   MedianInit: string[] = ['Med', 'Méd'];
   MedianInitTitle: string[] = ['Median', 'Médianne'];
+
+  Modify: string[] = ['Modify', 'Modifier'];
 
   MonitoringStats: string[] = ['Monitoring stats', 'Stats d\'échantillonnage']
 
@@ -408,6 +414,8 @@ export class AppLanguageService {
   TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
   TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
 
+  View: string[] = ['View', 'Voir'];
+  
   WrittenDescription: string[] = ['Written Description', "Ancienne description"];
 
   Year: string[] = ['Year', 'Année'];

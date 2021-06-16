@@ -1930,21 +1930,22 @@
           "CSSPDBModels.dll": {}
         }
       },
-      "CSSPDBPreferenceModels/1.0.0": {
+      "CSSPDBPreferenceServices/1.0.0": {
         "dependencies": {
+          "Azure.Storage.Blobs": "12.8.0",
+          "CSSPCultureServices": "1.0.0",
           "CSSPDBModels": "1.0.0",
+          "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore": "5.0.3",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.3",
           "Microsoft.EntityFrameworkCore.Sqlite": "5.0.3",
           "Microsoft.Extensions.Configuration": "5.0.0",
-          "Microsoft.Extensions.Configuration.Json": "5.0.0",
-          "Microsoft.Extensions.DependencyInjection": "5.0.1",
-          "System.IdentityModel.Tokens.Jwt": "6.8.0"
+          "Microsoft.Extensions.Configuration.Json": "5.0.0"
         },
         "runtime": {
-          "CSSPDBPreferenceModels.dll": {}
+          "CSSPDBPreferenceServices.dll": {}
         }
       },
       "CSSPDBServices/1.0.0": {
@@ -2008,7 +2009,7 @@
       "CSSPLoggedInServices/1.0.0": {
         "dependencies": {
           "Azure.Storage.Blobs": "12.8.0",
-          "CSSPDBPreferenceModels": "1.0.0",
+          "CSSPDBPreferenceServices": "1.0.0",
           "CSSPHelperModels": "1.0.0",
           "CSSPScrambleServices": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.3",
@@ -3227,7 +3228,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CSSPDBPreferenceModels/1.0.0": {
+    "CSSPDBPreferenceServices/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

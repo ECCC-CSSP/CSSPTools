@@ -5,14 +5,13 @@
 
 using CreateGzFileServices;
 using CSSPCultureServices.Services;
-using CSSPDBFilesManagementModels;
 using CSSPDBModels;
-using CSSPDBPreferenceModels;
 using CSSPEnums;
 using CSSPScrambleServices;
-using DownloadFileServices;
-using FilesManagementServices;
+using CSSPSQLiteServices;
+using FileServices;
 using LoggedInServices;
+using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +19,6 @@ using ReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -34,12 +32,21 @@ namespace CSSPDBLocalServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+        private IFileService FileService { get; set; }
+        private IManageFileService ManageFileService { get; set; }
+        private ICreateGzFileService CreateGzFileService { get; set; }
+        private IReadGzFileService ReadGzFileService { get; set; }
         private IAppTaskLocalService AppTaskLocalService { get; set; }
+        private ITVItemLocalService TVItemLocalService { get; set; }
+        private string CSSPDB { get; set; }
+        private string CSSPDBLocal { get; set; }
+        private string CSSPDBManage { get; set; }
+        private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string CSSPJSONPath { get; set; }
-        private string CSSPJSONPathLocal { get; set; }
-        private string CSSPAzureUrl { get; set; }
+        private CSSPDBManageContext dbManage { get; set; }
+        private FileInfo fiCSSPDBLocal { get; set; }
+        private FileInfo fiCSSPDBManage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -49,6 +56,22 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
+        private async Task CreateCSSPDBLocal()
+        {
+            if (fiCSSPDBLocal.Exists)
+            {
+                try
+                {
+                    fiCSSPDBLocal.Delete();
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
+
+            await CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
+        }
         private async Task<bool> Setup(string culture, bool ClearLocalDB)
         {
             Configuration = new ConfigurationBuilder()
@@ -61,15 +84,39 @@ namespace CSSPDBLocalServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IScrambleService, ScrambleService>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<IFileService, FileService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<IAppTaskLocalService, AppTaskLocalService>();
+            Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocalContext
-             * ---------------------------------------------------------------------------------      
-             */
+            * CSSPDBContext
+            * ---------------------------------------------------------------------------------      
+            */
+            CSSPDB = Configuration.GetValue<string>("CSSPDB");
+            Assert.NotNull(CSSPDB);
+
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(CSSPDB);
+            });
+
+            /* ---------------------------------------------------------------------------------
+            * CSSPDBLocalContext
+            * ---------------------------------------------------------------------------------      
+            */
+
+            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
+            Assert.NotNull(CSSPDBLocal);
+
+            fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -77,24 +124,19 @@ namespace CSSPDBLocalServices.Tests
             });
 
             /* ---------------------------------------------------------------------------------
-             * using CSSPDBPreference
-             * ---------------------------------------------------------------------------------
-             */
-            string CSSPDBPreference = Configuration.GetValue<string>("CSSPDBPreference");
-            Assert.NotNull(CSSPDBPreference);
+            * CSSPDBManageContext
+            * ---------------------------------------------------------------------------------      
+            */
 
-            FileInfo fiCSSPDBPreference = new FileInfo(CSSPDBPreference);
+            CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBPreferenceContext>(options =>
+            fiCSSPDBManage = new FileInfo(CSSPDBManage);
+
+            Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBPreference.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
-
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IAppTaskLocalService, AppTaskLocalService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -109,47 +151,35 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
 
-            dbLocal = Provider.GetService<CSSPDBLocalContext>();
-            Assert.NotNull(dbLocal);
+            FileService = Provider.GetService<IFileService>();
+            Assert.NotNull(FileService);
+
+            ManageFileService = Provider.GetService<IManageFileService>();
+            Assert.NotNull(ManageFileService);
+
+            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            Assert.NotNull(CreateGzFileService);
+
+            ReadGzFileService = Provider.GetService<IReadGzFileService>();
+            Assert.NotNull(ReadGzFileService);
 
             AppTaskLocalService = Provider.GetService<IAppTaskLocalService>();
             Assert.NotNull(AppTaskLocalService);
 
-            if (ClearLocalDB)
-            {
-                List<string> ExistingTableList = new List<string>();
+            TVItemLocalService = Provider.GetService<ITVItemLocalService>();
+            Assert.NotNull(TVItemLocalService);
 
-                using (var command = dbLocal.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
-                    dbLocal.Database.OpenConnection();
-                    using (var result = command.ExecuteReader())
-                    {
-                        while (result.Read())
-                        {
-                            ExistingTableList.Add(result.GetString(0));
-                        }
-                    }
-                }
+            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
+            Assert.NotNull(CSSPSQLiteService);
 
-                foreach (string tableName in ExistingTableList)
-                {
-                    string TableIDName = "";
+            db = Provider.GetService<CSSPDBContext>();
+            Assert.NotNull(db);
 
-                    if (tableName.StartsWith("AspNet") || tableName.StartsWith("DeviceCode") || tableName.StartsWith("Persisted")) continue;
+            dbLocal = Provider.GetService<CSSPDBLocalContext>();
+            Assert.NotNull(dbLocal);
 
-                    if (tableName == "Addresses")
-                    {
-                        TableIDName = tableName.Substring(0, tableName.Length - 2) + "ID";
-                    }
-                    else
-                    {
-                        TableIDName = tableName.Substring(0, tableName.Length - 1) + "ID";
-                    }
-
-                    dbLocal.Database.ExecuteSqlRaw($"DELETE FROM { tableName }");
-                }
-            }
+            dbManage = Provider.GetService<CSSPDBManageContext>();
+            Assert.NotNull(dbManage);
 
             return await Task.FromResult(true);
         }

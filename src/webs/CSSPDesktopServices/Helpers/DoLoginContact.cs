@@ -1,19 +1,15 @@
 ﻿using CSSPCultureServices.Resources;
-using CSSPDesktopServices.Models;
 using CSSPDBModels;
-using Microsoft.AspNetCore.Http;
+using CSSPDesktopServices.Models;
+using CSSPHelperModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.SignalR;
-using CSSPHelperModels;
-using CSSPDBPreferenceModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPDesktopServices.Services
 {
@@ -85,16 +81,15 @@ namespace CSSPDesktopServices.Services
                     return await Task.FromResult(false);
                 }
 
-                // Addgin Contact item in dbPreference
-                List<Contact> contactToDeleteList = (from c in dbPreference.Contacts
+                List<Contact> contactToDeleteList = (from c in dbManage.Contacts
                                                      select c).ToList();
 
                 if (contactToDeleteList.Count > 0)
                 {
                     try
                     {
-                        dbPreference.Contacts.RemoveRange(contactToDeleteList);
-                        dbPreference.SaveChanges();
+                        dbManage.Contacts.RemoveRange(contactToDeleteList);
+                        dbManage.SaveChanges();
                     }
                     catch (Exception ex)
                     {
@@ -105,10 +100,10 @@ namespace CSSPDesktopServices.Services
 
                 try
                 {
-                    dbPreference.Contacts.Add(contact);
-                    dbPreference.SaveChanges();
+                    dbManage.Contacts.Add(contact);
+                    dbManage.SaveChanges();
 
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBPreference.db")));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBManage.db")));
                 }
                 catch (Exception ex)
                 {

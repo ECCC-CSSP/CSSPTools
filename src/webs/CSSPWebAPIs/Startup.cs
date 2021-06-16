@@ -84,7 +84,11 @@ namespace CSSPWebAPIs
             services.AddScoped<ILoginModelService, LoginModelService>();
             services.AddScoped<IRegisterModelService, RegisterModelService>();
 
-            LoadAllDBServices(services);
+            services.AddScoped<IAppTaskDBService, AppTaskDBService>();
+            services.AddScoped<IAppTaskLanguageDBService, AppTaskLanguageDBService>();
+            services.AddScoped<IContactDBService, ContactDBService>();
+            services.AddScoped<ITVItemUserAuthorizationDBService, TVItemUserAuthorizationDBService>();
+            services.AddScoped<ITVTypeUserAuthorizationDBService, TVTypeUserAuthorizationDBService>();
 
             services.AddScoped<IAzureAppTaskService, AzureAppTaskService>();
         }

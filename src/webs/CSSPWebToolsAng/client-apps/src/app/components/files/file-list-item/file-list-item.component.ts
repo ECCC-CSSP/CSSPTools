@@ -36,9 +36,4 @@ export class FileListItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-
-  GetURL() {
-    return this.appLoadedService.BaseApiUrl + this.languageEnum[this.appLanguageService.Language] + '-CA/download/' + this.TVFileModel.TVItem?.ParentID + '/' + this.TVFileModel.TVFile?.ServerFileName;
-  }
-
 }
