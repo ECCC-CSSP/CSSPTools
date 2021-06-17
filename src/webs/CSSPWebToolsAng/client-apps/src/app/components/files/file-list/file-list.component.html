@@ -1,21 +1,53 @@
-<div *ngFor="let tvFileModelByPurpose of TVFileModelByPurposeList">
-    <h2 class="file-purpose">{{ GetFilePurposeEnum_GetIDText(tvFileModelByPurpose.FilePurpose) }}
+<div *ngFor="let tvFileModelByPurpose of TVFileModelByPurposeList; let i = index;">
+    <h2 class="file-purpose">
+        {{ GetFilePurposeEnum_GetIDText(tvFileModelByPurpose.FilePurpose) }}
+        <ng-container *ngIf="i == 0">           
+            <span class="smallSpan" mat-button [matMenuTriggerFor]="menu"
+                title="{{ appLanguageService.FileName[appLanguageService.LangID] }}">
+                &nbsp;&nbsp;<mat-icon>menu</mat-icon>
+                &nbsp;&nbsp;{{ appLanguageService.SortedBy[appLanguageService.LangID] }}
+                <span *ngIf="FilesSortByProp == filesSortByProp.FileName"> ({{
+                    appLanguageService.FileName[appLanguageService.LangID] }})
+                </span>
+                <span *ngIf="FilesSortByProp == filesSortByProp.FileType">
+                    ({{ appLanguageService.FileType[appLanguageService.LangID] }})
+                </span>
+                <span *ngIf="FilesSortByProp ==  filesSortByProp.FileSize">
+                    ({{ appLanguageService.FileSize[appLanguageService.LangID] }})
+                </span>
+                <span *ngIf="FilesSortByProp ==  filesSortByProp.FileDate">
+                    ({{ appLanguageService.FileDate[appLanguageService.LangID] }})
+                </span>
+            </span>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>{{
+                    appLanguageService.SortBy[appLanguageService.LangID] }}</button>
+                <button mat-menu-item (click)="SetFileSortByProp(filesSortByProp.FileName)">{{
+                    appLanguageService.FileName[appLanguageService.LangID] }}</button>
+                <button mat-menu-item (click)="SetFileSortByProp(filesSortByProp.FileType)">{{
+                    appLanguageService.FileType[appLanguageService.LangID] }}</button>
+                <button mat-menu-item (click)="SetFileSortByProp(filesSortByProp.FileSize)">{{
+                    appLanguageService.FileSize[appLanguageService.LangID] }}</button>
+                <button mat-menu-item (click)="SetFileSortByProp(filesSortByProp.FileDate)">{{
+                    appLanguageService.FileDate[appLanguageService.LangID] }}</button>
+            </mat-menu>
+        </ng-container>
     </h2>
     <div *ngFor="let tvFileModel of tvFileModelByPurpose.TVFileModelList; let i = index">
         <app-file-list-item-menu [TVFileModel]="tvFileModel"></app-file-list-item-menu>
-    
+
         <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]="(i + 1)" [TVFileModel]="tvFileModel">
         </app-file-list-item>
-    
+
         <app-file-list-item-menu-open [TVFileModel]="tvFileModel"></app-file-list-item-menu-open>
-    
+
         <app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="tvFileModel">
         </app-file-list-item-detail>
-    
+
         <app-file-list-item-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
             [TVFileModel]="tvFileModel">
         </app-file-list-item-last-update>
     </div>
     <!-- <app-file-list-by-purpose [TVFileModelByPurpose]="tvFileModelByPurpose" [FilesSortByProp]="FilesSortByProp">
-    </app-file-list-by-purpose> -->
+        </app-file-list-by-purpose> -->
 </div>

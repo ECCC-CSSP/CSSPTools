@@ -62,7 +62,7 @@ export class TogglesService {
         this.ReloadPage();
     }
 
-    private ReloadPage() {
+    ReloadPage() {
         switch (this.appStateService.UserPreference.ShellSubComponent) {
             case ShellSubComponentEnum.Area:
                 {

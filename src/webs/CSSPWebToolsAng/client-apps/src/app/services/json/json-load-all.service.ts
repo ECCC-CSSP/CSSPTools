@@ -198,7 +198,7 @@ export class JsonLoadAllService {
 
         let TVItemIDText: string = this.jsonDoLoadLocalFileInfoSwitchService.DoLoadLocalFileInfoSwitch(this.WebType);
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/LocalFileInfo${TVItemIDText}`;
+        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/LocalFile/GetLocalFileInfoList${TVItemIDText}`;
 
         return this.httpClient.get<any>(url).pipe(map((x: LocalFileInfo[]) => { this.DoUpdateLocalFileInfo(x); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
     }

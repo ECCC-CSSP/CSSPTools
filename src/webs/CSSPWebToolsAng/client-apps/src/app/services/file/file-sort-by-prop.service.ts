@@ -50,7 +50,7 @@ export class FileSortByPropService {
     }
   }
 
-  GetFileSortByProp(TVType: TVTypeEnum): FilesSortPropEnum {   
+  GetFileSortByProp(TVType: TVTypeEnum): FilesSortPropEnum {
     switch (TVType) {
       case TVTypeEnum.Area:
         {

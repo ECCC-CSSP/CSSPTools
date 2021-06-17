@@ -34,16 +34,22 @@ export class FileListComponent implements OnInit, OnDestroy {
     public fileIconService: FileIconService,
     public dateFormatService: DateFormatService,
     public tvFileModelByPurposeService: TVFileModelByPurposeService,
-    private fileSortByPropService: FileSortByPropService
+    public fileSortByPropService: FileSortByPropService
   ) {
   }
 
   ngOnInit() {
-    this.TVFileModelByPurposeList = this.tvFileModelByPurposeService.GetSortedTVFileModelByPurposeList(this.TVType);
-    this.FilesSortByProp = this.fileSortByPropService.GetFileSortByProp(this.TVType);
+    this.SetFileSortByProp(this.fileSortByPropService.GetFileSortByProp(this.TVType));
   }
 
   ngOnDestroy() {
+  }
+
+  SetFileSortByProp(filesSortByProp: FilesSortPropEnum)
+  {
+    this.fileSortByPropService.SetFileSortByProp(this.TVType, filesSortByProp);
+    this.FilesSortByProp = filesSortByProp;
+    this.TVFileModelByPurposeList = this.tvFileModelByPurposeService.GetSortedTVFileModelByPurposeList(this.TVType);
   }
 
   GetFilePurposeEnum_GetIDText(filePurposeEnum: number): string {

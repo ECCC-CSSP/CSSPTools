@@ -97,6 +97,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Already logged in.
+        /// </summary>
+        public static string AlreadyLoggedIn {
+            get {
+                return ResourceManager.GetString("AlreadyLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure file {0} changed.
         /// </summary>
         public static string AzureFile_Changed {
@@ -394,6 +403,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not get GoogleMapKey.
+        /// </summary>
+        public static string CouldNotGetGoogleMapKey {
+            get {
+                return ResourceManager.GetString("CouldNotGetGoogleMapKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not read properties from Azure Store {0} and file {1}.
         /// </summary>
         public static string CouldNotGetPropertiesFromAzureStore_AndFile_ {
@@ -435,6 +453,24 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotUnzip_Error_ {
             get {
                 return ResourceManager.GetString("CouldNotUnzip_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created {0} SQLite database.
+        /// </summary>
+        public static string Created_SQLiteDatabase {
+            get {
+                return ResourceManager.GetString("Created_SQLiteDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating {0} SQLite database.
+        /// </summary>
+        public static string Creating_SQLiteDatabase {
+            get {
+                return ResourceManager.GetString("Creating_SQLiteDatabase", resourceCulture);
             }
         }
         
@@ -777,6 +813,15 @@ namespace CSSPCultureServices.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login required.
+        /// </summary>
+        public static string LoginRequired {
+            get {
+                return ResourceManager.GetString("LoginRequired", resourceCulture);
             }
         }
         

@@ -67,8 +67,6 @@ namespace CSSPDesktopServices.Services
                 {
                     dbManage.TVTypeUserAuthorizations.AddRange(TVTypeUserAuthorizationList);
                     dbManage.SaveChanges();
-
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVTypeUserAuthorization", "TVTypeUserAuthorizations", "CSSPDBManage.db")));
                 }
                 catch (Exception ex)
                 {

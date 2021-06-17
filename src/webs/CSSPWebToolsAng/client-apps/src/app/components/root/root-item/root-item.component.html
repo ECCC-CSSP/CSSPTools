@@ -37,7 +37,6 @@
             {{ statCountService.GetStatCount(appLoadedService.WebRoot?.TVItemModel, tvTypeEnum.TotalFile) }}&nbsp;&nbsp;
         </span>
     </span>
-    <app-file-sort-menu [TVType]="tvTypeEnum.Root"></app-file-sort-menu>
 </button>
 <button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.ExportArcGIS ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.ExportArcGIS)"

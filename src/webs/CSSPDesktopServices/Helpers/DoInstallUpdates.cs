@@ -150,12 +150,10 @@ namespace CSSPDesktopServices.Services
 
                 try
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CSSPFilesManagementUpdateAzureStorage_AzureFileName_, AzureStoreCSSPJSONPath, jsonFileName)));
                     dbManage.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAddOrModifyCSSPDBFilesManagement_dbFor_, AzureStoreCSSPJSONPath, jsonFileName)));
                     return await Task.FromResult(false);
                 }
             }

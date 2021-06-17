@@ -417,4 +417,19 @@
   <data name="User_IsAlreadyLoggedIn" xml:space="preserve">
     <value>L'utilisateur {0} est déjà connecté</value>
   </data>
+  <data name="AlreadyLoggedIn" xml:space="preserve">
+    <value>Connexion déjà établi</value>
+  </data>
+  <data name="CouldNotGetGoogleMapKey" xml:space="preserve">
+    <value>Dans l'impossiblité d'aller chercher la clef de GoogleMap</value>
+  </data>
+  <data name="Created_SQLiteDatabase" xml:space="preserve">
+    <value>La base de données SQLite {0} est créée</value>
+  </data>
+  <data name="Creating_SQLiteDatabase" xml:space="preserve">
+    <value>Creation de la base de données SQLite {0}</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>Connexion requise</value>
+  </data>
 </root>

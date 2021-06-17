@@ -41,8 +41,6 @@ namespace CSSPDesktopServices.Services
 
             if (contact == null)
             {
-                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InternetConnectionNotDetected));
-
                 return await Task.FromResult(false);
             }
 

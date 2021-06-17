@@ -24,23 +24,19 @@ namespace CSSPDesktopServices.Services
 
             if (contact == null)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotFind_InPreferenceDB, "Contact")));
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.LoginRequired));
 
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
-
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Found_InDBLogin, "Contact")));
 
             if (contact.IsLoggedIn == null || !(bool)contact.IsLoggedIn)
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.User_IsNotLoggedIn, contact.FirstName + " " + contact.LastName)));
-
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }
 
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.User_IsAlreadyLoggedIn, contact.FirstName + " " + contact.LastName)));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.AlreadyLoggedIn));
 
             LoginRequired = false;
 

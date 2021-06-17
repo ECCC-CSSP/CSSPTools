@@ -4,4 +4,9 @@
     border-radius: 5px;
     background-color: lightgreen;
     color: black;
+    vertical-align: center;
+}
+
+.smallSpan {
+    font-size: small;
 }

@@ -472,7 +472,7 @@ namespace CSSPDesktop
             string CSSPDB = Configuration.GetValue<string>("CSSPDB");
             if (string.IsNullOrWhiteSpace(CSSPDB))
             {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDB", "appsettings_csspdesktop.json"));
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDB", "appsettings_csspdesktop.json") + "\r\n");
                 return await Task.FromResult(false);
             }
 
@@ -488,7 +488,7 @@ namespace CSSPDesktop
             string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
             if (string.IsNullOrWhiteSpace(CSSPDBLocal))
             {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json"));
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json") + "\r\n");
                 return await Task.FromResult(false);
             }
 
@@ -507,7 +507,7 @@ namespace CSSPDesktop
             string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
             if (string.IsNullOrWhiteSpace(CSSPDBManage))
             {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBManage", "appsettings_csspdesktop.json"));
+                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBManage", "appsettings_csspdesktop.json") + "\r\n");
                 return await Task.FromResult(false);
             }
 
@@ -559,7 +559,7 @@ namespace CSSPDesktop
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             if (CSSPSQLiteService == null)
             {
-                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService"));
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService") + "\r\n");
             }
 
             if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
@@ -568,7 +568,9 @@ namespace CSSPDesktop
             FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBManage);
             if (!fi.Exists)
             {
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db") + "\r\n");
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBManage()) return await Task.FromResult(false);
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Created_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db" + "\r\n"));
             }
 
             await SettingUpAllTextForLanguage();
@@ -577,7 +579,9 @@ namespace CSSPDesktop
             fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
             if (!fi.Exists)
             {
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBLocal.db") + "\r\n");
                 if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Created_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBLocal.db") + "\r\n");
             }
 
             splitContainerFirst.Dock = DockStyle.Fill;

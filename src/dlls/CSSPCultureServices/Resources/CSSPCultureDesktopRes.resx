@@ -417,4 +417,19 @@
   <data name="User_IsAlreadyLoggedIn" xml:space="preserve">
     <value>User {0} is already logged in</value>
   </data>
+  <data name="AlreadyLoggedIn" xml:space="preserve">
+    <value>Already logged in</value>
+  </data>
+  <data name="CouldNotGetGoogleMapKey" xml:space="preserve">
+    <value>Could not get GoogleMapKey</value>
+  </data>
+  <data name="Created_SQLiteDatabase" xml:space="preserve">
+    <value>Created {0} SQLite database</value>
+  </data>
+  <data name="Creating_SQLiteDatabase" xml:space="preserve">
+    <value>Creating {0} SQLite database</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>Login required</value>
+  </data>
 </root>

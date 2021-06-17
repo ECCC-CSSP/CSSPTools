@@ -23,7 +23,7 @@ namespace CSSPDesktopServices.Services
         #region Functions private
         private async Task<bool> DoLogin(LoginModel loginModel)
         {
-            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Login));
+            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.LoggingIn));
 
             if (!await DoLoginContact(loginModel)) return await Task.FromResult(false);
 

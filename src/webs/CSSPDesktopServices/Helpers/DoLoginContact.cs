@@ -27,8 +27,6 @@ namespace CSSPDesktopServices.Services
                 culture = "en-CA";
             }
 
-            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.Login));
-
             if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._IsRequired, "LoginEmail")));
@@ -45,7 +43,6 @@ namespace CSSPDesktopServices.Services
             {
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
                 httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.PostRequestLoginEmailAndPasswordTo_, $"{ CSSPAzureUrl }api/{ culture }/auth/token")));
 
                 try
                 {
@@ -102,8 +99,6 @@ namespace CSSPDesktopServices.Services
                 {
                     dbManage.Contacts.Add(contact);
                     dbManage.SaveChanges();
-
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "Contact", "Contacts", "CSSPDBManage.db")));
                 }
                 catch (Exception ex)
                 {

@@ -68,8 +68,6 @@ namespace CSSPDesktopServices.Services
                 {
                     dbManage.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
                     dbManage.SaveChanges();
-
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._StoredInTable_AndDatabase_, "TVItemUserAuthorization", "TVItemUserAuthorizations", "CSSPDBManage.db")));
                 }
                 catch (Exception ex)
                 {

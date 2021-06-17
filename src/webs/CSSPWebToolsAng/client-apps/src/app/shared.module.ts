@@ -107,7 +107,6 @@ import { TableMonitoringStatsBySeasonComponent } from './components/table/table-
 import { TableMonitoringStatsByYearComponent } from './components/table/table-monitoring-stats-by-year/table-monitoring-stats-by-year.component';
 import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-data/table-mwqm-run-data.component';
 import { FileListByPurposeComponent } from './components/files/file-list-by-purpose/file-list-by-purpose.component';
-import { FileSortMenuComponent } from './components/files/file-sort-menu/file-sort-menu.component';
 import { FileUploadComponent } from './components/files/file-upload/file-upload.component';
 
 @NgModule({
@@ -145,7 +144,6 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     FileListItemMenuComponent,
     FileListItemMenuOpenComponent,
     FileListItemViewComponent,
-    FileSortMenuComponent,
     FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
@@ -265,7 +263,6 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     FileListItemMenuComponent,
     FileListItemMenuOpenComponent,
     FileListItemViewComponent,
-    FileSortMenuComponent,
     FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
