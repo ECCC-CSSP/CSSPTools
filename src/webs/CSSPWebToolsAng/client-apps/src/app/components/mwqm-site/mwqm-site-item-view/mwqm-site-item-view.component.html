@@ -1,15 +1,34 @@
-<mat-card class="mat-elevation-z0">
+<mat-card class="mat-elevation-z5">
+    <mat-card-header>
+        <h3>{{ appLanguageService.Chart[appLanguageService.LangID] }}</h3>
+    </mat-card-header>
+    <button mat-raised-button [ngClass]="ChartFCSalTempVisible ? 'selected' : ''"
+        (click)="ToggleChartFCSalTempVisible()">
+        <mat-icon>insights</mat-icon>
+        {{ this.appLanguageService.FCSalTemp[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="ChartFCStatsVisible ? 'selected' : ''" (click)="ToggleChartFCStatsVisible()">
+        <mat-icon>insights</mat-icon>
+        {{ this.appLanguageService.FCStats[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="TableFCStatsVisible ? 'selected' : ''" (click)="ToggleTableFCStatsVisible()">
+        <mat-icon>insights</mat-icon>
+        {{ this.appLanguageService.FCStats[this.appLanguageService.LangID] }}
+    </button>
+
     <mat-card-content>
-        <app-chart-base [webChartAndTableType]="webChartAndTableType.MWQMSiteFCSalTempData" [TVItemModel]="TVItemModel"
-            [ChartVisible]="false">
+        <app-chart-base *ngIf="ChartFCSalTempVisible"
+            [webChartAndTableType]="webChartAndTableType.MWQMSiteFCSalTempData" [TVItemModel]="TVItemModel">
         </app-chart-base>
 
-        <app-chart-base [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats" [TVItemModel]="TVItemModel"
-            [ChartVisible]="false">
+        <app-chart-base *ngIf="ChartFCStatsVisible" [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats"
+            [TVItemModel]="TVItemModel">
         </app-chart-base>
 
-        <app-table-base [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats" [TVItemModel]="TVItemModel"
-            [TableVisible]="false">
+        <app-table-base *ngIf="TableFCStatsVisible" [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats"
+            [TVItemModel]="TVItemModel">
         </app-table-base>
     </mat-card-content>
 </mat-card>

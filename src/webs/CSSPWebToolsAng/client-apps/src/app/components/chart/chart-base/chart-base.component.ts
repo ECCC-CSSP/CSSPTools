@@ -18,7 +18,6 @@ Chart.register(...registerables);
 export class ChartBaseComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
   @Input() webChartAndTableType: WebChartAndTableTypeEnum;
-  @Input() ChartVisible: boolean = false;
 
   buttonText: string = '';
 
@@ -69,9 +68,5 @@ export class ChartBaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  ToggleChartVisible() {
-    this.ChartVisible = !this.ChartVisible;
   }
 }

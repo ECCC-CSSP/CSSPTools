@@ -32,6 +32,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private IFileService FileService { get; set; }
+        private IManageFileService ManageFileService { get; set; }
         private string LocalUrl { get; set; }
         private string CSSPTempFilesPath { get; set; }
         private Contact contact { get; set; }
@@ -84,6 +85,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
             Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IFileService, FileService>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

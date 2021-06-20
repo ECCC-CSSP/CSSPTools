@@ -40,11 +40,13 @@
             tvTypeEnum.MikeScenario) }}&nbsp;&nbsp;
         </span>
     </span>
-    <span class="biggerArrow" *ngIf="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder == ascDescEnum.Descending"
+    <span class="biggerArrow"
+        *ngIf="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder == ascDescEnum.Descending"
         (click)="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder = ascDescEnum.Ascending">
         &nbsp;&nbsp;&#8679;
     </span>
-    <span class="biggerArrow" *ngIf="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder == ascDescEnum.Ascending"
+    <span class="biggerArrow"
+        *ngIf="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder == ascDescEnum.Ascending"
         (click)="appStateService.UserPreference.MunicipalityMikeScenariosSortOrder = ascDescEnum.Descending">
         &nbsp;&nbsp;&#8681;
     </span>
@@ -64,9 +66,9 @@
     </span>
 </button>
 
-<div *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures">
-    <app-infrastructure-item></app-infrastructure-item>
-</div>
+<app-infrastructure-item-list
+    *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures">
+</app-infrastructure-item-list>
 
 <app-mike-scenario-tvitem-list-item
     *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
@@ -78,5 +80,5 @@
 </app-file-list>
 
 <div *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">
-    <app-contact-item></app-contact-item>
+    <app-contact-item [MunicipalityTVItemModel]="appLoadedService.WebMunicipality?.TVItemModel"></app-contact-item>
 </div>

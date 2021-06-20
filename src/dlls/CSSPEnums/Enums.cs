@@ -1227,6 +1227,8 @@ namespace CSSPEnums
         MWQMSiteFCSalTempData = 4,
         MWQMSiteFCStats = 5,
         MWQMRunData = 6,
+        InfrastructureSingle = 7,
+        InfrastructureUnderMunicipality = 8
     }
     public enum WebTypeEnum
     {

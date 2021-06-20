@@ -1,8 +1,52 @@
-<span *ngIf="appStateService.Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-<p class="loading-status" *ngIf="appStateService.Status">
-    {{ appStateService.Status }}
-</p>
+<mat-list>
+    <app-infrastructure-item-menu [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-menu>
 
-<p>This is the infrastructure component</p>
+    <button mat-button>
+        <span [ngClass]="InfrastructureModelPath.InfrastructureModel?.TVItemModel?.TVItem?.IsActive ? '' : 'inactive'">
+            <ng-container *ngIf="InfrastructureModelPath.ShowOnMap">
+                <span *ngIf="appStateService.UserPreference.MapVisible && InfrastructureModelPath.Count != -1">
+                    {{ InfrastructureModelPath.Count }}-{{ InfrastructureModelPath.Count + 1 }}&nbsp;-&nbsp;
+                </span>
+            </ng-container>
+            <span *ngIf="appStateService.UserPreference.DetailVisible">
+                [{{ InfrastructureModelPath.InfrastructureModel?.TVItemModel?.TVItem?.TVItemID }}]
+            </span>
+            <span *ngFor="let a of counter">
+                ||-
+            </span>
+            <span *ngIf="counter?.length > 0">
+                <mat-icon>upload</mat-icon>
+            </span>
+            <span
+                [ngClass]="GetBorderColor(InfrastructureModelPath.InfrastructureModel?.Infrastructure?.InfrastructureType)">
+                <span>{{
+                    InfrastructureModelPath.InfrastructureModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText
+                    }}
+                </span>
+                <ng-container *ngIf="GetIsNotOtherOrSeeOther(InfrastructureModelPath)">
+                    <mat-icon *ngIf="GetHasAlarmSystem(InfrastructureModelPath)" title="{{ GetAlarmSystemTypeText(InfrastructureModelPath) }}">notifications
+                    </mat-icon>
+                    <mat-icon *ngIf="!GetHasAlarmSystem(InfrastructureModelPath)"
+                        title="{{ appLanguageService.NoAlarmSystem[appLanguageService.LangID] }}">notifications_off
+                    </mat-icon>
+                    <mat-icon *ngIf="GetCanOverflow(InfrastructureModelPath)"
+                        title="{{ appLanguageService.CanOverflow[appLanguageService.LangID] }}">radio_button_checked
+                    </mat-icon>
+                    <mat-icon *ngIf="!GetCanOverflow(InfrastructureModelPath)"
+                        title="{{ appLanguageService.CanNotOverflow[appLanguageService.LangID] }}">
+                        radio_button_unchecked</mat-icon>
+                </ng-container>
+            </span>
+        </span>
+        <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
+            [TVItemModel]="InfrastructureModelPath.InfrastructureModel?.TVItemModel"></app-stat-count>
+        <app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
+            [TVItemModel]="InfrastructureModelPath.InfrastructureModel?.TVItemModel"></app-tvitem-last-update>
+    </button>
+
+    <app-infrastructure-item-menu-open [InfrastructureModelPath]="InfrastructureModelPath">
+    </app-infrastructure-item-menu-open>
+</mat-list>
+
+<app-infrastructure-item *ngFor="let infrastructureModelPath of InfrastructureModelPath.InfrastructureModelChildList"
+    [InfrastructureModelPath]="infrastructureModelPath" [Level]="Level + 1"></app-infrastructure-item>

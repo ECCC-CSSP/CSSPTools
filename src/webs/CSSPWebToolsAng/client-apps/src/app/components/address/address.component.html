@@ -1,6 +1,4 @@
-<h3>{{ appLanguageService.Address[appLanguageService.LangID] }}</h3>
-<div *ngIf="appLanguageService.LangID == 0">
-    {{ appLanguageService.Entered[appLanguageService.LangID] }}:&nbsp;
+<mat-list-item *ngIf="appLanguageService.LangID == 0">
     {{ addressModel.Address.StreetNumber }}&nbsp;
     {{ streetType[addressModel.Address.StreetType] }},&nbsp;
     {{ addressModel.Address.StreetName }},&nbsp;
@@ -14,14 +12,8 @@
     {{
     addressService.GetCountryTVItemModel(addressModel.Address.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
     }}
-    <span *ngIf="addressModel.Address.GoogleAddressText">
-        <br />
-        {{ appLanguageService.Google[appLanguageService.LangID] }}:&nbsp;
-        {{ addressModel.Address.GoogleAddressText }}
-    </span>
-</div>
-<div *ngIf="appLanguageService.LangID == 1">
-    {{ appLanguageService.Entered[appLanguageService.LangID] }}:&nbsp;
+</mat-list-item>
+<mat-list-item *ngIf="appLanguageService.LangID == 1">
     {{ addressModel.Address.StreetNumber }}&nbsp;
     {{ streetType[addressModel.Address.StreetType] }}&nbsp;
     {{ addressModel.Address.StreetName }},&nbsp;
@@ -35,9 +27,4 @@
     {{
     addressService.GetCountryTVItemModel(addressModel.Address.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID].TVText
     }}
-    <span *ngIf="addressModel.Address.GoogleAddressText">
-        <br />
-        {{ appLanguageService.Google[appLanguageService.LangID] }}:&nbsp;
-        {{ addressModel.Address.GoogleAddressText }}
-    </span>
-</div>
+</mat-list-item>

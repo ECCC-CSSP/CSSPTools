@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { GetWebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { GetWebChartAndTableTypeEnum, WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
-
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
@@ -15,6 +13,13 @@ import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 export class BreadCrumbComponent implements OnInit, OnDestroy {
   webChartAndTableType = GetWebChartAndTableTypeEnum();
 
+  ChartByYearVisible: boolean = false;
+  ChartByMonthVisible: boolean = false;
+  ChartBySeasonVisible: boolean = false;
+  TableByYearVisible: boolean = false;
+  TableByMonthVisible: boolean = false;
+  TableBySeasonVisible: boolean = false;
+
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public appLoadedService: AppLoadedService,
@@ -25,8 +30,7 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  ngOnDestroy()
-  {
+  ngOnDestroy() {
   }
 
   IsLast(i: number) {
@@ -38,8 +42,31 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  ToggleMonitoringStatsVisible()
-  {
+  ToggleChartByYearVisible() {
+    this.ChartByYearVisible = !this.ChartByYearVisible;
+  }
+
+  ToggleChartByMonthVisible() {
+    this.ChartByMonthVisible = !this.ChartByMonthVisible;
+  }
+
+  ToggleChartBySeasonVisible() {
+    this.ChartBySeasonVisible = !this.ChartBySeasonVisible;
+  }
+
+  ToggleTableByYearVisible() {
+    this.TableByYearVisible = !this.TableByYearVisible;
+  }
+
+  ToggleTableByMonthVisible() {
+    this.TableByMonthVisible = !this.TableByMonthVisible;
+  }
+
+  ToggleTableBySeasonVisible() {
+    this.TableBySeasonVisible = !this.TableBySeasonVisible;
+  }
+
+  ToggleMonitoringStatsVisible() {
     this.appStateService.ShowMonitoringStats = !this.appStateService.ShowMonitoringStats;
   }
 }

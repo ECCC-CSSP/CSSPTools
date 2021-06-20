@@ -43,6 +43,7 @@ import { WebMonitoringRoutineStatsCountry } from '../../models/generated/web/Web
 import { WebMonitoringOtherStatsProvince } from '../../models/generated/web/WebMonitoringOtherStatsProvince.model';
 import { WebMonitoringRoutineStatsProvince } from '../../models/generated/web/WebMonitoringRoutineStatsProvince.model';
 import { MonitoringStatsModel } from '../../models/generated/web/MonitoringStatsModel.model';
+import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
 
 @Injectable({
   providedIn: 'root'
@@ -117,6 +118,9 @@ export class AppLoadedService {
   StatMWQMSiteList?: StatMWQMSite[];
 
   MonitoringStatsModel?: MonitoringStatsModel;
+
+  InfrastructureModelPathList?: InfrastructureModelPath[];
+  TVItemModelInfrastructureList?: TVItemModel[];
 
   constructor(public httpClient: HttpClient,
     public appStateService: AppStateService) {

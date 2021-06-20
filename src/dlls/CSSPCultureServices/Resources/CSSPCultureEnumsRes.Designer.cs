@@ -9327,6 +9327,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InfrastructureSingle.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumInfrastructureSingle {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumInfrastructureSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InfrastructureUnderMunicipality.
+        /// </summary>
+        public static string WebChartAndTableTypeEnumInfrastructureUnderMunicipality {
+            get {
+                return ResourceManager.GetString("WebChartAndTableTypeEnumInfrastructureUnderMunicipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MonitoringStatsByMonth.
         /// </summary>
         public static string WebChartAndTableTypeEnumMonitoringStatsByMonth {

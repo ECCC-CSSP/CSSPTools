@@ -19,9 +19,7 @@ using FileServices;
 using ReadGzFileServices;
 using Microsoft.AspNetCore.Http.Features;
 using LoggedInServices;
-using CSSPDBServices;
 using CSSPScrambleServices;
-using CSSPHelperServices;
 using CSSPDBLocalServices;
 using CreateGzFileServices;
 using CSSPWebAPIsLocal.Controllers;
@@ -87,7 +85,6 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<IEnums, Enums>();
             services.AddScoped<IScrambleService, ScrambleService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
-            services.AddScoped<ILoginModelService, LoginModelService>();
 
             //LoadAllDBServices(services);
 

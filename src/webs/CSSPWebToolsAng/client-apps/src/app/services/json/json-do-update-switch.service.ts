@@ -5,6 +5,7 @@ import { JsonDoUpdateBreadCrumbOnlyService, JsonDoUpdateWebMapService } from '.'
 import { AppLoadedService } from '../app/app-loaded.service';
 import { HistoryService } from '../helpers/history.service';
 import { StatService } from '../helpers/stat.service';
+import { InfrastructureService } from '../infrastructure/infrastructure.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,8 @@ export class JsonDoUpdateSwitchService {
         private statService: StatService,
         private historyService: HistoryService,
         private jsonDoUpdateBreadCrumbOnlyService: JsonDoUpdateBreadCrumbOnlyService,
-        private jsonDoUpdateWebMapService: JsonDoUpdateWebMapService) {
+        private jsonDoUpdateWebMapService: JsonDoUpdateWebMapService,
+        private infrastructureService: InfrastructureService) {
     }
 
 
@@ -167,6 +169,8 @@ export class JsonDoUpdateSwitchService {
             case WebTypeEnum.WebMunicipality:
                 {
                     this.appLoadedService.WebMunicipality = x;
+                    this.appLoadedService.InfrastructureModelPathList = this.infrastructureService.GetInfrastructureModelPathList();
+                    
                     this.jsonDoUpdateBreadCrumbOnlyService.DoUpdateBreadCrumbOnly(WebType);
 
                     this.historyService.AddHistory(this.appLoadedService.WebMunicipality?.TVItemModel);

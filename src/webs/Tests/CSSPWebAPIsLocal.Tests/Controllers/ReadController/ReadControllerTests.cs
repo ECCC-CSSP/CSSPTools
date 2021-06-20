@@ -449,27 +449,6 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadController_WebDrogueRun_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
-            int TVItemID = 556;
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                string url = $"{ LocalUrl }api/{ culture }/Read/{ webType }/{ TVItemID }";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                WebDrogueRuns webDrogueRun = JsonSerializer.Deserialize<WebDrogueRuns>(responseContent);
-                Assert.NotNull(webDrogueRun);
-                Assert.NotNull(webDrogueRun.DrogueRunModelList);
-            }
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task ReadController_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));

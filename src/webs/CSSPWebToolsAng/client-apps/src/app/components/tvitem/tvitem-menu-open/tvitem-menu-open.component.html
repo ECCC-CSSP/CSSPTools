@@ -1,20 +1,20 @@
 <ng-container *ngIf="showTVItemService.TVItemVisible(TVItemModel)">
     <p>
         <button mat-raised-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
-            View
+            {{ appLanguageService.View[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
         <button mat-raised-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
-            Modify
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
         <button mat-raised-button (click)="ShowCreate = !ShowCreate" [ngClass]="ShowCreate ? 'selected' : ''">
-            Create
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
         </button>
     </p>
     <mat-card *ngIf="ShowView">
         <mat-card-header>
-            <h3>View</h3>
+            <h3> {{ appLanguageService.View[appLanguageService.LangID] }} </h3>
         </mat-card-header>
         <mat-card-content>
             <app-tvitem-view [TVItemModel]="TVItemModel"></app-tvitem-view>
@@ -23,7 +23,7 @@
     <p *ngIf="ShowView && ShowModify">&nbsp;</p>
     <mat-card *ngIf="ShowModify">
         <mat-card-header>
-            <h3>Modify</h3>
+            <h3> {{ appLanguageService.Modify[appLanguageService.LangID] }} </h3>
         </mat-card-header>
         <mat-card-content>
             <app-tvitem-modify [TVItemModel]="TVItemModel"></app-tvitem-modify>
@@ -32,7 +32,7 @@
     <p *ngIf="(ShowView || ShowModify) && ShowCreate">&nbsp;</p>
     <mat-card *ngIf="ShowCreate">
         <mat-card-header>
-            <h3>Create</h3>
+            <h3> {{ appLanguageService.Create[appLanguageService.LangID] }} </h3>
         </mat-card-header>
         <mat-card-content>
             <app-tvitem-create [TVItemModel]="TVItemModel"></app-tvitem-create>

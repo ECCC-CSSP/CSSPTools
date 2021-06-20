@@ -1,0 +1,13 @@
+<button mat-button
+    class="{{ showTVItemService.TVItemVisible(InfrastructureModelPath.InfrastructureModel?.TVItemModel) ? 'selected' : '' }}"
+    (click)="showTVItemService.ToggleShowTVItem(InfrastructureModelPath.InfrastructureModel?.TVItemModel)"
+    title="{{ appLanguageService.MoreInformationForViewingOrEditing[appLanguageService.LangID] }}">
+    <mat-icon>menu</mat-icon>
+</button>
+<ng-container *ngIf="InfrastructureModelPath.ShowOnMap">
+    <button mat-button (click)="mapService.ShowItem(InfrastructureModelPath.InfrastructureModel?.TVItemModel, $event)"
+        *ngIf="appStateService.UserPreference.MapVisible"
+        title="{{ appLanguageService.ShowItemOnMap[appLanguageService.LangID] }}">
+        <mat-icon>place</mat-icon>
+    </button>
+</ng-container>

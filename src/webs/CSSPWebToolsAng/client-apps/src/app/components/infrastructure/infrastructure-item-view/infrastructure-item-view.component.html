@@ -1,0 +1,41 @@
+<p>
+    <button mat-raised-button (click)="ShowInformation = !ShowInformation" [ngClass]="ShowInformation ? 'selected' : ''">
+        {{ appLanguageService.Information[appLanguageService.LangID] }}
+    </button>
+    <span>&nbsp;&nbsp;</span>
+    <button mat-raised-button (click)="ShowBoxModels = !ShowBoxModels" [ngClass]="ShowBoxModels ? 'selected' : ''">
+        {{ appLanguageService.BoxModels[appLanguageService.LangID] }}
+    </button>
+    <span>&nbsp;&nbsp;</span>
+    <button mat-raised-button (click)="ShowVisualPlumes = !ShowVisualPlumes" [ngClass]="ShowVisualPlumes ? 'selected' : ''">
+        {{ appLanguageService.VisualPlumes[appLanguageService.LangID] }}
+    </button>
+    <span>&nbsp;&nbsp;</span>
+    <button mat-raised-button (click)="ShowFiles = !ShowFiles" [ngClass]="ShowFiles ? 'selected' : ''">
+        {{ appLanguageService.Files[appLanguageService.LangID] }}
+    </button>
+</p>
+<mat-card *ngIf="ShowInformation">
+    <mat-card-content>
+        <app-infrastructure-item-information [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-infrastructure-item-information>
+    </mat-card-content>
+</mat-card>
+<mat-card *ngIf="ShowBoxModels">
+    <mat-card-content>
+        <app-box-model-item-list [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-box-model-item-list>
+    </mat-card-content>
+</mat-card>
+<mat-card *ngIf="ShowVisualPlumes">
+    <mat-card-content>
+        <app-infrastructure-item-visual-plumes [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-infrastructure-item-visual-plumes>
+    </mat-card-content>
+</mat-card>
+<mat-card *ngIf="ShowFiles">
+    <mat-card-content>
+        <app-infrastructure-item-files [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-infrastructure-item-files>
+    </mat-card-content>
+</mat-card>

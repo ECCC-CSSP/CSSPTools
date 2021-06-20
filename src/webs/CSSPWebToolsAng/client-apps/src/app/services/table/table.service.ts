@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FacilityTypeEnum, FacilityTypeEnum_GetIDText } from 'src/app/enums/generated/FacilityTypeEnum';
+import { InfrastructureTypeEnum, InfrastructureTypeEnum_GetIDText } from 'src/app/enums/generated/InfrastructureTypeEnum';
 import { SampleTypeEnum_GetIDText } from 'src/app/enums/generated/SampleTypeEnum';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
+import { InfrastructureItemValue } from 'src/app/models/generated/web/InfrastructureItemValue.model';
+import { InfrastructureModel } from 'src/app/models/generated/web/InfrastructureModel.model';
 import { TableConvertToCSVModel } from 'src/app/models/generated/web/TableConvertToCSVModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from '../app/app-language.service';
@@ -81,6 +85,18 @@ export class TableService {
           TitlePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
         }
         break;
+      case WebChartAndTableTypeEnum.InfrastructureSingle:
+        {
+          TitlePart1 = this.appLanguageService.Infrastructure[this.appLanguageService.LangID];
+          TitlePart2 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.InfrastructureUnderMunicipality:
+        {
+          TitlePart1 = `${this.appLanguageService.Infrastructure[this.appLanguageService.LangID]} ${this.appLanguageService.Under[this.appLanguageService.LangID]} ${this.appLanguageService.Municipality[this.appLanguageService.LangID]}`;
+          TitlePart2 = '';
+        }
+        break;
       default:
         break;
     }
@@ -130,6 +146,18 @@ export class TableService {
           FileNamePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
         }
         break;
+      case WebChartAndTableTypeEnum.InfrastructureSingle:
+        {
+          FileNamePart1 = this.appLanguageService.Infrastructure[this.appLanguageService.LangID];
+          FileNamePart2 = '';
+        }
+        break;
+      case WebChartAndTableTypeEnum.InfrastructureSingle:
+        {
+          FileNamePart1 = `${this.appLanguageService.Infrastructure[this.appLanguageService.LangID]} ${this.appLanguageService.Under[this.appLanguageService.LangID]} ${this.appLanguageService.Municipality[this.appLanguageService.LangID]}`;
+          FileNamePart2 = '';
+        }
+        break;
       default:
         break;
     }
@@ -155,7 +183,7 @@ export class TableService {
           let tHeadRow: Node = tHead.childNodes[j];
           for (let k = 0, countHeaderRowCell = tHeadRow.childNodes.length; k < countHeaderRowCell; k++) {
             if (tHeadRow.childNodes[k].textContent != 'ng-container') {
-              csvHeaderRow += `${tHeadRow.childNodes[k].textContent.trim()},`;
+              csvHeaderRow += `${tHeadRow.childNodes[k].textContent.trim()}, `;
             }
           }
           if (csvHeaderRow != '') {
@@ -172,7 +200,7 @@ export class TableService {
           let tBodyRow: Node = tBody.childNodes[j];
           for (let k = 0, countBodyRowCell = tBodyRow.childNodes.length; k < countBodyRowCell; k++) {
             if (tBodyRow.childNodes[k].textContent != 'ng-container') {
-              csvBodyRow += `${tBodyRow.childNodes[k].textContent.trim()},`;
+              csvBodyRow += `${tBodyRow.childNodes[k].textContent.trim()}, `;
             }
           }
 
@@ -190,7 +218,7 @@ export class TableService {
           let tFootRow: Node = tFoot.childNodes[j];
           for (let k = 0, countFootRowCell = tFootRow.childNodes.length; k < countFootRowCell; k++) {
             if (tFootRow.childNodes[k].textContent != 'ng-container') {
-              csvFootRow += `${tFootRow.childNodes[k].textContent.trim()},`;
+              csvFootRow += `${tFootRow.childNodes[k].textContent.trim()}, `;
             }
           }
 
@@ -255,5 +283,5 @@ export class TableService {
       return '';
     }
   }
-  
+
 }

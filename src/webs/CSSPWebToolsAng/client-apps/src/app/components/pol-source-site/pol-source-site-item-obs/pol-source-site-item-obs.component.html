@@ -11,9 +11,6 @@
                 </ng-container>
                 {{ contactModel?.Contact?.LastName }}
             </span>
-            <span *ngIf="contactModel">
-                {{ contactModel.TVItemModel.TVItemLanguageList[appLanguageService.LangID].TVText }}
-            </span>
             <span *ngIf="PolSourceObservationModel.PolSourceObservation?.DesktopReviewed">
                 {{ appLanguageService.DesktopReviewed[appLanguageService.LangID] }}
             </span>

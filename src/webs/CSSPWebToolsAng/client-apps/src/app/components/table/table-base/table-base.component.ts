@@ -19,13 +19,12 @@ Chart.register(...registerables);
 export class TableBaseComponent implements OnInit, OnDestroy {
   @Input() webChartAndTableType: WebChartAndTableTypeEnum;
   @Input() TVItemModel: TVItemModel;
-  @Input() TableVisible: boolean = false;
 
   tableFileName: string;
   tableTitle: string;
 
   buttonText: string = '';
-  
+
   WebChartAndTableType = GetWebChartAndTableTypeEnum();
 
   LangIDList: number[] = [LanguageEnum.en - 1, LanguageEnum.fr - 1];
@@ -77,9 +76,5 @@ export class TableBaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-  }
-
-  ToggleTableVisible() {
-    this.TableVisible = !this.TableVisible;
   }
 }

@@ -26,7 +26,10 @@ export class AppLanguageService {
   LangID?: number = 0;
 
   Address: string[] = ['Address', 'Adresse'];
-  
+  Addresses: string[] = ['Addresses', 'Adresses'];
+
+  AerationType: string[] = ['Aeration Type', 'Type d\'aération'];
+  AlarmSystemType: string[] = ['Alarm System Type', 'Type de système d\'alarme'];
   AnalysisSite: string[] = ['Site', 'Site'];
   AnalysisSamples: string[] = ['Samples', 'Échantillons'];
   AnalysisPeriod: string[] = ['Period', 'Période'];
@@ -73,11 +76,17 @@ export class AppLanguageService {
   AreaFiles: string[] = ['Files', 'Filières'];
 
   Ascending: string[] = ['Ascending', 'Ascendant'];
+  AverageDepth_m: string[] = ['Average Depth (m)', 'Profondeur moyenne (m)'];
+  AverageFlow_m3_day: string[] = ['Average Flow (m3/day)', 'Débit moyen (m3/day)'];
+  BoxModels: string[] = ['Box Models', 'Modèles boite'];
 
   ByMonth: string[] = ['by month', 'par mois'];
   BySeason: string[] = ['by season', 'par saison'];
   ByYear: string[] = ['by year', 'par année'];
 
+  CalculatedResult: string[] = ['Calculated Results', 'Résultats calculés'];
+  CanNotOverflow: string[] = ['Can not Overflow', 'Peut pas déborder']
+  CanOverflow: string[] = ['Can Overflow', 'Peut déborder']
   Chart: string[] = ['Chart', 'Graphique']
 
   ChartLabelGMOver14: string[] = ['GM (>14 red)', 'MG (>14 rouge)'];
@@ -92,7 +101,9 @@ export class AppLanguageService {
   ChartView: string[] = ['View chart', 'Voir graphique'];
 
   Close: string[] = ['Close', 'Fermer'];
-  
+  CollectionSystemType: string[] = ['Collection System Type', 'Type de réseau collecteur'];
+  Comments: string[] = ['Comments', 'Commentaires'];
+  Concentration_objective_FC: string[] = ['Concentration objective (FC)', 'Objectif de concentration (CF)'];
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
 
   Count: string[] = ['Count', 'Nombre'];
@@ -109,7 +120,9 @@ export class AppLanguageService {
   CountryRainExceedance: string[] = ['Rain Exceedance', 'Pluie dépassement'];
 
   Create: string[] = ['Create', 'Créer'];
-
+  cubicMeter: string[] = ['m3', 'm3'];
+  cubicMeterPerDay: string[] = ['m3/day', 'm3/jour'];
+  DecayRate_per_day: string[] = ['Decay Rate (/day)', 'Taux de décroissance (/jour)'];
   DegCelciusTitle: string[] = ['Degree Celcius', 'Dégré Celcius'];
 
   DateJanuary: string[] = ['January', 'janvier'];
@@ -138,30 +151,47 @@ export class AppLanguageService {
   DateNovemberAcronym: string[] = ['Nov', 'nov'];
   DateDecemberAcronym: string[] = ['Dec', 'déc'];
 
+  DecayPreDisinfection: string[] = ['Decay (pre-disinfection)', 'Décroissance (avant la désinfection)'];
+  DecayRate: string[] = ['Decay rate', 'Taux de décroissance'];
+  DecayUntreated: string[] = ['Decay (untreated)', 'Décroissance (sans traitement)'];
+  DegCelciusSymbol: string[] = ['ºC', 'ºC'];
+  Depth: string[] = ['Depth', 'Profondeur'];
   Descending: string[] = ['Descending', 'Descendant'];
 
+  DesignFlow_m3_day: string[] = ['DesignFlow (m3/day)', 'Débit de conception (m3/day)'];
   DesktopReviewed: string[] = ['Desktop reviewed', 'Révisé au bureau'];
-  
+  Dilution: string[] = ['Dilution', 'Dilution'];
+  Discharge: string[] = ['Discharge', 'Écoulement'];
+  DischargeDuration: string[] = ['Discharge Duration', 'Durée de l\'écoulement'];
+  DisinfectionType: string[] = ['Disinfection Type', 'Type de désinfection'];
+  DistanceFromShore_m: string[] = ['Distance From Shore (m)', 'Distance par rapport à la rive (m)'];
   Download: string[] = ['Download', 'Télécharger'];
 
+  Emails: string[] = ['Emails', 'Courriels'];
+
   Entered: string[] = ['Entered', 'Entré'];
-  
+
   ExtraComments: string[] = ['Extra Comments', 'Extra commentaires'];
-  
+
+  FacilityType: string[] = ['Facility Type', 'Type d\'établissement'];
+  FarFieldVelocity_m_s: string[] = ['Far Field Velocity (m/s)', 'Vitesse en champ éloigné (m/s)'];
   FCInit: string[] = ['FC', 'CF'];
   FCInitTitle: string[] = ['Most probable number of fecal coliform per 100 mL', 'Nombre le plus probable de coliformes fécaux par 100 mL'];
-
+  FCPer100mL: string[] = ['FC/100 mL', 'CF/100 mL'];
   FCSalTemp: string[] = ['FC Sal Temp', 'CF Sal Temp'];
   FCStats: string[] = ['FC Stats', 'Stats CF'];
 
-  FileName: string[] = ['File Name', 'Nom de la filière'];
-  FileNameAccro: string[] = ['N', 'N'];
-  FileType: string[] = ['File Type', 'Type de la filière'];
-  FileTypeAccro: string[] = ['T', 'T'];
-  FileSize: string[] = ['File Size', 'Grosseur de la filière'];
-  FileSizeAccro: string[] = ['S', 'G'];
   FileDate: string[] = ['File Date', 'Date de la filière'];
   FileDateAccro: string[] = ['D', 'D'];
+  FileName: string[] = ['File Name', 'Nom de la filière'];
+  FileNameAccro: string[] = ['N', 'N'];
+
+  Files: string[] = ['Files', 'Filières'];
+
+  FileSize: string[] = ['File Size', 'Grosseur de la filière'];
+  FileSizeAccro: string[] = ['S', 'G'];
+  FileType: string[] = ['File Type', 'Type de la filière'];
+  FileTypeAccro: string[] = ['T', 'T'];
 
   ForceReload: string[] = ['Force Reload', 'Téléchargement forcé'];
 
@@ -169,7 +199,8 @@ export class AppLanguageService {
   GMInitTitle: string[] = ['Geometric mean', 'Moyenne géométrique'];
 
   Google: string[] = ['Google', 'Google'];
-  
+  Input: string[] = ['Input', 'Intrants'];
+  HasBackupPower: string[] = ['Has backup power', 'A une alimentation de secours'];
   Hide: string[] = ['Hide', 'Cacher'];
 
   HomeCSSPWebTools: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
@@ -182,18 +213,29 @@ export class AppLanguageService {
   HomePleaseContactASiteAdministratorListedBelow: string[] = ['please contact a site administrator listed below', 'veuillez contacter un administrateur du site suivants:'];
   HomeStartUsingCSSPWebTools: string[] = ['Start using CSSP Web Tools', 'Utilisez les outils web PCCSM'];
   HomeAzureVersion: string[] = ['(Azure Version)', '(Version Azure)'];
+  HorizontalAngle_deg: string[] = ['Horizontal Angle (deg)', 'Angle horizontal (deg)'];
+  hours: string[] = ['hours', 'heures'];
+  Information: string[] = ['Information', 'Information'];
+
+  Infrastructure: string[] = ['Infrastructure', 'Infrastructure'];
+
+  InfrastructureType: string[] = ['Infrastructure Type', 'Type d\'infrastructure'];
 
   Issue: string[] = ['Issue', 'Item'];
 
-  KB: string[] = ['KB', 'Ko'];
+  Item: string[] = ['Item', "Item"];
 
+  IsMechanicallyAerated: string[] = ['Is mechanically aerated', 'Est mécaniquement aéré'];
+
+  KB: string[] = ['KB', 'Ko'];
+  LatitudeLongitude: string[] = ['Latitude Longitude', 'Latitude Longitude'];
   Loading: string[] = ['Loading', 'Téléchargement'];
 
   Localize: string[] = ['Localize', 'Localiser'];
-  
+
   MedianInit: string[] = ['Med', 'Méd'];
   MedianInitTitle: string[] = ['Median', 'Médianne'];
-
+  meters: string[] = ['meters', 'mètres'];
   Modify: string[] = ['Modify', 'Modifier'];
 
   MonitoringStats: string[] = ['Monitoring stats', 'Stats d\'échantillonnage']
@@ -203,6 +245,8 @@ export class AppLanguageService {
   MonthOfSampling: string[] = ['Month of sampling', 'Mois d\'échantillonnage'];
 
   MoreInformationForViewingOrEditing: string[] = ['More information for viewing or editing', 'Plus d\'informations pour afficher ou modifier'];
+
+  Municipality: string[] = ['Municipality', 'Municipalité'];
 
   MunicipalityShowContacts: string[] = ['Show contacts', 'Montrer contacts'];
   MunicipalityContacts: string[] = ['Contacts', 'Contacts'];
@@ -223,26 +267,40 @@ export class AppLanguageService {
   MWQMSite: string[] = ['MWQM Site', 'Site SQEM'];
   MWQMSiteName: string[] = ['MWQM site', 'Site SQEM'];
   MWQMSiteNameTitle: string[] = ['Name of marine water quality monitoring site', 'Nom du site surveillance de qualité d\'eau marine'];
-  
+  NearFieldVelocity_m_s: string[] = ['Near Field Velocity (m/s)', 'Vitesse en champ rapproché (m/s)'];
   Next: string[] = ['Next', 'Prochain'];
-
+  No: string[] = ['No', 'Non'];
   NoAddress: string[] = ['No address', 'Aucune adresse'];
-
+  NoAlarmSystem: string[] = ['No alarm system', 'Aucune système d\'alarme'];
+  NoData: string[] = ['No Data', 'Aucune donnée'];
+  NoDecayPreDisinfection: string[] = ['No decay (pre-disinfection)', 'Aucune décroissance (avant la désinfection)'];
+  NoDecayUntreated: string[] = ['No decay (untreated)', 'Aucune décroissance (sans traitement)'];
   NotImplementedYet: string[] = ['Not Implemented Yet', 'Pas encore mis en œuvre']
+  NumberOfAeratedCells: string[] = ['Number Of Aerated Cells', 'Nombre de cellules aérées'];
+  NumberOfCells: string[] = ['Number of cells', 'Nombre de cellules'];
+  NumberOfPorts: string[] = ['Number Of Ports', 'Nombre d\'orifices du diffuseur'];
   Observation: string[] = ['Observation', 'Observation'];
-
+  Outfall: string[] = ['Outfall', 'Émissaire'];
+  OutfallLatitudeLongitude: string[] = ['Outfall: Latitude Longitude', 'Émissaire: Latitude Longitude'];
   P90Init: string[] = ['P90', 'P90'];
   P90InitTitle: string[] = ['90% of the estimates exceed the P90 estimate', '90% des estimations dépassent l\'estimation P90'];
-
+  PeakFlow_m3_day: string[] = ['Peak Flow (m3/day)', 'Débit de pointe (m3/day)'];
+  PercFlowOfTotal: string[] = ['Percent Flow Of Total (%)', 'Pourcentage du débit total (%)'];
   PercOver43Init: string[] = ['>43 (%)', '>43 (%)'];
   PercOver43InitTitle: string[] = ['Percentage of samples exceeding 43', 'Pourcentage d\'échantillons dépassant 43'];
 
   PercOver260Init: string[] = ['>260 (%)', '>260 (%)'];
   PercOver260InitTitle: string[] = ['Percentage of samples exceeding 260', 'Pourcentage d\'échantillons dépassant 260'];
-
+  perDay: string[] = ['/day', '/jour'];
+  PopServed: string[] = ['Population Served', 'Population desservie'];
+  PortDiameter_m: string[] = ['Port Diameter (m)', 'Diamètre de l\'émissaire (m)'];
+  PortElevation_m: string[] = ['Port Elevation (m)', 'Élévation de l\'orifice de l\'émissaire (m)'];
+  PortSpacing_m: string[] = ['Port Spacing (m)', 'Espace entre les orifices du diffuseur (m)'];
   PPTInit: string[] = ['ppt', 'ppm'];
   PPTInitTitle: string[] = ['Salinity in parts per thousand (ppt)', 'Salinité en parties pour mille (ppm)'];
-
+  PreliminaryTreatmentType: string[] = ['Preliminary Treatment Type', 'Type de traitement préliminaire'];
+  PrimaryTreatmentType: string[] = ['Primary Treatment Type', 'Type de traitement primaire'];
+  Pre_disinfection_FC: string[] = ['Pre-disinfection (FC)', 'Pré-désinfection (CF)'];
   ProcessedBy: string[] = ['Processed by', 'Traité par'];
   ProcessedByTitle: string[] = ['Processed by', 'Traité par'];
 
@@ -258,7 +316,12 @@ export class AppLanguageService {
   ProvinceSamplingPlan: string[] = ['Sampling Plan', 'Plan d\'échantillonnage'];
   ProvinceShowProvinceTools: string[] = ['Show province tools', 'Montrer outils pour province'];
   ProvinceProvinceTools: string[] = ['Province Tools', "Outils pour province"];
-
+  
+  RectangleLength: string[] = ['Rectangle (Length)'];
+  RectangleWidth: string[] = ['Rectangle (Width)'];
+  ReceivingWater_MPN_per_100ml: string[] = ['Receiving Water Concentration (FC /100 ml)', 'Concentration dans le milieu récepteur (FC /100 ml)'];
+  ReceivingWaterSalinity_PSU: string[] = ['Receiving Water Salinity (PSU)', 'Salinité dans le milieu récepteur (PSU)'];
+  ReceivingWaterTemperature_C: string[] = ['Receiving Water Temperature (ºC)', 'Température dans le milieu récepteur (ºC)'];
   RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
   RootCountries: string[] = ['Countries', 'Pays'];
   RootShowFiles: string[] = ['Show Files', 'Montrer filières'];
@@ -267,7 +330,7 @@ export class AppLanguageService {
   RootExportArcGIS: string[] = ['Export Arc GIS', 'Exportation Arc GIS'];
 
   Runs: string[] = ['Runs', 'Tournées'];
-  
+
   SampleDate: string[] = ['Sample Date', 'Date d\'échantillonnage'];
   SampleDateTitle: string[] = ['The date the sample was taken', 'La date à laquelle l\'échantillon a été prélevé'];
 
@@ -278,7 +341,7 @@ export class AppLanguageService {
   SampleTypesTitle: string[] = ['Sample types', 'Type d\'échantillons'];
 
   Save: string[] = ['Save', 'Sauvegarder'];
-  
+
   Saving: string[] = ['Saving', 'Sauvegarde'];
 
   SearchSearch: string[] = ['Search', 'Rechercher'];
@@ -286,6 +349,7 @@ export class AppLanguageService {
   Season: string[] = ['Season', 'Saison'];
   SeasonOfSampling: string[] = ['Season of sampling', 'Saison d\'échantillonnage'];
 
+  SecondaryTreatmentType: string[] = ['Secondary Treatment Type', 'Type de traitement secondaire'];
   ShellApplicationName: string[] = ['CSSP Web Tools', 'PCCSM: outils Web'];
   ShellOpenContextMenu: string[] = ['Open context menu', 'Ouvrir le menu contextuel'];
   ShellOpenHistoryMenu: string[] = ['Open history menu', 'Ouvrir le menu historique'];
@@ -316,10 +380,10 @@ export class AppLanguageService {
   SectorFiles: string[] = ['Files', 'Filières'];
   SectorShowMIKEScenarios: string[] = ['Show MIKE scenarios', 'Montrer scénarios MIKE'];
   SectorMIKEScenarios: string[] = ['MIKE Scenarios', 'Scénarios MIKE'];
-
+  SemiCircleRadius: string[] = ['Semi Circle (Radius)', 'Demi-cercle (Rayon)'];
   SortBy: string[] = ['Sort by', 'Trier par'];
   SortedBy: string[] = ['Sorted by', 'Trier par'];
-
+  squareMeter: string[] = ['m2', 'm2'];
   StatSampleNumber: string[] = ['Stat sample number', 'Nombre d\'échantillon pour stat'];
 
   SubsectorShowMWQMSites: string[] = ['Show MWQM sites', 'Montrer sites PSQEM'];
@@ -336,12 +400,17 @@ export class AppLanguageService {
   SubsectorSubsectorTools: string[] = ['Subsector Tools', 'Outils de sous-secteurs'];
   SubsectorShowLogBook: string[] = ['Show log book', 'Montrer journal de bord'];
   SubsectorLogBook: string[] = ['Log Book', 'Journal de bord'];
-
+  Surface: string[] = ['Surface', 'Surface'];
+  T90: string[] = ['T90', 'T90'];
   Table: string[] = ['Table', 'Tableau'];
 
   TableHide: string[] = ['Hide table', 'Cacher tableau'];
   TableView: string[] = ['View table', 'Voir tableau'];
 
+  Telephones: string[] = ['Telephones', 'Téléphones'];
+  Temperature: string[] = ['Temperature', 'Température'];
+  TertiaryTreatmentType: string[] = ['Tertiary Treatment Type', 'Type de traitement tertiaire'];
+  TreatmentType: string[] = ['Treatment Type', 'Type de traitement'];
   TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];
   TVItemListDetailAreaSubsector: string[] = ['Subsector', 'Sous-secteur'];
   TVItemListDetailAreaMWQMSample: string[] = ['MWQM sample', 'Échantillons'];
@@ -387,7 +456,6 @@ export class AppLanguageService {
   TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver43: string[] = ['Percentage of sample with FC > 43', 'Pourcentage des échantillons ayant des CF > 43'];
   TVItemListDetailMWQMSiteDetailPerOfSampleWithFCOver260: string[] = ['Percentage of sample with FC > 260', 'Pourcentage des échantillons ayant des CF > 260'];
 
-
   TVItemListDetailProvinceMunicipality: string[] = ['Municipality', 'Municipalité'];
   TVItemListDetailProvinceLiftStation: string[] = ['Lift station', 'Poste de pompage'];
   TVItemListDetailProvinceWWTP: string[] = ['WWTP', 'UÉEU'];
@@ -414,10 +482,20 @@ export class AppLanguageService {
   TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
   TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
 
+  Under: string[] = ['Under', 'sous'];
+
+  Untreated_FC: string[] = ['Untreated (FC)', 'Sans traitement (CF)'];
+  Value: string[] = ['Value', 'Valeur'];
+  ValveType: string[] = ['Valve type', 'Type de vanne'];
+  VerticalAngle_deg: string[] = ['Vertical Angle (deg)', 'Angle vertical (deg)'];
   View: string[] = ['View', 'Voir'];
-  
+
+  VisualPlumes: string[] = ['Visual Plumes', 'Visual Plumes'];
+  Volume: string[] = ['Volume', 'Volume'];
+
   WrittenDescription: string[] = ['Written Description', "Ancienne description"];
 
   Year: string[] = ['Year', 'Année'];
   YearOfSampling: string[] = ['Year of sampling', 'Année d\'échantillonnage'];
+  Yes: string[] = ['Yes', 'Oui'];
 }

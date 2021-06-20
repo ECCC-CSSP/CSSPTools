@@ -3369,4 +3369,10 @@
   <data name="FileModelTypeEnumRoot" xml:space="preserve">
     <value>Root</value>
   </data>
+  <data name="WebChartAndTableTypeEnumInfrastructureSingle" xml:space="preserve">
+    <value>InfrastructureSingle</value>
+  </data>
+  <data name="WebChartAndTableTypeEnumInfrastructureUnderMunicipality" xml:space="preserve">
+    <value>InfrastructureUnderMunicipality</value>
+  </data>
 </root>

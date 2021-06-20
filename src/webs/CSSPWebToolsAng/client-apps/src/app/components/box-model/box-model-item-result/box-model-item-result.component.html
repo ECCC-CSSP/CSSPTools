@@ -1,0 +1,56 @@
+<blockquote>
+         <!--Volume (m3)-->
+         <span class="strongSpan">
+            {{ appLanguageService.Volume[appLanguageService.LangID] }}:
+        </span>
+        <span>
+            {{
+            BoxModelResult.Volume_m3
+            }} {{ appLanguageService.cubicMeter[appLanguageService.LangID] }}
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;</span>
+
+         <!--Surface (m3)-->
+         <span class="strongSpan">
+            {{ appLanguageService.Surface[appLanguageService.LangID] }}:
+        </span>
+        <span>
+            {{
+            BoxModelResult.Surface_m2
+            }} {{ appLanguageService.squareMeter[appLanguageService.LangID] }}
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;</span>
+
+         <!--Semi circle: Radius (m):-->
+         <span class="strongSpan">
+            {{ appLanguageService.SemiCircleRadius[appLanguageService.LangID] }}:
+        </span>
+        <span>
+            {{
+            BoxModelResult.Radius_m
+            }} {{ appLanguageService.meters[appLanguageService.LangID] }}
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;</span>    
+    
+         <!--Rectangle: Length (m):-->
+         <span class="strongSpan">
+            {{ appLanguageService.RectangleLength[appLanguageService.LangID] }}:
+        </span>
+        <span>
+            {{
+            BoxModelResult.RectLength_m
+            }} {{ appLanguageService.meters[appLanguageService.LangID] }}
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;</span>    
+
+        <!--Rectangle: Width (m):-->
+         <span class="strongSpan">
+            {{ appLanguageService.RectangleWidth[appLanguageService.LangID] }}:
+        </span>
+        <span>
+            {{
+            BoxModelResult.RectWidth_m
+            }} {{ appLanguageService.meters[appLanguageService.LangID] }}
+        </span>
+        <span>&nbsp;&nbsp;&nbsp;</span>    
+    </blockquote>

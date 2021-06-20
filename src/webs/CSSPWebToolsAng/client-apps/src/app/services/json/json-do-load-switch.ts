@@ -191,6 +191,8 @@ export class JsonDoLoadSwitchService {
             case WebTypeEnum.WebMunicipality:
                 {
                     this.appLoadedService.WebMunicipality = <WebMunicipality>{};
+                    this.appLoadedService.InfrastructureModelPathList = [];
+                    this.appLoadedService.TVItemModelInfrastructureList = [];
                     TVItemIDText = `/${this.appStateService.UserPreference.CurrentMunicipalityTVItemID}`;
                 }
                 break;

@@ -1,0 +1,11 @@
+<mat-list>
+    <mat-list-item>
+        <span class="BorderWWTP">WWTP</span>&nbsp;&nbsp;&nbsp;
+        <span class="BorderLiftStation">Lift Station</span>&nbsp;&nbsp;&nbsp;
+        <span class="BorderOutfall">Outfall</span>&nbsp;&nbsp;&nbsp;
+        <span class="BorderLineOverflow">Line Overflow</span>&nbsp;&nbsp;&nbsp;
+        <span class="BorderOtherInfrastructure">Others</span>
+    </mat-list-item>
+</mat-list>
+<app-infrastructure-item *ngFor="let InfrastructureModelPath of appLoadedService.InfrastructureModelPathList"
+    [InfrastructureModelPath]="InfrastructureModelPath" [Level]="0"></app-infrastructure-item>

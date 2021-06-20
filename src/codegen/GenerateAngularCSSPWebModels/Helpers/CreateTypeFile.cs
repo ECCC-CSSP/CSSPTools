@@ -49,7 +49,7 @@ namespace GenerateAngularCSSPWebModels
                         {
                             continue;
                         }
-                        sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/enums/generated/{ fileName }';");
+                            sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/enums/generated/{ fileName }';");
                     }
                 }
 
@@ -64,7 +64,10 @@ namespace GenerateAngularCSSPWebModels
                         }
                         if (DLLTypeInfoCSSPWebModelsList.Where(c => c.Name == fileName).Any())
                         {
-                            sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/models/generated/web/{ fileName }.model';");
+                            if (dllTypeInfoModels.Name != dllPropertyInfo.CSSPProp.PropType)
+                            {
+                                sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/models/generated/web/{ fileName }.model';");
+                            }
                         }
                         else
                         {

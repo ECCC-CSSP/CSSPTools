@@ -19,40 +19,63 @@
     <mat-icon>menu</mat-icon>
 </button>
 
-<mat-card *ngIf="appStateService.ShowMonitoringStats" class="mat-elevation-z0">
+<mat-card *ngIf="appStateService.ShowMonitoringStats" class="mat-elevation-z5">
     <mat-card-header>
-      <h3>{{ appLanguageService.MonitoringStats[appLanguageService.LangID] }}</h3>
+        <h3>{{ appLanguageService.MonitoringStats[appLanguageService.LangID] }}</h3>
     </mat-card-header>
+    <button mat-raised-button [ngClass]="ChartByYearVisible ? 'selected' : ''" (click)="ToggleChartByYearVisible()">
+        <mat-icon>insights</mat-icon>
+        {{ this.appLanguageService.ByYear[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="TableByYearVisible ? 'selected' : ''" (click)="ToggleTableByYearVisible()">
+        <mat-icon>article</mat-icon>
+        {{ this.appLanguageService.ByYear[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="ChartByMonthVisible ? 'selected' : ''" (click)="ToggleChartByMonthVisible()">
+        <mat-icon>insights</mat-icon>
+        {{ this.appLanguageService.ByMonth[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="TableByMonthVisible ? 'selected' : ''" (click)="ToggleTableByMonthVisible()">
+        <mat-icon>article</mat-icon>
+        {{ this.appLanguageService.ByMonth[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="ChartBySeasonVisible ? 'selected' : ''" (click)="ToggleChartBySeasonVisible()">
+        <mat-icon>insights</mat-icon>
+        {{ this.appLanguageService.BySeason[this.appLanguageService.LangID] }}
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button [ngClass]="TableBySeasonVisible ? 'selected' : ''" (click)="ToggleTableBySeasonVisible()">
+        <mat-icon>article</mat-icon>
+        {{ this.appLanguageService.BySeason[this.appLanguageService.LangID] }}
+    </button>
     <mat-card-content>
-        <app-chart-base
-        [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
-        [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear"
-        [ChartVisible]="false">
-    </app-chart-base>
-    <app-table-base
-        [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
-        [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear"
-        [TableVisible]="false">
-    </app-table-base>
-    <app-chart-base
-        [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
-        [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth"
-        [ChartVisible]="false">
-    </app-chart-base>
-    <app-table-base
-        [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
-        [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth"
-        [TableVisible]="false">
-    </app-table-base>
-    <app-chart-base
-        [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
-        [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason"
-        [ChartVisible]="false">
-    </app-chart-base>
-    <app-table-base
-        [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
-        [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason"
-        [TableVisible]="false">
-    </app-table-base>
+        <app-chart-base *ngIf="ChartByYearVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear">
+        </app-chart-base>
+        <app-table-base *ngIf="TableByYearVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear">
+        </app-table-base>
+        <app-chart-base *ngIf="ChartByMonthVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth">
+        </app-chart-base>
+        <app-table-base *ngIf="TableByMonthVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth">
+        </app-table-base>
+        <app-chart-base *ngIf="ChartBySeasonVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason">
+        </app-chart-base>
+        <app-table-base *ngIf="TableBySeasonVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason">
+        </app-table-base>
     </mat-card-content>
 </mat-card>

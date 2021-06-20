@@ -21,6 +21,10 @@ export class MWQMSiteItemViewComponent implements OnInit, OnDestroy {
    CanvasNameFCSalTemp: string = '';
    CanvasNameFCStat: string = '';
 
+   ChartFCSalTempVisible: boolean = false;
+   ChartFCStatsVisible: boolean = false;
+   TableFCStatsVisible: boolean = false;
+
    displayedColumns: string[] = ['Index', 'SampleDate', 'FC', 'Sal', 'Temp', 'pH', 'Depth', 'GeoMean', 'Median', 'P90', 'PercOver43', 'PercOver260'];
 
   constructor(public appStateService: AppStateService,
@@ -39,4 +43,18 @@ export class MWQMSiteItemViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
+  ToggleChartFCSalTempVisible()
+  {
+    this.ChartFCSalTempVisible = !this.ChartFCSalTempVisible;
+  }
+
+  ToggleChartFCStatsVisible()
+  {
+    this.ChartFCStatsVisible = !this.ChartFCStatsVisible;
+  }
+
+  ToggleTableFCStatsVisible()
+  {
+    this.TableFCStatsVisible = !this.TableFCStatsVisible;
+  }
 }

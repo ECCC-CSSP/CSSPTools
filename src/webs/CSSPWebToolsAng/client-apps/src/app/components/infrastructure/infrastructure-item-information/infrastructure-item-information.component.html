@@ -1,0 +1,12 @@
+<app-table-infrastructure-single [InfrastructureModelPath]="InfrastructureModelPath" 
+[WebChartAndTableType]="webChartAndTableTypeEnum.InfrastructureSingle"
+[InfrastructureItemValueList]="infrastructureService.FillInfrastructureItemValue(InfrastructureModelPath.InfrastructureModel)">
+</app-table-infrastructure-single>
+
+<p>{{appLanguageService.Comments[this.appLanguageService.LangID]}}</p>
+<p>{{InfrastructureModelPath.InfrastructureModel.InfrastructureLanguageList[this.appLanguageService.LangID].Comment}}</p>
+
+<app-table-infrastructure-single-outfall [InfrastructureModelPath]="InfrastructureModelPath" 
+[WebChartAndTableType]="webChartAndTableTypeEnum.InfrastructureSingle"
+[InfrastructureItemValueList]="infrastructureService.FillInfrastructureOutfallItemValue(InfrastructureModelPath.InfrastructureModel)">
+</app-table-infrastructure-single-outfall>

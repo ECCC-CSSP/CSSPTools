@@ -1,0 +1,33 @@
+<ng-container *ngIf="showTVItemService.TVItemVisible(InfrastructureModelPath.InfrastructureModel.TVItemModel)">
+    <p>
+        <button mat-raised-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
+            {{ appLanguageService.View[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ShowCreate = !ShowCreate" [ngClass]="ShowCreate ? 'selected' : ''">
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        </button>
+    </p>
+    <mat-card *ngIf="ShowView">
+        <mat-card-content>
+            <app-infrastructure-item-view [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-view>
+        </mat-card-content>
+    </mat-card>
+    <p *ngIf="ShowView && ShowModify">&nbsp;</p>
+    <mat-card *ngIf="ShowModify">
+        <mat-card-content>
+            <app-infrastructure-item-modify [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-modify>
+        </mat-card-content>
+    </mat-card>
+    <p *ngIf="(ShowView || ShowModify) && ShowCreate">&nbsp;</p>
+    <mat-card *ngIf="ShowCreate">
+        <mat-card-content>
+            <app-infrastructure-item-create [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-create>
+        </mat-card-content>
+    </mat-card>
+
+</ng-container>

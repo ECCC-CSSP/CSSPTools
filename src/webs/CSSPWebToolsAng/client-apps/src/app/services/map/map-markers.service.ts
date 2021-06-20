@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
+import { GetInfrastructureTypeEnum } from 'src/app/enums/generated/InfrastructureTypeEnum';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
+import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
+import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { PolSourceObservationIssue } from 'src/app/models/generated/db/PolSourceObservationIssue.model';
+import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
 import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
 import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourceObservationModel.model';
 import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
@@ -27,6 +31,7 @@ export class MapMarkersService {
 
   DrawMarkers(tvItemModelList: TVItemModel[]) {
     this.tvItemModelList = tvItemModelList;
+    let infrastructureType = GetInfrastructureTypeEnum();
 
     let map: google.maps.Map = this.appLoadedService.Map;
 
@@ -70,7 +75,7 @@ export class MapMarkersService {
           if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
             strokeColor = '#ffffff';
             fillColor = '#ffffff';
-            
+
             let PolSourceSiteModelList: PolSourceSiteModel[] = this.appLoadedService.WebPolSourceSites.PolSourceSiteModelList?.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
 
             if (PolSourceSiteModelList && PolSourceSiteModelList?.length > 0) {
@@ -78,8 +83,6 @@ export class MapMarkersService {
                 let polSourceObservationModel: PolSourceObservationModel = PolSourceSiteModelList[0]?.PolSourceObservationModelList[0];
                 if (polSourceObservationModel.PolSourceObservationIssueList != null && polSourceObservationModel.PolSourceObservationIssueList.length > 0) {
                   let PolSourceObservationIssue: PolSourceObservationIssue = polSourceObservationModel.PolSourceObservationIssueList[0];
-
-                  let tvText: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
 
                   if (PolSourceObservationIssue.ObservationInfo.includes(',91003')) {
                     strokeColor = '#ff0000';
@@ -100,6 +103,47 @@ export class MapMarkersService {
             }
           }
 
+          if (tvItemModel.TVItem.TVType == TVTypeEnum.Infrastructure) {
+            strokeColor = '#ffffff';
+            fillColor = '#ffffff';
+
+
+            switch (mapInfoModel.MapInfo.TVType) {
+              case TVTypeEnum.WasteWaterTreatmentPlant:
+                {
+                  strokeColor = '#ff0000';
+                  fillColor = '#ff0000';
+                }
+                break;
+              case TVTypeEnum.LiftStation:
+                {
+                  strokeColor = '#880000';
+                  fillColor = '#880000';
+                }
+                break;
+              case TVTypeEnum.LineOverflow:
+                {
+                  strokeColor = '#666600';
+                  fillColor = '#666600';
+                }
+                break;
+              case TVTypeEnum.Outfall:
+                {
+                  strokeColor = '#BB6600';
+                  fillColor = '#BB6600';
+                }
+                break;
+              default:
+                {
+                  strokeColor = '#888800';
+                  fillColor = '#888800';
+                }
+                break;
+            }
+
+            path = this.appStateService.MapMarkerPathCharacters[label.text?.length];
+          }
+
           let options: google.maps.MarkerOptions = {
             position: position,
             label: label,
@@ -117,7 +161,7 @@ export class MapMarkersService {
             },
             map: map,
             draggable: this.appStateService.EditMapVisible,
-            zIndex: mapInfoModel.MapInfo.MapInfoID,
+            zIndex: mapInfoModel.MapInfo.TVType == TVTypeEnum.Outfall ? -mapInfoModel.MapInfo.MapInfoID : mapInfoModel.MapInfo.MapInfoID,
           };
 
           mark = new google.maps.Marker(options);

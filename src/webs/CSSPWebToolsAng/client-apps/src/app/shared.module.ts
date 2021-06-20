@@ -108,6 +108,21 @@ import { TableMonitoringStatsByYearComponent } from './components/table/table-mo
 import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-data/table-mwqm-run-data.component';
 import { FileListByPurposeComponent } from './components/files/file-list-by-purpose/file-list-by-purpose.component';
 import { FileUploadComponent } from './components/files/file-upload/file-upload.component';
+import { TelComponent } from './components/tel/tel.component';
+import { EmailComponent } from './components/email/email.component';
+import { InfrastructureItemMenuComponent } from './components/infrastructure/infrastructure-item-menu/infrastructure-item-menu.component';
+import { InfrastructureItemMenuOpenComponent } from './components/infrastructure/infrastructure-item-menu-open/infrastructure-item-menu-open.component';
+import { InfrastructureItemCreateComponent } from './components/infrastructure/infrastructure-item-create/infrastructure-item-create.component';
+import { InfrastructureItemViewComponent } from './components/infrastructure/infrastructure-item-view/infrastructure-item-view.component';
+import { InfrastructureItemModifyComponent } from './components/infrastructure/infrastructure-item-modify/infrastructure-item-modify.component';
+import { InfrastructureItemListComponent } from './components/infrastructure/infrastructure-item-list/infrastructure-item-list.component';
+import { TableInfrastructureSingleComponent } from './components/table/table-infrastructure-single/table-infrastructure-single.component';
+import { InfrastructureItemInformationComponent } from './components/infrastructure/infrastructure-item-information/infrastructure-item-information.component';
+import { InfrastructureItemVisualPlumesComponent } from './components/infrastructure/infrastructure-item-visual-plumes/infrastructure-item-visual-plumes.component';
+import { InfrastructureItemFilesComponent } from './components/infrastructure/infrastructure-item-files/infrastructure-item-files.component';
+import { TableInfrastructureSingleOutfallComponent } from './components/table/table-infrastructure-single-outfall/table-infrastructure-single-outfall.component';
+import { BoxModelItemListComponent } from './components/box-model/box-model-item-list/box-model-item-list.component';
+import { BoxModelItemResultComponent } from './components/box-model/box-model-item-result/box-model-item-result.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +134,8 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     AreaItemComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
+    BoxModelItemListComponent,
+    BoxModelItemResultComponent,
     BreadCrumbComponent,
     ChartBaseComponent,
     ChartMonitoringStatsByMonthComponent,
@@ -131,6 +148,7 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     CountryItemComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
+    EmailComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
     ExportArcGISComponent,
@@ -149,6 +167,15 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     HomeItemComponent,
     HomeTestComponent,
     InfrastructureItemComponent,
+    InfrastructureItemCreateComponent,
+    InfrastructureItemFilesComponent,
+    InfrastructureItemInformationComponent,
+    InfrastructureItemListComponent,
+    InfrastructureItemMenuComponent,
+    InfrastructureItemMenuOpenComponent,
+    InfrastructureItemModifyComponent,
+    InfrastructureItemViewComponent,
+    InfrastructureItemVisualPlumesComponent,
     LogBookItemComponent,
     MapItemComponent,
     MapMenuComponent,
@@ -204,11 +231,14 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
     TableBaseComponent,
+    TableInfrastructureSingleComponent,
+    TableInfrastructureSingleOutfallComponent,
     TableMonitoringStatsByMonthComponent,
     TableMonitoringStatsBySeasonComponent,
     TableMonitoringStatsByYearComponent,
     TableMWQMRunDataComponent,
     TableMWQMSiteFCStatsComponent,
+    TelComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,
@@ -239,6 +269,8 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     AreaItemComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
+    BoxModelItemListComponent,
+    BoxModelItemResultComponent,
     BreadCrumbComponent,
     ChartBaseComponent,
     ChartMonitoringStatsByMonthComponent,
@@ -251,6 +283,7 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     CountryItemComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
+    EmailComponent,
     EmailDistributionListItemComponent,
     ErrorComponent,
     ExportArcGISComponent,
@@ -268,6 +301,15 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     HomeItemComponent,
     HomeTestComponent,
     InfrastructureItemComponent,
+    InfrastructureItemCreateComponent,
+    InfrastructureItemFilesComponent,
+    InfrastructureItemInformationComponent,
+    InfrastructureItemListComponent,
+    InfrastructureItemMenuComponent,
+    InfrastructureItemMenuOpenComponent,
+    InfrastructureItemModifyComponent,
+    InfrastructureItemViewComponent,
+    InfrastructureItemVisualPlumesComponent,
     LogBookItemComponent,
     MapItemComponent,
     MapMenuComponent,
@@ -323,11 +365,14 @@ import { FileUploadComponent } from './components/files/file-upload/file-upload.
     SubsectorTVItemListItemComponent,
     SubsectorToolsItemComponent,
     TableBaseComponent,
+    TableInfrastructureSingleComponent,
+    TableInfrastructureSingleOutfallComponent,
     TableMonitoringStatsByMonthComponent,
     TableMonitoringStatsBySeasonComponent,
     TableMonitoringStatsByYearComponent,
     TableMWQMRunDataComponent,
     TableMWQMSiteFCStatsComponent,
+    TelComponent,
     TVItemCreateComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,

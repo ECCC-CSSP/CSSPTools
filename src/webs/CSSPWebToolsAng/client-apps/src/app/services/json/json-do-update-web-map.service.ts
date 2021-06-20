@@ -60,6 +60,7 @@ import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/web/
 import { MonitoringStatsModel } from 'src/app/models/generated/web/MonitoringStatsModel.model';
 import { JsonLoadListService } from './json-loading-list.service';
 import { JsonDataIsLoadedService } from './json-data-is-loaded.service';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 
 @Injectable({
@@ -143,33 +144,40 @@ export class JsonDoUpdateWebMapService {
     }
 
     private DoUpdateWebMunicipalityMap() {
-        if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
+         if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Infrastructures) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
+                ...this.appLoadedService.TVItemModelInfrastructureList,
                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
             ]);
         }
 
         if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Contacts) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
+                ...this.appLoadedService.TVItemModelInfrastructureList,
                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
             ]);
         }
 
         if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.MIKEScenarios) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
+                ...this.appLoadedService.TVItemModelInfrastructureList,
                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
             ]);
         }
 
         if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
+                ...this.appLoadedService.TVItemModelInfrastructureList,
                 ...[this.appLoadedService.WebMunicipality?.TVItemModel]
             ]);
         }
+
+        // if (this.appStateService.UserPreference.MunicipalitySubComponent == MunicipalitySubComponentEnum.Files) {
+        //     this.mapService.DrawObjects([
+        //         ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebMunicipality?.TVItemModelInfrastructureList)),
+        //         ...[this.appLoadedService.WebMunicipality?.TVItemModel]
+        //     ]);
+        // }
     }
 
     private DoUpdateWebProvinceMap() {
