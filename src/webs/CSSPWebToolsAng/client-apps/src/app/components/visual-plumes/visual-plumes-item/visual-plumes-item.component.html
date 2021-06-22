@@ -1,0 +1,47 @@
+<p>
+    <button mat-raised-button (click)="VPScenarioVisible = !VPScenarioVisible"
+        [ngClass]="VPScenarioVisible ? 'selected' : ''">
+        <mat-icon>menu
+        </mat-icon>
+        {{ VPScenarioModel.VPScenarioLanguageList[appLanguageService.LangID].VPScenarioName }}
+    </button>
+</p>
+<ng-container *ngIf="VPScenarioVisible">
+    <p>
+        <button mat-raised-button (click)="ShowInputDiffuser = !ShowInputDiffuser"
+            [ngClass]="ShowInputDiffuser ? 'selected' : ''">
+            {{ appLanguageService.DiffuserInformation[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ShowInputAmbient = !ShowInputAmbient"
+            [ngClass]="ShowInputAmbient ? 'selected' : ''">
+            {{ appLanguageService.Ambients[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button *ngIf="VPScenarioModel.VPResultList.length > 0" (click)="ShowResults = !ShowResults"
+            [ngClass]="ShowResults ? 'selected' : ''">
+            {{ appLanguageService.Results[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button *ngIf="VPScenarioModel.VPResultList.length > 0"
+            (click)="ShowResultsRaw = !ShowResultsRaw" [ngClass]="ShowResultsRaw ? 'selected' : ''">
+            {{ appLanguageService.ResultsRaw[appLanguageService.LangID] }}
+        </button>
+    </p>
+    <app-visual-plumes-item-input-diffuser *ngIf="ShowInputDiffuser" [VPScenarioModel]="VPScenarioModel">
+    </app-visual-plumes-item-input-diffuser>
+    <app-visual-plumes-item-input-ambient *ngIf="ShowInputAmbient" [VPScenarioModel]="VPScenarioModel">
+    </app-visual-plumes-item-input-ambient>
+    <ng-container *ngIf="ShowResults">
+        <h3>{{ appLanguageService.Results[appLanguageService.LangID] }}</h3>
+        <blockquote>
+            <pre>{{ GetResultAsPre(VPScenarioModel) }}</pre>
+        </blockquote>
+    </ng-container>
+    <ng-container *ngIf="ShowResultsRaw">
+        <h3>{{ appLanguageService.ResultsRaw[appLanguageService.LangID] }}</h3>
+        <blockquote>
+            <pre>{{ VPScenarioModel.VPScenario.RawResults }}</pre>
+        </blockquote>
+    </ng-container>
+</ng-container>

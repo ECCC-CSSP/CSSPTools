@@ -141,6 +141,7 @@ export class AppStateService {
       AreaFilesSortByProp: FilesSortPropEnum.FileName,
       CountryProvincesSortOrder: AscDescEnum.Ascending,
       CountryFilesSortByProp: FilesSortPropEnum.FileName,
+      InfrastructureFilesSortByProp: FilesSortPropEnum.FileName,
       MunicipalityContactsSortOrder: AscDescEnum.Ascending,
       MunicipalityFilesSortByProp: FilesSortPropEnum.FileName,
       MunicipalityInfrastructuresSortOrder: AscDescEnum.Ascending,

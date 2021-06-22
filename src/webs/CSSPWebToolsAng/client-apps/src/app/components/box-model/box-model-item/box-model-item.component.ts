@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { BoxModelResultTypeEnum } from 'src/app/enums/generated/BoxModelResultTypeEnum';
-import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
+import { BoxModelModel } from 'src/app/models/generated/web/BoxModelModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Component({
-  selector: 'app-box-model-item-list',
-  templateUrl: './box-model-item-list.component.html',
-  styleUrls: ['./box-model-item-list.component.css']
+  selector: 'app-box-model-item',
+  templateUrl: './box-model-item.component.html',
+  styleUrls: ['./box-model-item.component.css']
 })
-export class BoxModelItemListComponent implements OnInit, OnDestroy {
-  @Input() InfrastructureModelPath: InfrastructureModelPath;
+export class BoxModelItemComponent implements OnInit, OnDestroy {
+  @Input() BoxModelModel: BoxModelModel;
 
+  BoxModelScenarioVisible: boolean = false;
+  ShowInput: boolean = true;
+  ShowResults: boolean = false;
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,

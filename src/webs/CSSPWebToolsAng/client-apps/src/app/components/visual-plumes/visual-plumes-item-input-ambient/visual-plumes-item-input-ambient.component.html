@@ -1,0 +1,113 @@
+<h3>{{ appLanguageService.AmbientInformation[appLanguageService.LangID] }}</h3>
+<blockquote>
+    <p>NOTE: {{ appLanguageService.SAA[appLanguageService.LangID] }} = {{
+        appLanguageService.SameAsAbove[appLanguageService.LangID] }}</p>
+    <ng-container *ngFor="let ambient of VPScenarioModel.VPAmbientList">
+        <ng-container *ngIf="ambient.MeasurementDepth_m != null">
+            <h3>{{ appLanguageService.atDepth[appLanguageService.LangID] }}
+                {{ ambient.MeasurementDepth_m | number }} &nbsp;
+                {{ appLanguageService.meters[appLanguageService.LangID] }}
+            </h3>
+            <blockquote>
+                <!--Current Speed-->
+                <span class="strongSpan">
+                    {{ appLanguageService.CurrentSpeed[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.CurrentSpeed_m_s ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.metersPerSeconds[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Current Direction-->
+                <span class="strongSpan">
+                    {{ appLanguageService.CurrentDirection[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.CurrentDirection_deg ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.deg[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Ambient Salinity-->
+                <span class="strongSpan">
+                    {{ appLanguageService.AmbientSalinity[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.AmbientSalinity_PSU ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.PSU[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Ambient Temperature-->
+                <span class="strongSpan">
+                    {{ appLanguageService.AmbientTemperature[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.AmbientTemperature_C ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.DegCelciusSymbol[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Background Concentration-->
+                <span class="strongSpan">
+                    {{ appLanguageService.BackgroundConcentration[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.BackgroundConcentration_MPN_100ml ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.FCPer100mL[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Pollutant Decay Rate-->
+                <span class="strongSpan">
+                    {{ appLanguageService.PollutantDecayRate[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.PollutantDecayRate_per_day ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.perDay[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Far Field Current Speed-->
+                <span class="strongSpan">
+                    {{ appLanguageService.FarFieldCurrentSpeed[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.FarFieldCurrentSpeed_m_s ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.metersPerSeconds[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Far Field Current Direction-->
+                <span class="strongSpan">
+                    {{ appLanguageService.FarFieldCurrentDirection[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.FarFieldCurrentDirection_deg ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.deg[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+
+                <!--Far Field Diffusion Coefficient-->
+                <span class="strongSpan">
+                    {{ appLanguageService.FarFieldDiffusionCoefficient[appLanguageService.LangID] }}:
+                </span>
+                <span>
+                    {{
+                    ambient.FarFieldDiffusionCoefficient ?? appLanguageService.SAA[appLanguageService.LangID]
+                    }} {{ appLanguageService.m067Pers2[appLanguageService.LangID] }}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+            </blockquote>
+        </ng-container>
+    </ng-container>
+</blockquote>

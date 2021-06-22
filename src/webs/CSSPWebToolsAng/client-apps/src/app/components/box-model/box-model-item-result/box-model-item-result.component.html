@@ -1,56 +1,57 @@
+<h3>{{ appLanguageService.CalculatedResult[appLanguageService.LangID] }}</h3>
 <blockquote>
-         <!--Volume (m3)-->
-         <span class="strongSpan">
-            {{ appLanguageService.Volume[appLanguageService.LangID] }}:
-        </span>
-        <span>
-            {{
-            BoxModelResult.Volume_m3
-            }} {{ appLanguageService.cubicMeter[appLanguageService.LangID] }}
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;</span>
+    <ng-container *ngFor="let boxModelResult of BoxModelModel.BoxModelResultList">
+        <p class="showBlue">{{ GetTextOfBoxModelResultType(boxModelResult.BoxModelResultType) }}</p>
+        <blockquote>
+            <!--Volume (m3)-->
+            <span class="strongSpan">
+                {{ appLanguageService.Volume[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{ boxModelResult.Volume_m3 | number:'1.0-0' }}
+                {{ appLanguageService.cubicMeter[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
 
-         <!--Surface (m3)-->
-         <span class="strongSpan">
-            {{ appLanguageService.Surface[appLanguageService.LangID] }}:
-        </span>
-        <span>
-            {{
-            BoxModelResult.Surface_m2
-            }} {{ appLanguageService.squareMeter[appLanguageService.LangID] }}
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;</span>
+            <!--Surface (m3)-->
+            <span class="strongSpan">
+                {{ appLanguageService.Surface[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{ boxModelResult.Surface_m2 | number:'1.0-0' }}
+                {{ appLanguageService.squareMeter[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
 
-         <!--Semi circle: Radius (m):-->
-         <span class="strongSpan">
-            {{ appLanguageService.SemiCircleRadius[appLanguageService.LangID] }}:
-        </span>
-        <span>
-            {{
-            BoxModelResult.Radius_m
-            }} {{ appLanguageService.meters[appLanguageService.LangID] }}
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;</span>    
-    
-         <!--Rectangle: Length (m):-->
-         <span class="strongSpan">
-            {{ appLanguageService.RectangleLength[appLanguageService.LangID] }}:
-        </span>
-        <span>
-            {{
-            BoxModelResult.RectLength_m
-            }} {{ appLanguageService.meters[appLanguageService.LangID] }}
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;</span>    
+            <!--Semi circle: Radius (m):-->
+            <span class="strongSpan">
+                {{ appLanguageService.SemiCircleRadius[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{ boxModelResult.Radius_m | number:'1.0-0' }}
+                {{ appLanguageService.meters[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
 
-        <!--Rectangle: Width (m):-->
-         <span class="strongSpan">
-            {{ appLanguageService.RectangleWidth[appLanguageService.LangID] }}:
-        </span>
-        <span>
-            {{
-            BoxModelResult.RectWidth_m
-            }} {{ appLanguageService.meters[appLanguageService.LangID] }}
-        </span>
-        <span>&nbsp;&nbsp;&nbsp;</span>    
-    </blockquote>
+            <!--Rectangle: Length (m):-->
+            <span class="strongSpan">
+                {{ appLanguageService.RectangleLength[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{ boxModelResult.RectLength_m | number:'1.0-0' }}
+                {{ appLanguageService.meters[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Rectangle: Width (m):-->
+            <span class="strongSpan">
+                {{ appLanguageService.RectangleWidth[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{ boxModelResult.RectWidth_m | number:'1.0-0' }}
+                {{ appLanguageService.meters[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+        </blockquote>
+    </ng-container>
+</blockquote>

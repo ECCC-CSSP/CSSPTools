@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetFacilityTypeEnum } from 'src/app/enums/generated/FacilityTypeEnum';
 import { GetInfrastructureTypeEnum } from 'src/app/enums/generated/InfrastructureTypeEnum';
+import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
+import { FileSortByPropService, TVFileModelByPurposeService } from 'src/app/services/file';
 
 @Component({
   selector: 'app-infrastructure-item-view',
@@ -16,6 +18,7 @@ export class InfrastructureItemViewComponent implements OnInit, OnDestroy {
 
   infrastructureType = GetInfrastructureTypeEnum();
   facilityType = GetFacilityTypeEnum();
+  tvType = GetTVTypeEnum();
 
   ShowInformation: boolean = true;
   ShowBoxModels: boolean = false;
@@ -24,7 +27,9 @@ export class InfrastructureItemViewComponent implements OnInit, OnDestroy {
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    public appLoadedService: AppLoadedService) { }
+    public appLoadedService: AppLoadedService,
+    public fileSortByPropService: FileSortByPropService,
+    public tvFileModelByPurposeService: TVFileModelByPurposeService) { }
 
   ngOnInit(): void {
   }

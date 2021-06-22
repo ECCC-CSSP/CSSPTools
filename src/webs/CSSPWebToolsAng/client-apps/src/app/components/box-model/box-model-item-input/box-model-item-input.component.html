@@ -1,0 +1,112 @@
+<h3>{{ appLanguageService.Input[appLanguageService.LangID] }}</h3>
+<blockquote>
+    <!--T90_hour-->
+    <span class="strongSpan">
+        {{ appLanguageService.T90[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.T90_hour
+        }} {{ appLanguageService.hours[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Temperature_C-->
+    <span class="strongSpan">
+        {{ appLanguageService.Temperature[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.Temperature_C
+        }} {{ appLanguageService.DegCelciusSymbol[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--DecayRate_per_day-->
+    <span class="strongSpan">
+        {{ appLanguageService.DecayRate[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.DecayRate_per_day
+        }} {{ appLanguageService.perDay[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Discharge-->
+    <span class="strongSpan">
+        {{ appLanguageService.Discharge[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.Discharge_m3_day
+        }} {{ appLanguageService.cubicMetersPerDay[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Discharge duration-->
+    <span class="strongSpan">
+        {{ appLanguageService.DischargeDuration[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.DischargeDuration_hour
+        }} {{ appLanguageService.hours[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Dilution-->
+    <span class="strongSpan">
+        {{ appLanguageService.Dilution[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.Dilution
+        }} {{ appLanguageService.hours[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Depth-->
+    <span class="strongSpan">
+        {{ appLanguageService.Depth[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.Depth_m
+        }} {{ appLanguageService.meters[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Untreated (FC)-->
+    <span class="strongSpan">
+        {{ appLanguageService.Untreated_FC[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.FCUntreated_MPN_100ml
+        }} {{ appLanguageService.FCPer100mL[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Pre-disinfection (FC)-->
+    <span class="strongSpan">
+        {{ appLanguageService.Pre_disinfection_FC[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.FCPreDisinfection_MPN_100ml
+        }} {{ appLanguageService.FCPer100mL[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+
+    <!--Concentration objective (FC)-->
+    <span class="strongSpan">
+        {{ appLanguageService.Concentration_objective_FC[appLanguageService.LangID] }}:
+    </span>
+    <span>
+        {{
+        BoxModelModel.BoxModel.Concentration_MPN_100ml
+        }} {{ appLanguageService.FCPer100mL[appLanguageService.LangID] }}
+    </span>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+</blockquote>

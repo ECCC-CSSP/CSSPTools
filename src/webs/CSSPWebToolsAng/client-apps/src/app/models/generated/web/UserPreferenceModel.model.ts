@@ -65,6 +65,7 @@ export class UserPreferenceModel {
     EditVisible: boolean;
     History: TVItemModel[];
     InactVisible: boolean;
+    InfrastructureFilesSortByProp: FilesSortPropEnum;
     LastUpdateVisible: boolean;
     LeftSideNavVisible: boolean;
     MapColorNotFound: string;

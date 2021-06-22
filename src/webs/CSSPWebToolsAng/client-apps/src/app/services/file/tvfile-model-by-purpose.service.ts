@@ -12,6 +12,8 @@ import { PredicateDescByService } from '../helpers/predicate-desc-by.service';
 import { TVFileID_Text_Sort } from 'src/app/models/generated/web/TVFileID_Text_Sort.model';
 import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
 import { AppLoadedService } from '../app/app-loaded.service';
+import { FileSortByPropService } from '.';
+import { AppTextService } from '../helpers/app-text.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +24,12 @@ export class TVFileModelByPurposeService {
     private appStateService: AppStateService,
     private dateFormateService: DateFormatService,
     private predicateAscByService: PredicateAscByService,
-    private predicateDescByService: PredicateDescByService) {
+    private predicateDescByService: PredicateDescByService,
+    public fileSortByPropService: FileSortByPropService,
+    public appTextService: AppTextService) {
   }
 
-  GetSortedTVFileModelByPurposeList(tvTypeEnum: TVTypeEnum): TVFileModelByPurpose[] {
+  GetSortedTVFileModelByPurposeList(tvType: TVTypeEnum, preFilledTVFileModelList: TVFileModel[] = []): TVFileModelByPurpose[] {
     let tvFileModelByPurposeList: TVFileModelByPurpose[] = [];
     let arrFile2: TVFileID_Text_Sort[] = [];
     let sortable: TVFileID_Text_Sort[] = [];
@@ -34,42 +38,14 @@ export class TVFileModelByPurposeService {
 
     let TVFileModelList: TVFileModel[] = [];
 
-    switch (tvTypeEnum) {
-      case TVTypeEnum.Area:
-        {
-          TVFileModelList = this.appLoadedService.WebArea?.TVFileModelList;
-        }
-        break;
-      case TVTypeEnum.Country:
-        {
-          TVFileModelList = this.appLoadedService.WebCountry?.TVFileModelList;
-        }
-        break;
-      case TVTypeEnum.Municipality:
-        {
-          TVFileModelList = this.appLoadedService.WebMunicipality?.TVFileModelList;
-        }
-        break;
-      case TVTypeEnum.Province:
-        {
-          TVFileModelList = this.appLoadedService.WebProvince?.TVFileModelList;
-        }
-        break;
-      case TVTypeEnum.Root:
-        {
-          TVFileModelList = this.appLoadedService.WebRoot?.TVFileModelList;
-        }
-        break;
-      case TVTypeEnum.Sector:
-        {
-          TVFileModelList = this.appLoadedService.WebSector?.TVFileModelList;
-        }
-      case TVTypeEnum.Subsector:
-        {
-          TVFileModelList = this.appLoadedService.WebSubsector?.TVFileModelList;
-        }
-      default:
-        break;
+    if (preFilledTVFileModelList.length > 0) {
+      for (let i = 0, count = preFilledTVFileModelList.length; i < count; i++) {
+        TVFileModelList.push(preFilledTVFileModelList[i]);
+      }
+    }
+
+    if (TVFileModelList.length == 0) {
+      TVFileModelList = this.GetTVFileModelList(tvType);
     }
 
     for (let i = 0; i < enumIDAndTextList?.length; i++) {
@@ -86,69 +62,14 @@ export class TVFileModelByPurposeService {
 
           let TextToSort: string = '';
           let FilesSortProp: FilesSortPropEnum = FilesSortPropEnum.FileName;
-          switch (tvTypeEnum) {
-            case TVTypeEnum.Area:
-              {
-                FilesSortProp = this.appStateService.UserPreference.AreaFilesSortByProp;
-              }
-              break;
-            case TVTypeEnum.Country:
-              {
-                FilesSortProp = this.appStateService.UserPreference.CountryFilesSortByProp;
-              }
-              break;
-            case TVTypeEnum.Municipality:
-              {
-                FilesSortProp = this.appStateService.UserPreference.MunicipalityFilesSortByProp;
-              }
-              break;
-            case TVTypeEnum.Province:
-              {
-                FilesSortProp = this.appStateService.UserPreference.ProvinceFilesSortByProp;
-              }
-              break;
-            case TVTypeEnum.Root:
-              {
-                FilesSortProp = this.appStateService.UserPreference.RootFilesSortByProp;
-              }
-              break;
-            case TVTypeEnum.Sector:
-              {
-                FilesSortProp = this.appStateService.UserPreference.SectorFilesSortByProp;
-              }
-            case TVTypeEnum.Subsector:
-              {
-                FilesSortProp = this.appStateService.UserPreference.SubsectorFilesSortByProp;
-              }
-            default:
-              break;
+
+          FilesSortProp = this.fileSortByPropService.GetFileSortByProp(tvType);
+
+          if (FilesSortProp == FilesSortPropEnum.FileDate) {
+            Asc = false;
           }
 
-          switch (FilesSortProp) {
-            case FilesSortPropEnum.FileName:
-              {
-                TextToSort = tvFileModelList[k].TVFile.ServerFileName.toLowerCase();
-              }
-              break;
-            case FilesSortPropEnum.FileType:
-              {
-                TextToSort = `${tvFileModelList[k].TVFile.ServerFileName.substring(tvFileModelList[k].TVFile.ServerFileName.indexOf('.')).toLowerCase()}_${tvFileModelList[k].TVFile.ServerFileName.toLocaleLowerCase()}`;
-              }
-              break;
-            case FilesSortPropEnum.FileSize:
-              {
-                TextToSort = `${this.pad(tvFileModelList[k].TVFile.FileSize_kb, 20).toString().toLowerCase()}_${tvFileModelList[k].TVFile.ServerFileName.toLocaleLowerCase()}`;
-              }
-              break;
-            case FilesSortPropEnum.FileDate:
-              {
-                Asc = false;
-                TextToSort = `${this.dateFormateService.GetTVFileCreateDateTime_LocalDigit(tvFileModelList[k].TVFile).toLowerCase()}_${tvFileModelList[k].TVFile.ServerFileName.toLocaleLowerCase()}`;
-              }
-              break;
-            default:
-              break;
-          }
+          TextToSort = this.GetTextToSort(tvFileModelList[k], FilesSortProp, Asc);
 
           sortable.push(<TVFileID_Text_Sort>{
             TVFileID: tvFileModelList[k].TVFile.TVFileID,
@@ -156,11 +77,10 @@ export class TVFileModelByPurposeService {
           });
         }
 
-        if (Asc)
-        {
+        if (Asc) {
           arrFile2 = sortable.sort(this.predicateAscByService.PredicateAscBy('TextToSort'));
         }
-        else{
+        else {
           arrFile2 = sortable.sort(this.predicateDescByService.PredicateDescBy('TextToSort'));
         }
 
@@ -175,7 +95,7 @@ export class TVFileModelByPurposeService {
 
         let tvFileModelByPurpose: TVFileModelByPurpose = new TVFileModelByPurpose();
         tvFileModelByPurpose.FilePurpose = tvFileModelSortedList[0].TVFile.FilePurpose;
-        tvFileModelByPurpose.TVFileModelList = tvFileModelSortedList;            
+        tvFileModelByPurpose.TVFileModelList = tvFileModelSortedList;
 
         tvFileModelByPurposeList.push(tvFileModelByPurpose);
       }
@@ -184,10 +104,74 @@ export class TVFileModelByPurposeService {
     return tvFileModelByPurposeList;
   }
 
-
-  pad(n: number, width: number, z?: string) {
-    z = z || '0';
-    let nn = n + '';
-    return nn?.length >= width ? nn : new Array(width - nn?.length + 1).join(z) + nn;
+  private GetTextToSort(tvFileModel: TVFileModel, FilesSortProp: FilesSortPropEnum, Asc: boolean): string {
+    switch (FilesSortProp) {
+      case FilesSortPropEnum.FileName:
+        {
+          return tvFileModel.TVFile.ServerFileName.toLowerCase();
+        }
+        break;
+      case FilesSortPropEnum.FileType:
+        {
+          return `${tvFileModel.TVFile.ServerFileName.substring(tvFileModel.TVFile.ServerFileName.indexOf('.')).toLowerCase()}_${tvFileModel.TVFile.ServerFileName.toLocaleLowerCase()}`;
+        }
+        break;
+      case FilesSortPropEnum.FileSize:
+        {
+          return `${this.appTextService.pad(tvFileModel.TVFile.FileSize_kb, 20).toString().toLowerCase()}_${tvFileModel.TVFile.ServerFileName.toLocaleLowerCase()}`;
+        }
+        break;
+      case FilesSortPropEnum.FileDate:
+        {
+          Asc = false;
+          return `${this.dateFormateService.GetTVFileCreateDateTime_LocalDigit(tvFileModel.TVFile).toLowerCase()}_${tvFileModel.TVFile.ServerFileName.toLocaleLowerCase()}`;
+        }
+        break;
+      default:
+        break;
+    }
   }
+
+  private GetTVFileModelList(tvType: TVTypeEnum): TVFileModel[] {
+    switch (tvType) {
+      case TVTypeEnum.Area:
+        {
+          return this.appLoadedService.WebArea?.TVFileModelList;
+        }
+        break;
+      case TVTypeEnum.Country:
+        {
+          return this.appLoadedService.WebCountry?.TVFileModelList;
+        }
+        break;
+      case TVTypeEnum.Municipality:
+        {
+          return this.appLoadedService.WebMunicipality?.TVFileModelList;
+        }
+        break;
+      case TVTypeEnum.Province:
+        {
+          return this.appLoadedService.WebProvince?.TVFileModelList;
+        }
+        break;
+      case TVTypeEnum.Root:
+        {
+          return this.appLoadedService.WebRoot?.TVFileModelList;
+        }
+        break;
+      case TVTypeEnum.Sector:
+        {
+          return this.appLoadedService.WebSector?.TVFileModelList;
+        }
+      case TVTypeEnum.Subsector:
+        {
+          return this.appLoadedService.WebSubsector?.TVFileModelList;
+        }
+      default:
+        {
+          return [];
+        }
+    }
+  }
+ 
 }

@@ -1,0 +1,27 @@
+<p>
+    <button mat-raised-button (click)="BoxModelScenarioVisible = !BoxModelScenarioVisible"[ngClass]="BoxModelScenarioVisible ? 'selected' : ''">
+        <mat-icon>menu
+        </mat-icon>
+        {{ BoxModelModel.BoxModelLanguageList[appLanguageService.LangID].ScenarioName }}
+    </button>
+</p>
+<ng-container *ngIf="BoxModelScenarioVisible">
+    <p>
+        <button mat-raised-button (click)="ShowInput = !ShowInput"
+            [ngClass]="ShowInput ? 'selected' : ''">
+            {{ appLanguageService.Input[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ShowResults = !ShowResults"
+            [ngClass]="ShowResults ? 'selected' : ''">
+            {{ appLanguageService.Results[appLanguageService.LangID] }}
+        </button>
+    </p>
+    <app-box-model-item-input *ngIf="ShowInput" [BoxModelModel]="BoxModelModel">
+    </app-box-model-item-input>
+    <app-box-model-item-result *ngIf="ShowResults" [BoxModelModel]="BoxModelModel">
+    </app-box-model-item-result>
+
+</ng-container>
+
+

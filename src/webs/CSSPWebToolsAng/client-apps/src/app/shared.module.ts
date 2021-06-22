@@ -123,6 +123,12 @@ import { InfrastructureItemFilesComponent } from './components/infrastructure/in
 import { TableInfrastructureSingleOutfallComponent } from './components/table/table-infrastructure-single-outfall/table-infrastructure-single-outfall.component';
 import { BoxModelItemListComponent } from './components/box-model/box-model-item-list/box-model-item-list.component';
 import { BoxModelItemResultComponent } from './components/box-model/box-model-item-result/box-model-item-result.component';
+import { VisualPlumesItemListComponent } from './components/visual-plumes/visual-plumes-item-list/visual-plumes-item-list.component';
+import { VisualPlumesItemInputAmbientComponent } from './components/visual-plumes/visual-plumes-item-input-ambient/visual-plumes-item-input-ambient.component';
+import { VisualPlumesItemInputDiffuserComponent } from './components/visual-plumes/visual-plumes-item-input-diffuser/visual-plumes-item-input-diffuser.component';
+import { VisualPlumesItemComponent } from './components/visual-plumes/visual-plumes-item/visual-plumes-item.component';
+import { BoxModelItemComponent } from './components/box-model/box-model-item/box-model-item.component';
+import { BoxModelItemInputComponent } from './components/box-model/box-model-item-input/box-model-item-input.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +140,8 @@ import { BoxModelItemResultComponent } from './components/box-model/box-model-it
     AreaItemComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
+    BoxModelItemComponent,
+    BoxModelItemInputComponent,
     BoxModelItemListComponent,
     BoxModelItemResultComponent,
     BreadCrumbComponent,
@@ -246,6 +254,10 @@ import { BoxModelItemResultComponent } from './components/box-model/box-model-it
     TVItemModifyComponent,
     TVItemViewComponent,
     TVItemMenuOpenComponent,
+    VisualPlumesItemComponent,
+    VisualPlumesItemInputAmbientComponent,
+    VisualPlumesItemInputDiffuserComponent,
+    VisualPlumesItemListComponent,
   ],
   imports: [
     CommonModule,
@@ -269,6 +281,8 @@ import { BoxModelItemResultComponent } from './components/box-model/box-model-it
     AreaItemComponent,
     AreaTVItemListDetailComponent,
     AreaTVItemListItemComponent,
+    BoxModelItemComponent,
+    BoxModelItemInputComponent,
     BoxModelItemListComponent,
     BoxModelItemResultComponent,
     BreadCrumbComponent,
@@ -380,6 +394,10 @@ import { BoxModelItemResultComponent } from './components/box-model/box-model-it
     TVItemModifyComponent,
     TVItemViewComponent,
     TVItemMenuOpenComponent,
+    VisualPlumesItemComponent,
+    VisualPlumesItemInputAmbientComponent,
+    VisualPlumesItemInputDiffuserComponent,
+    VisualPlumesItemListComponent,
   ]
 })
 export class SharedModule { }

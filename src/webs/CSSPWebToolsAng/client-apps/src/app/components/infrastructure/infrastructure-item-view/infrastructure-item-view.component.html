@@ -5,17 +5,19 @@
     <span>&nbsp;&nbsp;</span>
     <button mat-raised-button (click)="ShowBoxModels = !ShowBoxModels" [ngClass]="ShowBoxModels ? 'selected' : ''">
         {{ appLanguageService.BoxModels[appLanguageService.LangID] }}
+        &nbsp;&nbsp;({{ InfrastructureModelPath?.InfrastructureModel?.BoxModelModelList?.length }})
     </button>
     <span>&nbsp;&nbsp;</span>
     <button mat-raised-button (click)="ShowVisualPlumes = !ShowVisualPlumes" [ngClass]="ShowVisualPlumes ? 'selected' : ''">
         {{ appLanguageService.VisualPlumes[appLanguageService.LangID] }}
+        &nbsp;&nbsp;({{ InfrastructureModelPath?.InfrastructureModel?.VPScenarioModelList?.length }})
     </button>
     <span>&nbsp;&nbsp;</span>
     <button mat-raised-button (click)="ShowFiles = !ShowFiles" [ngClass]="ShowFiles ? 'selected' : ''">
         {{ appLanguageService.Files[appLanguageService.LangID] }}
     </button>
 </p>
-<mat-card *ngIf="ShowInformation">
+<mat-card *ngIf="ShowInformation">       
     <mat-card-content>
         <app-infrastructure-item-information [InfrastructureModelPath]="InfrastructureModelPath">
         </app-infrastructure-item-information>
@@ -29,13 +31,13 @@
 </mat-card>
 <mat-card *ngIf="ShowVisualPlumes">
     <mat-card-content>
-        <app-infrastructure-item-visual-plumes [InfrastructureModelPath]="InfrastructureModelPath">
-        </app-infrastructure-item-visual-plumes>
+        <app-visual-plumes-item-list [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-visual-plumes-item-list>
     </mat-card-content>
 </mat-card>
 <mat-card *ngIf="ShowFiles">
     <mat-card-content>
         <app-infrastructure-item-files [InfrastructureModelPath]="InfrastructureModelPath">
-        </app-infrastructure-item-files>
-    </mat-card-content>
+    </app-infrastructure-item-files>  
+  </mat-card-content>
 </mat-card>

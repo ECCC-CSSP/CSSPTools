@@ -30,6 +30,10 @@ export class AppLanguageService {
 
   AerationType: string[] = ['Aeration Type', 'Type d\'aération'];
   AlarmSystemType: string[] = ['Alarm System Type', 'Type de système d\'alarme'];
+  AmbientInformation: string[] = ['Ambient Information', 'Milieu ambiant'];
+  Ambients: string[] = ['Ambients', 'Milieu ambiant'];
+  AmbientSalinity: string[] = ['Ambient Salinity', 'Salinité ambiante'];
+  AmbientTemperature: string[] = ['Ambient Temperature', 'Température ambiante'];
   AnalysisSite: string[] = ['Site', 'Site'];
   AnalysisSamples: string[] = ['Samples', 'Échantillons'];
   AnalysisPeriod: string[] = ['Period', 'Période'];
@@ -76,8 +80,11 @@ export class AppLanguageService {
   AreaFiles: string[] = ['Files', 'Filières'];
 
   Ascending: string[] = ['Ascending', 'Ascendant'];
+  atDepth: string[] = ['at depth', 'À une profondeur de'];
   AverageDepth_m: string[] = ['Average Depth (m)', 'Profondeur moyenne (m)'];
   AverageFlow_m3_day: string[] = ['Average Flow (m3/day)', 'Débit moyen (m3/day)'];
+
+  BackgroundConcentration: string[] = ['Background Concentration', 'Concentration de fond'];
   BoxModels: string[] = ['Box Models', 'Modèles boite'];
 
   ByMonth: string[] = ['by month', 'par mois'];
@@ -103,6 +110,7 @@ export class AppLanguageService {
   Close: string[] = ['Close', 'Fermer'];
   CollectionSystemType: string[] = ['Collection System Type', 'Type de réseau collecteur'];
   Comments: string[] = ['Comments', 'Commentaires'];
+  Concentration: string[] = ['Concentration', 'Concentration'];
   Concentration_objective_FC: string[] = ['Concentration objective (FC)', 'Objectif de concentration (CF)'];
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
 
@@ -121,7 +129,10 @@ export class AppLanguageService {
 
   Create: string[] = ['Create', 'Créer'];
   cubicMeter: string[] = ['m3', 'm3'];
-  cubicMeterPerDay: string[] = ['m3/day', 'm3/jour'];
+  cubicMetersPerDay: string[] = ['m3/day', 'm3/jour'];
+  cubicMetersPerSeconds: string[] = ['m3/seconds', 'm3/seconds'];
+  CurrentDirection: string[] = ['Current Direction', 'Direction du courant'];
+  CurrentSpeed: string[] = ['Current Speed', 'Vitesse du courant'];
   DecayRate_per_day: string[] = ['Decay Rate (/day)', 'Taux de décroissance (/jour)'];
   DegCelciusTitle: string[] = ['Degree Celcius', 'Dégré Celcius'];
 
@@ -154,19 +165,22 @@ export class AppLanguageService {
   DecayPreDisinfection: string[] = ['Decay (pre-disinfection)', 'Décroissance (avant la désinfection)'];
   DecayRate: string[] = ['Decay rate', 'Taux de décroissance'];
   DecayUntreated: string[] = ['Decay (untreated)', 'Décroissance (sans traitement)'];
+  deg: string[] = ['deg', 'dég'];
   DegCelciusSymbol: string[] = ['ºC', 'ºC'];
   Depth: string[] = ['Depth', 'Profondeur'];
   Descending: string[] = ['Descending', 'Descendant'];
-
   DesignFlow_m3_day: string[] = ['DesignFlow (m3/day)', 'Débit de conception (m3/day)'];
   DesktopReviewed: string[] = ['Desktop reviewed', 'Révisé au bureau'];
+  DiffuserInformation: string[] = ['Diffuser Information', 'Information de l\'émissaire'];
   Dilution: string[] = ['Dilution', 'Dilution'];
   Discharge: string[] = ['Discharge', 'Écoulement'];
   DischargeDuration: string[] = ['Discharge Duration', 'Durée de l\'écoulement'];
   DisinfectionType: string[] = ['Disinfection Type', 'Type de désinfection'];
   DistanceFromShore_m: string[] = ['Distance From Shore (m)', 'Distance par rapport à la rive (m)'];
   Download: string[] = ['Download', 'Télécharger'];
-
+  EffluentFlow: string[] = ['Effluent Flow', 'Débit de l\'effluent'];
+  EffluentSalinity: string[] = ['Effluent Salinity', 'Salinité de l\'effluent'];
+  EffluentTemperature: string[] = ['Effluent Temperature', 'Température de l\'effluent'];
   Emails: string[] = ['Emails', 'Courriels'];
 
   Entered: string[] = ['Entered', 'Entré'];
@@ -174,6 +188,9 @@ export class AppLanguageService {
   ExtraComments: string[] = ['Extra Comments', 'Extra commentaires'];
 
   FacilityType: string[] = ['Facility Type', 'Type d\'établissement'];
+  FarFieldCurrentDirection: string[] = ['Far Field Current Direction', 'Direction du courant en champ éloigné'];
+  FarFieldCurrentSpeed: string[] = ['Far Field Current Speed', 'Vitesse du courant en champ éloigné'];
+  FarFieldDiffusionCoefficient: string[] = ['Far Field Diffusion Coefficient', 'Coefficient de diffusion en champ éloigné'];
   FarFieldVelocity_m_s: string[] = ['Far Field Velocity (m/s)', 'Vitesse en champ éloigné (m/s)'];
   FCInit: string[] = ['FC', 'CF'];
   FCInitTitle: string[] = ['Most probable number of fecal coliform per 100 mL', 'Nombre le plus probable de coliformes fécaux par 100 mL'];
@@ -213,6 +230,7 @@ export class AppLanguageService {
   HomePleaseContactASiteAdministratorListedBelow: string[] = ['please contact a site administrator listed below', 'veuillez contacter un administrateur du site suivants:'];
   HomeStartUsingCSSPWebTools: string[] = ['Start using CSSP Web Tools', 'Utilisez les outils web PCCSM'];
   HomeAzureVersion: string[] = ['(Azure Version)', '(Version Azure)'];
+  HorizontalAngle: string[] = ['Horizontal Angle', 'Angle horizontal'];
   HorizontalAngle_deg: string[] = ['Horizontal Angle (deg)', 'Angle horizontal (deg)'];
   hours: string[] = ['hours', 'heures'];
   Information: string[] = ['Information', 'Information'];
@@ -233,9 +251,11 @@ export class AppLanguageService {
 
   Localize: string[] = ['Localize', 'Localiser'];
 
+  m067Pers2: string[] = ['m067/s2', 'm067/s2'];
   MedianInit: string[] = ['Med', 'Méd'];
   MedianInitTitle: string[] = ['Median', 'Médianne'];
   meters: string[] = ['meters', 'mètres'];
+  metersPerSeconds: string[] = ['m/s', 'm/s'];
   Modify: string[] = ['Modify', 'Modifier'];
 
   MonitoringStats: string[] = ['Monitoring stats', 'Stats d\'échantillonnage']
@@ -292,9 +312,14 @@ export class AppLanguageService {
   PercOver260Init: string[] = ['>260 (%)', '>260 (%)'];
   PercOver260InitTitle: string[] = ['Percentage of samples exceeding 260', 'Pourcentage d\'échantillons dépassant 260'];
   perDay: string[] = ['/day', '/jour'];
+  PollutantDecayRate: string[] = ['Pollutant Decay Rate', 'Taux de décroissance du polluant'];
   PopServed: string[] = ['Population Served', 'Population desservie'];
+  PortDepth: string[] = ['Port Depth', 'Profondeur de l\'orifice'];
+  PortDiameter: string[] = ['Port Diameter', 'Diamètre de l\'émissaire'];
   PortDiameter_m: string[] = ['Port Diameter (m)', 'Diamètre de l\'émissaire (m)'];
+  PortElevation: string[] = ['Port Elevation', 'Élévation de l\'orifice'];
   PortElevation_m: string[] = ['Port Elevation (m)', 'Élévation de l\'orifice de l\'émissaire (m)'];
+  PortSpacing: string[] = ['Port Spacing', 'Espace entre les orifices du diffuseur'];
   PortSpacing_m: string[] = ['Port Spacing (m)', 'Espace entre les orifices du diffuseur (m)'];
   PPTInit: string[] = ['ppt', 'ppm'];
   PPTInitTitle: string[] = ['Salinity in parts per thousand (ppt)', 'Salinité en parties pour mille (ppm)'];
@@ -316,12 +341,14 @@ export class AppLanguageService {
   ProvinceSamplingPlan: string[] = ['Sampling Plan', 'Plan d\'échantillonnage'];
   ProvinceShowProvinceTools: string[] = ['Show province tools', 'Montrer outils pour province'];
   ProvinceProvinceTools: string[] = ['Province Tools', "Outils pour province"];
-  
+  PSU: string[] = ['PSU', 'PSU'];
   RectangleLength: string[] = ['Rectangle (Length)'];
   RectangleWidth: string[] = ['Rectangle (Width)'];
   ReceivingWater_MPN_per_100ml: string[] = ['Receiving Water Concentration (FC /100 ml)', 'Concentration dans le milieu récepteur (FC /100 ml)'];
   ReceivingWaterSalinity_PSU: string[] = ['Receiving Water Salinity (PSU)', 'Salinité dans le milieu récepteur (PSU)'];
   ReceivingWaterTemperature_C: string[] = ['Receiving Water Temperature (ºC)', 'Température dans le milieu récepteur (ºC)'];
+  Results: string[] = ['Results', 'Résultats'];
+  ResultsRaw: string[] = ['Results Raw', 'Résultats Bruts'];
   RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
   RootCountries: string[] = ['Countries', 'Pays'];
   RootShowFiles: string[] = ['Show Files', 'Montrer filières'];
@@ -331,6 +358,8 @@ export class AppLanguageService {
 
   Runs: string[] = ['Runs', 'Tournées'];
 
+  SAA: string[] = ['SAA', 'MQCD'];
+  SameAsAbove: string[] = ['Same as above', 'Même que ci-dessus'];
   SampleDate: string[] = ['Sample Date', 'Date d\'échantillonnage'];
   SampleDateTitle: string[] = ['The date the sample was taken', 'La date à laquelle l\'échantillon a été prélevé'];
 
@@ -487,6 +516,7 @@ export class AppLanguageService {
   Untreated_FC: string[] = ['Untreated (FC)', 'Sans traitement (CF)'];
   Value: string[] = ['Value', 'Valeur'];
   ValveType: string[] = ['Valve type', 'Type de vanne'];
+  VerticalAngle: string[] = ['Vertical Angle', 'Angle vertical'];
   VerticalAngle_deg: string[] = ['Vertical Angle (deg)', 'Angle vertical (deg)'];
   View: string[] = ['View', 'Voir'];
 

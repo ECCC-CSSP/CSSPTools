@@ -22,9 +22,24 @@ export class FileSortByPropService {
           this.appStateService.UserPreference.CountryFilesSortByProp = filesSortPropEnum;
         }
         break;
+      case TVTypeEnum.Infrastructure:
+        {
+          this.appStateService.UserPreference.InfrastructureFilesSortByProp = filesSortPropEnum;
+        }
+        break;
       case TVTypeEnum.Municipality:
         {
           this.appStateService.UserPreference.MunicipalityFilesSortByProp = filesSortPropEnum;
+        }
+        break;
+      case TVTypeEnum.MWQMSite:
+        {
+          this.appStateService.UserPreference.MWQMSiteFilesSortByProp = filesSortPropEnum;
+        }
+        break;
+      case TVTypeEnum.PolSourceSite:
+        {
+          this.appStateService.UserPreference.PolSourceSiteFilesSortByProp = filesSortPropEnum;
         }
         break;
       case TVTypeEnum.Province:
@@ -56,27 +71,34 @@ export class FileSortByPropService {
         {
           return this.appStateService.UserPreference.AreaFilesSortByProp;
         }
-        break;
       case TVTypeEnum.Country:
         {
           return this.appStateService.UserPreference.CountryFilesSortByProp;
         }
-        break;
+      case TVTypeEnum.Infrastructure:
+        {
+          return this.appStateService.UserPreference.InfrastructureFilesSortByProp;
+        }
       case TVTypeEnum.Municipality:
         {
           return this.appStateService.UserPreference.MunicipalityFilesSortByProp;
         }
-        break;
+      case TVTypeEnum.MWQMSite:
+        {
+          return this.appStateService.UserPreference.MWQMSiteFilesSortByProp;
+        }
+      case TVTypeEnum.PolSourceSite:
+        {
+          return this.appStateService.UserPreference.PolSourceSiteFilesSortByProp;
+        }
       case TVTypeEnum.Province:
         {
           return this.appStateService.UserPreference.ProvinceFilesSortByProp;
         }
-        break;
       case TVTypeEnum.Root:
         {
           return this.appStateService.UserPreference.RootFilesSortByProp;
         }
-        break;
       case TVTypeEnum.Sector:
         {
           return this.appStateService.UserPreference.SectorFilesSortByProp;
@@ -89,7 +111,6 @@ export class FileSortByPropService {
         {
           return null;
         }
-        break;
     }
 
   }

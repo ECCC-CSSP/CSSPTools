@@ -1,17 +1,16 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { BoxModelResultTypeEnum } from 'src/app/enums/generated/BoxModelResultTypeEnum';
-import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
+import { VPScenarioModel } from 'src/app/models/generated/web/VPScenarioModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Component({
-  selector: 'app-box-model-item-list',
-  templateUrl: './box-model-item-list.component.html',
-  styleUrls: ['./box-model-item-list.component.css']
+  selector: 'app-visual-plumes-item-input-diffuser',
+  templateUrl: './visual-plumes-item-input-diffuser.component.html',
+  styleUrls: ['./visual-plumes-item-input-diffuser.component.css']
 })
-export class BoxModelItemListComponent implements OnInit, OnDestroy {
-  @Input() InfrastructureModelPath: InfrastructureModelPath;
+export class VisualPlumesItemInputDiffuserComponent implements OnInit, OnDestroy {
+  @Input() VPScenarioModel: VPScenarioModel;
 
 
   constructor(public appStateService: AppStateService,
