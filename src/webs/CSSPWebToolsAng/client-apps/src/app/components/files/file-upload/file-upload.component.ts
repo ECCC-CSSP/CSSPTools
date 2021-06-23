@@ -26,7 +26,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   UploadFile(file) {
     const formData = new FormData();
     formData.append('file', file.data);
-    this.fileUploadService.Working = true;
+    this.appStateService.Working = true;
     file.inProgress = true;
     this.fileUploadService.UploadFile(formData);
   }

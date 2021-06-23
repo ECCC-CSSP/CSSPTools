@@ -8,11 +8,11 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 import { FileLocalizeAllAzureFileService } from 'src/app/services/file';
 
 @Component({
-  selector: 'app-file-list-item-view',
-  templateUrl: './file-list-item-view.component.html',
-  styleUrls: ['./file-list-item-view.component.css']
+  selector: 'app-file-list-item-localize',
+  templateUrl: './file-list-item-localize.component.html',
+  styleUrls: ['./file-list-item-localize.component.css']
 })
-export class FileListItemViewComponent implements OnInit, OnDestroy {
+export class FileListItemLocalizeComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel;
   @Input() TVType: TVTypeEnum;
 
@@ -30,18 +30,9 @@ export class FileListItemViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  DoLocalizeAzureFile(tvFileModel: TVFileModel)
+  LocalizeAzureFile(tvFileModel: TVFileModel)
   {
     this.fileLocalizeAllAzureFileService.AddTVFileModelList([tvFileModel]);
     this.fileLocalizeAllAzureFileService.LocalizeAllAzureFile(this.TVType);
-  }
-
-  Download(tvFileModel: TVFileModel)
-  {
-    const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.Language]}-CA/Download/${tvFileModel.TVItem.ParentID}/${tvFileModel.TVFile.ServerFileName}`;
-
-    let a = document.createElement('a');
-    a.href = url;
-    a.click();
   }
 }

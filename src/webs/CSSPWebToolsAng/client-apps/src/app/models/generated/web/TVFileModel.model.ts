@@ -13,11 +13,9 @@ import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model
 import { TVItemStat } from 'src/app/models/generated/db/TVItemStat.model';
 
 export class TVFileModel {
-    DownloadStatus: string;
-    IsDownloading: boolean;
+    ErrorLocalizing: boolean;
     IsLocalized: boolean;
     MapInfoModelList: MapInfoModel[];
-    PercentCompleted: number;
     TVFile: TVFile;
     TVFileLanguageList: TVFileLanguage[];
     TVItem: TVItem;

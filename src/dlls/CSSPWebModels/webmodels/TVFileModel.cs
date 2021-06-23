@@ -14,9 +14,7 @@ namespace CSSPWebModels
         public TVFile TVFile { get; set; }
         public List<TVFileLanguage> TVFileLanguageList { get; set; }
         public bool IsLocalized { get; set; }
-        public bool IsDownloading { get; set; }
-        public int PercentCompleted { get; set; }
-        public string DownloadStatus { get; set; }
+        public bool ErrorLocalizing { get; set; }
 
         public TVFileModel()
         {

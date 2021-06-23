@@ -131,6 +131,8 @@ namespace CSSPWebModels
         [CSSPEnumType]
         public FilesSortPropEnum CountryFilesSortByProp { get; set; }
         [CSSPEnumType]
+        public FilesSortPropEnum InfrastructureFilesSortByProp { get; set; }
+        [CSSPEnumType]
         public AscDescEnum MunicipalityContactsSortOrder { get; set; }
         [CSSPEnumType]
         public FilesSortPropEnum MunicipalityFilesSortByProp { get; set; }

@@ -129,6 +129,9 @@ import { VisualPlumesItemInputDiffuserComponent } from './components/visual-plum
 import { VisualPlumesItemComponent } from './components/visual-plumes/visual-plumes-item/visual-plumes-item.component';
 import { BoxModelItemComponent } from './components/box-model/box-model-item/box-model-item.component';
 import { BoxModelItemInputComponent } from './components/box-model/box-model-item-input/box-model-item-input.component';
+import { FileListLocalizeAllComponent } from './components/files/file-list-localize-all/file-list-localize-all.component';
+import { FileListItemLocalizeComponent } from './components/files/file-list-item-localize/file-list-item-localize.component';
+import { FileListItemDownloadComponent } from './components/files/file-list-item-download/file-list-item-download.component';
 
 @NgModule({
   declarations: [
@@ -165,11 +168,14 @@ import { BoxModelItemInputComponent } from './components/box-model/box-model-ite
     FileListItemComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
+    FileListItemDownloadComponent,
     FileListItemLastUpdateComponent,
+    FileListItemLocalizeComponent,
     FileListItemModifyComponent,
     FileListItemMenuComponent,
     FileListItemMenuOpenComponent,
     FileListItemViewComponent,
+    FileListLocalizeAllComponent,
     FileUploadComponent,
     FooterComponent,
     HomeItemComponent,
@@ -303,13 +309,17 @@ import { BoxModelItemInputComponent } from './components/box-model/box-model-ite
     ExportArcGISComponent,
     FileListComponent,
     FileListByPurposeComponent,
+    FileListItemComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
+    FileListItemDownloadComponent,
     FileListItemLastUpdateComponent,
+    FileListItemLocalizeComponent,
     FileListItemModifyComponent,
     FileListItemMenuComponent,
     FileListItemMenuOpenComponent,
     FileListItemViewComponent,
+    FileListLocalizeAllComponent,
     FileUploadComponent,
     FooterComponent,
     HomeItemComponent,

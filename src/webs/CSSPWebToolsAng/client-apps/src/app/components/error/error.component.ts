@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppStateService } from 'src/app/services/app/app-state.service';
+import { TogglesService } from 'src/app/services/helpers/toggles.service';
 
 @Component({
   selector: 'app-error',
@@ -8,11 +8,10 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
   styleUrls: ['./error.component.css']
 })
 export class ErrorComponent implements OnInit, OnDestroy {
-  @Input() Error: HttpErrorResponse;
-
   InnerErrorMessageVisible: boolean = false;
 
-  constructor(private appStateService: AppStateService) {
+  constructor(public appStateService: AppStateService,
+    private toggleService: TogglesService) {
   }
 
   ngOnInit(): void {
@@ -23,6 +22,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
 
   ClearErrorMessage() {
     this.appStateService.Error = null;
+    this.toggleService.ReloadPage();
   }
 
   ToggleInnerErrorMessageVisibility()

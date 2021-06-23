@@ -1,6 +1,7 @@
 <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
 <span>&nbsp;&nbsp;{{ Index }} - </span>
-<!-- <a href="{{ GetURL() }}"> -->
+<span *ngIf="TVFileModel.IsLocalized != null && TVFileModel.IsLocalized" class="isLocalized">&nbsp;&nbsp;</span>
+<span *ngIf="TVFileModel.ErrorLocalizing!= null && TVFileModel.ErrorLocalizing" class="errorLocalizing">&nbsp;&nbsp;</span>
 <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileName">
     <span>{{ TVFileModel?.TVFile?.ServerFileName }} </span>
     <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
@@ -28,5 +29,3 @@
     <span>| {{ TVFileModel?.TVFile?.FileSize_kb }} </span>
     <span>{{ appLanguageService.KB[appLanguageService.LangID] }}</span>
 </ng-container>
-<span *ngIf="TVFileModel?.IsLocalized">{{ TVFileModel?.IsLocalized }}</span>
-<!-- </a> -->

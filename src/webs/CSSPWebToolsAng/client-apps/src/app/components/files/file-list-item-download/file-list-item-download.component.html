@@ -1,0 +1,12 @@
+<mat-card class="mat-elevation-z2">
+    <mat-card-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="appStateService.Working" mode="indeterminate">
+        </mat-progress-bar>
+        <button mat-raised-button title="{{ appLanguageService.DownloadLocalFile[appLanguageService.LangID] }} 
+            {{ appLanguageService.toUseItOrSaveItSomewhereElse[appLanguageService.LangID] }}"
+            (click)="DownloadLocalFile(TVFileModel)">
+            <span>{{ appLanguageService.DownloadLocalFile[appLanguageService.LangID] }}</span>
+            <mat-icon>download</mat-icon>
+        </button>
+    </mat-card-content>
+</mat-card>

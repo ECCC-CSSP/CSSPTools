@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppLanguageService } from '../app/app-language.service';
+import { AppStateService } from '../app/app-state.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,20 +14,18 @@ export class FileUploadService {
     private sub: Subscription;
 
     progress: number = 0;
-    Working?: boolean = false;
-    Error?: HttpErrorResponse = null;
-    Status?: string = '';
 
     constructor(private httpClient: HttpClient,
+        public appStateService: AppStateService,
         private appLoadedService: AppLoadedService,
         private appLanguageService: AppLanguageService) {
     }
 
     UploadFile(formData: FormData) {
         this.sub ? this.sub.unsubscribe() : null;
-        this.Working = true;
-        this.Error = null;
-        this.Status = '';
+        this.appStateService.Working = true;
+        this.appStateService.Error = null;
+        this.appStateService.Status = '';
         this.progress = 0;
         this.sub = this.DoUploadFile(formData).subscribe((event: HttpEvent<any>) => {
             switch (event.type) {
@@ -71,9 +70,9 @@ export class FileUploadService {
     }
 
     private DoError(e: any) {
-        this.Status = ''
-        this.Working = false
-        this.Error = <HttpErrorResponse>e;
+        this.appStateService.Status = ''
+        this.appStateService.Working = false
+        this.appStateService.Error = <HttpErrorResponse>e;
         this.progress = 0;
         console.debug(e);
     }

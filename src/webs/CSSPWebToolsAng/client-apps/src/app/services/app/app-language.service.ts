@@ -178,6 +178,7 @@ export class AppLanguageService {
   DisinfectionType: string[] = ['Disinfection Type', 'Type de désinfection'];
   DistanceFromShore_m: string[] = ['Distance From Shore (m)', 'Distance par rapport à la rive (m)'];
   Download: string[] = ['Download', 'Télécharger'];
+  DownloadLocalFile: string[] = ['Download local file', 'Télécharger la filière locale'];
   EffluentFlow: string[] = ['Effluent Flow', 'Débit de l\'effluent'];
   EffluentSalinity: string[] = ['Effluent Salinity', 'Salinité de l\'effluent'];
   EffluentTemperature: string[] = ['Effluent Temperature', 'Température de l\'effluent'];
@@ -250,6 +251,9 @@ export class AppLanguageService {
   Loading: string[] = ['Loading', 'Téléchargement'];
 
   Localize: string[] = ['Localize', 'Localiser'];
+  LocalizeAllFiles: string[] = ['Localize all files', 'Localiser tous les fichiers'];
+  LocalizeAzureFile: string[] = ['Localize Azure file', 'Localiser le fichier Azure'];
+  Localizing: string[] = ['Localizing...', 'Localisation...'];
 
   m067Pers2: string[] = ['m067/s2', 'm067/s2'];
   MedianInit: string[] = ['Med', 'Méd'];
@@ -300,6 +304,7 @@ export class AppLanguageService {
   NumberOfCells: string[] = ['Number of cells', 'Nombre de cellules'];
   NumberOfPorts: string[] = ['Number Of Ports', 'Nombre d\'orifices du diffuseur'];
   Observation: string[] = ['Observation', 'Observation'];
+  of: string[] = ['of', 'de'];
   Outfall: string[] = ['Outfall', 'Émissaire'];
   OutfallLatitudeLongitude: string[] = ['Outfall: Latitude Longitude', 'Émissaire: Latitude Longitude'];
   P90Init: string[] = ['P90', 'P90'];
@@ -439,6 +444,7 @@ export class AppLanguageService {
   Telephones: string[] = ['Telephones', 'Téléphones'];
   Temperature: string[] = ['Temperature', 'Température'];
   TertiaryTreatmentType: string[] = ['Tertiary Treatment Type', 'Type de traitement tertiaire'];
+  toUseItOrSaveItSomewhereElse: string[] = ['to use it or save it somewhere else', 'afin de l\'utiliser ou la sauvegarder à un autre endroit'];
   TreatmentType: string[] = ['Treatment Type', 'Type de traitement'];
   TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];
   TVItemListDetailAreaSubsector: string[] = ['Subsector', 'Sous-secteur'];

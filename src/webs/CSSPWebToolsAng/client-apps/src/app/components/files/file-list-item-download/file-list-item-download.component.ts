@@ -5,23 +5,20 @@ import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
-import { FileLocalizeAllAzureFileService } from 'src/app/services/file';
 
 @Component({
-  selector: 'app-file-list-item-view',
-  templateUrl: './file-list-item-view.component.html',
-  styleUrls: ['./file-list-item-view.component.css']
+  selector: 'app-file-list-item-download',
+  templateUrl: './file-list-item-download.component.html',
+  styleUrls: ['./file-list-item-download.component.css']
 })
-export class FileListItemViewComponent implements OnInit, OnDestroy {
+export class FileListItemDownloadComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel;
-  @Input() TVType: TVTypeEnum;
 
   languageEnum = GetLanguageEnum();
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    public appLoadedService: AppLoadedService,
-    public fileLocalizeAllAzureFileService: FileLocalizeAllAzureFileService) {
+    public appLoadedService: AppLoadedService) {
   }
 
   ngOnInit() {
@@ -30,13 +27,7 @@ export class FileListItemViewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  DoLocalizeAzureFile(tvFileModel: TVFileModel)
-  {
-    this.fileLocalizeAllAzureFileService.AddTVFileModelList([tvFileModel]);
-    this.fileLocalizeAllAzureFileService.LocalizeAllAzureFile(this.TVType);
-  }
-
-  Download(tvFileModel: TVFileModel)
+  DownloadLocalFile(tvFileModel: TVFileModel)
   {
     const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.Language]}-CA/Download/${tvFileModel.TVItem.ParentID}/${tvFileModel.TVFile.ServerFileName}`;
 

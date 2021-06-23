@@ -1,0 +1,21 @@
+<mat-card class="mat-elevation-z2">
+    <mat-card-content>
+        <div *ngIf="appStateService.Working">
+            <p *ngIf="fileLocalizeAllAzureFileService.TVFileModelList?.length">
+                <span>{{ appLanguageService.Localizing[appLanguageService.LangID] }}&nbsp;&nbsp;</span>
+                <span>{{ fileLocalizeAllAzureFileService.StartTotalFilesCount -
+                    fileLocalizeAllAzureFileService.TVFileModelList?.length + 1 }}&nbsp;</span>
+                <span>{{ appLanguageService.of[appLanguageService.LangID] }}&nbsp;</span>
+                <span>{{ fileLocalizeAllAzureFileService.StartTotalFilesCount }}&nbsp;&nbsp;</span>
+                <span>({{ fileLocalizeAllAzureFileService.TotalFileSize }})&nbsp;KB&nbsp;&nbsp;</span>
+                <span>{{ fileLocalizeAllAzureFileService.TVFileModelList[0]?.TVFile?.ServerFileName }}</span>
+            </p>
+            <mat-progress-bar mode="determinate" value="{{ fileLocalizeAllAzureFileService.Progress }}">
+            </mat-progress-bar>
+        </div>
+        <button mat-raised-button title="localize" (click)="LocalizeAzureFile(TVFileModel)">
+            <span>{{ appLanguageService.LocalizeAzureFile[appLanguageService.LangID] }}</span>
+            <mat-icon>local_library</mat-icon>
+        </button>
+    </mat-card-content>
+</mat-card>
