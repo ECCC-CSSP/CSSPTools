@@ -25,7 +25,7 @@ namespace FileServices
 {
     public partial class FileService : ControllerBase, IFileService
     {
-        private async Task<ActionResult<List<LocalFileInfo>>> DoGetLocalFileInfoList(string DirectoryPath)
+        private async Task<ActionResult<List<LocalFileInfo>>> DoGetLocalFileInfoList(int ParentTVItemID)
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
@@ -34,11 +34,11 @@ namespace FileServices
 
             List<LocalFileInfo> LocalFileList = new List<LocalFileInfo>();
 
-            DirectoryInfo di = new DirectoryInfo(DirectoryPath);
+            DirectoryInfo di = new DirectoryInfo($"{CSSPFilesPath}{ParentTVItemID}\\");
 
             if (!di.Exists)
             {
-                return await Task.FromResult(Ok(LocalFileList));
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotFindDirectory_, di.FullName)));
             }
 
             List<FileInfo> FileInfoList = di.GetFiles().ToList();

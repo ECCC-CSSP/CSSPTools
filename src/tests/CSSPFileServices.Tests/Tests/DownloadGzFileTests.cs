@@ -6,6 +6,8 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using System.Collections.Generic;
+using CSSPCultureServices.Resources;
 
 namespace FileServices.Tests
 {
@@ -26,14 +28,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_Constructor_Good_Test(string culture)
-        {
-            Assert.True(await Setup(culture));
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllAddresses_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllAddresses_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -47,7 +42,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllContacts_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllContacts_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -61,7 +56,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllCountries_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllCountries_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -75,7 +70,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllEmails_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllEmails_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -89,7 +84,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllHelpDocs_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllHelpDocs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -103,7 +98,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllMunicipalities_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllMunicipalities_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -117,7 +112,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllMWQMLookupMPNs_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -131,7 +126,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllPolSourceGroupings_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllPolSourceGroupings_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -145,7 +140,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -159,7 +154,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllProvinces_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllProvinces_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -173,7 +168,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllReportTypes_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllReportTypes_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -187,7 +182,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllTels_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllTels_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -201,7 +196,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebAllTideLocations_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebAllTideLocations_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -215,7 +210,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebArea_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -230,7 +225,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebClimateSite_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebClimateSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -245,7 +240,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebCountry_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -261,7 +256,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebHydrometricSite_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -276,7 +271,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebLabSheet_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebLabSheet_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -291,7 +286,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebMikeScenarios_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMikeScenarios_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -306,7 +301,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebMunicipality_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMunicipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -321,7 +316,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebMWQMRun_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMWQMRun_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -336,7 +331,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebMWQMSamples1980_2020_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMWQMSamples1980_2020_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -351,7 +346,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebMWQMSamples2021_2060_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMWQMSamples2021_2060_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -366,7 +361,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebMWQMSite_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -381,7 +376,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebPolSourceSite_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebPolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -396,7 +391,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebProvince_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -411,7 +406,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebRoot_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebRoot_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -425,7 +420,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebSector_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebSector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -440,7 +435,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebSubsector_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -455,7 +450,7 @@ namespace FileServices.Tests
         [Theory(Skip = "WebTideSite does not yet have items")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task DownloadGzFile_WebTideSite_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebTideSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -466,6 +461,60 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_WebNNNNNN_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            LoggedInService.LoggedInContactInfo = null;
+
+            List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
+            {
+                WebTypeEnum.WebAllAddresses,
+                WebTypeEnum.WebAllContacts,
+                WebTypeEnum.WebAllCountries,
+                WebTypeEnum.WebAllEmails,
+                WebTypeEnum.WebAllHelpDocs,
+                WebTypeEnum.WebAllMunicipalities,
+                WebTypeEnum.WebAllMWQMLookupMPNs,
+                WebTypeEnum.WebAllPolSourceGroupings,
+                WebTypeEnum.WebAllPolSourceSiteEffectTerms,
+                WebTypeEnum.WebAllProvinces,
+                WebTypeEnum.WebAllReportTypes,
+                WebTypeEnum.WebAllSearch,
+                WebTypeEnum.WebAllTels,
+                WebTypeEnum.WebAllTideLocations,
+                WebTypeEnum.WebArea,
+                WebTypeEnum.WebClimateSites,
+                WebTypeEnum.WebCountry,
+                WebTypeEnum.WebDrogueRuns,
+                WebTypeEnum.WebHydrometricSites,
+                WebTypeEnum.WebLabSheets,
+                WebTypeEnum.WebMikeScenarios,
+                WebTypeEnum.WebMunicipality,
+                WebTypeEnum.WebMWQMRuns,
+                WebTypeEnum.WebMWQMSamples1980_2020,
+                WebTypeEnum.WebMWQMSamples2021_2060,
+                WebTypeEnum.WebMWQMSites,
+                WebTypeEnum.WebPolSourceSites,
+                WebTypeEnum.WebProvince,
+                WebTypeEnum.WebRoot,
+                WebTypeEnum.WebSector,
+                WebTypeEnum.WebSubsector,
+                WebTypeEnum.WebTideSites,
+            };
+
+            foreach (WebTypeEnum webTypeToTry in webTypeList)
+            {
+                WebTypeEnum webType = webTypeToTry;
+
+                var actionRes = await FileService.DownloadGzFile(webType);
+                Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+                Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
+            }
         }
         #endregion Tests 
 

@@ -6,6 +6,7 @@ using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ReadGzFileServices
@@ -14,27 +15,30 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebRoot(WebRoot WebRoot, WebRoot WebRootLocal)
         {
-            if (WebRootLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+            if (WebRootLocal.TVItemModel.TVItem.TVItemID != 0
+                && (WebRootLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                || WebRootLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebRootLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+               || WebRootLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
             {
                 WebRoot.TVItemModel = WebRootLocal.TVItemModel;
             }
 
             if ((from c in WebRootLocal.TVItemModelParentList
-                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                 where c.TVItem.TVItemID != 0
+                 && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
                 WebRoot.TVItemModelParentList = WebRootLocal.TVItemModelParentList;
             }
 
             List<TVItemModel> TVItemModelList = (from c in WebRootLocal.TVItemModelCountryList
-                                                               where c.TVItem.DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
-                                                               select c).ToList();
+                                                 where c.TVItem.TVItemID != 0
+                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                 select c).ToList();
 
             foreach (TVItemModel TVItemModel in TVItemModelList)
             {
@@ -50,9 +54,10 @@ namespace ReadGzFileServices
             }
 
             List<TVFileModel> TVFileModelList = (from c in WebRootLocal.TVFileModelList
-                                                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                 where c.TVItem.TVItemID != 0
+                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                  select c).ToList();
 
             foreach (TVFileModel tvFileModel in TVFileModelList)
@@ -65,6 +70,28 @@ namespace ReadGzFileServices
                 else
                 {
                     tvFileModelOriginal = tvFileModel;
+                }
+            }
+
+            // checking if files are localized
+            DirectoryInfo di = new DirectoryInfo($"{CSSPFilesPath}{WebRoot.TVItemModel.TVItem.TVItemID}\\");
+
+            if (di.Exists)
+            {
+                List<FileInfo> FileInfoList = di.GetFiles().ToList();
+
+                foreach (TVFileModel tvFileModel in WebRoot.TVFileModelList)
+                {
+                    if ((from c in FileInfoList
+                         where c.Name == tvFileModel.TVFile.ServerFileName
+                         select c).Any())
+                    {
+                        tvFileModel.IsLocalized = true;
+                    }
+                    else
+                    {
+                        tvFileModel.IsLocalized = false;
+                    }
                 }
             }
         }

@@ -29,33 +29,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateTempFileService_CreateTempFile_Good_Test(string culture)
+        public async Task FileService_DownloadTempFile_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            FileInfo fi = new FileInfo($@"{CSSPTempFilesPath}\\TestingThisWillBeUnique.txt");
-            if (fi.Exists)
-            {
-                try
-                {
-                    fi.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-
-            TableConvertToCSVModel tableConvertToCSVModel = new TableConvertToCSVModel();
-            tableConvertToCSVModel.CSVString = "a,b,c";
-            tableConvertToCSVModel.TableFileName = fi.Name;
-
-            var actionRes = await FileService.CreateTempCSV(tableConvertToCSVModel);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-
-            fi = new FileInfo(fi.FullName);
-            Assert.True(fi.Exists);
+            FileInfo fi = new FileInfo($@"{CSSPTempFilesPath}\\ThisFileShoulBeUnique743Testing.txt");
 
             if (fi.Exists)
             {
@@ -69,6 +47,26 @@ namespace FileServices.Tests
                 }
             }
 
+            File.WriteAllText(fi.FullName, "bonjour");
+            
+            var actionRes = await FileService.DownloadTempFile(fi.Name);
+            Assert.NotNull(((FileStreamResult)actionRes).FileStream);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadTempFile_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            FileInfo fi = new FileInfo($@"{CSSPTempFilesPath}\\ThisFileShoulBeUnique743Testing.txt");
+
+            File.WriteAllText(fi.FullName, "bonjour");
+
+            LoggedInService.LoggedInContactInfo = null;
+
+            var actionRes = await FileService.DownloadTempFile(fi.Name);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
         }
         #endregion Tests 
 

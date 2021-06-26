@@ -3170,6 +3170,10 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMSiteFCStats;
                 case WebChartAndTableTypeEnum.MWQMRunData:
                     return CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMRunData;
+                case WebChartAndTableTypeEnum.InfrastructureSingle:
+                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumInfrastructureSingle;
+                case WebChartAndTableTypeEnum.InfrastructureUnderMunicipality:
+                    return CSSPCultureEnumsRes.WebChartAndTableTypeEnumInfrastructureUnderMunicipality;
                 default:
                     return CSSPCultureEnumsRes.Empty;
             }

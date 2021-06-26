@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FilePurposeEnum_GetIDText } from 'src/app/enums/generated/FilePurposeEnum';
 import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
 import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
@@ -20,8 +20,8 @@ export class InfrastructureItemFilesComponent implements OnInit, OnDestroy {
   @Input() InfrastructureModelPath: InfrastructureModelPath;
 
   languageEnum = GetLanguageEnum();
-
   filesSortByProp = GetFilesSortPropEnum();
+  tvType = GetTVTypeEnum();
 
   TVFileModelByPurposeList: TVFileModelByPurpose[] = [];
   FilesSortByProp: FilesSortPropEnum;

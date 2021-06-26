@@ -54,8 +54,8 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Constructors
 
         #region Functions public
-        [HttpPost]
         [Route("CreateTempCSV")]
+        [HttpPost]
         public async Task<ActionResult<bool>> CreateTempCSV(TableConvertToCSVModel tableConvertToCSVModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
@@ -63,8 +63,8 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await FileService.CreateTempCSV(tableConvertToCSVModel);
         }
-        [HttpPost]
         [Route("CreateTempPNG")]
+        [HttpPost]
         public async Task<ActionResult<bool>> CreateTempPNG()
         {
 

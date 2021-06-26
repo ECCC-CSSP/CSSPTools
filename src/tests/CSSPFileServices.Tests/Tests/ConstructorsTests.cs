@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPWebModels;
 using System.Collections.Generic;
 
 namespace FileServices.Tests
 {
-    //[Collection("Sequential")]
     public partial class FileServiceTests
     {
         #region Variables
@@ -28,20 +28,15 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadOtherFile_Good_Test(string culture)
+        public async Task FileService_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            List<string> otherFileList = new List<string>()
-            {
-                "CssFamilyMaterial.css", "IconFamilyMaterial.css", "GoogleMap.js", "flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
-            };
-
-            foreach(string fileName in otherFileList)
-            {
-                var actionRes2 = await FileService.DownloadOtherFile(fileName);
-                Assert.NotNull(((FileStreamResult)actionRes2).FileStream);
-            }
+            Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(ManageFileService);
+            Assert.NotNull(ReadGzFileService);
+            Assert.NotNull(FileService);
+            Assert.NotNull(LoggedInService);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
         }
         #endregion Tests 
 

@@ -6,6 +6,7 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { FileLocalizeAllAzureFileService } from 'src/app/services/file';
+import { FileService } from 'src/app/services/file/file.service';
 
 @Component({
   selector: 'app-file-list-item-view',
@@ -21,7 +22,8 @@ export class FileListItemViewComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public appLoadedService: AppLoadedService,
-    public fileLocalizeAllAzureFileService: FileLocalizeAllAzureFileService) {
+    public fileLocalizeAllAzureFileService: FileLocalizeAllAzureFileService,
+    public fileService: FileService) {
   }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class FileListItemViewComponent implements OnInit, OnDestroy {
 
   Download(tvFileModel: TVFileModel)
   {
-    const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.Language]}-CA/Download/${tvFileModel.TVItem.ParentID}/${tvFileModel.TVFile.ServerFileName}`;
+    const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.Language]}-CA/Download/${tvFileModel?.TVItem?.ParentID}/${tvFileModel?.TVFile?.ServerFileName}`;
 
     let a = document.createElement('a');
     a.href = url;

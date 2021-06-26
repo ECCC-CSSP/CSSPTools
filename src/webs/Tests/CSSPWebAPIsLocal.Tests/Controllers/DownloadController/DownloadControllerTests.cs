@@ -21,6 +21,8 @@ using System.Net;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
+using CSSPWebModels;
+using System.Text;
 
 namespace CSSPWebAPIsLocal.DownloadController.Tests
 {
@@ -52,10 +54,22 @@ namespace CSSPWebAPIsLocal.DownloadController.Tests
 
             using (HttpClient httpClient = new HttpClient())
             {
-                string url = $"{ LocalUrl }api/{ culture }/download/1/BarTopBottom.png";
-                var response = await httpClient.GetAsync(url);
+                LocalFileInfo localFileInfo = new LocalFileInfo()
+                {
+                    ParentTVItemID = 1,
+                    FileName = "BarTopBottom.png",
+                    Length = 0
+                };
+
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+
+                string stringData = JsonSerializer.Serialize(localFileInfo);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = httpClient.PostAsync($"{ LocalUrl }api/{ culture }/download/", contentData).Result;
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
+                Assert.True(responseContent.Length > 0);
             }
         }
         #endregion Tests

@@ -25,12 +25,12 @@ namespace FileServices
     {
         private async Task<ActionResult<bool>> DoDownloadGzFile(WebTypeEnum webType, int TVItemID)
         {
-            string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
-
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
+
+            string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
             try
             {

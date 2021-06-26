@@ -34,7 +34,7 @@
             </mat-menu>
         </ng-container>
     </h2>
-    <div *ngFor="let tvFileModel of tvFileModelByPurpose.TVFileModelList; let i = index">
+    <div *ngFor="let tvFileModel of tvFileModelByPurpose?.TVFileModelList; let i = index">
         <app-file-list-item-menu [TVFileModel]="tvFileModel"></app-file-list-item-menu>
 
         <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]="(i + 1)" [TVFileModel]="tvFileModel">

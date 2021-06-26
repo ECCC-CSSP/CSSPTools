@@ -885,4 +885,28 @@
   <data name="Adding_TVItemUnder_TVItemIsNotAllowed" xml:space="preserve">
     <value>Adding {0} TVItem under {1} TVItem is not allowed</value>
   </data>
+  <data name="CouldNoCreateDirectory_" xml:space="preserve">
+    <value>Could not create directory [{0}]</value>
+  </data>
+  <data name="CouldNotCreateTemp_FileError_" xml:space="preserve">
+    <value>Could not create temp {0} file. Error: {1}</value>
+  </data>
+  <data name="CouldNotDeleteFile_Error_" xml:space="preserve">
+    <value>Could not delete file [{0}]. Error: {1}</value>
+  </data>
+  <data name="CouldNotFindDirectory_" xml:space="preserve">
+    <value>Could not find directory {0}</value>
+  </data>
+  <data name="CouldNotLocalizeAzureFile_Error_" xml:space="preserve">
+    <value>Could not localize Azure file [{0}]. Error: {1}</value>
+  </data>
+  <data name="CouldNotOpenFile_ForStreaming" xml:space="preserve">
+    <value>Could not open file [{0}] for streaming</value>
+  </data>
+  <data name="ErrorWhileTryingToGetAzureFileInfoFor_Error_" xml:space="preserve">
+    <value>Error while trying to get Azure file info for {0}. Error: {1}</value>
+  </data>
+  <data name="File_LengthIs0" xml:space="preserve">
+    <value>File [0] length is 0</value>
+  </data>
 </root>

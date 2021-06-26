@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetWebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
+import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
@@ -15,17 +16,9 @@ import { DateFormatService } from 'src/app/services/helpers/date-format.service'
 export class MWQMSiteItemViewComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
-  webChartAndTableType = GetWebChartAndTableTypeEnum();
-
-   StatMWQMSiteSampleList: StatMWQMSiteSample[] = [];
-   CanvasNameFCSalTemp: string = '';
-   CanvasNameFCStat: string = '';
-
-   ChartFCSalTempVisible: boolean = false;
-   ChartFCStatsVisible: boolean = false;
-   TableFCStatsVisible: boolean = false;
-
-   displayedColumns: string[] = ['Index', 'SampleDate', 'FC', 'Sal', 'Temp', 'pH', 'Depth', 'GeoMean', 'Median', 'P90', 'PercOver43', 'PercOver260'];
+  ChartsVisible: boolean = true;
+  FilesVisible: boolean = false;
+  TablesVisible: boolean = false;
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
@@ -33,28 +26,16 @@ export class MWQMSiteItemViewComponent implements OnInit, OnDestroy {
     public dateFormatService: DateFormatService) { }
 
   ngOnInit(): void {
-    let StatMWQMSite = this.appLoadedService.StatMWQMSiteList.filter(c => c.TVItemModel.TVItem.TVItemID == this.TVItemModel.TVItem.TVItemID)[0];
-    this.StatMWQMSiteSampleList = StatMWQMSite.StatMWQMSiteSampleList.filter(c => c.FC != null);
-
-    this.CanvasNameFCSalTemp = `CanvasFCSalTemp${this.TVItemModel.TVItem.TVItemID}` 
-    this.CanvasNameFCStat = `CanvasFCStat${this.TVItemModel.TVItem.TVItemID}` 
   }
 
   ngOnDestroy(): void {
   }
 
-  ToggleChartFCSalTempVisible()
-  {
-    this.ChartFCSalTempVisible = !this.ChartFCSalTempVisible;
-  }
+  GetFileCount(): number {
+    let MWQMSiteModelList: MWQMSiteModel[] = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.TVItemID == this.TVItemModel.TVItem.TVItemID);
+    if (MWQMSiteModelList != undefined && MWQMSiteModelList.length > 0) {
+      return MWQMSiteModelList[0].TVFileModelList.length;
+    }
 
-  ToggleChartFCStatsVisible()
-  {
-    this.ChartFCStatsVisible = !this.ChartFCStatsVisible;
-  }
-
-  ToggleTableFCStatsVisible()
-  {
-    this.TableFCStatsVisible = !this.TableFCStatsVisible;
   }
 }

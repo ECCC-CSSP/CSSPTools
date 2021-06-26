@@ -29,7 +29,7 @@ export class ShowTVFileService {
     }
 
     private AddShowTVFile(tvFileModel: TVFileModel): void {
-        let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c.TVFile.TVFileID == tvFileModel.TVFile.TVFileID);
+        let tvFileModelExist: TVFileModel[] = this.appStateService.ShowTVFileModelList.filter(c => c.TVFile?.TVFileID == tvFileModel.TVFile?.TVFileID);
         if (!(tvFileModelExist != undefined && tvFileModelExist?.length > 0)) {
             this.appStateService.ShowTVFileModelList.push(tvFileModel);
         }

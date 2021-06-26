@@ -15,8 +15,9 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebMWQMRuns(WebMWQMRuns WebMWQMRuns, WebMWQMRuns WebMWQMRunsLocal)
         {
             List<MWQMRunModel> MWQMRunModelList = (from c in WebMWQMRunsLocal.MWQMRunModelList
-                                                               where c.MWQMRun.DBCommand != DBCommandEnum.Original
-                                                               select c).ToList();
+                                                   where c.MWQMRun.MWQMRunID != 0
+                                                   && c.MWQMRun.DBCommand != DBCommandEnum.Original
+                                                   select c).ToList();
 
             foreach (MWQMRunModel mwqmRunModel in MWQMRunModelList)
             {

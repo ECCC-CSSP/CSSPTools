@@ -13,6 +13,7 @@ using CSSPCultureServices.Resources;
 using System.Threading;
 using FileServices;
 using LoggedInServices;
+using CSSPWebModels;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -45,7 +46,7 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Constructors
 
         #region Functions public
-        [Route("{ParentTVItemID}/{FileName}")]
+        [Route("{ParentTVItemID:int}/{FileName}")]
         [HttpGet]
         public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {

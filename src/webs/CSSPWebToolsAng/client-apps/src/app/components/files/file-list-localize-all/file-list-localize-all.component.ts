@@ -29,8 +29,8 @@ export class FileListLocalizeAllComponent implements OnInit, OnDestroy {
   LocalizeAllFiles(tvFileModelByPurposeList: TVFileModelByPurpose[]) {
     let TVFileModelList: TVFileModel[] = [];
     for (let i = 0, countI = tvFileModelByPurposeList.length; i < countI; i++) {
-      for (let j = 0, countJ = tvFileModelByPurposeList[i].TVFileModelList.length; j < countJ; j++) {
-        TVFileModelList.push(tvFileModelByPurposeList[i].TVFileModelList[j]);
+      for (let j = 0, countJ = tvFileModelByPurposeList[i]?.TVFileModelList.length; j < countJ; j++) {
+        TVFileModelList.push(tvFileModelByPurposeList[i]?.TVFileModelList[j]);
       }
     }
 

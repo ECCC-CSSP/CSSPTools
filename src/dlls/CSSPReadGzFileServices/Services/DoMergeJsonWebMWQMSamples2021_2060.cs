@@ -15,7 +15,8 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebMWQMSamples2021_2060(WebMWQMSamples WebMWQMSamples, WebMWQMSamples WebMWQMSamplesLocal)
         {
             List<MWQMSampleModel> MWQMSampleModelList = (from c in WebMWQMSamplesLocal.MWQMSampleModelList
-                                                         where c.MWQMSample.DBCommand != DBCommandEnum.Original
+                                                         where c.MWQMSample.MWQMSampleID != 0
+                                                         && c.MWQMSample.DBCommand != DBCommandEnum.Original
                                                          select c).ToList();
 
             foreach (MWQMSampleModel mwqmSampleModel in MWQMSampleModelList)

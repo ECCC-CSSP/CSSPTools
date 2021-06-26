@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files;
 using Azure.Storage.Files.Shares.Models;
+using CSSPWebModels;
 
 namespace FileServices
 {
@@ -35,18 +36,14 @@ namespace FileServices
 
             if (!fi.Exists)
             {
-                var actionRes = await LocalizeAzureFile(ParentTVItemID, FileName);
-                if (((ObjectResult)actionRes.Result).StatusCode != 200)
-                {
-                    return NotFound($"Could not localize Azure file [{fi.FullName}]");
-                }
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotFindFile_, fi.FullName)));
             }
 
             FileStream fileStream = fi.OpenRead();
 
             if (fileStream == null)
             {
-                return NotFound($"Could not find file [{fi.FullName}]");
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotOpenFile_ForStreaming, fi.FullName)));
             }
 
             return File(fileStream, "application/octet-stream");

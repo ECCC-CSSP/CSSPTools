@@ -1,0 +1,12 @@
+<mat-card class="mat-elevation-z5">
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="TableFCStatsVisible ? 'selected' : ''"
+            (click)="TableFCStatsVisible = !TableFCStatsVisible">
+            {{ appLanguageService.FCSalTemp[appLanguageService.LangID] }}
+        </button>
+
+        <app-table-base *ngIf="TableFCStatsVisible" [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats"
+            [TVItemModel]="TVItemModel">
+        </app-table-base>
+    </mat-card-content>
+</mat-card>

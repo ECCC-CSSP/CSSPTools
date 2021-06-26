@@ -14,27 +14,30 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebDrogueRuns(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)
         {
-            if (WebDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+            if (WebDrogueRunsLocal.TVItemModel.TVItem.TVItemID != 0
+                && (WebDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+               || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
             {
                 WebDrogueRuns.TVItemModel = WebDrogueRunsLocal.TVItemModel;
             }
 
             if ((from c in WebDrogueRunsLocal.TVItemModelParentList
-                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                 where c.TVItem.TVItemID != 0
+                 && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
                 WebDrogueRuns.TVItemModelParentList = WebDrogueRunsLocal.TVItemModelParentList;
             }
 
             List<DrogueRunModel> DrogueRunModelList = (from c in WebDrogueRunsLocal.DrogueRunModelList
-                                                       where c.DrogueRun.DBCommand != DBCommandEnum.Original
+                                                       where c.DrogueRun.DrogueRunID != 0
+                                                       && (c.DrogueRun.DBCommand != DBCommandEnum.Original
                                                        || (from d in c.DrogueRunPositionList
                                                            where d.DBCommand != DBCommandEnum.Original
-                                                           select d).Any()
+                                                           select d).Any())
                                                        select c).ToList();
 
             foreach (DrogueRunModel drogueRunModel in DrogueRunModelList)

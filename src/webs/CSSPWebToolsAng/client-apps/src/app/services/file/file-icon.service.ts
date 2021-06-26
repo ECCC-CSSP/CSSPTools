@@ -12,7 +12,7 @@ export class FileIconService {
 
   GetFileIcon(tvFileModel: TVFileModel) {
     let fileName: string = '';
-    switch (tvFileModel.TVFile.FileType) {
+    switch (tvFileModel?.TVFile?.FileType) {
       case FileTypeEnum.CSV:
       case FileTypeEnum.XLSX:
         {

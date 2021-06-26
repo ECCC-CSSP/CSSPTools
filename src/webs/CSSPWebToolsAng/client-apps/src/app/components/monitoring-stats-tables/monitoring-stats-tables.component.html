@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="TableByYearVisible ? 'selected' : ''"
+            (click)="TableByYearVisible = !TableByYearVisible">
+            {{ this.appLanguageService.ByYear[this.appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="TableByMonthVisible ? 'selected' : ''"
+            (click)="TableByMonthVisible = !TableByMonthVisible">
+            {{ this.appLanguageService.ByMonth[this.appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="TableBySeasonVisible ? 'selected' : ''"
+            (click)="TableBySeasonVisible = !TableBySeasonVisible">
+            {{ this.appLanguageService.BySeason[this.appLanguageService.LangID] }}
+        </button>
+        <app-table-base *ngIf="TableByYearVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsByYear">
+        </app-table-base>
+        <app-table-base *ngIf="TableByMonthVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsByMonth">
+        </app-table-base>
+        <app-table-base *ngIf="TableBySeasonVisible"
+            [TVItemModel]="appLoadedService.BreadCrumbTVItemModelList[appLoadedService.BreadCrumbTVItemModelList.length - 1]"
+            [webChartAndTableType]="webChartAndTableType.MonitoringStatsBySeason">
+        </app-table-base>
+    </mat-card-content>
+</mat-card>

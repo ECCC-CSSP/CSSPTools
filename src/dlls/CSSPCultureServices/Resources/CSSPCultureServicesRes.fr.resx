@@ -879,4 +879,28 @@
   <data name="Adding_TVItemUnder_TVItemIsNotAllowed" xml:space="preserve">
     <value>L'ajout de {0} TVItem sous {1} TVItem n'est pas permis</value>
   </data>
+  <data name="CouldNoCreateDirectory_" xml:space="preserve">
+    <value>Dans l'impossibilité de créer le répertoir [{0}]</value>
+  </data>
+  <data name="CouldNotCreateTemp_FileError_" xml:space="preserve">
+    <value>Dans l'impossibilité d'ouvrir la filière [{0}] pour diffusion</value>
+  </data>
+  <data name="CouldNotDeleteFile_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité d'effacer la filière [{0}]. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotFindDirectory_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver le répertoir [{0}]</value>
+  </data>
+  <data name="CouldNotLocalizeAzureFile_Error_" xml:space="preserve">
+    <value>Dans l'impossiblité de localiser la filière Azure [{0}]. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotOpenFile_ForStreaming" xml:space="preserve">
+    <value>Dans l'impossibilité d'ouvrir la filière [{0}] pour diffusion</value>
+  </data>
+  <data name="ErrorWhileTryingToGetAzureFileInfoFor_Error_" xml:space="preserve">
+    <value>Erreur lors d'accès à l'information de la filière Azure pour {0}. Erreur: {1}</value>
+  </data>
+  <data name="File_LengthIs0" xml:space="preserve">
+    <value>La grosseur de la filière [{}] est 0</value>
+  </data>
 </root>

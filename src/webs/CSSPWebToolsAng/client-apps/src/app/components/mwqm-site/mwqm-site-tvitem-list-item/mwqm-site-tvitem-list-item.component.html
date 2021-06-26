@@ -44,16 +44,10 @@
         [StatMWQMSite]="statService.GetMWQMSiteDetail(tvItemModel)">
     </app-mwqm-site-tvitem-list-item-special>
 
-    <app-mwqm-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
-    </app-mwqm-site-item-view>
+    <app-mwqm-site-item-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+    </app-mwqm-site-item-menu-open>
 
-    <app-mwqm-site-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
-    </app-mwqm-site-item-modify>
-
-    <app-mwqm-site-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
-    </app-mwqm-site-item-create>
-
-    <app-mwqm-site-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVItemModel]="tvItemModel"
+    <app-mwqm-site-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVItemModel]="tvItemModel"
         [StatMWQMSite]="statService.GetMWQMSiteDetail(tvItemModel)">
-    </app-mwqm-site-tvitem-list-detail>
+    </app-mwqm-site-item-detail>
 </mat-list>

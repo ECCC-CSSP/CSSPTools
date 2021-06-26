@@ -1,34 +1,26 @@
 <mat-card class="mat-elevation-z5">
-    <mat-card-header>
-        <h3>{{ appLanguageService.Chart[appLanguageService.LangID] }}</h3>
-    </mat-card-header>
-    <button mat-raised-button [ngClass]="ChartFCSalTempVisible ? 'selected' : ''"
-        (click)="ToggleChartFCSalTempVisible()">
-        <mat-icon>insights</mat-icon>
-        {{ this.appLanguageService.FCSalTemp[this.appLanguageService.LangID] }}
-    </button>
-    &nbsp;&nbsp;
-    <button mat-raised-button [ngClass]="ChartFCStatsVisible ? 'selected' : ''" (click)="ToggleChartFCStatsVisible()">
-        <mat-icon>insights</mat-icon>
-        {{ this.appLanguageService.FCStats[this.appLanguageService.LangID] }}
-    </button>
-    &nbsp;&nbsp;
-    <button mat-raised-button [ngClass]="TableFCStatsVisible ? 'selected' : ''" (click)="ToggleTableFCStatsVisible()">
-        <mat-icon>insights</mat-icon>
-        {{ this.appLanguageService.FCStats[this.appLanguageService.LangID] }}
-    </button>
-
     <mat-card-content>
-        <app-chart-base *ngIf="ChartFCSalTempVisible"
-            [webChartAndTableType]="webChartAndTableType.MWQMSiteFCSalTempData" [TVItemModel]="TVItemModel">
-        </app-chart-base>
+        <button mat-raised-button [ngClass]="ChartsVisible ? 'selected' : ''" (click)="ChartsVisible = !ChartsVisible">
+            {{ appLanguageService.Charts[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="TablesVisible ? 'selected' : ''" (click)="TablesVisible = !TablesVisible">
+            {{ appLanguageService.Tables[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="FilesVisible ? 'selected' : ''" (click)="FilesVisible = !FilesVisible">
+            {{ appLanguageService.Files[appLanguageService.LangID] }}
+            &nbsp;&nbsp;({{ GetFileCount() }})
+        </button>
 
-        <app-chart-base *ngIf="ChartFCStatsVisible" [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats"
-            [TVItemModel]="TVItemModel">
-        </app-chart-base>
+        <app-mwqm-site-item-view-charts *ngIf="ChartsVisible" [TVItemModel]="TVItemModel">
+        </app-mwqm-site-item-view-charts>
 
-        <app-table-base *ngIf="TableFCStatsVisible" [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats"
-            [TVItemModel]="TVItemModel">
-        </app-table-base>
+        <app-mwqm-site-item-view-tables *ngIf="TablesVisible" [TVItemModel]="TVItemModel">
+        </app-mwqm-site-item-view-tables>
+
+        <app-mwqm-site-item-view-files *ngIf="FilesVisible" [TVItemModel]="TVItemModel">
+        </app-mwqm-site-item-view-files>
+
     </mat-card-content>
 </mat-card>

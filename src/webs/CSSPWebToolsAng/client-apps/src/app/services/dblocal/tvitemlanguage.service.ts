@@ -7,7 +7,6 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 import { AppLanguageService } from '../app/app-language.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
@@ -32,34 +31,34 @@ export class TVItemLanguageService {
 
         this.sub ? this.sub.unsubscribe() : null;
 
-        this.sub = this.DoModify().subscribe();
+        //this.sub = this.DoModify().subscribe();
     }
 
     private DoModify() {
         let languageEnum = GetLanguageEnum();
-        this.appStateService.Status: this.appLanguageService.Saving[this.appLanguageService.LangID],
-            Working: true
-        });
+        // this.appStateService.Status: this.appLanguageService.Saving[this.appLanguageService.LangID],
+        //     Working: true
+        // });
 
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
+        // const httpOptions = {
+        //     headers: new HttpHeaders({
+        //         'Content-Type': 'application/json'
+        //     })
+        // };
         
-        let tvItemLanguage: TVItemLanguage = JSON.parse(JSON.stringify(this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]));
+        // let tvItemLanguage: TVItemLanguage = JSON.parse(JSON.stringify(this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]));
 
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/TVItem/`;
-        return this.httpClient.put<TVItemLanguage>(url, tvItemLanguage, httpOptions).pipe(
-            map((x: any) => {
-                console.debug(x);
-            }),
-            catchError(e => of(e).pipe(map(e => {
-                this.appStateService.Status = ''
-                this.appStateService.Working = false
-                this.appStateService.Error = <HttpErrorResponse>e;
-                console.debug(e);
-            })))
-        );
+        // let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/TVItem/`;
+        // return this.httpClient.put<TVItemLanguage>(url, tvItemLanguage, httpOptions).pipe(
+        //     map((x: any) => {
+        //         console.debug(x);
+        //     }),
+        //     catchError(e => of(e).pipe(map(e => {
+        //         this.appStateService.Status = ''
+        //         this.appStateService.Working = false
+        //         this.appStateService.Error = <HttpErrorResponse>e;
+        //         console.debug(e);
+        //     })))
+        // );
     }
 }

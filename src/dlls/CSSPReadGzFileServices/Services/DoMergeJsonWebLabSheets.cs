@@ -14,28 +14,31 @@ namespace ReadGzFileServices
     {
         private static void DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
         {
-            if (WebLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+            if (WebLabSheetsLocal.TVItemModel.TVItem.TVItemID != 0
+                && (WebLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+               || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
             {
                 WebLabSheets.TVItemModel = WebLabSheetsLocal.TVItemModel;
             }
 
             if ((from c in WebLabSheetsLocal.TVItemModelParentList
-                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                 where c.TVItem.TVItemID != 0
+                 && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
                 WebLabSheets.TVItemModelParentList = WebLabSheetsLocal.TVItemModelParentList;
             }
 
             List<LabSheetModel> LabSheetModelList = (from c in WebLabSheetsLocal.LabSheetModelList
-                                                               where c.LabSheet.DBCommand != DBCommandEnum.Original
+                                                               where c.LabSheet.LabSheetID != 0
+                                                               && (c.LabSheet.DBCommand != DBCommandEnum.Original
                                                                || c.LabSheetDetail.DBCommand != DBCommandEnum.Original
                                                                || (from d in c.LabSheetTubeMPNDetailList
                                                                    where d.DBCommand != DBCommandEnum.Original
-                                                                   select d).Any()
+                                                                   select d).Any())
                                                                select c).ToList();
 
             foreach (LabSheetModel labSheetModel in LabSheetModelList)

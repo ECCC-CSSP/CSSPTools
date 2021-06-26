@@ -58,15 +58,15 @@ export class DateFormatService {
   }
 
   GetLastUpdateDateTVItemModel(tvItemModel: TVItemModel) {
-    return this.GetDateFromDateText(tvItemModel.TVItem.LastUpdateDate_UTC.toString(), false);
+    return this.GetDateFromDateText(tvItemModel?.TVItem?.LastUpdateDate_UTC.toString(), false);
   }
 
   GetLastUpdateDateTVFileModel(tvFileModel: TVFileModel) {
-    return this.GetDateFromDateText(tvFileModel.TVFile.LastUpdateDate_UTC.toString(), false);
+    return this.GetDateFromDateText(tvFileModel?.TVFile?.LastUpdateDate_UTC.toString(), false);
   }
 
   GetFileCreateDate(tvFileModel: TVFileModel) {
-    return this.GetDateFromDateText(tvFileModel.TVFile.FileCreatedDate_UTC.toString(), false);
+    return this.GetDateFromDateText(tvFileModel?.TVFile?.FileCreatedDate_UTC.toString(), false);
   }
 
   private GetDateFromDateText(DateText: string, DateOnly: boolean) {

@@ -52,7 +52,7 @@ export class TVFileModelByPurposeService {
       let tvFileModelList: TVFileModel[] = [];
       let tvFileModelSortedList: TVFileModel[] = [];
       for (let j = 0; j < TVFileModelList?.length; j++) {
-        if (enumIDAndTextList[i].EnumID == TVFileModelList[j].TVFile.FilePurpose) {
+        if (enumIDAndTextList[i].EnumID == TVFileModelList[j].TVFile?.FilePurpose) {
           tvFileModelList.push(TVFileModelList[j]);
         }
       }
@@ -72,7 +72,7 @@ export class TVFileModelByPurposeService {
           TextToSort = this.GetTextToSort(tvFileModelList[k], FilesSortProp, Asc);
 
           sortable.push(<TVFileID_Text_Sort>{
-            TVFileID: tvFileModelList[k].TVFile.TVFileID,
+            TVFileID: tvFileModelList[k].TVFile?.TVFileID,
             TextToSort: TextToSort,
           });
         }
@@ -86,7 +86,7 @@ export class TVFileModelByPurposeService {
 
         for (let k = 0; k < sortable?.length; k++) {
           for (let l = 0; l < tvFileModelList?.length; l++) {
-            if (arrFile2[k].TVFileID == tvFileModelList[l].TVFile.TVFileID) {
+            if (arrFile2[k].TVFileID == tvFileModelList[l].TVFile?.TVFileID) {
               tvFileModelSortedList.push(tvFileModelList[l]);
               break;
             }
@@ -94,7 +94,7 @@ export class TVFileModelByPurposeService {
         }
 
         let tvFileModelByPurpose: TVFileModelByPurpose = new TVFileModelByPurpose();
-        tvFileModelByPurpose.FilePurpose = tvFileModelSortedList[0].TVFile.FilePurpose;
+        tvFileModelByPurpose.FilePurpose = tvFileModelSortedList[0].TVFile?.FilePurpose;
         tvFileModelByPurpose.TVFileModelList = tvFileModelSortedList;
 
         tvFileModelByPurposeList.push(tvFileModelByPurpose);
@@ -108,23 +108,23 @@ export class TVFileModelByPurposeService {
     switch (FilesSortProp) {
       case FilesSortPropEnum.FileName:
         {
-          return tvFileModel.TVFile.ServerFileName.toLowerCase();
+          return tvFileModel.TVFile?.ServerFileName.toLowerCase();
         }
         break;
       case FilesSortPropEnum.FileType:
         {
-          return `${tvFileModel.TVFile.ServerFileName.substring(tvFileModel.TVFile.ServerFileName.indexOf('.')).toLowerCase()}_${tvFileModel.TVFile.ServerFileName.toLocaleLowerCase()}`;
+          return `${tvFileModel.TVFile?.ServerFileName.substring(tvFileModel.TVFile?.ServerFileName.indexOf('.')).toLowerCase()}_${tvFileModel.TVFile?.ServerFileName.toLocaleLowerCase()}`;
         }
         break;
       case FilesSortPropEnum.FileSize:
         {
-          return `${this.appTextService.pad(tvFileModel.TVFile.FileSize_kb, 20).toString().toLowerCase()}_${tvFileModel.TVFile.ServerFileName.toLocaleLowerCase()}`;
+          return `${this.appTextService.pad(tvFileModel.TVFile?.FileSize_kb, 20).toString().toLowerCase()}_${tvFileModel.TVFile?.ServerFileName.toLocaleLowerCase()}`;
         }
         break;
       case FilesSortPropEnum.FileDate:
         {
           Asc = false;
-          return `${this.dateFormateService.GetTVFileCreateDateTime_LocalDigit(tvFileModel.TVFile).toLowerCase()}_${tvFileModel.TVFile.ServerFileName.toLocaleLowerCase()}`;
+          return `${this.dateFormateService.GetTVFileCreateDateTime_LocalDigit(tvFileModel.TVFile).toLowerCase()}_${tvFileModel.TVFile?.ServerFileName.toLocaleLowerCase()}`;
         }
         break;
       default:

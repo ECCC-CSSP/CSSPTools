@@ -72,9 +72,9 @@ namespace CreateGzFileServices
                 foreach (TVItem tvItemFile in TVItemFileListAll.Where(c => c.ParentID == tvItem.TVItemID))
                 {
                     TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVItem = tvItem;
-                    tvFileModel.TVItemLanguageList = TVItemLanguageFileListAll.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
-                    tvFileModel.TVFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
+                    tvFileModel.TVItem = tvItemFile;
+                    tvFileModel.TVItemLanguageList = TVItemLanguageFileListAll.Where(c => c.TVItemID == tvItemFile.TVItemID).ToList();
+                    tvFileModel.TVFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItemFile.TVItemID).FirstOrDefault();
 
                     if (tvFileModel.TVFile != null)
                     {

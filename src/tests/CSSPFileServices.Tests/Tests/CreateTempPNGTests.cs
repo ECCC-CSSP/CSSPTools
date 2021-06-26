@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 using System.Collections.Generic;
+using CSSPWebModels;
 
 namespace FileServices.Tests
 {
@@ -25,19 +26,26 @@ namespace FileServices.Tests
         #endregion Constructors
 
         #region Tests
-        [Theory]
+        [Theory(Skip = "Will need to figure out a way to write the test function")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadTempFile_Good_Test(string culture)
+        public async Task FileService_CreateTempPNG_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            FileInfo fi = new FileInfo($@"{CSSPTempFilesPath}\\testing.txt");
+            Assert.True(true);
+        }
 
-            File.WriteAllText(fi.FullName, "bonjour");
+        [Theory(Skip = "Will need to figure out a way to write the test function")]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_CreateTempPNG_Unauthorized_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
 
-            var actionRes2 = await FileService.DownloadTempFile(fi.Name);
-            Assert.NotNull(((FileStreamResult)actionRes2).FileStream);
+            LoggedInService.LoggedInContactInfo = null;
+
+            Assert.True(true);
         }
         #endregion Tests 
 

@@ -2,7 +2,10 @@
  * Manually edited
  * 
  */
+using CSSPCultureServices.Resources;
+using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -19,11 +22,16 @@ namespace FileServices
 
             FileInfo fi = new FileInfo($"{CSSPTempFilesPath}\\{FileName}");
 
+            if (!fi.Exists)
+            {
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotFindFile_, fi.FullName)));
+            }
+
             FileStream fileStream = fi.OpenRead();
 
             if (fileStream == null)
             {
-                return NotFound($"Could not find file [{fi.FullName}]");
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotOpenFile_ForStreaming, fi.FullName)));
             }
 
             return File(fileStream, "application/octet-stream");

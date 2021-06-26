@@ -105,6 +105,7 @@ export class AppLanguageService {
   ChartLabelTempDegC: string[] = ['Temp (deg C)', 'Temp (deg C)'];
 
   ChartHide: string[] = ['Hide chart', 'Cacher graphique'];
+  Charts: string[] = ['Charts', 'Graphiques'];
   ChartView: string[] = ['View chart', 'Voir graphique'];
 
   Close: string[] = ['Close', 'Fermer'];
@@ -439,6 +440,7 @@ export class AppLanguageService {
   Table: string[] = ['Table', 'Tableau'];
 
   TableHide: string[] = ['Hide table', 'Cacher tableau'];
+  Tables: string[] = ['Tables', "Tableaux"];
   TableView: string[] = ['View table', 'Voir tableau'];
 
   Telephones: string[] = ['Telephones', 'Téléphones'];

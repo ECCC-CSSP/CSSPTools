@@ -15,6 +15,7 @@
     <span>&nbsp;&nbsp;</span>
     <button mat-raised-button (click)="ShowFiles = !ShowFiles" [ngClass]="ShowFiles ? 'selected' : ''">
         {{ appLanguageService.Files[appLanguageService.LangID] }}
+        &nbsp;&nbsp;({{ InfrastructureModelPath?.InfrastructureModel?.TVFileModelList?.length }})
     </button>
 </p>
 <mat-card *ngIf="ShowInformation">       

@@ -718,6 +718,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create directory [{0}].
+        /// </summary>
+        public static string CouldNoCreateDirectory_ {
+            get {
+                return ResourceManager.GetString("CouldNoCreateDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not {0}. Error [{1}]..
         /// </summary>
         public static string CouldNot_Error_ {
@@ -763,11 +772,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create temp {0} file. Error: {1}.
+        /// </summary>
+        public static string CouldNotCreateTemp_FileError_ {
+            get {
+                return ResourceManager.GetString("CouldNotCreateTemp_FileError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not delete {0}. Error: [{1}].
         /// </summary>
         public static string CouldNotDelete_Error_ {
             get {
                 return ResourceManager.GetString("CouldNotDelete_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete file [{0}]. Error: {1}.
+        /// </summary>
+        public static string CouldNotDeleteFile_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDeleteFile_Error_", resourceCulture);
             }
         }
         
@@ -831,6 +858,15 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotFindCommand_StatusInDB {
             get {
                 return ResourceManager.GetString("CouldNotFindCommand_StatusInDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find directory {0}.
+        /// </summary>
+        public static string CouldNotFindDirectory_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindDirectory_", resourceCulture);
             }
         }
         
@@ -916,6 +952,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not localize Azure file [{0}]. Error: {1}.
+        /// </summary>
+        public static string CouldNotLocalizeAzureFile_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotLocalizeAzureFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not login.
         /// </summary>
         public static string CouldNotLogin {
@@ -930,6 +975,15 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotModify_Error_ {
             get {
                 return ResourceManager.GetString("CouldNotModify_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not open file [{0}] for streaming.
+        /// </summary>
+        public static string CouldNotOpenFile_ForStreaming {
+            get {
+                return ResourceManager.GetString("CouldNotOpenFile_ForStreaming", resourceCulture);
             }
         }
         
@@ -1375,6 +1429,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error while trying to get Azure file info for {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorWhileTryingToGetAzureFileInfoFor_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileTryingToGetAzureFileInfoFor_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Everythiing is OK.
         /// </summary>
         public static string EverythingIsOK {
@@ -1434,6 +1497,15 @@ namespace CSSPCultureServices.Resources {
         public static string Extra_OfModel_IsInvalidAllowableValuesAre_ {
             get {
                 return ResourceManager.GetString("Extra_OfModel_IsInvalidAllowableValuesAre_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File [0] length is 0.
+        /// </summary>
+        public static string File_LengthIs0 {
+            get {
+                return ResourceManager.GetString("File_LengthIs0", resourceCulture);
             }
         }
         

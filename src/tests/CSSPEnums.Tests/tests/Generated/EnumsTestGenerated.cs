@@ -5417,6 +5417,12 @@ namespace CSSPEnums.Tests
                     case WebChartAndTableTypeEnum.MWQMRunData:
                         Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumMWQMRunData, retStr);
                         break;
+                    case WebChartAndTableTypeEnum.InfrastructureSingle:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumInfrastructureSingle, retStr);
+                        break;
+                    case WebChartAndTableTypeEnum.InfrastructureUnderMunicipality:
+                        Assert.Equal(CSSPCultureEnumsRes.WebChartAndTableTypeEnumInfrastructureUnderMunicipality, retStr);
+                        break;
                 }
             }
         }
@@ -9481,6 +9487,8 @@ namespace CSSPEnums.Tests
                      case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
                      case WebChartAndTableTypeEnum.MWQMSiteFCStats:
                      case WebChartAndTableTypeEnum.MWQMRunData:
+                     case WebChartAndTableTypeEnum.InfrastructureSingle:
+                     case WebChartAndTableTypeEnum.InfrastructureUnderMunicipality:
                         Assert.Equal("", retStr);
                         break;
                     default:

@@ -9,4 +9,5 @@
 export class LocalFileInfo {
     FileName: string;
     Length: number;
+    ParentTVItemID: number;
 }

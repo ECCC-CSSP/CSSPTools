@@ -20,6 +20,7 @@ using Azure.Storage.Files.Shares;
 using Azure.Storage.Files;
 using Azure.Storage.Files.Shares.Models;
 using ManageServices;
+using CSSPWebModels;
 
 namespace FileServices
 {
@@ -43,7 +44,8 @@ namespace FileServices
             }
             catch (Exception ex)
             {
-                return BadRequest($"Could not download file \\{ParentTVItemID}\\{FileName}. Ex: {ex.Message}");
+                string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.ErrorWhileTryingToGetAzureFileInfoFor_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText)));
             }
 
             FileInfo fiDownload = new FileInfo($"{CSSPFilesPath}{ParentTVItemID}\\{FileName}");
@@ -51,39 +53,29 @@ namespace FileServices
 
             if (fiDownload.Exists)
             {
-                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
-                if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
+                var manageFileExist = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
+                if (((ObjectResult)manageFileExist.Result).StatusCode == 200)
                 {
-                    try
-                    {
+                    ManageFile manageFile = (ManageFile)((OkObjectResult)manageFileExist.Result).Value;
 
-                        ManageFile manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
-
-                        if (manageFile.AzureETag != shareFileProperties.ETag.ToString().Replace("\"", ""))
-                        {
-                            ShouldDownload = true;
-                        }
-                    }
-                    catch (Exception ex)
+                    if (manageFile.AzureETag != shareFileProperties.ETag.ToString().Replace("\"", ""))
                     {
-                        return BadRequest($"Could not download file \\{ParentTVItemID}\\{FileName}. Ex: {ex.Message}");
-                    }
+                        ShouldDownload = true;
 
-                    if (ShouldDownload)
-                    {
                         try
                         {
                             fiDownload.Delete();
                         }
                         catch (Exception ex)
                         {
-                            return BadRequest($"Could not delete file \\{ParentTVItemID}\\{FileName} before downloading the new one. Ex: {ex.Message}");
+                            string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
+                            return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotDeleteFile_Error_, fiDownload.FullName, ErrorText)));
                         }
                     }
                 }
                 else
                 {
-                    return BadRequest($"File exist in directory [{ParentTVItemID}] but not in CSSPDBManage database");
+                    ShouldDownload = true;
                 }
             }
             else
@@ -102,7 +94,8 @@ namespace FileServices
                     }
                     catch (Exception ex)
                     {
-                        return BadRequest($"Could not create directory [{ParentTVItemID}]. Ex: {ex.Message}");
+                        string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
+                        return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNoCreateDirectory_, di.FullName, ErrorText)));
                     }
                 }
 
@@ -116,7 +109,8 @@ namespace FileServices
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest($"Could not download file \\{ParentTVItemID}\\{FileName}. Ex: {ex.Message}");
+                    string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
+                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotLocalizeAzureFile_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText)));
                 }
 
                 var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
@@ -134,7 +128,7 @@ namespace FileServices
                     var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
                     if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                     {
-                        //filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFileAdded.Result).Value;
+                        // information got uploaded to CSSPDBManage.db Table ManageFiles properly
                     }
                     else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                     {
@@ -157,7 +151,7 @@ namespace FileServices
                         var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
                         if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                         {
-                            //filesManagement = (FilesManagement)((OkObjectResult)actionCSSPFilePut.Result).Value;
+                            // information got uploaded to CSSPDBManage.db Table ManageFiles properly
                         }
                         else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
                         {

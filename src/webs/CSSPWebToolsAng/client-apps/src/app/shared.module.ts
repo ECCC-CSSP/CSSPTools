@@ -49,7 +49,7 @@ import { MWQMRunItemComponent } from './components/mwqm-run/mwqm-run-item/mwqm-r
 import { MWQMRunTVItemListDetailComponent } from './components/mwqm-run/mwqm-run-tvitem-list-detail/mwqm-run-tvitem-list-detail.component';
 import { MWQMRunTVItemListItemComponent } from './components/mwqm-run/mwqm-run-tvitem-list-item/mwqm-run-tvitem-list-item.component';
 import { MWQMSiteItemComponent } from './components/mwqm-site/mwqm-site-item/mwqm-site-item.component';
-import { MWQMSiteTVItemListDetailComponent } from './components/mwqm-site/mwqm-site-tvitem-list-detail/mwqm-site-tvitem-list-detail.component';
+import { MWQMSiteItemDetailComponent } from './components/mwqm-site/mwqm-site-item-detail/mwqm-site-item-detail.component';
 import { MWQMSiteTVItemListItemComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item/mwqm-site-tvitem-list-item.component';
 import { OpenDataItemComponent } from './components/open-data/open-data-item/open-data-item.component';
 import { PolSourceSiteItemComponent } from './components/pol-source-site/pol-source-site-item/pol-source-site-item.component';
@@ -132,6 +132,13 @@ import { BoxModelItemInputComponent } from './components/box-model/box-model-ite
 import { FileListLocalizeAllComponent } from './components/files/file-list-localize-all/file-list-localize-all.component';
 import { FileListItemLocalizeComponent } from './components/files/file-list-item-localize/file-list-item-localize.component';
 import { FileListItemDownloadComponent } from './components/files/file-list-item-download/file-list-item-download.component';
+import { MWQMSiteItemMenuOpenComponent } from './components/mwqm-site/mwqm-site-item-menu-open/mwqm-site-item-menu-open.component';
+import { MWQMSiteItemViewChartsComponent } from './components/mwqm-site/mwqm-site-item-view-charts/mwqm-site-item-view-charts.component';
+import { MWQMSiteItemViewFilesComponent } from './components/mwqm-site/mwqm-site-item-view-files/mwqm-site-item-view-files.component';
+import { MWQMSiteItemViewTablesComponent } from './components/mwqm-site/mwqm-site-item-view-tables/mwqm-site-item-view-tables.component';
+import { MonitoringStatsComponent } from './components/monitoring-stats/monitoring-stats.component';
+import { MonitoringStatsChartsComponent } from './components/monitoring-stats-charts/monitoring-stats-charts.component';
+import { MonitoringStatsTablesComponent } from './components/monitoring-stats-tables/monitoring-stats-tables.component';
 
 @NgModule({
   declarations: [
@@ -198,6 +205,9 @@ import { FileListItemDownloadComponent } from './components/files/file-list-item
     MikeScenarioItemViewComponent,
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
+    MonitoringStatsChartsComponent,
+    MonitoringStatsComponent,
+    MonitoringStatsTablesComponent,
     MunicipalityItemComponent,
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
@@ -209,9 +219,13 @@ import { FileListItemDownloadComponent } from './components/files/file-list-item
     MWQMRunTVItemListItemComponent,
     MWQMSiteItemComponent,
     MWQMSiteItemCreateComponent,
+    MWQMSiteItemDetailComponent,
+    MWQMSiteItemMenuOpenComponent,
     MWQMSiteItemModifyComponent,
     MWQMSiteItemViewComponent,
-    MWQMSiteTVItemListDetailComponent,
+    MWQMSiteItemViewChartsComponent,
+    MWQMSiteItemViewFilesComponent,
+    MWQMSiteItemViewTablesComponent,
     MWQMSiteTVItemListItemComponent,
     MWQMSiteTVItemListItemSpecialComponent,
     NotImplementedYetComponent,
@@ -342,6 +356,9 @@ import { FileListItemDownloadComponent } from './components/files/file-list-item
     MikeScenarioItemViewComponent,
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
+    MonitoringStatsChartsComponent,
+    MonitoringStatsComponent,
+    MonitoringStatsTablesComponent,
     MunicipalityItemComponent,
     MunicipalityTVItemListDetailComponent,
     MunicipalityTVItemListItemComponent,
@@ -353,9 +370,13 @@ import { FileListItemDownloadComponent } from './components/files/file-list-item
     MWQMRunTVItemListItemComponent,
     MWQMSiteItemComponent,
     MWQMSiteItemCreateComponent,
+    MWQMSiteItemDetailComponent,
+    MWQMSiteItemMenuOpenComponent,
     MWQMSiteItemModifyComponent,
     MWQMSiteItemViewComponent,
-    MWQMSiteTVItemListDetailComponent,
+    MWQMSiteItemViewChartsComponent,
+    MWQMSiteItemViewFilesComponent,
+    MWQMSiteItemViewTablesComponent,
     MWQMSiteTVItemListItemComponent,
     MWQMSiteTVItemListItemSpecialComponent,
     NotImplementedYetComponent,

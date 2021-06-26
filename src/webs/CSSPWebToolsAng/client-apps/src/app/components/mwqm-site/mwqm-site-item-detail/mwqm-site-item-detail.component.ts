@@ -8,11 +8,11 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 
 @Component({
-  selector: 'app-mwqm-site-tvitem-list-detail',
-  templateUrl: './mwqm-site-tvitem-list-detail.component.html',
-  styleUrls: ['./mwqm-site-tvitem-list-detail.component.css']
+  selector: 'app-mwqm-site-item-detail',
+  templateUrl: './mwqm-site-item-detail.component.html',
+  styleUrls: ['./mwqm-site-item-detail.component.css']
 })
-export class MWQMSiteTVItemListDetailComponent implements OnInit, OnDestroy {
+export class MWQMSiteItemDetailComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
   @Input() StatMWQMSite: StatMWQMSite;

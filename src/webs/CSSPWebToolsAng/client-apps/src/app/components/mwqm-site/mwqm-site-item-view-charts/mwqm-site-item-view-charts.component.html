@@ -1,0 +1,20 @@
+<mat-card class="mat-elevation-z5">
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="ChartFCSalTempVisible ? 'selected' : ''" (click)="ChartFCSalTempVisible = !ChartFCSalTempVisible">
+            {{ appLanguageService.FCSalTemp[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="ChartFCStatsVisible ? 'selected' : ''" (click)="ChartFCStatsVisible = !ChartFCStatsVisible">
+            {{ appLanguageService.FCStats[appLanguageService.LangID] }}
+        </button>
+
+        <app-chart-base *ngIf="ChartFCSalTempVisible"
+            [webChartAndTableType]="webChartAndTableType.MWQMSiteFCSalTempData" [TVItemModel]="TVItemModel">
+        </app-chart-base>
+
+        <app-chart-base *ngIf="ChartFCStatsVisible" [webChartAndTableType]="webChartAndTableType.MWQMSiteFCStats"
+            [TVItemModel]="TVItemModel">
+        </app-chart-base>
+
+    </mat-card-content>
+</mat-card>

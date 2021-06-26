@@ -19,15 +19,14 @@ using FileServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
-    public partial interface ILocalFileController
+    public partial interface ILocalFileInfoController
     {
-        Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int TVItemID, string FileName);
-        Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int TVItemID);
+        Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID);
     }
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    public partial class LocalFileController : ControllerBase, ILocalFileController
+    public partial class LocalFileInfoController : ControllerBase, ILocalFileInfoController
     {
         #region Variables
         #endregion Variables
@@ -40,7 +39,7 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Properties
 
         #region Constructors
-        public LocalFileController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
+        public LocalFileInfoController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
             ILoggedInService LoggedInService, IFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
@@ -51,31 +50,14 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Constructors
 
         #region Functions public
-        [Route("GetLocalFileInfo/{TVItemID:int}/{FileName}")]
+        [Route("GetLocalFileInfoList/{ParentTVItemID:int}")]
         [HttpGet]
-        public async Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int TVItemID, string FileName)
+        public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
-            string CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
-
-            string DirectoryPath = $"{CSSPFilesPath}{TVItemID}\\";
-
-            return await FileService.GetLocalFileInfo(DirectoryPath, FileName);
-        }
-        [Route("GetLocalFileInfoList/{TVItemID:int}")]
-        [HttpGet]
-        public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int TVItemID)
-        {
-            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
-
-            string CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
-
-            string DirectoryPath = $"{CSSPFilesPath}{TVItemID}\\";
-
-            return await FileService.GetLocalFileInfoList(DirectoryPath);
+            return await FileService.GetLocalFileInfoList(ParentTVItemID);
         }
         #endregion Functions public
 

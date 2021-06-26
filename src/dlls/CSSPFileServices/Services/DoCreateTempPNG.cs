@@ -3,6 +3,7 @@
  * 
  */
 using Azure.Core;
+using CSSPCultureServices.Resources;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,12 +42,13 @@ namespace FileServices
                 }
                 else
                 {
-                    return await Task.FromResult(BadRequest("This is a bad request"));
+                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.File_LengthIs0, file.FileName)));
                 }
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(StatusCode(500, $"Internal server error: {ex}"));
+                string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerExcecption: " + ex.InnerException.Message);
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotCreateTemp_FileError_, ErrorText)));
             }
         }
     }

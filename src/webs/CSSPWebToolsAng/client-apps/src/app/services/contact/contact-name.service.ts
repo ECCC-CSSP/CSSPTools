@@ -20,11 +20,11 @@ export class ContactNameService {
   }
 
   GetContactNameTVItemModel(tvItemModel: TVItemModel) {
-    return this.GetContactName(tvItemModel.TVItem.LastUpdateContactTVItemID);
+    return this.GetContactName(tvItemModel?.TVItem?.LastUpdateContactTVItemID);
   }
 
   GetContactNameTVFileModel(tvFileModel: TVFileModel) {
-    return this.GetContactName(tvFileModel.TVFile.LastUpdateContactTVItemID);
+    return this.GetContactName(tvFileModel?.TVFile?.LastUpdateContactTVItemID);
   }
 
   private GetContactName(LastUpdateContactTVItemID: number)

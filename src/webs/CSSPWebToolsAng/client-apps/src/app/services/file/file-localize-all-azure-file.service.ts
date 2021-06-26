@@ -52,7 +52,7 @@ export class FileLocalizeAllAzureFileService {
         }
 
         for (let i = 0, count = this.TVFileModelList.length; i < count; i++) {
-            TempTotalFileSize += this.TVFileModelList[i].TVFile.FileSize_kb;
+            TempTotalFileSize += this.TVFileModelList[i].TVFile?.FileSize_kb;
         }
 
         this.TotalFileSize = TempTotalFileSize;
@@ -69,7 +69,7 @@ export class FileLocalizeAllAzureFileService {
     private DoGetLocalFileInfo() {
         let languageEnum = GetLanguageEnum();
         let ParentTVItemID = this.TVFileModelList[0].TVItem.ParentID;
-        let FileName = this.TVFileModelList[0].TVFile.ServerFileName;
+        let FileName = encodeURI(this.TVFileModelList[0].TVFile?.ServerFileName).replace('#', '%23');
 
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]}`;
         this.appStateService.Working = true;
@@ -84,7 +84,7 @@ export class FileLocalizeAllAzureFileService {
             clearInterval(this.intervalId);
         }
 
-        this.Progress = x.Length / this.TVFileModelList[0].TVFile.FileSize_kb * 100;
+        this.Progress = x.Length / this.TVFileModelList[0].TVFile?.FileSize_kb * 100;
         this.intervalId = setInterval(() => this.GetLocalFileInfo(), 10000);
     }
 
@@ -98,7 +98,7 @@ export class FileLocalizeAllAzureFileService {
     private DoLocalizeAzureFile() {
         let languageEnum = GetLanguageEnum();
         let ParentTVItemID = this.TVFileModelList[0].TVItem.ParentID;
-        let FileName = this.TVFileModelList[0].TVFile.ServerFileName;
+        let FileName = encodeURI(this.TVFileModelList[0].TVFile?.ServerFileName).replace('#', '%23');
 
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]}`;
         this.appStateService.Working = true;
@@ -109,10 +109,6 @@ export class FileLocalizeAllAzureFileService {
     }
 
     private DoLocalizeAzureFileUpdate(x: boolean) {
-        // if (!x) {
-        //     this.appStateService.Error = new HttpErrorResponse({ error: `File: ${this.TVFileModelList[0].TVFile.ServerFileName} not downloaded`, status: 403 });
-        // }
-
         this.fileLocalizeSwitchService.DoFileLocalizeSwitch(this.tvType, this.TVFileModelList[0], x);
         this.TVFileModelList.shift();
         if (this.TVFileModelList.length > 0) {
@@ -130,9 +126,6 @@ export class FileLocalizeAllAzureFileService {
     }
 
     private DoLocalizeAzureFileError(e: any) {
-        // this.appStateService.Error = <HttpErrorResponse>e;
-        // console.debug(e);
-
         this.fileLocalizeSwitchService.DoFileLocalizeSwitch(this.tvType, this.TVFileModelList[0], false);
         this.TVFileModelList.shift();
         if (this.TVFileModelList.length > 0) {

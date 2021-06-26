@@ -11,14 +11,6 @@ import { SubPageService } from 'src/app/services/helpers/sub-page.service';
   styleUrls: ['./bread-crumb.component.css']
 })
 export class BreadCrumbComponent implements OnInit, OnDestroy {
-  webChartAndTableType = GetWebChartAndTableTypeEnum();
-
-  ChartByYearVisible: boolean = false;
-  ChartByMonthVisible: boolean = false;
-  ChartBySeasonVisible: boolean = false;
-  TableByYearVisible: boolean = false;
-  TableByMonthVisible: boolean = false;
-  TableBySeasonVisible: boolean = false;
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
@@ -42,31 +34,4 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  ToggleChartByYearVisible() {
-    this.ChartByYearVisible = !this.ChartByYearVisible;
-  }
-
-  ToggleChartByMonthVisible() {
-    this.ChartByMonthVisible = !this.ChartByMonthVisible;
-  }
-
-  ToggleChartBySeasonVisible() {
-    this.ChartBySeasonVisible = !this.ChartBySeasonVisible;
-  }
-
-  ToggleTableByYearVisible() {
-    this.TableByYearVisible = !this.TableByYearVisible;
-  }
-
-  ToggleTableByMonthVisible() {
-    this.TableByMonthVisible = !this.TableByMonthVisible;
-  }
-
-  ToggleTableBySeasonVisible() {
-    this.TableBySeasonVisible = !this.TableBySeasonVisible;
-  }
-
-  ToggleMonitoringStatsVisible() {
-    this.appStateService.ShowMonitoringStats = !this.appStateService.ShowMonitoringStats;
-  }
 }

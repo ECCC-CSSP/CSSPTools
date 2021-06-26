@@ -42,6 +42,7 @@ namespace ReadGzFileServices
         private string CSSPJSONPath { get; set; }
         private string CSSPJSONPathLocal { get; set; }
         private string CSSPAzureUrl { get; set; }
+        private string CSSPFilesPath { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -63,6 +64,7 @@ namespace ReadGzFileServices
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+            CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
         }
         #endregion Constructors
 

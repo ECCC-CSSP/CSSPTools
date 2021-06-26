@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files;
 using Azure.Storage.Files.Shares.Models;
+using CSSPWebModels;
 
 namespace FileServices
 {
@@ -33,11 +34,16 @@ namespace FileServices
 
             FileInfo fi = new FileInfo($"{CSSPOtherFilesPath}\\{FileName}");
 
+            if (!fi.Exists)
+            {
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotFindFile_, fi.FullName)));
+            }
+
             FileStream fileStream = fi.OpenRead();
 
             if (fileStream == null)
             {
-                return NotFound($"Could not find file [{fi.FullName}]");
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotOpenFile_ForStreaming, fi.FullName)));
             }
 
             return File(fileStream, "application/octet-stream");

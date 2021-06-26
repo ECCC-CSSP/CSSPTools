@@ -25,8 +25,13 @@ namespace FileServices
 {
     public partial class FileService : ControllerBase, IFileService
     {
-        private async Task<ActionResult<AzureFileInfo>> DoGetAzureFileInfo(int ParentTVItemID, string FileName)
+        private async Task<ActionResult<LocalFileInfo>> DoGetAzureFileInfo(int ParentTVItemID, string FileName)
         {
+            if (LoggedInService.LoggedInContactInfo == null)
+            {
+                return await Task.FromResult(Unauthorized(""));
+            }
+
             ShareFileClient shareFileClient;
             ShareFileProperties shareFileProperties;
             try
@@ -38,10 +43,11 @@ namespace FileServices
             }
             catch (Exception ex)
             {
-                return BadRequest($"Could not download file \\{ParentTVItemID}\\{FileName}. Ex: {ex.Message}");
+                string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
+                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.ErrorWhileTryingToGetAzureFileInfoFor_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText)));
             }
 
-            return await Task.FromResult(Ok(new AzureFileInfo() { FileName = FileName, Length = shareFileProperties.ContentLength }));
+            return await Task.FromResult(Ok(new LocalFileInfo() { FileName = FileName, Length = shareFileProperties.ContentLength }));
         }
     }
 }

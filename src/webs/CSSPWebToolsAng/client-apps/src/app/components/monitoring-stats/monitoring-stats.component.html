@@ -1,0 +1,14 @@
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="ChartsVisible ? 'selected' : ''" (click)="ChartsVisible = !ChartsVisible">
+            {{ this.appLanguageService.Charts[this.appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="TablesVisible ? 'selected' : ''" (click)="TablesVisible = !TablesVisible">
+            {{ this.appLanguageService.Tables[this.appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;        
+        <app-monitoring-stats-charts *ngIf="ChartsVisible"></app-monitoring-stats-charts>
+        <app-monitoring-stats-tables *ngIf="TablesVisible"></app-monitoring-stats-tables>
+    </mat-card-content>
+</mat-card>

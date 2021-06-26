@@ -16,6 +16,8 @@ using Xunit;
 
 namespace FileServices.Tests
 {
+    [Collection("Sequential")]
+
     public partial class FileServiceTests
     {
         #region Variables

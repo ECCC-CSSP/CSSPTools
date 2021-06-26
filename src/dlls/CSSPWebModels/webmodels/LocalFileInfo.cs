@@ -15,6 +15,7 @@ namespace CSSPWebModels
     public partial class LocalFileInfo
     {
         #region Properties
+        public int ParentTVItemID { get; set; }
         public string FileName { get; set; }
         public long Length { get; set; }
         #endregion Properties

@@ -15,9 +15,10 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebAllSearch(WebAllSearch WebAllSearch, WebAllSearch WebAllSearchLocal)
         {
             List<TVItemModel> TVItemModelList = (from c in WebAllSearchLocal.TVItemModelList
-                                                               where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                               where c.TVItem.TVItemID != 0
+                                                               && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                                || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                               || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                                select c).ToList();
 
             foreach (TVItemModel TVItemModel in TVItemModelList)

@@ -6,6 +6,7 @@ using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ReadGzFileServices
@@ -15,33 +16,35 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebPolSourceSites(WebPolSourceSites WebPolSourceSites, WebPolSourceSites WebPolSourceSitesLocal)
         {
             List<PolSourceSiteModel> PolSourceSiteModelList = (from c in WebPolSourceSitesLocal.PolSourceSiteModelList
-                                                     where c.PolSourceSite.DBCommand != DBCommandEnum.Original
+                                                     where c.PolSourceSite.PolSourceSiteID != 0
+                                                     && c.PolSourceSite.DBCommand != DBCommandEnum.Original
                                                      select c).ToList();
 
-            foreach (PolSourceSiteModel mwqmRunModel in PolSourceSiteModelList)
+            foreach (PolSourceSiteModel mwqmPolSourceSiteModel in PolSourceSiteModelList)
             {
-                PolSourceSiteModel mwqmRunModelOriginal = WebPolSourceSites.PolSourceSiteModelList.Where(c => c.PolSourceSite.PolSourceSiteID == mwqmRunModel.PolSourceSite.PolSourceSiteID).FirstOrDefault();
-                if (mwqmRunModelOriginal == null)
+                PolSourceSiteModel mwqmPolSourceSiteModelOriginal = WebPolSourceSites.PolSourceSiteModelList.Where(c => c.PolSourceSite.PolSourceSiteID == mwqmPolSourceSiteModel.PolSourceSite.PolSourceSiteID).FirstOrDefault();
+                if (mwqmPolSourceSiteModelOriginal == null)
                 {
-                    WebPolSourceSites.PolSourceSiteModelList.Add(mwqmRunModelOriginal);
+                    WebPolSourceSites.PolSourceSiteModelList.Add(mwqmPolSourceSiteModelOriginal);
                 }
                 else
                 {
-                    mwqmRunModelOriginal = mwqmRunModel;
+                    mwqmPolSourceSiteModelOriginal = mwqmPolSourceSiteModel;
                 }
 
-                List<TVFileModel> TVFileModelList = (from c in mwqmRunModel.TVFileModelList
-                                                     where c.TVItem.DBCommand != DBCommandEnum.Original
+                List<TVFileModel> TVFileModelList = (from c in mwqmPolSourceSiteModel.TVFileModelList
+                                                     where c.TVItem.TVItemID != 0
+                                                     && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                     || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                     || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                      select c).ToList();
 
                 foreach (TVFileModel tvFileModel in TVFileModelList)
                 {
-                    TVFileModel tvFileModelOriginal = mwqmRunModel.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                    TVFileModel tvFileModelOriginal = mwqmPolSourceSiteModel.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
                     if (tvFileModelOriginal == null)
                     {
-                        mwqmRunModel.TVFileModelList.Add(tvFileModel);
+                        mwqmPolSourceSiteModel.TVFileModelList.Add(tvFileModel);
                     }
                     else
                     {
@@ -50,6 +53,30 @@ namespace ReadGzFileServices
                 }
             }
 
+            foreach (PolSourceSiteModel mwqmPolSourceSiteModel in WebPolSourceSites.PolSourceSiteModelList)
+            {
+                // checking if files are localized
+                DirectoryInfo di = new DirectoryInfo($"{CSSPFilesPath}{mwqmPolSourceSiteModel.TVItemModel.TVItem.TVItemID}\\");
+
+                if (di.Exists)
+                {
+                    List<FileInfo> FileInfoList = di.GetFiles().ToList();
+
+                    foreach (TVFileModel tvFileModel in mwqmPolSourceSiteModel.TVFileModelList)
+                    {
+                        if ((from c in FileInfoList
+                             where c.Name == tvFileModel.TVFile.ServerFileName
+                             select c).Any())
+                        {
+                            tvFileModel.IsLocalized = true;
+                        }
+                        else
+                        {
+                            tvFileModel.IsLocalized = false;
+                        }
+                    }
+                }
+            }
         }
     }
 }

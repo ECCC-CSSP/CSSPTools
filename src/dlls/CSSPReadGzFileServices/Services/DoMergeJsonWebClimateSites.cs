@@ -14,27 +14,30 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebClimateSites(WebClimateSites WebClimateSites, WebClimateSites WebClimateSitesLocal)
         {
-            if (WebClimateSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+            if (WebClimateSitesLocal.TVItemModel.TVItem.TVItemID != 0
+                && (WebClimateSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                 || WebClimateSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                || WebClimateSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                || WebClimateSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
             {
                 WebClimateSites.TVItemModel = WebClimateSitesLocal.TVItemModel;
             }
 
             if ((from c in WebClimateSitesLocal.TVItemModelParentList
-                 where c.TVItem.DBCommand != DBCommandEnum.Original
+                 where c.TVItem.TVItemID != 0
+                 && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
                 WebClimateSites.TVItemModelParentList = WebClimateSitesLocal.TVItemModelParentList;
             }
 
             List<ClimateSiteModel> ClimateSiteModelList = (from c in WebClimateSitesLocal.ClimateSiteModelList
-                                                           where c.ClimateSite.DBCommand != DBCommandEnum.Original
+                                                           where c.TVItemModel.TVItem.TVItemID != 0
+                                                           && (c.ClimateSite.DBCommand != DBCommandEnum.Original
                                                            || (from d in c.ClimateDataValueList
                                                                where d.DBCommand != DBCommandEnum.Original
-                                                               select d).Any()
+                                                               select d).Any())
                                                            select c).ToList();
 
             foreach (ClimateSiteModel climateSiteModel in ClimateSiteModelList)

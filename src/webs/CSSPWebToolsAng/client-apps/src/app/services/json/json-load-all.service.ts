@@ -39,8 +39,7 @@ import { WebMonitoringOtherStatsProvince } from 'src/app/models/generated/web/We
 import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/web/WebMonitoringRoutineStatsProvince.model';
 import {
     JsonDoLoadSwitchService, JsonDoUpdateSwitchService, JsonDataIsLoadedService,
-    JsonDoUpdateBreadCrumbOnlyService, JsonLoadListService, JsonDoUpdateWebMapService,
-    JsonDoLoadLocalFileInfoSwitchService, JsonDoUpdateLocalFileInfoSwitchService
+    JsonDoUpdateBreadCrumbOnlyService, JsonLoadListService, JsonDoUpdateWebMapService
 } from '.';
 import { of, Subscription } from 'rxjs';
 import { AppLoadedService } from '../app/app-loaded.service';
@@ -48,7 +47,6 @@ import { AppLanguageService } from '../app/app-language.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { LocalFileInfo } from 'src/app/models/generated/web/LocalFileInfo.model';
 
 
 @Injectable({
@@ -68,9 +66,7 @@ export class JsonLoadAllService {
         private jsonDoUpdateBreadCrumbOnlyService: JsonDoUpdateBreadCrumbOnlyService,
         private jsonDoUpdateWebMapService: JsonDoUpdateWebMapService,
         private jsonDoUpdateSwitchService: JsonDoUpdateSwitchService,
-        private jsonDoLoadSwitchService: JsonDoLoadSwitchService,
-        private jsonDoLoadLocalFileInfoSwitchService: JsonDoLoadLocalFileInfoSwitchService,
-        private jsonDoUpdateLocalFileInfoSwitchService: JsonDoUpdateLocalFileInfoSwitchService) {
+        private jsonDoLoadSwitchService: JsonDoLoadSwitchService) {
     }
 
     LoadAll() {
@@ -148,11 +144,7 @@ export class JsonLoadAllService {
 
     private DoUpdate(x: any) {
         this.jsonDoUpdateSwitchService.DoUpdateSwitch(this.WebType, x);
-
-        if (this.jsonDoLoadLocalFileInfoSwitchService.DoLoadLocalFileInfoSwitch(this.WebType) != '') {
-            this.sub = this.DoLoadLocalFileInfo().subscribe();
-        }
-        else {
+       
             this.appStateService.Status = '';
             this.appStateService.Working = false;
             console.debug(x);
@@ -161,23 +153,7 @@ export class JsonLoadAllService {
                 this.jsonLoadListService.JsonToLoadList.shift();
                 this.LoadAll();
             }
-        }
-
     }
-
-    private DoUpdateLocalFileInfo(LocalFileInfoList: LocalFileInfo[]) {
-        this.jsonDoUpdateLocalFileInfoSwitchService.DoUpdateLocalFileInfoSwitch(this.WebType, LocalFileInfoList);
-
-        this.appStateService.Status = '';
-        this.appStateService.Working = false;
-        console.debug(LocalFileInfoList);
-
-        if (this.jsonLoadListService.JsonToLoadList?.length > 1) {
-            this.jsonLoadListService.JsonToLoadList.shift();
-            this.LoadAll();
-        }
-    }
-
     private DoLoad<T>() {
         let languageEnum = GetLanguageEnum();
         let objText: string = `${WebTypeEnum[this.WebType]}`;
@@ -191,16 +167,6 @@ export class JsonLoadAllService {
         let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/Read/${objText}${TVItemIDText}`;
 
         return this.httpClient.get<T>(url).pipe(map((x: T) => { this.DoUpdate(x); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
-    }
-
-    private DoLoadLocalFileInfo() {
-        let languageEnum = GetLanguageEnum();
-
-        let TVItemIDText: string = this.jsonDoLoadLocalFileInfoSwitchService.DoLoadLocalFileInfoSwitch(this.WebType);
-
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/LocalFile/GetLocalFileInfoList${TVItemIDText}`;
-
-        return this.httpClient.get<any>(url).pipe(map((x: LocalFileInfo[]) => { this.DoUpdateLocalFileInfo(x); }), catchError(e => of(e).pipe(map(e => { this.DoError(e); }))));
     }
 
     private DoError(e: any) {

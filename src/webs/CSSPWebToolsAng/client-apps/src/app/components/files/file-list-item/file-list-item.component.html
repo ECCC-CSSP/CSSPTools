@@ -1,5 +1,8 @@
 <img src="{{ fileIconService.GetFileIcon(TVFileModel) }}" />
 <span>&nbsp;&nbsp;{{ Index }} - </span>
+<span *ngIf="appStateService.UserPreference.DetailVisible">
+    [{{ TVFileModel?.TVItem.TVItemID }}]
+</span>
 <span *ngIf="TVFileModel.IsLocalized != null && TVFileModel.IsLocalized" class="isLocalized">&nbsp;&nbsp;</span>
 <span *ngIf="TVFileModel.ErrorLocalizing!= null && TVFileModel.ErrorLocalizing" class="errorLocalizing">&nbsp;&nbsp;</span>
 <ng-container *ngIf="FilesSortByProp == filesSortByProp.FileName">

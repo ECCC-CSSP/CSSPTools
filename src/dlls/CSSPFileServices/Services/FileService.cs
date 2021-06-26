@@ -30,8 +30,8 @@ namespace FileServices
         Task<ActionResult> DownloadFile(int ParentTVItemID, string FileName);
         Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName);
-        Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(string DirectoryPath, string FileName);
-        Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(string DirectoryPath);
+        Task<ActionResult<LocalFileInfo>> GetAzureFileInfo(int ParentTVItemID, string FileName);
+        Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID);
 
     }
     public partial class FileService : ControllerBase, IFileService
@@ -101,17 +101,13 @@ namespace FileServices
         {
             return await DoDownloadTempFile(FileName);
         }
-        public async Task<ActionResult<AzureFileInfo>> GetAzureFileInfo(int ParentTVItemID, string FileName)
+        public async Task<ActionResult<LocalFileInfo>> GetAzureFileInfo(int ParentTVItemID, string FileName)
         {
             return await DoGetAzureFileInfo(ParentTVItemID, FileName);
         }
-        public async Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(string DirectoryPath, string FileName)
+        public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)
         {
-            return await DoGetLocalFileInfo(DirectoryPath, FileName);
-        }
-        public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(string DirectoryPath)
-        {
-            return await DoGetLocalFileInfoList(DirectoryPath);
+            return await DoGetLocalFileInfoList(ParentTVItemID);
         }
         public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {
