@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MonitoringStatsTablesComponent } from 'src/app/components/monitoring-stats-tables/monitoring-stats-tables.component';
+import { MonitoringStatsTablesComponent } from 'src/app/components/monitoring-stats/monitoring-stats-tables/monitoring-stats-tables.component';
 
 describe('MonitoringStatsTablesComponent', () => {
   let component: MonitoringStatsTablesComponent;

@@ -1,9 +1,14 @@
-<app-file-list-item-localize *ngIf="!TVFileModel.IsLocalized" [TVType]="TVType" [TVFileModel]="TVFileModel">
-</app-file-list-item-localize>
-<app-file-list-item-download *ngIf="TVFileModel.IsLocalized" [TVFileModel]="TVFileModel"></app-file-list-item-download>
-
-<mat-card *ngIf="TVFileModel.IsLocalized && fileService.IsImage(TVFileModel)">
+<mat-card>
     <mat-card-content>
-        <img src="{{fileService.GetURL(TVFileModel)}}" />
+        <app-file-list-item-localize *ngIf="!TVFileModel.IsLocalized" [TVType]="TVType" [TVFileModel]="TVFileModel">
+        </app-file-list-item-localize>
+        <app-file-list-item-download *ngIf="TVFileModel.IsLocalized" [TVFileModel]="TVFileModel">
+        </app-file-list-item-download>
+
+        <mat-card *ngIf="TVFileModel.IsLocalized && fileService.IsImage(TVFileModel)">
+            <mat-card-content>
+                <img src="{{fileService.GetURL(TVFileModel)}}" />
+            </mat-card-content>
+        </mat-card>
     </mat-card-content>
 </mat-card>

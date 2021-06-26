@@ -7,17 +7,6 @@ import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { ShowTVFileService } from 'src/app/services/file';
 
-export enum VisibleEnum {
-  View = 1,
-  Modify = 2,
-  Create = 3,
-}
-
-export function GetVisibleEnum(): typeof VisibleEnum
-{
-  return VisibleEnum;
-}
-
 @Component({
   selector: 'app-file-list-item-menu-open',
   templateUrl: './file-list-item-menu-open.component.html',
@@ -27,11 +16,9 @@ export class FileListItemMenuOpenComponent implements OnInit, OnDestroy {
   @Input() TVFileModel: TVFileModel;
   @Input() TVType: TVTypeEnum;
 
-  ShowView: boolean = true;
-  ShowModify: boolean = false;
-  ShowCreate: boolean = false;
-
-  visible = GetVisibleEnum();
+  ViewVisible: boolean = true;
+  ModifyVisible: boolean = false;
+  CreateVisible: boolean = false;
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -44,21 +31,4 @@ export class FileListItemMenuOpenComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-
-  SwitchVisibleTo(visible: VisibleEnum) {
-    this.CleanVisible();
-    switch (visible) {
-      case VisibleEnum.View: this.ShowView = true; break;
-      case VisibleEnum.Modify: this.ShowModify = true; break;
-      case VisibleEnum.Create: this.ShowCreate = true; break;
-      default: break;
-    }
-  }
-
-  CleanVisible() {
-    this.ShowView = false;
-    this.ShowModify = false;
-    this.ShowCreate = false;
-  }
-
 }

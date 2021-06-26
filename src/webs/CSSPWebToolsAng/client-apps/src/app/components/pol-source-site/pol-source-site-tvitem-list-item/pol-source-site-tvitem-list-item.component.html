@@ -20,14 +20,8 @@
         </app-tvitem-last-update>
     </button>
 
-    <app-pol-source-site-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
-    </app-pol-source-site-item-view>
-
-    <app-pol-source-site-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
-    </app-pol-source-site-item-modify>
-
-    <app-pol-source-site-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
-    </app-pol-source-site-item-create>
+    <app-pol-source-site-item-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+    </app-pol-source-site-item-menu-open>
 
     <app-pol-source-site-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
         [TVItemModel]="tvItemModel">

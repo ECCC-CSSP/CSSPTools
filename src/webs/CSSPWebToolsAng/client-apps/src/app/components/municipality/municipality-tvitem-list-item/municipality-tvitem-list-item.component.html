@@ -8,8 +8,9 @@
 
         <app-tvitem-item  [TVItemModel]="tvItemModel" [Index]="i"></app-tvitem-item>
 
-        <app-tvitem-menu-open  [TVItemModel]="tvItemModel"></app-tvitem-menu-open>    
-
+        <app-tvitem-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+        </app-tvitem-menu-open>
+    
         <app-municipality-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
             [TVItemModel]="tvItemModel">
         </app-municipality-tvitem-list-detail>
@@ -22,8 +23,9 @@
     <mat-list>
         <app-tvitem-item  [TVItemModel]="tvItemModel" [Index]="-1"></app-tvitem-item>
 
-        <app-tvitem-menu-open  [TVItemModel]="tvItemModel"></app-tvitem-menu-open>
-    
+        <app-tvitem-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+        </app-tvitem-menu-open>
+      
         <app-municipality-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
             [TVItemModel]="tvItemModel">
         </app-municipality-tvitem-list-detail>

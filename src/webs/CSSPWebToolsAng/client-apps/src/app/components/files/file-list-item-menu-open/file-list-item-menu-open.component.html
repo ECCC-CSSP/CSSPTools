@@ -1,19 +1,19 @@
-<ng-container *ngIf="showTVFileService.TVFileVisible(TVFileModel)">
-    <p>
-        <button mat-raised-button (click)="SwitchVisibleTo(visible.View)" [ngClass]="ShowView ? 'selected' : ''">
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="ViewVisible = !ViewVisible" [ngClass]="ViewVisible ? 'selected' : ''">
             {{ appLanguageService.View[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="SwitchVisibleTo(visible.Modify)" [ngClass]="ShowModify ? 'selected' : ''">
+        <button mat-raised-button (click)="ModifyVisible = !ModifyVisible" [ngClass]="ModifyVisible ? 'selected' : ''">
             {{ appLanguageService.Modify[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="SwitchVisibleTo(visible.Create)" [ngClass]="ShowCreate ? 'selected' : ''">
+        <button mat-raised-button (click)="CreateVisible = !CreateVisible" [ngClass]="CreateVisible ? 'selected' : ''">
             {{ appLanguageService.Create[appLanguageService.LangID] }}
         </button>
-    </p>
-    <app-file-list-item-view [TVType]="TVType" *ngIf="ShowView" [TVFileModel]="TVFileModel"> </app-file-list-item-view>
-    <app-file-list-item-modify *ngIf="ShowModify" [TVFileModel]="TVFileModel"> </app-file-list-item-modify>
-    <app-file-list-item-create *ngIf="ShowCreate" [TVFileModel]="TVFileModel"> </app-file-list-item-create>
-  
-</ng-container>
+        <app-file-list-item-view [TVType]="TVType" *ngIf="ViewVisible" [TVFileModel]="TVFileModel">
+        </app-file-list-item-view>
+        <app-file-list-item-modify *ngIf="ModifyVisible" [TVFileModel]="TVFileModel"> </app-file-list-item-modify>
+        <app-file-list-item-create *ngIf="CreateVisible" [TVFileModel]="TVFileModel"> </app-file-list-item-create>
+    </mat-card-content>
+</mat-card>

@@ -18,14 +18,8 @@
         </app-tvitem-last-update>
     </button>
 
-    <app-mwqm-run-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
-    </app-mwqm-run-item-view>
-
-    <app-mwqm-run-item-modify *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
-    </app-mwqm-run-item-modify>
-
-    <app-mwqm-run-item-create *ngIf="appStateService.UserPreference.EditVisible" [TVItemModel]="tvItemModel">
-    </app-mwqm-run-item-create>
+    <app-mwqm-run-item-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+    </app-mwqm-run-item-menu-open>
 
     <app-mwqm-run-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVItemModel]="tvItemModel"
         [MWQMRunModelSiteAndSampleModel]="statService.GetMWQMRunModelSiteAndSampleDetail(tvItemModel)">

@@ -1,0 +1,25 @@
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="ViewVisible ? 'selected' : ''" (click)="ViewVisible = !ViewVisible">
+            {{ appLanguageService.View[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="ModifyVisible ? 'selected' : ''" (click)="ModifyVisible = !ModifyVisible">
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="CreateVisible ? 'selected' : ''" (click)="CreateVisible = !CreateVisible">
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        </button>
+
+        <app-mwqm-run-item-view *ngIf="ViewVisible" [TVItemModel]="TVItemModel">
+        </app-mwqm-run-item-view>
+
+        <app-mwqm-run-item-modify *ngIf="ModifyVisible" [TVItemModel]="TVItemModel">
+        </app-mwqm-run-item-modify>
+
+        <app-mwqm-run-item-create *ngIf="CreateVisible" [TVItemModel]="TVItemModel">
+        </app-mwqm-run-item-create>
+
+    </mat-card-content>
+</mat-card>

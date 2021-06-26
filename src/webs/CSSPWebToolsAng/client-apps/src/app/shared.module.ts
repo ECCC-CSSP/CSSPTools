@@ -106,7 +106,6 @@ import { TableMonitoringStatsByMonthComponent } from './components/table/table-m
 import { TableMonitoringStatsBySeasonComponent } from './components/table/table-monitoring-stats-by-season/table-monitoring-stats-by-season.component';
 import { TableMonitoringStatsByYearComponent } from './components/table/table-monitoring-stats-by-year/table-monitoring-stats-by-year.component';
 import { TableMWQMRunDataComponent } from './components/table/table-mwqm-run-data/table-mwqm-run-data.component';
-import { FileListByPurposeComponent } from './components/files/file-list-by-purpose/file-list-by-purpose.component';
 import { FileUploadComponent } from './components/files/file-upload/file-upload.component';
 import { TelComponent } from './components/tel/tel.component';
 import { EmailComponent } from './components/email/email.component';
@@ -136,9 +135,13 @@ import { MWQMSiteItemMenuOpenComponent } from './components/mwqm-site/mwqm-site-
 import { MWQMSiteItemViewChartsComponent } from './components/mwqm-site/mwqm-site-item-view-charts/mwqm-site-item-view-charts.component';
 import { MWQMSiteItemViewFilesComponent } from './components/mwqm-site/mwqm-site-item-view-files/mwqm-site-item-view-files.component';
 import { MWQMSiteItemViewTablesComponent } from './components/mwqm-site/mwqm-site-item-view-tables/mwqm-site-item-view-tables.component';
-import { MonitoringStatsComponent } from './components/monitoring-stats/monitoring-stats.component';
-import { MonitoringStatsChartsComponent } from './components/monitoring-stats-charts/monitoring-stats-charts.component';
-import { MonitoringStatsTablesComponent } from './components/monitoring-stats-tables/monitoring-stats-tables.component';
+import { MonitoringStatsComponent } from './components/monitoring-stats/monitoring-stats/monitoring-stats.component';
+import { MonitoringStatsChartsComponent } from './components/monitoring-stats/monitoring-stats-charts/monitoring-stats-charts.component';
+import { MonitoringStatsTablesComponent } from './components/monitoring-stats/monitoring-stats-tables/monitoring-stats-tables.component';
+import { PolSourceSiteItemMenuOpenComponent } from './components/pol-source-site/pol-source-site-item-menu-open/pol-source-site-item-menu-open.component';
+import { PolSourceSiteItemViewFilesComponent } from './components/pol-source-site/pol-source-site-item-view-files/pol-source-site-item-view-files.component';
+import { PolSourceSiteItemViewInfoComponent } from './components/pol-source-site/pol-source-site-item-view-info/pol-source-site-item-view-info.component';
+import { MWQMRunItemMenuOpenComponent } from './components/mwqm-run/mwqm-run-item-menu-open/mwqm-run-item-menu-open.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +174,6 @@ import { MonitoringStatsTablesComponent } from './components/monitoring-stats-ta
     ErrorComponent,
     ExportArcGISComponent,
     FileListComponent,
-    FileListByPurposeComponent,
     FileListItemComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
@@ -213,6 +215,7 @@ import { MonitoringStatsTablesComponent } from './components/monitoring-stats-ta
     MunicipalityTVItemListItemComponent,
     MWQMRunItemComponent,
     MWQMRunItemCreateComponent,
+    MWQMRunItemMenuOpenComponent,
     MWQMRunItemModifyComponent,
     MWQMRunItemViewComponent,
     MWQMRunTVItemListDetailComponent,
@@ -234,9 +237,12 @@ import { MonitoringStatsTablesComponent } from './components/monitoring-stats-ta
     PolSourceSiteItemComponent,
     PolSourceSiteItemCreateComponent,
     PolSourceSiteItemIssueComponent,
+    PolSourceSiteItemMenuOpenComponent,
     PolSourceSiteItemModifyComponent,
     PolSourceSiteItemObsComponent,
     PolSourceSiteItemViewComponent,
+    PolSourceSiteItemViewFilesComponent,
+    PolSourceSiteItemViewInfoComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,
@@ -322,7 +328,6 @@ import { MonitoringStatsTablesComponent } from './components/monitoring-stats-ta
     ErrorComponent,
     ExportArcGISComponent,
     FileListComponent,
-    FileListByPurposeComponent,
     FileListItemComponent,
     FileListItemCreateComponent,
     FileListItemDetailComponent,
@@ -364,6 +369,7 @@ import { MonitoringStatsTablesComponent } from './components/monitoring-stats-ta
     MunicipalityTVItemListItemComponent,
     MWQMRunItemComponent,
     MWQMRunItemCreateComponent,
+    MWQMRunItemMenuOpenComponent,
     MWQMRunItemModifyComponent,
     MWQMRunItemViewComponent,
     MWQMRunTVItemListDetailComponent,
@@ -385,9 +391,12 @@ import { MonitoringStatsTablesComponent } from './components/monitoring-stats-ta
     PolSourceSiteItemComponent,
     PolSourceSiteItemCreateComponent,
     PolSourceSiteItemIssueComponent,
+    PolSourceSiteItemMenuOpenComponent,
     PolSourceSiteItemModifyComponent,
     PolSourceSiteItemObsComponent,
     PolSourceSiteItemViewComponent,
+    PolSourceSiteItemViewFilesComponent,
+    PolSourceSiteItemViewInfoComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,

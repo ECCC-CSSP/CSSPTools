@@ -1,0 +1,25 @@
+<mat-card class="mat-elevation-z5">
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="ViewVisible ? 'selected' : ''" (click)="ViewVisible = !ViewVisible">
+            {{ appLanguageService.View[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="ModifyVisible ? 'selected' : ''" (click)="ModifyVisible = !ModifyVisible">
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="CreateVisible ? 'selected' : ''" (click)="CreateVisible = !CreateVisible">
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        </button>
+
+        <app-pol-source-site-item-view *ngIf="ViewVisible" [TVItemModel]="TVItemModel">
+        </app-pol-source-site-item-view>
+
+        <app-pol-source-site-item-modify *ngIf="ModifyVisible" [TVItemModel]="TVItemModel">
+        </app-pol-source-site-item-modify>
+
+        <app-pol-source-site-item-create *ngIf="CreateVisible" [TVItemModel]="TVItemModel">
+        </app-pol-source-site-item-create>
+
+    </mat-card-content>
+</mat-card>

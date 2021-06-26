@@ -41,6 +41,7 @@ export class TVItemModifyComponent implements OnInit, OnDestroy {
   Modify() {
     console.debug(this.formTVItemModify.value);
     console.debug(this.TVItemModel);
+    alert(this.appLanguageService.NotImplementedYet[this.appLanguageService.LangID]);
   }
 
 }

@@ -1,42 +1,20 @@
-<ng-container *ngIf="showTVItemService.TVItemVisible(TVItemModel)">
-    <p>
-        <button mat-raised-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="ViewVisible = !ViewVisible" [ngClass]="ViewVisible ? 'selected' : ''">
             {{ appLanguageService.View[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
+        <button mat-raised-button (click)="ModifyVisible = !ModifyVisible" [ngClass]="ModifyVisible ? 'selected' : ''">
             {{ appLanguageService.Modify[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="ShowCreate = !ShowCreate" [ngClass]="ShowCreate ? 'selected' : ''">
+        <button mat-raised-button (click)="CreateVisible = !CreateVisible" [ngClass]="CreateVisible ? 'selected' : ''">
             {{ appLanguageService.Create[appLanguageService.LangID] }}
         </button>
-    </p>
-    <mat-card *ngIf="ShowView">
-        <mat-card-header>
-            <h3> {{ appLanguageService.View[appLanguageService.LangID] }} </h3>
-        </mat-card-header>
-        <mat-card-content>
-            <app-tvitem-view [TVItemModel]="TVItemModel"></app-tvitem-view>
-        </mat-card-content>
-    </mat-card>
-    <p *ngIf="ShowView && ShowModify">&nbsp;</p>
-    <mat-card *ngIf="ShowModify">
-        <mat-card-header>
-            <h3> {{ appLanguageService.Modify[appLanguageService.LangID] }} </h3>
-        </mat-card-header>
-        <mat-card-content>
-            <app-tvitem-modify [TVItemModel]="TVItemModel"></app-tvitem-modify>
-        </mat-card-content>
-    </mat-card>
-    <p *ngIf="(ShowView || ShowModify) && ShowCreate">&nbsp;</p>
-    <mat-card *ngIf="ShowCreate">
-        <mat-card-header>
-            <h3> {{ appLanguageService.Create[appLanguageService.LangID] }} </h3>
-        </mat-card-header>
-        <mat-card-content>
-            <app-tvitem-create [TVItemModel]="TVItemModel"></app-tvitem-create>
-        </mat-card-content>
-    </mat-card>
 
-</ng-container>
+        <app-tvitem-view *ngIf="ViewVisible" [TVItemModel]="TVItemModel"></app-tvitem-view>
+        <app-tvitem-modify *ngIf="ModifyVisible" [TVItemModel]="TVItemModel"></app-tvitem-modify>
+        <app-tvitem-create *ngIf="CreateVisible" [TVItemModel]="TVItemModel"></app-tvitem-create>
+
+    </mat-card-content>
+</mat-card>

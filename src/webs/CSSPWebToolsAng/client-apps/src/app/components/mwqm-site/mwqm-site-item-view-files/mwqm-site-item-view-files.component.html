@@ -39,7 +39,7 @@
         <app-file-list-item [FilesSortByProp]="FilesSortByProp" [Index]="(i + 1)" [TVFileModel]="tvFileModel">
         </app-file-list-item>
 
-        <app-file-list-item-menu-open [TVType]="tvType.MWQMSite" [TVFileModel]="tvFileModel"></app-file-list-item-menu-open>
+        <app-file-list-item-menu-open *ngIf="showTVFileService.TVFileVisible(tvFileModel)" [TVType]="tvType.MWQMSite" [TVFileModel]="tvFileModel"></app-file-list-item-menu-open>
 
         <app-file-list-item-detail *ngIf="appStateService.UserPreference.DetailVisible" [TVFileModel]="tvFileModel">
         </app-file-list-item-detail>

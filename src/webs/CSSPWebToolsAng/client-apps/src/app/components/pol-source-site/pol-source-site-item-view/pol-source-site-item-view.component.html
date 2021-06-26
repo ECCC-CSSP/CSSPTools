@@ -1,24 +1,19 @@
-<div *ngFor="let polSourceSiteModel of polSourceSiteService.GetPolSourceSiteModelList(TVItemModel)">
-    <h3>{{ appLanguageService.Address[appLanguageService.LangID] }}</h3>
-    <blockquote>
-        <p *ngIf="polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID">
-            <app-address [TVItemID]="polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID"></app-address>
-            <span
-                *ngIf="addressService.GetAddressModel(polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID).Address?.GoogleAddressText">
-                <br />
-                {{ appLanguageService.Google[appLanguageService.LangID] }}:&nbsp;
-                {{
-                addressService.GetAddressModel(polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID).Address?.GoogleAddressText
-                }}
-            </span>
-        </p>
-        <p *ngIf="!polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID">
-            {{ appLanguageService.NoAddress[appLanguageService.LangID] }}
-            <br />
-        </p>
-    </blockquote>
-    <p *ngFor="let polSourceObservationModel of polSourceSiteModel.PolSourceObservationModelList">
-        <app-pol-source-site-item-obs [PolSourceObservationModel]="polSourceObservationModel">
-        </app-pol-source-site-item-obs>
-    </p>
-</div>
+<mat-card class="mat-elevation-z5">
+    <mat-card-content>
+        <button mat-raised-button [ngClass]="InformationVisible ? 'selected' : ''" (click)="InformationVisible = !InformationVisible">
+            {{ appLanguageService.Information[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button [ngClass]="FilesVisible ? 'selected' : ''" (click)="FilesVisible = !FilesVisible">
+            {{ appLanguageService.Files[appLanguageService.LangID] }}
+            &nbsp;&nbsp;({{ GetFileCount() }})
+        </button>
+
+        <app-pol-source-site-item-view-info *ngIf="InformationVisible" [TVItemModel]="TVItemModel">
+        </app-pol-source-site-item-view-info>
+
+        <app-pol-source-site-item-view-files *ngIf="FilesVisible" [TVItemModel]="TVItemModel">
+        </app-pol-source-site-item-view-files>
+
+    </mat-card-content>
+</mat-card>

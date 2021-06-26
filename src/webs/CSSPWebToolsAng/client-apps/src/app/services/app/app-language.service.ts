@@ -244,6 +244,7 @@ export class AppLanguageService {
   Issue: string[] = ['Issue', 'Item'];
 
   Item: string[] = ['Item', "Item"];
+  ItemName: string[] = ['Item Name', 'Nom de l\'item']
 
   IsMechanicallyAerated: string[] = ['Is mechanically aerated', 'Est mécaniquement aéré'];
 
@@ -292,7 +293,9 @@ export class AppLanguageService {
   MWQMSite: string[] = ['MWQM Site', 'Site SQEM'];
   MWQMSiteName: string[] = ['MWQM site', 'Site SQEM'];
   MWQMSiteNameTitle: string[] = ['Name of marine water quality monitoring site', 'Nom du site surveillance de qualité d\'eau marine'];
+
   NearFieldVelocity_m_s: string[] = ['Near Field Velocity (m/s)', 'Vitesse en champ rapproché (m/s)'];
+  NewItemName: string[] = ['New item name', 'Nom du nouveau item'];
   Next: string[] = ['Next', 'Prochain'];
   No: string[] = ['No', 'Non'];
   NoAddress: string[] = ['No address', 'Aucune adresse'];
@@ -353,6 +356,7 @@ export class AppLanguageService {
   ReceivingWater_MPN_per_100ml: string[] = ['Receiving Water Concentration (FC /100 ml)', 'Concentration dans le milieu récepteur (FC /100 ml)'];
   ReceivingWaterSalinity_PSU: string[] = ['Receiving Water Salinity (PSU)', 'Salinité dans le milieu récepteur (PSU)'];
   ReceivingWaterTemperature_C: string[] = ['Receiving Water Temperature (ºC)', 'Température dans le milieu récepteur (ºC)'];
+  Required: string[] = ['Required', 'Requis'];
   Results: string[] = ['Results', 'Résultats'];
   ResultsRaw: string[] = ['Results Raw', 'Résultats Bruts'];
   RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
@@ -518,7 +522,7 @@ export class AppLanguageService {
   TVItemListDetailSubsectorMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
   TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
   TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
-
+  
   Under: string[] = ['Under', 'sous'];
 
   Untreated_FC: string[] = ['Untreated (FC)', 'Sans traitement (CF)'];

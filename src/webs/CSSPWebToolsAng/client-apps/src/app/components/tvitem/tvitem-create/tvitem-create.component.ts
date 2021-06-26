@@ -43,6 +43,7 @@ export class TVItemCreateComponent implements OnInit, OnDestroy {
   {
     console.debug(this.formTVItemCreate.value);
     console.debug(this.TVItemModel);
+    alert(this.appLanguageService.NotImplementedYet[this.appLanguageService.LangID]);
   }
 
 }
