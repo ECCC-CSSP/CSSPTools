@@ -40,7 +40,8 @@ namespace CSSPSQLiteServices
                 "AzureStorage TEXT NOT NULL, " +
                 "AzureFileName TEXT NOT NULL, " +
                 "AzureETag TEXT NOT NULL, " +
-                "AzureCreationTimeUTC TEXT NOT NULL)";
+                "AzureCreationTimeUTC TEXT NOT NULL, " +
+                "LoadedOnce INTEGER)";
 
             using (var command = dbManage.Database.GetDbConnection().CreateCommand())
             {

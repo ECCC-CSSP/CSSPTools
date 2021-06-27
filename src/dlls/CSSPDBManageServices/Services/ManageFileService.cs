@@ -162,6 +162,7 @@ namespace ManageServices
                 manageFileAddOrModify.AzureETag = manageFile.AzureETag;
                 manageFileAddOrModify.AzureFileName = manageFile.AzureFileName;
                 manageFileAddOrModify.AzureStorage = manageFile.AzureStorage;
+                manageFileAddOrModify.LoadedOnce = true;
             }
 
             try

@@ -448,6 +448,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not set all ManageFiles.LoadedOnce to false.
+        /// </summary>
+        public static string CouldNotSetAllManageFilesLoadedOnceToFalse {
+            get {
+                return ResourceManager.GetString("CouldNotSetAllManageFilesLoadedOnceToFalse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not unzip [{0}]. Erreur [{1}].
         /// </summary>
         public static string CouldNotUnzip_Error_ {
@@ -903,6 +912,15 @@ namespace CSSPCultureServices.Resources {
         public static string ServerNotRespondingDoYouHaveInternetConnection {
             get {
                 return ResourceManager.GetString("ServerNotRespondingDoYouHaveInternetConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set all ManageFiles.LoadedOnce to false.
+        /// </summary>
+        public static string SetAllManageFilesLoadedOnceToFalse {
+            get {
+                return ResourceManager.GetString("SetAllManageFilesLoadedOnceToFalse", resourceCulture);
             }
         }
         

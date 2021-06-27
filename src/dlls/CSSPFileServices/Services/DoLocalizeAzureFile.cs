@@ -58,6 +58,26 @@ namespace FileServices
                 {
                     ManageFile manageFile = (ManageFile)((OkObjectResult)manageFileExist.Result).Value;
 
+                    if (!manageFile.LoadedOnce)
+                    {
+                        manageFile.LoadedOnce = true;
+
+                        var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                        if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
+                        {
+                            manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
+                        }
+                        else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
+                        {
+                            return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                        }
+                        else
+                        {
+                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                        }
+
+                    }
+
                     if (manageFile.AzureETag != shareFileProperties.ETag.ToString().Replace("\"", ""))
                     {
                         ShouldDownload = true;
@@ -123,6 +143,7 @@ namespace FileServices
                         AzureFileName = $"{ParentTVItemID}\\{FileName}",
                         AzureETag = shareFileProperties.ETag.ToString().Replace("\"", ""),
                         AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
+                        LoadedOnce = true,
                     };
 
                     var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
@@ -147,6 +168,7 @@ namespace FileServices
 
                         manageFile.AzureETag = shareFileProperties.ETag.ToString().Replace("\"", "");
                         manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
+                        manageFile.LoadedOnce = true;
 
                         var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
                         if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)

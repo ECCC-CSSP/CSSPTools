@@ -102,12 +102,6 @@ namespace CSSPWebAPIsLocal
                 configuration.RootPath = "csspclient";
             });
 
-            //services.Configure<FormOptions>(options =>
-            //{
-            //    options.MultipartBodyLengthLimit = (5L * 1024L * 1024L * 1024L);
-
-            //});
-
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;

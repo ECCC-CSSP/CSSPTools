@@ -24,6 +24,7 @@ namespace ManageServices
         public string AzureETag { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime AzureCreationTimeUTC { get; set; }
+        public bool LoadedOnce { get; set; }
         #endregion Properties in DB
 
         #region Constructors

@@ -139,6 +139,7 @@ namespace CSSPDesktopServices.Services
                         AzureFileName = jsonFileName,
                         AzureETag = response.Headers.ETag.ToString(),
                         AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
+                        LoadedOnce = true,
                     };
 
                     dbManage.ManageFiles.Add(manageFile);
@@ -146,6 +147,7 @@ namespace CSSPDesktopServices.Services
                 else
                 {
                     manageFile.AzureETag = response.Headers.ETag.ToString();
+                    manageFile.LoadedOnce = true;
                 }
 
                 try
@@ -264,6 +266,7 @@ namespace CSSPDesktopServices.Services
                     AzureFileName = zipFileName,
                     AzureETag = response.Headers.ETag.ToString(),
                     AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
+                    LoadedOnce = true,
                 };
 
                 dbManage.ManageFiles.Add(manageFile);
@@ -271,6 +274,7 @@ namespace CSSPDesktopServices.Services
             else
             {
                 manageFile.AzureETag = response.Headers.ETag.ToString();
+                manageFile.LoadedOnce = true;
             }
 
             try

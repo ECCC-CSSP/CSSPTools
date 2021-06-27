@@ -432,4 +432,10 @@
   <data name="LoginRequired" xml:space="preserve">
     <value>Connexion requise</value>
   </data>
+  <data name="CouldNotSetAllManageFilesLoadedOnceToFalse" xml:space="preserve">
+    <value>Dans l'impossibilité de mettre tous les valeurs de ManageFiles.LoadedOnce à faux</value>
+  </data>
+  <data name="SetAllManageFilesLoadedOnceToFalse" xml:space="preserve">
+    <value>Mis tous les valeurs de ManageFiles.LoadedOnce à faux</value>
+  </data>
 </root>

@@ -432,4 +432,10 @@
   <data name="LoginRequired" xml:space="preserve">
     <value>Login required</value>
   </data>
+  <data name="CouldNotSetAllManageFilesLoadedOnceToFalse" xml:space="preserve">
+    <value>Could not set all ManageFiles.LoadedOnce to false</value>
+  </data>
+  <data name="SetAllManageFilesLoadedOnceToFalse" xml:space="preserve">
+    <value>Set all ManageFiles.LoadedOnce to false</value>
+  </data>
 </root>

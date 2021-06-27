@@ -27,6 +27,7 @@ namespace ReadGzFileServices
         {
             bool gzExistLocaly = false;
             bool gzLocalIsUpToDate = false;
+            bool JustRead = false;
 
             if (LoggedInService.LoggedInContactInfo == null)
             {
@@ -37,93 +38,130 @@ namespace ReadGzFileServices
 
             FileInfo fiGZ = new FileInfo(CSSPJSONPath + string.Format(fileName, TVItemID));
 
-            //if (TVItemID > 0)
-            //{
             if (fiGZ.Exists)
             {
                 gzExistLocaly = true;
             }
 
-            bool HasInternetConnection = false;
-
-            HasInternetConnection = (from c in dbManage.Contacts
-                                     select c.HasInternetConnection).FirstOrDefault() ?? false;
-
-            if (HasInternetConnection)
+            if (gzExistLocaly)
             {
-                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, fileName);
-                BlobProperties blobProperties = null;
+                ManageFile manageFile = null;
 
-                try
+                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
+                if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
                 {
-                    blobProperties = blobClient.GetProperties();
-
-                }
-                catch (RequestFailedException ex)
-                {
-                    if (ex.Status == 404)
-                    {
-                        using (HttpClient httpClient = new HttpClient())
-                        {
-                            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoggedInService.LoggedInContactInfo.LoggedInContact.Token);
-                            var response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/{ TVItemID }");
-
-                            if ((int)response.Result.StatusCode != 200)
-                            {
-                                if ((int)response.Result.StatusCode == 401)
-                                {
-                                    return await Task.FromResult(BadRequest(CSSPCultureServicesRes.NeedToBeLoggedIn));
-                                }
-                                else if ((int)response.Result.StatusCode == 500)
-                                {
-                                    return await Task.FromResult(BadRequest(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
-                                }
-                            }
-
-                            // gz File should now exist on Azure
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                    manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
                 }
 
-                if (blobProperties == null)
+                if (manageFile.LoadedOnce)
                 {
+                    JustRead = true;
+                }
+            }
+
+            if (!JustRead)
+            {
+                bool HasInternetConnection = false;
+
+                HasInternetConnection = (from c in dbManage.Contacts
+                                         select c.HasInternetConnection).FirstOrDefault() ?? false;
+
+                if (HasInternetConnection)
+                {
+                    BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, fileName);
+                    BlobProperties blobProperties = null;
+
                     try
                     {
                         blobProperties = blobClient.GetProperties();
+
+                    }
+                    catch (RequestFailedException ex)
+                    {
+                        if (ex.Status == 404)
+                        {
+                            using (HttpClient httpClient = new HttpClient())
+                            {
+                                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoggedInService.LoggedInContactInfo.LoggedInContact.Token);
+                                var response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/{ TVItemID }");
+
+                                if ((int)response.Result.StatusCode != 200)
+                                {
+                                    if ((int)response.Result.StatusCode == 401)
+                                    {
+                                        return await Task.FromResult(BadRequest(CSSPCultureServicesRes.NeedToBeLoggedIn));
+                                    }
+                                    else if ((int)response.Result.StatusCode == 500)
+                                    {
+                                        return await Task.FromResult(BadRequest(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                                    }
+                                }
+
+                                // gz File should now exist on Azure
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
                         return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
                     }
-                }
 
-                if (gzExistLocaly)
-                {
-                    ManageFile manageFile = null;
-
-                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
-                    if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
+                    if (blobProperties == null)
                     {
-                        manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
+                        try
+                        {
+                            blobProperties = blobClient.GetProperties();
+                        }
+                        catch (Exception ex)
+                        {
+                            return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                        }
                     }
 
-                    if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") == manageFile.AzureETag)
+                    if (gzExistLocaly)
                     {
-                        gzLocalIsUpToDate = true;
+                        ManageFile manageFile = null;
+
+                        var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, fiGZ.Name);
+                        if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
+                        {
+                            manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
+                        }
+
+                        if (!manageFile.LoadedOnce)
+                        {
+                            manageFile.LoadedOnce = true;
+
+                            var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                            if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
+                            {
+                                manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
+                            }
+                            else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
+                            {
+                                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                            }
+                            else
+                            {
+                                return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                            }
+
+                        }
+
+                        if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") == manageFile.AzureETag)
+                        {
+                            gzLocalIsUpToDate = true;
+                        }
                     }
-                }
 
-                if (!gzLocalIsUpToDate)
-                {
-                    var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
-
-                    if (((ObjectResult)actionRes.Result).StatusCode != 200)
+                    if (!gzLocalIsUpToDate)
                     {
-                        return await Task.FromResult(actionRes.Result);
+                        var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+
+                        if (((ObjectResult)actionRes.Result).StatusCode != 200)
+                        {
+                            return await Task.FromResult(actionRes.Result);
+                        }
                     }
                 }
             }
@@ -216,16 +254,16 @@ namespace ReadGzFileServices
                                 DoMergeJsonWebMikeScenarios(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
                                 break;
                             case WebTypeEnum.WebMonitoringOtherStatsCountry:
-                                // nothing needed at this time
+                                // No merging needed
                                 break;
                             case WebTypeEnum.WebMonitoringRoutineStatsCountry:
-                                // nothing needed at this time
+                                // No merging needed
                                 break;
                             case WebTypeEnum.WebMonitoringOtherStatsProvince:
-                                // nothing needed at this time
+                                // No merging needed
                                 break;
                             case WebTypeEnum.WebMonitoringRoutineStatsProvince:
-                                // nothing needed at this time
+                                // No merging needed
                                 break;
                             case WebTypeEnum.WebMunicipality:
                                 DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);

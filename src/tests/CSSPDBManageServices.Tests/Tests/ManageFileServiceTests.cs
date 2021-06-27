@@ -41,6 +41,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "StorageName",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             // testing AddOrModify -- add
@@ -160,6 +161,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "StorageName",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             for (int i = 0; i < 10; i++)
@@ -240,6 +242,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "StorageName",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName");
@@ -267,6 +270,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "StorageName",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200");
@@ -294,6 +298,7 @@ namespace ManageServices.Tests
                 AzureETag = "",
                 AzureStorage = "StorageName",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag");
@@ -321,6 +326,7 @@ namespace ManageServices.Tests
                 AzureETag = "".PadRight(101, 'a'),
                 AzureStorage = "StorageName",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100");
@@ -348,6 +354,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage");
@@ -375,6 +382,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "".PadRight(101, 'a'),
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100");
@@ -402,6 +410,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "ThisAzureStorage",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             var actionManageFileAddOrModify = await ManageFileService.ManageFileAddOrModify(manageFile);
@@ -442,6 +451,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "ThisAzureStorage",
                 AzureCreationTimeUTC = DateTime.UtcNow,
+                LoadedOnce = true,
             };
 
             var actionManageFileAddOrModify = await ManageFileService.ManageFileAddOrModify(manageFile);
@@ -482,6 +492,7 @@ namespace ManageServices.Tests
                 AzureETag = "ThisIsETag",
                 AzureStorage = "ThisAzureStorage",
                 AzureCreationTimeUTC = new DateTime(1978, 1, 1),
+                LoadedOnce = true,
             };
 
             string error = string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980");

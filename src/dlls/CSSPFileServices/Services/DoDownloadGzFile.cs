@@ -51,6 +51,7 @@ namespace FileServices
                             AzureFileName = FileName,
                             AzureETag = response.Headers.ETag.ToString(),
                             AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
+                            LoadedOnce = true,
                         };
 
                         var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
@@ -75,6 +76,7 @@ namespace FileServices
 
                             manageFile.AzureETag = response.Headers.ETag.ToString();
                             manageFile.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
+                            manageFile.LoadedOnce = true;
 
                             var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
                             if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
