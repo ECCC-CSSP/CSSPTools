@@ -54,7 +54,7 @@
         <span *ngFor="let MWQMSiteModelAndSampleModel of MWQMRunModelSiteAndSampleModel?.MWQMSiteModelAndSampleModelList">
             <span class="{{ GetClassFromFCValue(MWQMSiteModelAndSampleModel?.MWQMSampleModel.MWQMSample?.FecCol_MPN_100ml) }}">
                 {{
-                    MWQMSiteModelAndSampleModel?.MWQMSiteModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID].TVText
+                    MWQMSiteModelAndSampleModel?.MWQMSiteModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText
                 }}&nbsp;({{ MWQMSiteModelAndSampleModel?.MWQMSampleModel.MWQMSample?.FecCol_MPN_100ml }})
             </span>
         </span>

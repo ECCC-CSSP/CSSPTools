@@ -1,0 +1,101 @@
+{
+  "TVItemModel": {
+    "TVItem": {
+      "TVItemID": 357228,
+      "DBCommand": 1,
+      "TVLevel": 5,
+      "TVPath": "p1p5p7p27764p357227p357228",
+      "TVType": 14,
+      "ParentID": 357227,
+      "IsActive": true,
+      "LastUpdateDate_UTC": "2018-09-06T20:34:30.943",
+      "LastUpdateContactTVItemID": 2
+    },
+    "TVItemLanguageList": [
+      {
+        "TVItemLanguageID": 719623,
+        "DBCommand": 1,
+        "TVItemID": 357228,
+        "Language": 1,
+        "TVText": "Bouctouche LS 1 - Elmo Johnson",
+        "TranslationStatus": 3,
+        "LastUpdateDate_UTC": "2018-09-06T20:34:31.027",
+        "LastUpdateContactTVItemID": 2
+      },
+      {
+        "TVItemLanguageID": 719624,
+        "DBCommand": 1,
+        "TVItemID": 357228,
+        "Language": 2,
+        "TVText": "Bouctouche LS 1 - Elmo Johnson",
+        "TranslationStatus": 1,
+        "LastUpdateDate_UTC": "2018-09-06T20:34:31.037",
+        "LastUpdateContactTVItemID": 2
+      }
+    ],
+    "TVItemStatList": [],
+    "MapInfoModelList": [
+      {
+        "MapInfo": {
+          "MapInfoID": 312067,
+          "DBCommand": 1,
+          "TVItemID": 357228,
+          "TVType": 14,
+          "LatMin": 46.458370208740234,
+          "LatMax": 46.46036911010742,
+          "LngMin": -64.73677825927734,
+          "LngMax": -64.73477935791016,
+          "MapInfoDrawType": 1,
+          "LastUpdateDate_UTC": "2018-09-06T20:34:31.17",
+          "LastUpdateContactTVItemID": 2
+        },
+        "MapInfoPointList": [
+          {
+            "MapInfoPointID": 605012,
+            "DBCommand": 1,
+            "MapInfoID": 312067,
+            "Ordinal": 0,
+            "Lat": 46.45936965942383,
+            "Lng": -64.73577880859375,
+            "LastUpdateDate_UTC": "2018-09-06T20:34:31.187",
+            "LastUpdateContactTVItemID": 2
+          }
+        ]
+      }
+    ]
+  },
+  "MikeSource": {
+    "MikeSourceID": 62164,
+    "DBCommand": 1,
+    "MikeSourceTVItemID": 357228,
+    "IsContinuous": true,
+    "Include": false,
+    "IsRiver": false,
+    "UseHydrometric": false,
+    "HydrometricTVItemID": null,
+    "DrainageArea_km2": null,
+    "Factor": null,
+    "SourceNumberString": "SOURCE_3",
+    "LastUpdateDate_UTC": "2018-09-06T20:34:31.047",
+    "LastUpdateContactTVItemID": 2
+  },
+  "MikeSourceStartEndList": [
+    {
+      "MikeSourceStartEndID": 60623,
+      "DBCommand": 1,
+      "MikeSourceID": 62164,
+      "StartDateAndTime_Local": "2013-01-09T10:00:00",
+      "EndDateAndTime_Local": "2013-01-10T10:00:00",
+      "SourceFlowStart_m3_day": 102.09999941289425,
+      "SourceFlowEnd_m3_day": 102.09999941289425,
+      "SourcePollutionStart_MPN_100ml": 3200000,
+      "SourcePollutionEnd_MPN_100ml": 3200000,
+      "SourceTemperatureStart_C": 15,
+      "SourceTemperatureEnd_C": 15,
+      "SourceSalinityStart_PSU": 0,
+      "SourceSalinityEnd_PSU": 0,
+      "LastUpdateDate_UTC": "2018-09-06T20:34:31.107",
+      "LastUpdateContactTVItemID": 2
+    }
+  ]
+}

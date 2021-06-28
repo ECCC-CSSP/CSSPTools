@@ -70,6 +70,10 @@
     *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Infrastructures">
 </app-infrastructure-item-list>
 
+<div *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">
+    <app-contact-item [MunicipalityTVItemModel]="appLoadedService.WebMunicipality?.TVItemModel"></app-contact-item>
+</div>
+
 <app-mike-scenario-tvitem-list-item
     *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
     [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebMunicipality?.TVItemModelMikeScenarioList))">
@@ -79,6 +83,3 @@
     [TVType]="tvTypeEnum.Municipality">
 </app-file-list>
 
-<div *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Contacts">
-    <app-contact-item [MunicipalityTVItemModel]="appLoadedService.WebMunicipality?.TVItemModel"></app-contact-item>
-</div>

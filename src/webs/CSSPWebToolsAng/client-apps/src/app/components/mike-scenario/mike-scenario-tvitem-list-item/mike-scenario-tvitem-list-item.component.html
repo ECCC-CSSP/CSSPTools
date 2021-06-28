@@ -1,5 +1,5 @@
 <mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemModel" >
+    <app-tvitem-menu [TVItemModel]="tvItemModel">
     </app-tvitem-menu>
 
     <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
@@ -14,19 +14,14 @@
         </span>
         <app-stat-count *ngIf="appStateService.UserPreference.StatCountVisible" [TVType]="null"
             [TVItemModel]="tvItemModel"></app-stat-count>
-        <app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible"
-            [TVItemModel]="tvItemModel"></app-tvitem-last-update>
+        <app-tvitem-last-update *ngIf="appStateService.UserPreference.LastUpdateVisible" [TVItemModel]="tvItemModel">
+        </app-tvitem-last-update>
     </button>
 
-    <app-mike-scenario-item-view *ngIf="showTVItemService.TVItemVisible(tvItemModel)"
-        [TVItemModel]="tvItemModel" >
-    </app-mike-scenario-item-view>
+    <app-mike-scenario-item-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
+    </app-mike-scenario-item-menu-open>
 
-    <app-mike-scenario-item-edit *ngIf="appStateService.UserPreference.EditVisible"
-        [TVItemModel]="tvItemModel" >
-    </app-mike-scenario-item-edit>
-
-    <app-mike-scenario-tvitem-list-detail  *ngIf="appStateService.UserPreference.DetailVisible"
+    <app-mike-scenario-tvitem-list-detail *ngIf="appStateService.UserPreference.DetailVisible"
         [TVItemModel]="tvItemModel">
     </app-mike-scenario-tvitem-list-detail>
 </mat-list>

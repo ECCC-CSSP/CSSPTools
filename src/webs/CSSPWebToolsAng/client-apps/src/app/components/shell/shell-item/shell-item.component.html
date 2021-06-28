@@ -9,7 +9,7 @@
             <div class="menuWidth">
                 <button mat-menu-item *ngFor="let history of appStateService.UserPreference.History"
                     (click)="NavigateTo(history)">
-                    {{ history.TVItemLanguageList[appLanguageService.LangID].TVText }}
+                    {{ history.TVItemLanguageList[appLanguageService.LangID]?.TVText }}
                 </button>
             </div>
         </mat-menu>

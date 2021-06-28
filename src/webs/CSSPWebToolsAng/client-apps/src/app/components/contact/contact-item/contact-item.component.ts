@@ -13,6 +13,10 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 export class ContactItemComponent implements OnInit, OnDestroy {
   @Input() MunicipalityTVItemModel: TVItemModel;
   
+  ViewVisible: boolean = true;
+  ModifyVisible: boolean = false;
+  CreateVisible: boolean = false;
+  
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public appLoadedService: AppLoadedService) { }

@@ -64,7 +64,7 @@ import { SubsectorTVItemListItemComponent } from './components/subsector/subsect
 import { MWQMSiteTVItemListItemSpecialComponent } from './components/mwqm-site/mwqm-site-tvitem-list-item-special/mwqm-site-tvitem-list-item-special.component';
 import { AnalysisItemMenuComponent } from './components/analysis/analysis-item-menu/analysis-item-menu.component';
 import { TVItemMenuComponent } from './components/tvitem/tvitem-menu/tvitem-menu.component';
-import { MikeScenarioItemEditComponent } from './components/mike-scenario/mike-scenario-item-edit/mike-scenario-item-edit.component';
+import { MikeScenarioItemModifyComponent } from './components/mike-scenario/mike-scenario-item-modify/mike-scenario-item-modify.component';
 import { MikeScenarioItemViewComponent } from './components/mike-scenario/mike-scenario-item-view/mike-scenario-item-view.component';
 import { MWQMRunItemViewComponent } from './components/mwqm-run/mwqm-run-item-view/mwqm-run-item-view.component';
 import { MWQMSiteItemViewComponent } from './components/mwqm-site/mwqm-site-item-view/mwqm-site-item-view.component';
@@ -142,6 +142,15 @@ import { PolSourceSiteItemMenuOpenComponent } from './components/pol-source-site
 import { PolSourceSiteItemViewFilesComponent } from './components/pol-source-site/pol-source-site-item-view-files/pol-source-site-item-view-files.component';
 import { PolSourceSiteItemViewInfoComponent } from './components/pol-source-site/pol-source-site-item-view-info/pol-source-site-item-view-info.component';
 import { MWQMRunItemMenuOpenComponent } from './components/mwqm-run/mwqm-run-item-menu-open/mwqm-run-item-menu-open.component';
+import { ContactItemCreateComponent } from './components/contact/contact-item-create/contact-item-create.component';
+import { ContactItemModifyComponent } from './components/contact/contact-item-modify/contact-item-modify.component';
+import { ContactItemViewComponent } from './components/contact/contact-item-view/contact-item-view.component';
+import { MikeScenarioItemCreateComponent } from './components/mike-scenario/mike-scenario-item-create/mike-scenario-item-create.component';
+import { MikeScenarioItemMenuOpenComponent } from './components/mike-scenario/mike-scenario-item-menu-open/mike-scenario-item-menu-open.component';
+import { MikeScenarioItemViewFilesComponent } from './components/mike-scenario/mike-scenario-item-view-files/mike-scenario-item-view-files.component';
+import { MikeScenarioItemViewInformationComponent } from './components/mike-scenario/mike-scenario-item-view-information/mike-scenario-item-view-information.component';
+import { MikeScenarioItemViewInformationGeneralParametersComponent } from './components/mike-scenario/mike-scenario-item-view-information-general-parameters/mike-scenario-item-view-information-general-parameters.component';
+import { MikeScenarioItemViewInformationSourcesComponent } from './components/mike-scenario/mike-scenario-item-view-information-sources/mike-scenario-item-view-information-sources.component';
 
 @NgModule({
   declarations: [
@@ -166,6 +175,9 @@ import { MWQMRunItemMenuOpenComponent } from './components/mwqm-run/mwqm-run-ite
     ChartMWQMSiteFCSalTempComponent,
     ChartMWQMSiteFCStatsComponent,
     ContactItemComponent,
+    ContactItemCreateComponent,
+    ContactItemModifyComponent,
+    ContactItemViewComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
@@ -203,8 +215,14 @@ import { MWQMRunItemMenuOpenComponent } from './components/mwqm-run/mwqm-run-ite
     MapItemComponent,
     MapMenuComponent,
     MikeScenarioItemComponent,
-    MikeScenarioItemEditComponent,
+    MikeScenarioItemCreateComponent,
+    MikeScenarioItemMenuOpenComponent,
+    MikeScenarioItemModifyComponent,
     MikeScenarioItemViewComponent,
+    MikeScenarioItemViewFilesComponent,
+    MikeScenarioItemViewInformationComponent,
+    MikeScenarioItemViewInformationGeneralParametersComponent,
+    MikeScenarioItemViewInformationSourcesComponent,
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
     MonitoringStatsChartsComponent,
@@ -320,6 +338,9 @@ import { MWQMRunItemMenuOpenComponent } from './components/mwqm-run/mwqm-run-ite
     ChartMWQMSiteFCSalTempComponent,
     ChartMWQMSiteFCStatsComponent,
     ContactItemComponent,
+    ContactItemCreateComponent,
+    ContactItemModifyComponent,
+    ContactItemViewComponent,
     CountryItemComponent,
     CountryTVItemListDetailComponent,
     CountryTVItemListItemComponent,
@@ -357,8 +378,14 @@ import { MWQMRunItemMenuOpenComponent } from './components/mwqm-run/mwqm-run-ite
     MapItemComponent,
     MapMenuComponent,
     MikeScenarioItemComponent,
-    MikeScenarioItemEditComponent,
+    MikeScenarioItemCreateComponent,
+    MikeScenarioItemMenuOpenComponent,
+    MikeScenarioItemModifyComponent,
     MikeScenarioItemViewComponent,
+    MikeScenarioItemViewFilesComponent,
+    MikeScenarioItemViewInformationComponent,
+    MikeScenarioItemViewInformationGeneralParametersComponent,
+    MikeScenarioItemViewInformationSourcesComponent,
     MikeScenarioTVItemListDetailComponent,
     MikeScenarioTVItemListItemComponent,
     MonitoringStatsChartsComponent,

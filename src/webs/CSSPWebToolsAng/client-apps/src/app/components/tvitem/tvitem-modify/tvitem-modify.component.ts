@@ -27,7 +27,7 @@ export class TVItemModifyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formTVItemModify = this.fb.group({
-      TVText: [this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText,
+      TVText: [this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText,
       [
         Validators.required,
         //Validators.email,

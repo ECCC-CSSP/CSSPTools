@@ -1,8 +1,15 @@
-<span *ngIf="appStateService.Working">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</span>
-<p class="loading-status" *ngIf="appStateService.Status">
-    {{ appStateService.Status }}
-</p>
 
-<p style="background-color: cadetblue;">This is the mike scenario view component</p>
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="InformationVisible = !InformationVisible" [ngClass]="InformationVisible ? 'selected' : ''">
+            {{ appLanguageService.Information[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="FilesVisible = !FilesVisible" [ngClass]="FilesVisible ? 'selected' : ''">
+            {{ appLanguageService.Files[appLanguageService.LangID] }}
+            &nbsp;&nbsp;({{ MikeScenarioModel?.TVFileModelList?.length }})
+        </button>
+        <app-mike-scenario-item-view-information *ngIf="InformationVisible" [MikeScenarioModel]="MikeScenarioModel"></app-mike-scenario-item-view-information>
+        <app-mike-scenario-item-view-files *ngIf="FilesVisible" [MikeScenarioModel]="MikeScenarioModel"></app-mike-scenario-item-view-files>
+    </mat-card-content>
+</mat-card>

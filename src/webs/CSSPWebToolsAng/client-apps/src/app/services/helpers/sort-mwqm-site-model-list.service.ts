@@ -24,7 +24,7 @@ export class SortMWQMSiteModelListService {
         for (let i = 0; i < arr?.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItemModel.TVItem.TVItemID,
-                TVText: arr[i].TVItemModel.TVItemLanguageList[language].TVText,
+                TVText: arr[i].TVItemModel.TVItemLanguageList[language]?.TVText,
             });
         }
 

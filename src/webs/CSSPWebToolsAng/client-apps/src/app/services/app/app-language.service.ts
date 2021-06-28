@@ -114,6 +114,7 @@ export class AppLanguageService {
   Concentration: string[] = ['Concentration', 'Concentration'];
   Concentration_objective_FC: string[] = ['Concentration objective (FC)', 'Objectif de concentration (CF)'];
   ContactNotFound: string[] = ['Contact not found', 'Contact non trouvé'];
+  ContinuousFlow: string[] = ['continuous flow', 'débit continu'];
 
   Count: string[] = ['Count', 'Nombre'];
 
@@ -130,8 +131,8 @@ export class AppLanguageService {
 
   Create: string[] = ['Create', 'Créer'];
   cubicMeter: string[] = ['m3', 'm3'];
-  cubicMetersPerDay: string[] = ['m3/day', 'm3/jour'];
-  cubicMetersPerSeconds: string[] = ['m3/seconds', 'm3/seconds'];
+  cubicMetersPerDay: string[] = ['m3/d', 'm3/j'];
+  cubicMetersPerSecond: string[] = ['m3/s', 'm3/s'];
   CurrentDirection: string[] = ['Current Direction', 'Direction du courant'];
   CurrentSpeed: string[] = ['Current Speed', 'Vitesse du courant'];
   DecayRate_per_day: string[] = ['Decay Rate (/day)', 'Taux de décroissance (/jour)'];
@@ -150,6 +151,8 @@ export class AppLanguageService {
   DateNovember: string[] = ['November', 'novembre'];
   DateDecember: string[] = ['December', 'décembre'];
 
+  Date: string[] = ['Date', 'Date'];
+  
   DateJanuaryAcronym: string[] = ['Jan', 'jan'];
   DateFebruaryAcronym: string[] = ['Feb', 'fév'];
   DateMarchAcronym: string[] = ['Mar', 'mar'];
@@ -162,11 +165,14 @@ export class AppLanguageService {
   DateOctoberAcronym: string[] = ['Oct', 'oct'];
   DateNovemberAcronym: string[] = ['Nov', 'nov'];
   DateDecemberAcronym: string[] = ['Dec', 'déc'];
-
+  DecayFactorAmplitude: string[] = ['Decay factor amplitude', 'Amplitude du facteur de décroissance'];
+  DecayFactorAverage: string[] = ['Decay factor average', 'Moyenne du facteur de décroissance'];
+  DecayIsConstant: string[] = ['Decay is constant', 'La décroissance est constante'];
   DecayPreDisinfection: string[] = ['Decay (pre-disinfection)', 'Décroissance (avant la désinfection)'];
   DecayRate: string[] = ['Decay rate', 'Taux de décroissance'];
   DecayUntreated: string[] = ['Decay (untreated)', 'Décroissance (sans traitement)'];
   deg: string[] = ['deg', 'dég'];
+  degrees: string[] = ['degrees', 'degrés'];
   DegCelciusSymbol: string[] = ['ºC', 'ºC'];
   Depth: string[] = ['Depth', 'Profondeur'];
   Descending: string[] = ['Descending', 'Descendant'];
@@ -184,7 +190,7 @@ export class AppLanguageService {
   EffluentSalinity: string[] = ['Effluent Salinity', 'Salinité de l\'effluent'];
   EffluentTemperature: string[] = ['Effluent Temperature', 'Température de l\'effluent'];
   Emails: string[] = ['Emails', 'Courriels'];
-
+  EndDateAndTime: string[] = ['End Date and Time', 'Date et l\'heure de la fin'];
   Entered: string[] = ['Entered', 'Entré'];
 
   ExtraComments: string[] = ['Extra Comments', 'Extra commentaires'];
@@ -199,7 +205,7 @@ export class AppLanguageService {
   FCPer100mL: string[] = ['FC/100 mL', 'CF/100 mL'];
   FCSalTemp: string[] = ['FC Sal Temp', 'CF Sal Temp'];
   FCStats: string[] = ['FC Stats', 'Stats CF'];
-
+  FecalColiform: string[] = ['Fecal Coliform', 'Coliformes fécaux'];
   FileDate: string[] = ['File Date', 'Date de la filière'];
   FileDateAccro: string[] = ['D', 'D'];
   FileName: string[] = ['File Name', 'Nom de la filière'];
@@ -211,9 +217,13 @@ export class AppLanguageService {
   FileSizeAccro: string[] = ['S', 'G'];
   FileType: string[] = ['File Type', 'Type de la filière'];
   FileTypeAccro: string[] = ['T', 'T'];
-
+  FlowEnd: string[] = ['Flow end', 'Débit de fin'];
+  FlowEndDate: string[] = ['Flow end date', 'Date du débit de fin'];
+  FlowStart: string[] = ['Flow start', 'Débit de départ'];
+  FlowStartDate: string[] = ['Flow start date', 'Date du débit de départ'];
   ForceReload: string[] = ['Force Reload', 'Téléchargement forcé'];
 
+  GeneralParameters: string[] = ['General Parameters', 'Paramètres généraux'];
   GMInit: string[] = ['GM', "MG"];
   GMInitTitle: string[] = ['Geometric mean', 'Moyenne géométrique'];
 
@@ -235,8 +245,10 @@ export class AppLanguageService {
   HorizontalAngle: string[] = ['Horizontal Angle', 'Angle horizontal'];
   HorizontalAngle_deg: string[] = ['Horizontal Angle (deg)', 'Angle horizontal (deg)'];
   hours: string[] = ['hours', 'heures'];
-  Information: string[] = ['Information', 'Information'];
 
+  IncludedPollutionSource: string[] = ['Included pollution source', 'Incluant une source de pollution'];
+  IncludedRiver: string[] = ['Included river', 'Incluant une rivière'];
+  Information: string[] = ['Information', 'Information'];
   Infrastructure: string[] = ['Infrastructure', 'Infrastructure'];
 
   InfrastructureType: string[] = ['Infrastructure Type', 'Type d\'infrastructure'];
@@ -245,23 +257,26 @@ export class AppLanguageService {
 
   Item: string[] = ['Item', "Item"];
   ItemName: string[] = ['Item Name', 'Nom de l\'item']
-
   IsMechanicallyAerated: string[] = ['Is mechanically aerated', 'Est mécaniquement aéré'];
 
   KB: string[] = ['KB', 'Ko'];
+  kmPerhours: string[] = ['km/h', 'km/h'];
   LatitudeLongitude: string[] = ['Latitude Longitude', 'Latitude Longitude'];
   Loading: string[] = ['Loading', 'Téléchargement'];
-
   Localize: string[] = ['Localize', 'Localiser'];
   LocalizeAllFiles: string[] = ['Localize all files', 'Localiser tous les fichiers'];
   LocalizeAzureFile: string[] = ['Localize Azure file', 'Localiser le fichier Azure'];
   Localizing: string[] = ['Localizing...', 'Localisation...'];
+  localTime: string[] = ['local time', 'heure locale'];
 
   m067Pers2: string[] = ['m067/s2', 'm067/s2'];
+  m1_3PerSecond: string[] = ['m^(1/3)/s', 'm^(1/3)/s'];
+  ManningNumber: string[] = ['Manning number', 'Coefficient de Manning'];
   MedianInit: string[] = ['Med', 'Méd'];
   MedianInitTitle: string[] = ['Median', 'Médianne'];
   meters: string[] = ['meters', 'mètres'];
   metersPerSeconds: string[] = ['m/s', 'm/s'];
+  minutes: string[] = ['minutes', 'minutes'];
   Modify: string[] = ['Modify', 'Modifier'];
 
   MonitoringStats: string[] = ['Monitoring stats', 'Stats d\'échantillonnage']
@@ -294,6 +309,7 @@ export class AppLanguageService {
   MWQMSiteName: string[] = ['MWQM site', 'Site SQEM'];
   MWQMSiteNameTitle: string[] = ['Name of marine water quality monitoring site', 'Nom du site surveillance de qualité d\'eau marine'];
 
+  N0E90S180: string[] = ['(N = 0º, E = 90º, S = 180º)', '(N = 0º, E = 90º, S = 180º)'];
   NearFieldVelocity_m_s: string[] = ['Near Field Velocity (m/s)', 'Vitesse en champ rapproché (m/s)'];
   NewItemName: string[] = ['New item name', 'Nom du nouveau item'];
   Next: string[] = ['Next', 'Prochain'];
@@ -303,7 +319,9 @@ export class AppLanguageService {
   NoData: string[] = ['No Data', 'Aucune donnée'];
   NoDecayPreDisinfection: string[] = ['No decay (pre-disinfection)', 'Aucune décroissance (avant la désinfection)'];
   NoDecayUntreated: string[] = ['No decay (untreated)', 'Aucune décroissance (sans traitement)'];
+  NotContinuousFlow: string[] = ['not continuous flow', 'débit non continu'];
   NotImplementedYet: string[] = ['Not Implemented Yet', 'Pas encore mis en œuvre']
+  NotIncluded: string[] = ['Not included', 'Exclus'];
   NumberOfAeratedCells: string[] = ['Number Of Aerated Cells', 'Nombre de cellules aérées'];
   NumberOfCells: string[] = ['Number of cells', 'Nombre de cellules'];
   NumberOfPorts: string[] = ['Number Of Ports', 'Nombre d\'orifices du diffuseur'];
@@ -358,6 +376,7 @@ export class AppLanguageService {
   ReceivingWaterTemperature_C: string[] = ['Receiving Water Temperature (ºC)', 'Température dans le milieu récepteur (ºC)'];
   Required: string[] = ['Required', 'Requis'];
   Results: string[] = ['Results', 'Résultats'];
+  ResultsFrequency: string[] = ['Results frequency', 'Fréquence des résultats'];
   ResultsRaw: string[] = ['Results Raw', 'Résultats Bruts'];
   RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
   RootCountries: string[] = ['Countries', 'Pays'];
@@ -369,6 +388,7 @@ export class AppLanguageService {
   Runs: string[] = ['Runs', 'Tournées'];
 
   SAA: string[] = ['SAA', 'MQCD'];
+  Salinity: string[] = ['Salinity', 'Salinité'];
   SameAsAbove: string[] = ['Same as above', 'Même que ci-dessus'];
   SampleDate: string[] = ['Sample Date', 'Date d\'échantillonnage'];
   SampleDateTitle: string[] = ['The date the sample was taken', 'La date à laquelle l\'échantillon a été prélevé'];
@@ -382,7 +402,8 @@ export class AppLanguageService {
   Save: string[] = ['Save', 'Sauvegarder'];
 
   Saving: string[] = ['Saving', 'Sauvegarde'];
-
+  ScenarioLength: string[] = ['Scenario length', 'Durée du scénario'];
+  ScenarioName: string[] = ['Scenario name', 'Nom du scénario'];
   SearchSearch: string[] = ['Search', 'Rechercher'];
 
   Season: string[] = ['Season', 'Saison'];
@@ -422,7 +443,9 @@ export class AppLanguageService {
   SemiCircleRadius: string[] = ['Semi Circle (Radius)', 'Demi-cercle (Rayon)'];
   SortBy: string[] = ['Sort by', 'Trier par'];
   SortedBy: string[] = ['Sorted by', 'Trier par'];
+  Sources: string[] = ['Sources', 'Sources'];
   squareMeter: string[] = ['m2', 'm2'];
+  StartDateAndTime: string[] = ['Start Date and Time', 'Date et l\'heure du début'];
   StatSampleNumber: string[] = ['Stat sample number', 'Nombre d\'échantillon pour stat'];
 
   SubsectorShowMWQMSites: string[] = ['Show MWQM sites', 'Montrer sites PSQEM'];
@@ -450,6 +473,7 @@ export class AppLanguageService {
   Telephones: string[] = ['Telephones', 'Téléphones'];
   Temperature: string[] = ['Temperature', 'Température'];
   TertiaryTreatmentType: string[] = ['Tertiary Treatment Type', 'Type de traitement tertiaire'];
+  Time: string[] = ['Time', 'Temps'];
   toUseItOrSaveItSomewhereElse: string[] = ['to use it or save it somewhere else', 'afin de l\'utiliser ou la sauvegarder à un autre endroit'];
   TreatmentType: string[] = ['Treatment Type', 'Type de traitement'];
   TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];
@@ -522,7 +546,7 @@ export class AppLanguageService {
   TVItemListDetailSubsectorMWQMSite: string[] = ['MWQM site', 'Site de SQE'];
   TVItemListDetailSubsectorMWQMRun: string[] = ['MWQM run', 'Tournées'];
   TVItemListDetailSubsectorPolSourceSite: string[] = ['Pollution source site', 'Site de source de pollution'];
-  
+
   Under: string[] = ['Under', 'sous'];
 
   Untreated_FC: string[] = ['Untreated (FC)', 'Sans traitement (CF)'];
@@ -535,6 +559,8 @@ export class AppLanguageService {
   VisualPlumes: string[] = ['Visual Plumes', 'Visual Plumes'];
   Volume: string[] = ['Volume', 'Volume'];
 
+  WindDirection: string[] = ['Wind direction', 'Direction du vent'];
+  WindSpeed: string[] = ['Wind speed', 'Vitesse du vent'];
   WrittenDescription: string[] = ['Written Description', "Ancienne description"];
 
   Year: string[] = ['Year', 'Année'];

@@ -300,21 +300,21 @@ export class ChartService {
         {
           TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           TitlePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
-          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
         {
           TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           TitlePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
-          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsByYear:
         {
           TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           TitlePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
-          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          TitlePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
         }
         break;
       default:
@@ -348,21 +348,21 @@ export class ChartService {
         {
           FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           FileNamePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
-          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
         {
           FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           FileNamePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
-          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
         }
         break;
       case WebChartAndTableTypeEnum.MonitoringStatsByYear:
         {
           FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
           FileNamePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
-          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          FileNamePart3 = this.appLoadedService.MonitoringStatsModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
         }
         break;
       default:

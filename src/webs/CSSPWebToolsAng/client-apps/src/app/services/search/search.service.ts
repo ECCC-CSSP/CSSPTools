@@ -62,7 +62,7 @@ export class SearchService {
                 else {
                     let TermListLower0 = TermList[0].toLowerCase();
                     for (let i = 0, count = this.appLoadedService.WebAllSearch.TVItemModelList?.length; i < count; i++) {
-                        if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower0)) {
+                        if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower0)) {
                             TVItemModelList.push(this.appLoadedService.WebAllSearch.TVItemModelList[i]);
                             if (TVItemModelList?.length > 10) {
                                 break;
@@ -79,8 +79,8 @@ export class SearchService {
                 let TermListLower0 = TermList[0].toLowerCase();
                 let TermListLower1 = TermList[1].toLowerCase();
                 for (let i = 0, count = this.appLoadedService.WebAllSearch.TVItemModelList?.length; i < count; i++) {
-                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower0)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower1)) {
+                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower0)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower1)) {
                         TVItemModelList.push(this.appLoadedService.WebAllSearch.TVItemModelList[i]);
                         if (TVItemModelList?.length > 10) {
                             break;
@@ -97,9 +97,9 @@ export class SearchService {
                 let TermListLower1 = TermList[1].toLowerCase();
                 let TermListLower2 = TermList[2].toLowerCase();
                 for (let i = 0, count = this.appLoadedService.WebAllSearch.TVItemModelList?.length; i < count; i++) {
-                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower0)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower1)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower2)) {
+                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower0)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower1)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower2)) {
                         TVItemModelList.push(this.appLoadedService.WebAllSearch.TVItemModelList[i]);
                         if (TVItemModelList?.length > 10) {
                             break;
@@ -117,10 +117,10 @@ export class SearchService {
                 let TermListLower2 = TermList[2].toLowerCase();
                 let TermListLower3 = TermList[3].toLowerCase();
                 for (let i = 0, count = this.appLoadedService.WebAllSearch.TVItemModelList?.length; i < count; i++) {
-                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower0)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower1)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower2)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower3)) {
+                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower0)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower1)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower2)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower3)) {
                         TVItemModelList.push(this.appLoadedService.WebAllSearch.TVItemModelList[i]);
                         if (TVItemModelList?.length > 10) {
                             break;
@@ -139,11 +139,11 @@ export class SearchService {
                 let TermListLower3 = TermList[3].toLowerCase();
                 let TermListLower4 = TermList[4].toLowerCase();
                 for (let i = 0, count = this.appLoadedService.WebAllSearch.TVItemModelList?.length; i < count; i++) {
-                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower0)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower1)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower2)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower3)
-                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase().includes(TermListLower4)) {
+                    if (this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower0)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower1)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower2)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower3)
+                        && this.appLoadedService.WebAllSearch.TVItemModelList[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase().includes(TermListLower4)) {
                         TVItemModelList.push(this.appLoadedService.WebAllSearch.TVItemModelList[i]);
                         if (TVItemModelList?.length > 10) {
                             break;

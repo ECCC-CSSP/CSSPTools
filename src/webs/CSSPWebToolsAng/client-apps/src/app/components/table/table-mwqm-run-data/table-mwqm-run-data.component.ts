@@ -52,7 +52,7 @@ export class TableMWQMRunDataComponent implements OnInit, AfterViewInit, OnDestr
     for (let i = 0, count = MWQMSampleModelList?.length; i < count; i++) {
       let MWQMSiteModel: MWQMSiteModel = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.TVItemID == MWQMSampleModelList[i].MWQMSample.MWQMSiteTVItemID)[0];
       let MWQMRunDataTableModel: MWQMRunDataTableModel = <MWQMRunDataTableModel>{
-        MWQMSiteName: MWQMSiteModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText,
+        MWQMSiteName: MWQMSiteModel.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText,
         SampleDate: MWQMSampleModelList[i].MWQMSample.SampleDateTime_Local,
         FC: MWQMSampleModelList[i].MWQMSample.FecCol_MPN_100ml,
         Sal: MWQMSampleModelList[i].MWQMSample.Salinity_PPT,

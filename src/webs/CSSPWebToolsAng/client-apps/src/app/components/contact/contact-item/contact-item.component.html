@@ -1,27 +1,22 @@
-<mat-card *ngFor="let contactModel of appLoadedService.WebMunicipality?.MunicipalityContactModelList">
-    <mat-card-header>
-        <h3>
-            <span>{{ contactModel?.Contact?.FirstName }}</span>&nbsp;
-            <span *ngIf="contactModel?.Contact?.Inital">{{ contactModel?.Contact?.Inital }}.&nbsp;</span>
-            <span>{{ contactModel?.Contact?.LastName }}&nbsp;</span>
-            <span *ngIf="contactModel?.Contact?.LoginEmail">
-                {{ contactModel?.Contact?.LoginEmail }}
-            </span>
-        </h3>
-    </mat-card-header>
-    <mat-card-content>
-        <h4>{{ appLanguageService.Telephones[appLanguageService.LangID] }}</h4>
-        <mat-list *ngFor="let TelTVItemID of contactModel?.ContactTelTVItemIDList">
-            <app-tel [TVItemID]="TelTVItemID"></app-tel>
-        </mat-list>
-        <h4>{{ appLanguageService.Emails[appLanguageService.LangID] }}</h4>
-        <mat-list *ngFor="let EmailTVItemID of contactModel.ContactEmailTVItemIDList">
-            <app-email [TVItemID]="EmailTVItemID"></app-email>
-        </mat-list>
-        <h4>{{ appLanguageService.Addresses[appLanguageService.LangID] }}</h4>
-        <mat-list *ngFor="let AddressTVItemID of contactModel.ContactAddressTVItemIDList">
-            <app-address [TVItemID]="AddressTVItemID"></app-address>
-        </mat-list>
-    </mat-card-content>
 
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="ViewVisible = !ViewVisible" [ngClass]="ViewVisible ? 'selected' : ''">
+            {{ appLanguageService.View[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ModifyVisible = !ModifyVisible" [ngClass]="ModifyVisible ? 'selected' : ''">
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="CreateVisible = !CreateVisible" [ngClass]="CreateVisible ? 'selected' : ''">
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        </button>
+        <app-contact-item-view *ngIf="ViewVisible" [MunicipalityTVItemModel]="MunicipalityTVItemModel">
+        </app-contact-item-view>
+        <app-contact-item-modify *ngIf="ModifyVisible" [MunicipalityTVItemModel]="MunicipalityTVItemModel">
+        </app-contact-item-modify>
+        <app-contact-item-create *ngIf="CreateVisible" [MunicipalityTVItemModel]="MunicipalityTVItemModel">
+        </app-contact-item-create>
+    </mat-card-content>
 </mat-card>

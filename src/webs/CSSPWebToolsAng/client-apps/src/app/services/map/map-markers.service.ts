@@ -47,8 +47,8 @@ export class MapMarkersService {
 
           let position: google.maps.LatLngLiteral = { lat: mapInfoModel.MapInfoPointList[0].Lat, lng: mapInfoModel.MapInfoPointList[0].Lng };
           let label: google.maps.MarkerLabel = { color: '00ff00', fontWeight: 'bold', text: count.toString() };
-          let title = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
-          let info = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          let title = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let info = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
           let path: string = this.appStateService.MapMarkerPathCharacters[3]; // 3 characters
           let strokeColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);
           let fillColor: string = this.mapHelperService.GetMapMarkerColor(mapInfoModel.MapInfo.TVType);

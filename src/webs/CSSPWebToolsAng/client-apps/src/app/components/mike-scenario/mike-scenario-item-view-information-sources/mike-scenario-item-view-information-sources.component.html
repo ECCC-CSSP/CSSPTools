@@ -1,0 +1,232 @@
+<mat-card class="mat-elevation-z4">
+    <mat-card-content>
+        <button mat-raised-button class="BorderIncludedPolSource">
+            {{ appLanguageService.IncludedPollutionSource[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button class="BorderIncludedRiver">
+            {{ appLanguageService.IncludedRiver[appLanguageService.LangID] }}
+        </button>
+        &nbsp;&nbsp;
+        <button mat-raised-button class="BorderNotIncluded">
+            {{ appLanguageService.NotIncluded[appLanguageService.LangID] }}
+        </button>
+        <br />
+        <ng-container *ngFor="let mikeSourceModel of MikeScenarioModel?.MikeSourceModelList">
+            <br />
+            <mat-card [ngClass]="GetBorderIncludedClass(mikeSourceModel?.MikeSource)">
+                <mat-card-content>
+                    <h2>
+                        {{ mikeSourceModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText }}
+                        <span class="spanSmall" *ngIf="mikeSourceModel?.MikeSource?.IsContinuous">
+                            &nbsp;&nbsp;
+                            ({{ appLanguageService.ContinuousFlow[appLanguageService.LangID] }})
+                        </span>
+                        <span class="spanSmall" *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                            &nbsp;&nbsp;
+                            ({{ appLanguageService.NotContinuousFlow[appLanguageService.LangID] }})
+                        </span>
+                    </h2>
+                    <blockquote>
+                        <!--Latitude Longitude-->
+                        <span class="strongSpan">
+                            {{ appLanguageService.LatitudeLongitude[appLanguageService.LangID] }}:
+                        </span>
+                        <span>
+                            {{
+                            mikeSourceModel?.TVItemModel?.MapInfoModelList[0]?.MapInfoPointList[0]?.Lat | number:
+                            '1.0-6'
+                            }}&nbsp;
+                            {{
+                            mikeSourceModel?.TVItemModel?.MapInfoModelList[0]?.MapInfoPointList[0]?.Lng | number:
+                            '1.0-6'
+                            }}
+                        </span>
+                        <br /><br />
+
+                        <table>
+                            <tr>
+                                <th></th>
+                                <th>Start</th>
+                                <th *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">End</th>
+                            </tr>
+
+                            <ng-container *ngFor="let mikeSourceStartEnd of mikeSourceModel?.MikeSourceStartEndList">
+                                <tr>
+                                    <!-- Start End Date -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.Date[appLanguageService.LangID] }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{ mikeSourceStartEnd?.StartDateAndTime_Local | date: 'yyyy MM dd'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{ mikeSourceStartEnd?.EndDateAndTime_Local | date: 'yyyy MM dd'
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Start End Time -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.Time[appLanguageService.LangID] }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{ mikeSourceStartEnd?.StartDateAndTime_Local | date: 'hh:mm'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{ mikeSourceStartEnd?.EndDateAndTime_Local | date: 'hh:mm'
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Discharge m3/day -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.Discharge[appLanguageService.LangID] }}
+                                        </span>
+                                        <span class="spanSmall">
+                                            ({{ appLanguageService.cubicMetersPerDay[appLanguageService.LangID] }})
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceFlowStart_m3_day | number: '1.0-1'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceFlowEnd_m3_day | number: '1.0-1'
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Discharge m3/second -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.Discharge[appLanguageService.LangID] }}
+                                        </span>
+                                        <span class="spanSmall">
+                                            ({{ appLanguageService.cubicMetersPerSecond[appLanguageService.LangID] }})
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceFlowStart_m3_day/3600/24 | number: '1.0-5'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceFlowEnd_m3_day/3600/24 | number: '1.0-5'
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- FecalColiform -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.FecalColiform[appLanguageService.LangID] }}
+                                        </span>
+                                        <span class="spanSmall">
+                                            ({{ appLanguageService.FCPer100mL[appLanguageService.LangID] }})
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourcePollutionStart_MPN_100ml
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourcePollutionEnd_MPN_100ml
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Temperature -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.Temperature[appLanguageService.LangID] }}
+                                        </span>
+                                        <span class="spanSmall">
+                                            ({{ appLanguageService.DegCelciusSymbol[appLanguageService.LangID] }})
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceTemperatureStart_C | number: '1.0-1'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceTemperatureEnd_C | number: '1.0-1'
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Salinity -->
+                                    <td>
+                                        <span class="strongSpan">
+                                            {{ appLanguageService.Salinity[appLanguageService.LangID] }}
+                                        </span>
+                                        <span class="spanSmall">
+                                            ({{ appLanguageService.PSU[appLanguageService.LangID] }})
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceSalinityStart_PSU | number: '1.0-1'
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">
+                                        <span>
+                                            {{
+                                            mikeSourceStartEnd?.SourceSalinityEnd_PSU | number: '1.0-1'
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td *ngIf="!mikeSourceModel?.MikeSource?.IsContinuous">&nbsp;</td>
+                                </tr>
+                            </ng-container>
+                        </table>
+                    </blockquote>
+                </mat-card-content>
+            </mat-card>
+        </ng-container>
+    </mat-card-content>
+</mat-card>

@@ -66,7 +66,7 @@ export class MapPolylinesService {
 
             let strokeColor: string = "#000000";
 
-            switch (tvItemModel.TVItemLanguageList[0 /* english */].TVText.substring(0, 1).toUpperCase()) {
+            switch (tvItemModel.TVItemLanguageList[0 /* english */]?.TVText.substring(0, 1).toUpperCase()) {
               case ('A'):
                 {
                   strokeColor = "#00FF00";

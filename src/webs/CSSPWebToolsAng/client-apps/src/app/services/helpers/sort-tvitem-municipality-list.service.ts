@@ -41,7 +41,7 @@ export class SortTVItemMunicipalityListService {
         for (let i = 0; i < arr?.length; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItem.TVItemID,
-                TVText: arr[i].TVItemLanguageList[this.appLanguageService.LangID].TVText.toLowerCase(),
+                TVText: arr[i].TVItemLanguageList[this.appLanguageService.LangID]?.TVText.toLowerCase(),
             });
         }
 

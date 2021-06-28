@@ -1,0 +1,18 @@
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="ViewVisible = !ViewVisible" [ngClass]="ViewVisible ? 'selected' : ''">
+            {{ appLanguageService.View[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="ModifyVisible = !ModifyVisible" [ngClass]="ModifyVisible ? 'selected' : ''">
+            {{ appLanguageService.Modify[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="CreateVisible = !CreateVisible" [ngClass]="CreateVisible ? 'selected' : ''">
+            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        </button>
+        <app-mike-scenario-item-view *ngIf="ViewVisible" [MikeScenarioModel]="mikeScenarioModel"></app-mike-scenario-item-view>
+        <app-mike-scenario-item-modify *ngIf="ModifyVisible" [MikeScenarioModel]="mikeScenarioModel"></app-mike-scenario-item-modify>
+        <app-mike-scenario-item-create *ngIf="CreateVisible" [MikeScenarioModel]="mikeScenarioModel"></app-mike-scenario-item-create>
+    </mat-card-content>
+</mat-card>

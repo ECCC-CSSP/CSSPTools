@@ -1,0 +1,15 @@
+
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="GeneralParametersVisible = !GeneralParametersVisible" [ngClass]="GeneralParametersVisible ? 'selected' : ''">
+            {{ appLanguageService.GeneralParameters[appLanguageService.LangID] }}
+        </button>
+        <span>&nbsp;&nbsp;</span>
+        <button mat-raised-button (click)="SourcesVisible = !SourcesVisible" [ngClass]="SourcesVisible ? 'selected' : ''">
+            {{ appLanguageService.Sources[appLanguageService.LangID] }}
+            &nbsp;&nbsp;({{ MikeScenarioModel?.TVFileModelList?.length }})
+        </button>
+        <app-mike-scenario-item-view-information-general-parameters *ngIf="GeneralParametersVisible" [MikeScenarioModel]="MikeScenarioModel"></app-mike-scenario-item-view-information-general-parameters>
+        <app-mike-scenario-item-view-information-sources *ngIf="SourcesVisible" [MikeScenarioModel]="MikeScenarioModel"></app-mike-scenario-item-view-information-sources>
+    </mat-card-content>
+</mat-card>

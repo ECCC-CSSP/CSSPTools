@@ -1,0 +1,154 @@
+<mat-card>
+    <mat-card-content>
+        <h3>{{ appLanguageService.GeneralParameters[appLanguageService.LangID] }}</h3>
+        <blockquote>
+            <!--Scenario Name-->
+            <span class="strongSpan">
+                {{ appLanguageService.ScenarioName[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText
+                }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Start Date and Time (Local time)-->
+            <span class="strongSpan">
+                {{ appLanguageService.StartDateAndTime[appLanguageService.LangID] }}
+                ({{ appLanguageService.localTime[appLanguageService.LangID] }}):
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.MikeScenarioStartDateTime_Local
+                }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--End Date and Time (Local time)-->
+            <span class="strongSpan">
+                {{ appLanguageService.EndDateAndTime[appLanguageService.LangID] }}
+                ({{ appLanguageService.localTime[appLanguageService.LangID] }}):
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.MikeScenarioEndDateTime_Local
+                }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Scenario Length-->
+            <span class="strongSpan">
+                {{ appLanguageService.ScenarioLength[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.EndDate - MikeScenarioModel?.MikeScenario?.StartDate
+                }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Decay Factor Average-->
+            <span class="strongSpan">
+                {{ appLanguageService.DecayFactorAverage[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.DecayFactor_per_day
+                }} {{ appLanguageService.perDay[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Decay is constant-->
+            <span class="strongSpan">
+                {{ appLanguageService.DecayIsConstant[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.DecayIsConstant
+                }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Decay factor amplitude-->
+            <span class="strongSpan">
+                {{ appLanguageService.DecayFactorAmplitude[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.DecayFactorAmplitude
+                }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Ambient temperature-->
+            <span class="strongSpan">
+                {{ appLanguageService.AmbientTemperature[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.AmbientTemperature_C
+                }} {{ appLanguageService.DegCelciusSymbol[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Ambient salinity-->
+            <span class="strongSpan">
+                {{ appLanguageService.AmbientSalinity[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.AmbientSalinity_PSU
+                }} {{ appLanguageService.PSU[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Results frequency-->
+            <span class="strongSpan">
+                {{ appLanguageService.ResultsFrequency[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.ResultFrequency_min
+                }} {{ appLanguageService.minutes[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Manning number-->
+            <span class="strongSpan">
+                {{ appLanguageService.ManningNumber[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.ManningNumber
+                }} {{ appLanguageService.m1_3PerSecond[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Wind speed-->
+            <span class="strongSpan">
+                {{ appLanguageService.WindSpeed[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.WindSpeed_km_h
+                }} {{ appLanguageService.kmPerhours[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+            <!--Wind direction-->
+            <span class="strongSpan">
+                {{ appLanguageService.WindDirection[appLanguageService.LangID] }}:
+            </span>
+            <span>
+                {{
+                MikeScenarioModel?.MikeScenario?.WindDirection_deg
+                }}
+                {{ appLanguageService.degrees[appLanguageService.LangID] }}
+                ----- {{ appLanguageService.N0E90S180[appLanguageService.LangID] }}
+            </span>
+            <span>&nbsp;&nbsp;&nbsp;</span>
+
+        </blockquote>
+    </mat-card-content>
+</mat-card>

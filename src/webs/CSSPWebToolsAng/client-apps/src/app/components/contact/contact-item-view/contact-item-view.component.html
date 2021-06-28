@@ -1,0 +1,27 @@
+<ng-container *ngFor="let contactModel of appLoadedService.WebMunicipality?.MunicipalityContactModelList">
+    <br />   
+    <mat-card class="mat-elevation-z5">
+        <mat-card-content>
+            <h3>
+                <span>{{ contactModel?.Contact?.FirstName }}</span>&nbsp;
+                <span *ngIf="contactModel?.Contact?.Inital">{{ contactModel?.Contact?.Inital }}.&nbsp;</span>
+                <span>{{ contactModel?.Contact?.LastName }}&nbsp;</span>
+                <span *ngIf="contactModel?.Contact?.LoginEmail">
+                    {{ contactModel?.Contact?.LoginEmail }}
+                </span>
+            </h3>
+            <h4>{{ appLanguageService.Telephones[appLanguageService.LangID] }}</h4>
+            <mat-list *ngFor="let TelTVItemID of contactModel?.ContactTelTVItemIDList">
+                <app-tel [TVItemID]="TelTVItemID"></app-tel>
+            </mat-list>
+            <h4>{{ appLanguageService.Emails[appLanguageService.LangID] }}</h4>
+            <mat-list *ngFor="let EmailTVItemID of contactModel.ContactEmailTVItemIDList">
+                <app-email [TVItemID]="EmailTVItemID"></app-email>
+            </mat-list>
+            <h4>{{ appLanguageService.Addresses[appLanguageService.LangID] }}</h4>
+            <mat-list *ngFor="let AddressTVItemID of contactModel.ContactAddressTVItemIDList">
+                <app-address [TVItemID]="AddressTVItemID"></app-address>
+            </mat-list>
+        </mat-card-content>   
+    </mat-card>
+</ng-container>

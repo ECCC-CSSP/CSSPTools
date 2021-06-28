@@ -46,7 +46,7 @@ export class TableService {
   GetTableTitle(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
     let TitlePart1: string = '';
     let TitlePart2: string = '';
-    let TitlePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+    let TitlePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
 
     switch (webChartAndTableType) {
       case WebChartAndTableTypeEnum.MWQMRunData:
@@ -107,7 +107,7 @@ export class TableService {
   GetTableFileName(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
     let FileNamePart1: string = '';
     let FileNamePart2: string = '';
-    let FileNamePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID].TVText;
+    let FileNamePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
 
     switch (webChartAndTableType) {
       case WebChartAndTableTypeEnum.MWQMRunData:

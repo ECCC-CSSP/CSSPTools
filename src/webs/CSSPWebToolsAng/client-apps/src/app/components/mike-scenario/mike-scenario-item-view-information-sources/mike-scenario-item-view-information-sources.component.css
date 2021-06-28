@@ -1,0 +1,39 @@
+.strongSpan {
+    font-weight: 800;
+}
+
+.showBlue {
+    color: cornflowerblue;
+}
+
+.BorderIncludedPolSource {
+    border-left: 6px solid #2bff00;
+    border-bottom: 1px solid #2bff00;
+}
+
+.BorderIncludedRiver {
+    border-left: 6px solid #1897ec;
+    border-bottom: 1px solid #1897ec;
+}
+
+.BorderNotIncluded {
+    border-left: 6px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+
+.spanSmall
+{
+    font-size: small;
+}
+
+table {
+    text-align: center;
+}
+
+th {
+    padding: 5px;
+}
+
+td {
+    padding: 5px;
+}
