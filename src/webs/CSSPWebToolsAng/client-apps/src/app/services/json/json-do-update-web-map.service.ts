@@ -1,46 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, Subscription } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { WebAllAddresses } from 'src/app/models/generated/web/WebAllAddresses.model';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
-import { AppLanguageService } from 'src/app/services/app/app-language.service';
-import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MapService } from '../map/map.service';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { WebAllContacts } from 'src/app/models/generated/web/WebAllContacts.model';
-import { WebAllTideLocations } from 'src/app/models/generated/web/WebAllTideLocations.model';
-import { WebAllTels } from 'src/app/models/generated/web/WebAllTels.model';
-import { WebAllReportTypes } from 'src/app/models/generated/web/WebAllReportTypes.model';
-import { WebAllProvinces } from 'src/app/models/generated/web/WebAllProvinces.model';
-import { WebAllPolSourceSiteEffectTerms } from 'src/app/models/generated/web/WebAllPolSourceSiteEffectTerms.model';
-import { WebAllPolSourceGroupings } from 'src/app/models/generated/web/WebAllPolSourceGroupings.model';
-import { WebAllMWQMLookupMPNs } from 'src/app/models/generated/web/WebAllMWQMLookupMPNs.model';
-import { WebAllMunicipalities } from 'src/app/models/generated/web/WebAllMunicipalities.model';
-import { WebAllHelpDocs } from 'src/app/models/generated/web/WebAllHelpDocs.model';
-import { WebAllEmails } from 'src/app/models/generated/web/WebAllEmails.model';
-import { WebAllCountries } from 'src/app/models/generated/web/WebAllCountries.model';
-import { WebArea } from 'src/app/models/generated/web/WebArea.model';
-import { WebClimateSites } from 'src/app/models/generated/web/WebClimateSites.model';
-import { WebHydrometricSites } from 'src/app/models/generated/web/WebHydrometricSites.model';
-import { WebDrogueRuns } from 'src/app/models/generated/web/WebDrogueRuns.model';
-import { WebCountry } from 'src/app/models/generated/web/WebCountry.model';
-import { WebLabSheets } from 'src/app/models/generated/web/WebLabSheets.model';
-import { WebMikeScenarios } from 'src/app/models/generated/web/WebMikeScenarios.model';
-import { WebMunicipality } from 'src/app/models/generated/web/WebMunicipality.model';
-import { WebMWQMRuns } from 'src/app/models/generated/web/WebMWQMRuns.model';
-import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
-import { WebPolSourceSites } from 'src/app/models/generated/web/WebPolSourceSites.model';
-import { WebProvince } from 'src/app/models/generated/web/WebProvince.model';
-import { WebRoot } from 'src/app/models/generated/web/WebRoot.model';
-import { WebAllSearch } from 'src/app/models/generated/web/WebAllSearch.model';
-import { WebSector } from 'src/app/models/generated/web/WebSector.model';
-import { WebSubsector } from 'src/app/models/generated/web/WebSubsector.model';
-import { WebTideSites } from 'src/app/models/generated/web/WebTideSites.model';
-import { WebMWQMSamples1980_2020 } from 'src/app/models/generated/web/WebMWQMSamples1980_2020.model';
-import { WebMWQMSamples2021_2060 } from 'src/app/models/generated/web/WebMWQMSamples2021_2060.model';
-import { HistoryService } from '../helpers/history.service';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
@@ -48,20 +10,11 @@ import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubCom
 import { SectorSubComponentEnum } from 'src/app/enums/generated/SectorSubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
-import { WebMWQMSamples } from 'src/app/models/generated/web/WebMWQMSamples.model';
 import { SortTVItemListService } from '../helpers/sort-tvitem-list.service';
 import { FilterService } from '../tvitem/filter.service';
 import { SortTVItemMunicipalityListService } from '../helpers/sort-tvitem-municipality-list.service';
-import { StatService } from '../helpers/stat.service';
-import { WebMonitoringOtherStatsCountry } from 'src/app/models/generated/web/WebMonitoringOtherStatsCountry.model';
-import { WebMonitoringRoutineStatsCountry } from 'src/app/models/generated/web/WebMonitoringRoutineStatsCountry.model';
-import { WebMonitoringOtherStatsProvince } from 'src/app/models/generated/web/WebMonitoringOtherStatsProvince.model';
-import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/web/WebMonitoringRoutineStatsProvince.model';
-import { MonitoringStatsModel } from 'src/app/models/generated/web/MonitoringStatsModel.model';
-import { JsonLoadListService } from './json-loading-list.service';
-import { JsonDataIsLoadedService } from './json-data-is-loaded.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-
+import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
 
 @Injectable({
     providedIn: 'root'
@@ -88,6 +41,35 @@ export class JsonDoUpdateWebMapService {
             case WebTypeEnum.WebSubsector: this.DoUpdateWebSubsectorMap(); break;
             default: break;
         }
+    }
+
+    DoMikeSourceUpdateWebMap(MikeSourceModelList: MikeSourceModel[])
+    {
+        let TVItemModelList: TVItemModel[] = [];
+
+        this.appLoadedService.MikeSourceModelList = [];
+
+        for(let i = 0, count = MikeSourceModelList.length; i < count; i++)
+        {
+            TVItemModelList.push(MikeSourceModelList[i].TVItemModel);
+            this.appLoadedService.MikeSourceModelList.push(MikeSourceModelList[i]);
+        }   
+
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+            // ...this.appLoadedService.TVItemModelInfrastructureList,
+            // ...[this.appLoadedService.WebMunicipality?.TVItemModel],
+            ...TVItemModelList
+        ]);
+    }
+
+    DoInfrastructureUpdateWebMap()
+    {
+        this.mapService.ClearMap();
+        this.mapService.DrawObjects([
+            ...this.appLoadedService.TVItemModelInfrastructureList,
+            ...[this.appLoadedService.WebMunicipality?.TVItemModel],
+        ]);
     }
 
     private DoUpdateWebAreaMap() {

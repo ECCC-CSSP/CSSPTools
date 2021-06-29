@@ -31,6 +31,7 @@ namespace FileServices
         Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName);
         Task<ActionResult<LocalFileInfo>> GetAzureFileInfo(int ParentTVItemID, string FileName);
+        Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName);
         Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID);
 
     }
@@ -104,6 +105,10 @@ namespace FileServices
         public async Task<ActionResult<LocalFileInfo>> GetAzureFileInfo(int ParentTVItemID, string FileName)
         {
             return await DoGetAzureFileInfo(ParentTVItemID, FileName);
+        }
+        public async Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName)
+        {
+            return await DoGetLocalFileInfo(ParentTVItemID, FileName);
         }
         public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)
         {

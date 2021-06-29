@@ -1,8 +1,8 @@
 <mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
-    <app-tvitem-menu [TVItemModel]="tvItemModel">
-    </app-tvitem-menu>
+    <app-mike-scenario-item-menu [TVItemModel]="tvItemModel">
+    </app-mike-scenario-item-menu>
 
-    <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
+    <button mat-button>
         <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">
             <span *ngIf="appStateService.UserPreference.MapVisible">
                 {{ i + 1 }}&nbsp;-&nbsp;

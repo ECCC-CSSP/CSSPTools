@@ -18,6 +18,7 @@ import { DateFormatService } from 'src/app/services/helpers/date-format.service'
 })
 export class InfrastructureItemFilesComponent implements OnInit, OnDestroy {
   @Input() InfrastructureModelPath: InfrastructureModelPath;
+  
 
   languageEnum = GetLanguageEnum();
   filesSortByProp = GetFilesSortPropEnum();

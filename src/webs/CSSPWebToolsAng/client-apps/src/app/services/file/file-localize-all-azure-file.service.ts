@@ -4,23 +4,22 @@ import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { LocalFileInfo } from 'src/app/models/generated/web/LocalFileInfo.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { FileLocalizeSwitchService } from '.';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppStateService } from '../app/app-state.service';
 import { TogglesService } from '../helpers/toggles.service';
+import { LocalFileInfoService } from './local-file-info.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FileLocalizeAllAzureFileService {
     private sub: Subscription;
-    private intervalId: any;
     private tvType: TVTypeEnum;
 
-    Progress: number = 0;
+    Cancel = false;
     StartTotalFilesCount: number = 0;
     TVFileModelList: TVFileModel[] = [];
     TotalFileSize: number = 0;
@@ -30,16 +29,28 @@ export class FileLocalizeAllAzureFileService {
         private appLanguageService: AppLanguageService,
         public appStateService: AppStateService,
         private toggleService: TogglesService,
-        private fileLocalizeSwitchService: FileLocalizeSwitchService) {
+        private fileLocalizeSwitchService: FileLocalizeSwitchService,
+        private localFileInfoService: LocalFileInfoService) {
     }
 
     LocalizeAllAzureFile(tvType: TVTypeEnum) {
+        this.Cancel = false;
         this.tvType = tvType;
 
         if (this.TVFileModelList != undefined && this.TVFileModelList?.length > 0) {
             this.LocalizeAzureFile();
         }
     }
+
+    CancelLocalizeAllAzureFile() {
+        this.Cancel = true;
+        this.sub ? this.sub.unsubscribe() : null;
+        this.appStateService.Status = '';
+        this.appStateService.Working = false;
+        this.TotalFileSize = 0;
+        this.StartTotalFilesCount = 0;
+        this.TVFileModelList = [];
+}
 
     AddTVFileModelList(tvFileModelList: TVFileModel[]) {
         let TempTotalFileSize: number = 0;
@@ -59,34 +70,6 @@ export class FileLocalizeAllAzureFileService {
         this.StartTotalFilesCount = this.TVFileModelList.length;
     }
 
-    GetLocalFileInfo() {
-        if (this.TVFileModelList.length > 0) {
-            this.sub ? this.sub.unsubscribe() : null;
-            this.sub = this.DoGetLocalFileInfo().subscribe();
-        }
-    }
-
-    private DoGetLocalFileInfo() {
-        let languageEnum = GetLanguageEnum();
-        let ParentTVItemID = this.TVFileModelList[0].TVItem.ParentID;
-        let FileName = encodeURI(this.TVFileModelList[0].TVFile?.ServerFileName).replace('#', '%23');
-
-        this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]}`;
-        this.appStateService.Working = true;
-
-        let url: string = `${this.appLoadedService.BaseApiUrl}${languageEnum[this.appLanguageService.Language]}-CA/GetLocalFileInfo/${ParentTVItemID}/${FileName}`;
-
-        return this.httpClient.get<LocalFileInfo>(url).pipe(map((x: LocalFileInfo) => { this.DoGetLocalFileInfoUpdate(x); }), catchError(e => of(e).pipe(map(e => { this.DoLocalizeAzureFileError(e); }))));
-    }
-
-    private DoGetLocalFileInfoUpdate(x: LocalFileInfo) {
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-        }
-
-        this.Progress = x.Length / this.TVFileModelList[0].TVFile?.FileSize_kb * 100;
-        this.intervalId = setInterval(() => this.GetLocalFileInfo(), 10000);
-    }
 
     private LocalizeAzureFile() {
         if (this.TVFileModelList.length > 0) {
@@ -99,6 +82,11 @@ export class FileLocalizeAllAzureFileService {
         let languageEnum = GetLanguageEnum();
         let ParentTVItemID = this.TVFileModelList[0].TVItem.ParentID;
         let FileName = encodeURI(this.TVFileModelList[0].TVFile?.ServerFileName).replace('#', '%23');
+        let FileSize_kb = this.TVFileModelList[0].TVFile?.FileSize_kb;
+
+        FileName = FileName.replace('.mdf', '.mmdf');
+
+        this.localFileInfoService.GetLocalFileInfo(ParentTVItemID, FileName, FileSize_kb);
 
         this.appStateService.Status = `${this.appLanguageService.Loading[this.appLanguageService.LangID]}`;
         this.appStateService.Working = true;
@@ -111,7 +99,7 @@ export class FileLocalizeAllAzureFileService {
     private DoLocalizeAzureFileUpdate(x: boolean) {
         this.fileLocalizeSwitchService.DoFileLocalizeSwitch(this.tvType, this.TVFileModelList[0], x);
         this.TVFileModelList.shift();
-        if (this.TVFileModelList.length > 0) {
+        if (this.TVFileModelList.length > 0 && !this.Cancel) {            
             this.LocalizeAllAzureFile(this.tvType);
         }
         else {
@@ -128,7 +116,7 @@ export class FileLocalizeAllAzureFileService {
     private DoLocalizeAzureFileError(e: any) {
         this.fileLocalizeSwitchService.DoFileLocalizeSwitch(this.tvType, this.TVFileModelList[0], false);
         this.TVFileModelList.shift();
-        if (this.TVFileModelList.length > 0) {
+        if (this.TVFileModelList.length > 0 && !this.Cancel) {
             this.LocalizeAllAzureFile(this.tvType);
         }
         else {
@@ -141,4 +129,5 @@ export class FileLocalizeAllAzureFileService {
         }
 
     }
+
 }

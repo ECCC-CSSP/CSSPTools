@@ -86,11 +86,11 @@ namespace ManageServices
         }
         public async Task<ActionResult<List<ManageFile>>> ManageFileGetList(int skip = 0, int take = 100)
         {
-            List<ManageFile> csspFileList = (from c in dbManage.ManageFiles.AsNoTracking()
+            List<ManageFile> manageFileList = (from c in dbManage.ManageFiles.AsNoTracking()
                                                   orderby c.ManageFileID
                                                   select c).Skip(skip).Take(take).ToList();
 
-            return await Task.FromResult(Ok(csspFileList));
+            return await Task.FromResult(Ok(manageFileList));
         }
         public async Task<ActionResult<int>> ManageFileGetNextIndexToUse()
         {
@@ -102,30 +102,30 @@ namespace ManageServices
         }
         public async Task<ActionResult<ManageFile>> ManageFileGetWithManageFileID(int ManageFileID)
         {
-            ManageFile csspFile = (from c in dbManage.ManageFiles.AsNoTracking()
+            ManageFile manageFile = (from c in dbManage.ManageFiles.AsNoTracking()
                                         where c.ManageFileID == ManageFileID
                                         select c).FirstOrDefault();
 
-            if (csspFile == null)
+            if (manageFile == null)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", ManageFileID.ToString())));
             }
 
-            return await Task.FromResult(Ok(csspFile));
+            return await Task.FromResult(Ok(manageFile));
         }
         public async Task<ActionResult<ManageFile>> ManageFileGetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName)
         {
-            ManageFile csspFile = (from c in dbManage.ManageFiles.AsNoTracking()
+            ManageFile manageFile = (from c in dbManage.ManageFiles.AsNoTracking()
                                         where c.AzureStorage == AzureStorage
                                         && c.AzureFileName == AzureFileName
                                         select c).FirstOrDefault();
 
-            if (csspFile == null)
+            if (manageFile == null)
             {
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }")));
             }
 
-            return await Task.FromResult(Ok(csspFile));
+            return await Task.FromResult(Ok(manageFile));
         }
         #endregion Functions public
 

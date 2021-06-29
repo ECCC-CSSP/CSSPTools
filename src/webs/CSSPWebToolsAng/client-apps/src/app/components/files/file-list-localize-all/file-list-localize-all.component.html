@@ -10,12 +10,14 @@
                 <span>({{ fileLocalizeAllAzureFileService.TotalFileSize }})&nbsp;KB&nbsp;&nbsp;</span>
                 <span>{{ fileLocalizeAllAzureFileService.TVFileModelList[0]?.TVFile?.ServerFileName }}</span>
             </p>
-            <mat-progress-bar mode="determinate" value="{{ fileLocalizeAllAzureFileService.Progress }}">
+            <mat-progress-bar mode="determinate" value="{{ localFileInfoService.Progress }}">
             </mat-progress-bar>
         </div>
-        <button mat-raised-button (click)="LocalizeAllFiles(TVFileModelByPurposeList)">{{
+        <button mat-raised-button *ngIf="!appStateService.Working" (click)="LocalizeAllFiles(TVFileModelByPurposeList)">{{
             appLanguageService.LocalizeAllFiles[appLanguageService.LangID] }}
-            <mat-icon>local_library</mat-icon>
+        </button>
+        <button mat-raised-button *ngIf="appStateService.Working" (click)="CancelLocalizeAllFiles()">{{
+            appLanguageService.Cancel[appLanguageService.LangID] }}
         </button>
     </mat-card-content>
 </mat-card>

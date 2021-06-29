@@ -6,6 +6,7 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { FileLocalizeAllAzureFileService } from 'src/app/services/file';
+import { LocalFileInfoService } from 'src/app/services/file/local-file-info.service';
 
 @Component({
   selector: 'app-file-list-item-localize',
@@ -21,7 +22,8 @@ export class FileListItemLocalizeComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
     public appLoadedService: AppLoadedService,
-    public fileLocalizeAllAzureFileService: FileLocalizeAllAzureFileService) {
+    public fileLocalizeAllAzureFileService: FileLocalizeAllAzureFileService,
+    public localFileInfoService: LocalFileInfoService) {
   }
 
   ngOnInit() {
@@ -34,5 +36,10 @@ export class FileListItemLocalizeComponent implements OnInit, OnDestroy {
   {
     this.fileLocalizeAllAzureFileService.AddTVFileModelList([tvFileModel]);
     this.fileLocalizeAllAzureFileService.LocalizeAllAzureFile(this.TVType);
+  }
+
+  CancelLocalizeAllFiles()
+  {
+    this.fileLocalizeAllAzureFileService.CancelLocalizeAllAzureFile();
   }
 }

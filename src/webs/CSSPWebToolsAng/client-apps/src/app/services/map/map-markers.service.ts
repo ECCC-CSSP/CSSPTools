@@ -7,6 +7,7 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { PolSourceObservationIssue } from 'src/app/models/generated/db/PolSourceObservationIssue.model';
 import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
 import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
+import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
 import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourceObservationModel.model';
 import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
 import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
@@ -139,6 +140,28 @@ export class MapMarkersService {
                   fillColor = '#888800';
                 }
                 break;
+            }
+
+            path = this.appStateService.MapMarkerPathCharacters[label.text?.length];
+          }
+
+          if (tvItemModel.TVItem.TVType == TVTypeEnum.MikeSource) {
+            strokeColor = '#cccccc';
+            fillColor = '#cccccc';
+
+            let MikeSourceModelList: MikeSourceModel[] = this.appLoadedService.MikeSourceModelList.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemModel.TVItem.TVItemID);
+            if (MikeSourceModelList != undefined && MikeSourceModelList.length > 0) {
+
+              if (MikeSourceModelList[0].MikeSource.Include) {
+                strokeColor = '#2bff00';
+                fillColor = '#2bff00';
+              }
+
+              if (MikeSourceModelList[0].MikeSource.IsRiver) {
+                strokeColor = '#1897ec';
+                fillColor = '#1897ec';
+              }
+
             }
 
             path = this.appStateService.MapMarkerPathCharacters[label.text?.length];

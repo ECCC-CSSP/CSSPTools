@@ -45,7 +45,7 @@ namespace FileServices
 
             foreach (FileInfo fi in FileInfoList)
             {
-                LocalFileList.Add(new LocalFileInfo() { FileName = fi.Name, Length = fi.Length });
+                LocalFileList.Add(new LocalFileInfo() { ParentTVItemID = ParentTVItemID, FileName = fi.Name, Length = fi.Length/1000 });
             }
 
             return await Task.FromResult(Ok(LocalFileList));

@@ -151,6 +151,7 @@ import { MikeScenarioItemViewFilesComponent } from './components/mike-scenario/m
 import { MikeScenarioItemViewInformationComponent } from './components/mike-scenario/mike-scenario-item-view-information/mike-scenario-item-view-information.component';
 import { MikeScenarioItemViewInformationGeneralParametersComponent } from './components/mike-scenario/mike-scenario-item-view-information-general-parameters/mike-scenario-item-view-information-general-parameters.component';
 import { MikeScenarioItemViewInformationSourcesComponent } from './components/mike-scenario/mike-scenario-item-view-information-sources/mike-scenario-item-view-information-sources.component';
+import { MikeScenarioItemMenuComponent } from './components/mike-scenario/mike-scenario-item-menu/mike-scenario-item-menu.component';
 
 @NgModule({
   declarations: [
@@ -216,6 +217,7 @@ import { MikeScenarioItemViewInformationSourcesComponent } from './components/mi
     MapMenuComponent,
     MikeScenarioItemComponent,
     MikeScenarioItemCreateComponent,
+    MikeScenarioItemMenuComponent,
     MikeScenarioItemMenuOpenComponent,
     MikeScenarioItemModifyComponent,
     MikeScenarioItemViewComponent,
@@ -379,6 +381,7 @@ import { MikeScenarioItemViewInformationSourcesComponent } from './components/mi
     MapMenuComponent,
     MikeScenarioItemComponent,
     MikeScenarioItemCreateComponent,
+    MikeScenarioItemMenuComponent,
     MikeScenarioItemMenuOpenComponent,
     MikeScenarioItemModifyComponent,
     MikeScenarioItemViewComponent,

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
+import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
@@ -152,5 +153,4 @@ export class MapService {
 
     this.appLoadedService.GoogleCrossPolylineListMVC.push(polyl2);
   }
-
 }

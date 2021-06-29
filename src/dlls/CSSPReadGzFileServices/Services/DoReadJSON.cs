@@ -53,7 +53,7 @@ namespace ReadGzFileServices
                     manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
                 }
 
-                if (manageFile.LoadedOnce)
+                if (manageFile != null && manageFile.LoadedOnce)
                 {
                     JustRead = true;
                 }
@@ -128,29 +128,36 @@ namespace ReadGzFileServices
                             manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
                         }
 
-                        if (!manageFile.LoadedOnce)
+                        if (manageFile == null)
                         {
-                            manageFile.LoadedOnce = true;
-
-                            var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
-                            if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
-                            {
-                                manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
-                            }
-                            else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
-                            {
-                                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-                            }
-                            else
-                            {
-                                return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
-                            }
-
+                            gzLocalIsUpToDate = false;
                         }
-
-                        if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") == manageFile.AzureETag)
+                        else
                         {
-                            gzLocalIsUpToDate = true;
+                            if (!manageFile.LoadedOnce)
+                            {
+                                manageFile.LoadedOnce = true;
+
+                                var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                                if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
+                                {
+                                    manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
+                                }
+                                else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
+                                {
+                                    return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                                }
+                                else
+                                {
+                                    return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                                }
+
+                            }
+
+                            if (blobProperties.ETag.ToString().Replace("\"", "") == manageFile.AzureETag)
+                            {
+                                gzLocalIsUpToDate = true;
+                            }
                         }
                     }
 

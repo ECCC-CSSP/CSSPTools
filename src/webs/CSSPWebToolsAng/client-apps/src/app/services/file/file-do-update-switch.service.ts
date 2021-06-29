@@ -49,6 +49,19 @@ export class FileLocalizeSwitchService {
                     }
                 }
                 break;
+            case TVTypeEnum.MikeScenario:
+                {
+                    for (let i = 0, countI = this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList.length; i < countI; i++) {
+                        for (let j = 0, countJ = this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList[i]?.TVFileModelList.length; j < countJ; j++) {
+                            if (this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList[i]?.TVFileModelList[j]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                                this.appLoadedService.WebMikeScenarios.MikeScenarioModelList[i].TVFileModelList[j].IsLocalized = localizedOK;
+                                this.appLoadedService.WebMikeScenarios.MikeScenarioModelList[i].TVFileModelList[j].ErrorLocalizing = !localizedOK;
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
             case TVTypeEnum.Municipality:
                 {
                     for (let i = 0, count = this.appLoadedService.WebMunicipality?.TVFileModelList.length; i < count; i++) {

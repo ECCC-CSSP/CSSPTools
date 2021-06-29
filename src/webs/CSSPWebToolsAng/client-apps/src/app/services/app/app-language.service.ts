@@ -92,6 +92,7 @@ export class AppLanguageService {
   ByYear: string[] = ['by year', 'par année'];
 
   CalculatedResult: string[] = ['Calculated Results', 'Résultats calculés'];
+  Cancel: string[] = ['Cancel', 'Annuler'];
   CanNotOverflow: string[] = ['Can not Overflow', 'Peut pas déborder']
   CanOverflow: string[] = ['Can Overflow', 'Peut déborder']
   Chart: string[] = ['Chart', 'Graphique']
@@ -246,8 +247,7 @@ export class AppLanguageService {
   HorizontalAngle_deg: string[] = ['Horizontal Angle (deg)', 'Angle horizontal (deg)'];
   hours: string[] = ['hours', 'heures'];
 
-  IncludedPollutionSource: string[] = ['Included pollution source', 'Incluant une source de pollution'];
-  IncludedRiver: string[] = ['Included river', 'Incluant une rivière'];
+  Included: string[] = ['Included', 'Inclus'];
   Information: string[] = ['Information', 'Information'];
   Infrastructure: string[] = ['Infrastructure', 'Infrastructure'];
 
@@ -378,6 +378,7 @@ export class AppLanguageService {
   Results: string[] = ['Results', 'Résultats'];
   ResultsFrequency: string[] = ['Results frequency', 'Fréquence des résultats'];
   ResultsRaw: string[] = ['Results Raw', 'Résultats Bruts'];
+  River: string[] = ['River', 'Rivière'];
   RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
   RootCountries: string[] = ['Countries', 'Pays'];
   RootShowFiles: string[] = ['Show Files', 'Montrer filières'];

@@ -7,7 +7,7 @@
         <span>&nbsp;&nbsp;</span>
         <button mat-raised-button (click)="SourcesVisible = !SourcesVisible" [ngClass]="SourcesVisible ? 'selected' : ''">
             {{ appLanguageService.Sources[appLanguageService.LangID] }}
-            &nbsp;&nbsp;({{ MikeScenarioModel?.TVFileModelList?.length }})
+            &nbsp;&nbsp;({{ MikeScenarioModel?.MikeSourceModelList?.length }})
         </button>
         <app-mike-scenario-item-view-information-general-parameters *ngIf="GeneralParametersVisible" [MikeScenarioModel]="MikeScenarioModel"></app-mike-scenario-item-view-information-general-parameters>
         <app-mike-scenario-item-view-information-sources *ngIf="SourcesVisible" [MikeScenarioModel]="MikeScenarioModel"></app-mike-scenario-item-view-information-sources>

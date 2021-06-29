@@ -44,6 +44,7 @@ import { WebMonitoringOtherStatsProvince } from '../../models/generated/web/WebM
 import { WebMonitoringRoutineStatsProvince } from '../../models/generated/web/WebMonitoringRoutineStatsProvince.model';
 import { MonitoringStatsModel } from '../../models/generated/web/MonitoringStatsModel.model';
 import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
+import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
 
 @Injectable({
   providedIn: 'root'
@@ -121,6 +122,7 @@ export class AppLoadedService {
 
   InfrastructureModelPathList?: InfrastructureModelPath[];
   TVItemModelInfrastructureList?: TVItemModel[];
+  MikeSourceModelList?: MikeSourceModel[];
 
   constructor(public httpClient: HttpClient,
     public appStateService: AppStateService) {

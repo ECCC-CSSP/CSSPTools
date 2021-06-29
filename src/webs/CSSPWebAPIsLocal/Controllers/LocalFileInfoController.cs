@@ -21,6 +21,7 @@ namespace CSSPWebAPIsLocal.Controllers
 {
     public partial interface ILocalFileInfoController
     {
+        Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName);
         Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID);
     }
 
@@ -50,6 +51,17 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Constructors
 
         #region Functions public
+        [Route("GetLocalFileInfo/{ParentTVItemID:int}/{FileName}")]
+        [HttpGet]
+        public async Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInLocalContactInfo();
+
+            FileName = FileName.Replace(".mmdf", ".mdf");
+
+            return await FileService.GetLocalFileInfo(ParentTVItemID, FileName);
+        }
         [Route("GetLocalFileInfoList/{ParentTVItemID:int}")]
         [HttpGet]
         public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)

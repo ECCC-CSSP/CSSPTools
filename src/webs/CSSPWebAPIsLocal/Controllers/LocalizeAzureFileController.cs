@@ -53,6 +53,8 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await LoggedInService.SetLoggedInLocalContactInfo();
 
+            FileName = FileName.Replace(".mmdf", ".mdf");
+
             return await FileService.LocalizeAzureFile(ParentTVItemID, FileName);
         }
         #endregion Functions public

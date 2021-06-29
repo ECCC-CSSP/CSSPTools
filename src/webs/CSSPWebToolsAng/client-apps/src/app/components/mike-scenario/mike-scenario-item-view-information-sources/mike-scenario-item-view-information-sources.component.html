@@ -1,22 +1,40 @@
 <mat-card class="mat-elevation-z4">
     <mat-card-content>
+        <button mat-button (click)="DoMikeSourceUpdateWebMap(MikeSourceModelList)"
+            *ngIf="appStateService.UserPreference.MapVisible"
+            title="{{ appLanguageService.ShowItemOnMap[appLanguageService.LangID] }}">
+            <mat-icon>my_location</mat-icon>
+        </button>
+        <button mat-button (click)="DoInfrastructureUpdateWebMap()"
+            *ngIf="appStateService.UserPreference.MapVisible"
+            title="{{ appLanguageService.ShowItemOnMap[appLanguageService.LangID] }}">
+            <mat-icon>place</mat-icon>
+        </button>
         <button mat-raised-button class="BorderIncludedPolSource">
-            {{ appLanguageService.IncludedPollutionSource[appLanguageService.LangID] }}
+            {{ appLanguageService.Included[appLanguageService.LangID] }}
         </button>
         &nbsp;&nbsp;
         <button mat-raised-button class="BorderIncludedRiver">
-            {{ appLanguageService.IncludedRiver[appLanguageService.LangID] }}
+            {{ appLanguageService.River[appLanguageService.LangID] }}
         </button>
         &nbsp;&nbsp;
         <button mat-raised-button class="BorderNotIncluded">
             {{ appLanguageService.NotIncluded[appLanguageService.LangID] }}
         </button>
         <br />
-        <ng-container *ngFor="let mikeSourceModel of MikeScenarioModel?.MikeSourceModelList">
+        <ng-container *ngFor="let mikeSourceModel of MikeSourceModelList; let i = index">
             <br />
             <mat-card [ngClass]="GetBorderIncludedClass(mikeSourceModel?.MikeSource)">
                 <mat-card-content>
                     <h2>
+                        <ng-container *ngIf="!InfrastructureVisible">
+                            <button mat-button (click)="mapService.ShowItem(mikeSourceModel.TVItemModel, $event)"
+                            *ngIf="appStateService.UserPreference.MapVisible"
+                            title="{{ appLanguageService.ShowItemOnMap[appLanguageService.LangID] }}">
+                            <mat-icon>place</mat-icon>
+                        </button>
+                        </ng-container>
+                        {{ i + 1 }}&nbsp;-&nbsp;
                         {{ mikeSourceModel?.TVItemModel?.TVItemLanguageList[appLanguageService.LangID]?.TVText }}
                         <span class="spanSmall" *ngIf="mikeSourceModel?.MikeSource?.IsContinuous">
                             &nbsp;&nbsp;
