@@ -1,7 +1,9 @@
 <mat-card>
     <mat-card-content>
-        <app-file-list-item-localize *ngIf="!TVFileModel.IsLocalized" [TVType]="TVType" [TVFileModel]="TVFileModel">
-        </app-file-list-item-localize>
+        <ng-container *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection">
+            <app-file-list-item-localize *ngIf="!TVFileModel.IsLocalized" [TVType]="TVType" [TVFileModel]="TVFileModel">
+            </app-file-list-item-localize>
+        </ng-container>
         <app-file-list-item-download *ngIf="TVFileModel.IsLocalized" [TVFileModel]="TVFileModel">
         </app-file-list-item-download>
 

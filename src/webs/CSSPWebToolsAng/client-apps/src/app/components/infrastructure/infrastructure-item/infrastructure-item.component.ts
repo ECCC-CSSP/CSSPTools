@@ -6,6 +6,7 @@ import { InfrastructureModelPath } from 'src/app/models/generated/web/Infrastruc
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
+import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 
 @Component({
   selector: 'app-infrastructure-item',
@@ -23,7 +24,8 @@ export class InfrastructureItemComponent implements OnInit, OnDestroy {
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
-    public appLoadedService: AppLoadedService) { }
+    public appLoadedService: AppLoadedService,
+    public showTVItemService: ShowTVItemService) { }
 
   ngOnInit(): void {
     for (let i = 0, count = this.Level; i < count; i++) {

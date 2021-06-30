@@ -37,6 +37,8 @@ export class HomeItemComponent implements OnInit, OnDestroy {
   }
 
   StartWithLanguage(LangID: number) {
+    this.appStateService.Error = null;
+
     if (LangID == LanguageEnum.fr - 1) {
       this.appLanguageService.SetLanguage(LanguageEnum.fr);
     }

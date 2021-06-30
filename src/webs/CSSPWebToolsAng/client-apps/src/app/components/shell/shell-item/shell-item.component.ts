@@ -37,6 +37,9 @@ export class ShellItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle(this.appLanguageService.ShellApplicationName[this.appLanguageService.LangID]);
+    if (!this.appLoadedService.LoggedInContact?.HasInternetConnection) {
+      this.appStateService.UserPreference.MapVisible = false;
+    }
   }
 
   ngOnDestroy(): void {

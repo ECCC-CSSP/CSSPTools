@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
 
@@ -11,6 +12,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
   InnerErrorMessageVisible: boolean = false;
 
   constructor(public appStateService: AppStateService,
+    public appLanguageService: AppLanguageService,
     private toggleService: TogglesService) {
   }
 

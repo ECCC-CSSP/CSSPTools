@@ -1,3 +1,11 @@
+<br />
+<button mat-raised-button [ngClass]="LocalizeVisible ? 'selected' : ''" (click)="LocalizeVisible = !LocalizeVisible">
+    <mat-icon>menu</mat-icon>
+    &nbsp;&nbsp;{{ appLanguageService.Localize[appLanguageService.LangID] }}
+</button>
+<app-mwqm-site-localize-all *ngIf="LocalizeVisible && appLoadedService.LoggedInContact?.HasInternetConnection">
+</app-mwqm-site-localize-all>
+
 <mat-list>
     <span>{{
         appLanguageService.StatSampleNumber[this.appLanguageService.LangID]

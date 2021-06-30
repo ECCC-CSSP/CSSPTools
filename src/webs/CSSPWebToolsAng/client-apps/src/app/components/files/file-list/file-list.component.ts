@@ -57,15 +57,15 @@ export class FileListComponent implements OnInit, OnDestroy {
     return FilePurposeEnum_GetIDText(filePurposeEnum, this.appLanguageService);
   }
 
-  LocalizeAllFiles(tvFileModelByPurposeList: TVFileModelByPurpose[]) {
-    let TVFileModelList: TVFileModel[] = [];
-    for (let i = 0, countI = tvFileModelByPurposeList.length; i < countI; i++) {
-      for (let j = 0, countJ = tvFileModelByPurposeList[i]?.TVFileModelList.length; j < countJ; j++) {
-        TVFileModelList.push(tvFileModelByPurposeList[i]?.TVFileModelList[j]);
-      }
-    }
+  // LocalizeAllFiles(tvFileModelByPurposeList: TVFileModelByPurpose[]) {
+  //   let TVFileModelList: TVFileModel[] = [];
+  //   for (let i = 0, countI = tvFileModelByPurposeList.length; i < countI; i++) {
+  //     for (let j = 0, countJ = tvFileModelByPurposeList[i]?.TVFileModelList.length; j < countJ; j++) {
+  //       TVFileModelList.push(tvFileModelByPurposeList[i]?.TVFileModelList[j]);
+  //     }
+  //   }
 
-    this.fileLocalizeAllAzureFileService.AddTVFileModelList(TVFileModelList);
-    this.fileLocalizeAllAzureFileService.LocalizeAllAzureFile(this.TVType);
-  }
+  //   this.fileLocalizeAllAzureFileService.AddTVFileModelList(TVFileModelList);
+  //   this.fileLocalizeAllAzureFileService.LocalizeAllAzureFile(this.TVType);
+  // }
 }

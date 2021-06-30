@@ -22,12 +22,14 @@ import { MapService } from 'src/app/services/map/map.service';
 export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
   @Input() TVItemModelList: TVItemModel[] = [];
 
-  languageEnum = GetLanguageEnum();
-  tvTypeEnum = GetTVTypeEnum();
+  language = GetLanguageEnum();
+  tvType = GetTVTypeEnum();
 
   MWQMSampleList: MWQMSample[];
   Year: number = 0;
 
+  LocalizeVisible: boolean = false;
+  
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
@@ -54,8 +56,8 @@ export class MWQMSiteTVItemListItemComponent implements OnInit, OnDestroy {
 
     if (this.appStateService.GoogleJSLoaded) {
       if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
-                if (this.appStateService.GoogleJSLoaded) {
-            this.mapService.ClearMap();
+        if (this.appStateService.GoogleJSLoaded) {
+          this.mapService.ClearMap();
         }
         this.mapService.DrawObjects([
           //...this.appLoadedService.WebMWQMSites.MWQMSiteModelList,

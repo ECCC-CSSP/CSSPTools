@@ -44,7 +44,7 @@
             [TVItemModel]="InfrastructureModelPath.InfrastructureModel?.TVItemModel"></app-tvitem-last-update>
     </button>
 
-    <app-infrastructure-item-menu-open [InfrastructureModelPath]="InfrastructureModelPath">
+    <app-infrastructure-item-menu-open *ngIf="showTVItemService.TVItemVisible(InfrastructureModelPath.InfrastructureModel.TVItemModel)" [InfrastructureModelPath]="InfrastructureModelPath">
     </app-infrastructure-item-menu-open>
 </mat-list>
 

@@ -1,4 +1,6 @@
-<app-file-list-localize-all [TVType]="tvType.MikeScenario" [TVFileModelByPurposeList]="TVFileModelByPurposeList" ></app-file-list-localize-all>
+<app-file-list-localize-all *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection" 
+[TVType]="tvType.MikeScenario" [TVFileModelByPurposeList]="TVFileModelByPurposeList" ></app-file-list-localize-all>
+
 <div *ngFor="let tvFileModelByPurpose of TVFileModelByPurposeList; let i = index;">
     <h2 class="file-purpose">
         {{ GetFilePurposeEnum_GetIDText(tvFileModelByPurpose.FilePurpose) }}

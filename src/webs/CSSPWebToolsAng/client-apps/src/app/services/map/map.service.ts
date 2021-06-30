@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MapInfoDrawTypeEnum } from 'src/app/enums/generated/MapInfoDrawTypeEnum';
-import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
@@ -25,6 +24,8 @@ export class MapService {
   }
 
   MapMarkerSaveChanges() {
+    if (!this.appStateService.GoogleJSLoaded) return;
+
     let coordText: string = (<HTMLInputElement>document.getElementById('ChangedLatLng')).value;
     let lat: number = parseFloat(coordText.substring(0, coordText.indexOf(' ')));
     let lng: number = parseFloat(coordText.substring(coordText.indexOf(' ')));
@@ -38,6 +39,8 @@ export class MapService {
   }
 
   ClearMap() {
+    if (!this.appStateService.GoogleJSLoaded) return;
+
     let length: number = this.appLoadedService.GoogleCrossPolylineListMVC?.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.GoogleCrossPolylineListMVC.getAt(i).setMap(null);
@@ -68,6 +71,8 @@ export class MapService {
   }
 
   DrawObjects(tvItemModelList: TVItemModel[]) {
+    if (!this.appStateService.GoogleJSLoaded) return;
+
     this.mapMarkersService.DrawMarkers(tvItemModelList);
     this.mapPolygonsService.DrawPolygons(tvItemModelList);
     this.mapPolylinesService.DrawPolylines(tvItemModelList);
@@ -75,6 +80,8 @@ export class MapService {
   }
 
   SetupMap(mapElement: any) {
+    if (!this.appStateService.GoogleJSLoaded) return;
+
     this.appLoadedService.Map = new google.maps.Map(
       mapElement.nativeElement,
       {
@@ -105,6 +112,8 @@ export class MapService {
   }
 
   ShowItem(tvItemModel: TVItemModel, event: Event) {
+    if (!this.appStateService.GoogleJSLoaded) return;
+
     let length: number = this.appLoadedService.GoogleCrossPolylineListMVC.getLength();
     for (let i = 0; i < length; i++) {
       this.appLoadedService.GoogleCrossPolylineListMVC.getAt(i).setMap(null);

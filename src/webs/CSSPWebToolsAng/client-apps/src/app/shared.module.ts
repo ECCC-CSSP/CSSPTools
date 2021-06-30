@@ -152,6 +152,8 @@ import { MikeScenarioItemViewInformationComponent } from './components/mike-scen
 import { MikeScenarioItemViewInformationGeneralParametersComponent } from './components/mike-scenario/mike-scenario-item-view-information-general-parameters/mike-scenario-item-view-information-general-parameters.component';
 import { MikeScenarioItemViewInformationSourcesComponent } from './components/mike-scenario/mike-scenario-item-view-information-sources/mike-scenario-item-view-information-sources.component';
 import { MikeScenarioItemMenuComponent } from './components/mike-scenario/mike-scenario-item-menu/mike-scenario-item-menu.component';
+import { MWQMSiteLocalizeAllComponent } from './components/mwqm-site/mwqm-site-localize-all/mwqm-site-localize-all.component';
+import { PolSourceSiteLocalizeAllComponent } from './components/pol-source-site/pol-source-site-localize-all/pol-source-site-localize-all.component';
 
 @NgModule({
   declarations: [
@@ -249,6 +251,7 @@ import { MikeScenarioItemMenuComponent } from './components/mike-scenario/mike-s
     MWQMSiteItemViewChartsComponent,
     MWQMSiteItemViewFilesComponent,
     MWQMSiteItemViewTablesComponent,
+    MWQMSiteLocalizeAllComponent,
     MWQMSiteTVItemListItemComponent,
     MWQMSiteTVItemListItemSpecialComponent,
     NotImplementedYetComponent,
@@ -263,6 +266,7 @@ import { MikeScenarioItemMenuComponent } from './components/mike-scenario/mike-s
     PolSourceSiteItemViewComponent,
     PolSourceSiteItemViewFilesComponent,
     PolSourceSiteItemViewInfoComponent,
+    PolSourceSiteLocalizeAllComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,
@@ -413,6 +417,7 @@ import { MikeScenarioItemMenuComponent } from './components/mike-scenario/mike-s
     MWQMSiteItemViewChartsComponent,
     MWQMSiteItemViewFilesComponent,
     MWQMSiteItemViewTablesComponent,
+    MWQMSiteLocalizeAllComponent,
     MWQMSiteTVItemListItemComponent,
     MWQMSiteTVItemListItemSpecialComponent,
     NotImplementedYetComponent,
@@ -427,6 +432,7 @@ import { MikeScenarioItemMenuComponent } from './components/mike-scenario/mike-s
     PolSourceSiteItemViewComponent,
     PolSourceSiteItemViewFilesComponent,
     PolSourceSiteItemViewInfoComponent,
+    PolSourceSiteLocalizeAllComponent,
     PolSourceSiteTVItemListDetailComponent,
     PolSourceSiteTVItemListItemComponent,
     ProvinceItemComponent,

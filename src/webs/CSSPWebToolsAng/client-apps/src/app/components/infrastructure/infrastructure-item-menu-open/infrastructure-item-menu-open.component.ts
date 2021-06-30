@@ -13,9 +13,9 @@ import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service'
 export class InfrastructureItemMenuOpenComponent implements OnInit, OnDestroy {
   @Input() InfrastructureModelPath: InfrastructureModelPath;
 
-  ShowView: boolean = true;
-  ShowModify: boolean = false;
-  ShowCreate: boolean = false;
+  ViewVisible: boolean = true;
+  ModifyVisible: boolean = false;
+  CreateVisible: boolean = false;
 
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,

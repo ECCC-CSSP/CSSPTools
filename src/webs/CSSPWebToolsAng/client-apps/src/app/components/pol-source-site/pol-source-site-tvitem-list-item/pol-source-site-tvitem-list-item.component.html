@@ -1,7 +1,13 @@
+<br />
+<button mat-raised-button  [ngClass]="LocalizeVisible ? 'selected' : ''" (click)="LocalizeVisible = !LocalizeVisible">
+    <mat-icon>menu</mat-icon>
+    &nbsp;&nbsp;{{ appLanguageService.Localize[appLanguageService.LangID] }}
+</button>
+<app-pol-source-site-localize-all *ngIf="LocalizeVisible && appLoadedService.LoggedInContact?.HasInternetConnection"></app-pol-source-site-localize-all>
+
 <mat-list *ngFor="let tvItemModel of TVItemModelList; let i = index">
     <app-tvitem-menu [TVItemModel]="tvItemModel">
     </app-tvitem-menu>
-
 
     <button mat-button (click)="subPageService.SetSubPage(tvItemModel)">
         <span [ngClass]="tvItemModel?.TVItem?.IsActive ? '' : 'inactive'">

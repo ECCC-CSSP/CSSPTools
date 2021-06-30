@@ -13,8 +13,11 @@
             <mat-progress-bar mode="determinate" value="{{ localFileInfoService.Progress }}">
             </mat-progress-bar>
         </div>
-        <button mat-raised-button *ngIf="!appStateService.Working" (click)="LocalizeAllFiles()">{{
+        <button mat-raised-button *ngIf="!appStateService.Working" (click)="LocalizeAllFiles()">
+            {{
             appLanguageService.LocalizeAllFiles[appLanguageService.LangID] }}
+            {{
+            appLanguageService.associatedWithEachPolSourceSite[appLanguageService.LangID] }}
             {{ GetLocalizeStats() }}
         </button>
         <button mat-raised-button *ngIf="appStateService.Working" (click)="CancelLocalizeAllFiles()">{{

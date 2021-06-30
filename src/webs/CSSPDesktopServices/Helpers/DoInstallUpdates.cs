@@ -288,6 +288,16 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
+            try
+            {
+                fiLocal.Delete();
+            }
+            catch (Exception ex)
+            {
+                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDeleteFile_Error_, fiLocal.FullName, ex.Message)));
+                return await Task.FromResult(false);
+            }
+
             return await Task.FromResult(true);
         }
     }

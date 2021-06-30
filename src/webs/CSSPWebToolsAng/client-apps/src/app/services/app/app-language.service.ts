@@ -30,6 +30,7 @@ export class AppLanguageService {
 
   AerationType: string[] = ['Aeration Type', 'Type d\'aération'];
   AlarmSystemType: string[] = ['Alarm System Type', 'Type de système d\'alarme'];
+  AllInfrastructures: string[] = ['All infrastructures', 'Tous les infrastructures'];
   AmbientInformation: string[] = ['Ambient Information', 'Milieu ambiant'];
   Ambients: string[] = ['Ambients', 'Milieu ambiant'];
   AmbientSalinity: string[] = ['Ambient Salinity', 'Salinité ambiante'];
@@ -80,6 +81,8 @@ export class AppLanguageService {
   AreaFiles: string[] = ['Files', 'Filières'];
 
   Ascending: string[] = ['Ascending', 'Ascendant'];
+  associatedWithEachMWQMSite: string[] = [' associated with each MWQM site', ' associé à chaque site de SQEM'];
+  associatedWithEachPolSourceSite: string[] = [' associated with each polllution source site', ' associé à chaque site de source de pollution'];
   atDepth: string[] = ['at depth', 'À une profondeur de'];
   AverageDepth_m: string[] = ['Average Depth (m)', 'Profondeur moyenne (m)'];
   AverageFlow_m3_day: string[] = ['Average Flow (m3/day)', 'Débit moyen (m3/day)'];
@@ -369,6 +372,7 @@ export class AppLanguageService {
   ProvinceShowProvinceTools: string[] = ['Show province tools', 'Montrer outils pour province'];
   ProvinceProvinceTools: string[] = ['Province Tools', "Outils pour province"];
   PSU: string[] = ['PSU', 'PSU'];
+
   RectangleLength: string[] = ['Rectangle (Length)'];
   RectangleWidth: string[] = ['Rectangle (Width)'];
   ReceivingWater_MPN_per_100ml: string[] = ['Receiving Water Concentration (FC /100 ml)', 'Concentration dans le milieu récepteur (FC /100 ml)'];
@@ -378,6 +382,7 @@ export class AppLanguageService {
   Results: string[] = ['Results', 'Résultats'];
   ResultsFrequency: string[] = ['Results frequency', 'Fréquence des résultats'];
   ResultsRaw: string[] = ['Results Raw', 'Résultats Bruts'];
+  Retry: string[] = ['Retry', 'Réessayez'];
   River: string[] = ['River', 'Rivière'];
   RootShowCountries: string[] = ['Show countries', 'Montrer pays'];
   RootCountries: string[] = ['Countries', 'Pays'];
@@ -386,6 +391,7 @@ export class AppLanguageService {
   RootShowExportArcGISTools: string[] = ['Show export Arc GIS tools', 'Montrer outils pour exportation Arc GIS'];
   RootExportArcGIS: string[] = ['Export Arc GIS', 'Exportation Arc GIS'];
 
+  Run: string[] = ['Run', 'Tournée'];
   Runs: string[] = ['Runs', 'Tournées'];
 
   SAA: string[] = ['SAA', 'MQCD'];
@@ -475,6 +481,7 @@ export class AppLanguageService {
   Temperature: string[] = ['Temperature', 'Température'];
   TertiaryTreatmentType: string[] = ['Tertiary Treatment Type', 'Type de traitement tertiaire'];
   Time: string[] = ['Time', 'Temps'];
+  ToLocalize: string[] = ['To localize', 'A localizer'];
   toUseItOrSaveItSomewhereElse: string[] = ['to use it or save it somewhere else', 'afin de l\'utiliser ou la sauvegarder à un autre endroit'];
   TreatmentType: string[] = ['Treatment Type', 'Type de traitement'];
   TVItemListDetailAreaSector: string[] = ['Sector', 'Secteur'];

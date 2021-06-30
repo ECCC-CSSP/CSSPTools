@@ -39,131 +39,201 @@ export class TableService {
         newFileName += fileName[i];
       }
     }
+    
+    while (newFileName.includes('--'))
+    {
+      newFileName = newFileName.replace('--', '-')
+    }
 
     return newFileName;
   }
 
   GetTableTitle(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
-    let TitlePart1: string = '';
-    let TitlePart2: string = '';
-    let TitlePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
-
     switch (webChartAndTableType) {
       case WebChartAndTableTypeEnum.MWQMRunData:
         {
-          TitlePart1 = this.appLanguageService.Runs[this.appLanguageService.LangID];
-          TitlePart2 = '';
+          let part1: string = '';
+          let part2: string = this.appLanguageService.Run[this.appLanguageService.LangID];
+          let part3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return `${part1} ${part2} (${part3})`;
         }
-        break;
       case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
         {
-          TitlePart1 = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
-          TitlePart2 = '';
+          let part1: string = '';
+          let part2: string = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
+          let part3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return `${part1} ${part2} (${part3})`;
         }
-        break;
-      case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
+      case WebChartAndTableTypeEnum.MWQMSiteFCStats:
         {
-          TitlePart1 = this.appLanguageService.FCStats[this.appLanguageService.LangID];
-          TitlePart2 = '';
+          let part1: string = '';
+          let part2: string = this.appLanguageService.FCStats[this.appLanguageService.LangID];
+          let part3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return `${part1} ${part2} (${part3})`;
         }
-        break;
       case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
         {
-          TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-          TitlePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
+          let part1: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part2: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          let part3: string = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
+
+          return `${part1} ${part2} ${part3}`;
         }
-        break;
       case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
         {
-          TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-          TitlePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
+          let part1: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part2: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          let part3: string = this.appLanguageService.BySeason[this.appLanguageService.LangID];
+
+          return `${part1} ${part2} ${part3}`;
         }
-        break;
       case WebChartAndTableTypeEnum.MonitoringStatsByYear:
         {
-          TitlePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-          TitlePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
+          let part1: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part2: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          let part3: string = this.appLanguageService.ByYear[this.appLanguageService.LangID];
+
+          return `${part1} ${part2} ${part3}`;
         }
-        break;
       case WebChartAndTableTypeEnum.InfrastructureSingle:
         {
-          TitlePart1 = this.appLanguageService.Infrastructure[this.appLanguageService.LangID];
-          TitlePart2 = '';
+          let part1: string = '';
+          let part2: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part3: string = this.appLanguageService.AllInfrastructures[this.appLanguageService.LangID];
+
+          // if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+          //   part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          // }
+     
+          return `${part2} (${part3})`;
         }
-        break;
       case WebChartAndTableTypeEnum.InfrastructureUnderMunicipality:
         {
-          TitlePart1 = `${this.appLanguageService.Infrastructure[this.appLanguageService.LangID]} ${this.appLanguageService.Under[this.appLanguageService.LangID]} ${this.appLanguageService.Municipality[this.appLanguageService.LangID]}`;
-          TitlePart2 = '';
+          let part1: string = '';
+          let part2: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part3: string = this.appLanguageService.AllInfrastructures[this.appLanguageService.LangID];
+
+          // if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+          //   part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          // }
+
+          return `${part2} (${part3})`;
         }
-        break;
       default:
-        break;
+        {
+          return `Error-${webChartAndTableType}-Not-Implemented`;
+        }
     }
 
-    return `${TitlePart1} ${TitlePart2} (${TitlePart3})`;
   }
 
   GetTableFileName(tvItemModel: TVItemModel, webChartAndTableType: WebChartAndTableTypeEnum): string {
-    let FileNamePart1: string = '';
-    let FileNamePart2: string = '';
-    let FileNamePart3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
-
     switch (webChartAndTableType) {
       case WebChartAndTableTypeEnum.MWQMRunData:
         {
-          FileNamePart1 = this.appLanguageService.Runs[this.appLanguageService.LangID];
-          FileNamePart2 = '';
+          let part1: string = '';
+          let part2: string = this.appLanguageService.Runs[this.appLanguageService.LangID];
+          let part3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
         break;
       case WebChartAndTableTypeEnum.MWQMSiteFCSalTempData:
         {
-          FileNamePart1 = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
-          FileNamePart2 = '';
+          let part1: string = '';
+          let part2: string = this.appLanguageService.FCSalTemp[this.appLanguageService.LangID];
+          let part3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
       case WebChartAndTableTypeEnum.MWQMSiteFCStats:
         {
-          FileNamePart1 = this.appLanguageService.FCStats[this.appLanguageService.LangID];
-          FileNamePart2 = '';
+          let part1: string = '';
+          let part2: string = this.appLanguageService.FCStats[this.appLanguageService.LangID];
+          let part3: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
       case WebChartAndTableTypeEnum.MonitoringStatsByMonth:
         {
-          FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-          FileNamePart2 = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
+          let part1: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part2: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          let part3: string = this.appLanguageService.ByMonth[this.appLanguageService.LangID];
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
       case WebChartAndTableTypeEnum.MonitoringStatsBySeason:
         {
-          FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-          FileNamePart2 = this.appLanguageService.BySeason[this.appLanguageService.LangID];
+          let part1: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part2: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          let part3: string = this.appLanguageService.BySeason[this.appLanguageService.LangID];
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
       case WebChartAndTableTypeEnum.MonitoringStatsByYear:
         {
-          FileNamePart1 = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
-          FileNamePart2 = this.appLanguageService.ByYear[this.appLanguageService.LangID];
+          let part1: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part2: string = this.appLanguageService.MonitoringStats[this.appLanguageService.LangID];
+          let part3: string = this.appLanguageService.ByYear[this.appLanguageService.LangID];
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
       case WebChartAndTableTypeEnum.InfrastructureSingle:
         {
-          FileNamePart1 = this.appLanguageService.Infrastructure[this.appLanguageService.LangID];
-          FileNamePart2 = '';
+          let part1: string = '';
+          let part2: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part3: string = this.appLanguageService.Infrastructure[this.appLanguageService.LangID];
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
-      case WebChartAndTableTypeEnum.InfrastructureSingle:
+      case WebChartAndTableTypeEnum.InfrastructureUnderMunicipality:
         {
-          FileNamePart1 = `${this.appLanguageService.Infrastructure[this.appLanguageService.LangID]} ${this.appLanguageService.Under[this.appLanguageService.LangID]} ${this.appLanguageService.Municipality[this.appLanguageService.LangID]}`;
-          FileNamePart2 = '';
+          let part1: string = '';
+          let part2: string = tvItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText;
+          let part3: string = this.appLanguageService.AllInfrastructures[this.appLanguageService.LangID];
+
+          if (this.appLoadedService.BreadCrumbTVItemModelList != undefined && this.appLoadedService.BreadCrumbTVItemModelList.length > 0) {
+            part1 = this.appLoadedService.BreadCrumbTVItemModelList[this.appLoadedService.BreadCrumbTVItemModelList.length - 1].TVItemLanguageList[this.appLanguageService.LangID].TVText;
+          }
+
+          return this.CleanFileName(`${part1} ${part2} ${part3}.csv`);
         }
-        break;
       default:
-        break;
+        {
+          return this.CleanFileName(`Error-${webChartAndTableType}-Not-Implemented.csv`);
+        }
     }
-
-
-    return this.CleanFileName(`${FileNamePart1} ${FileNamePart2} ${FileNamePart3}.csv`);
   }
 
 

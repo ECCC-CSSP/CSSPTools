@@ -1,9 +1,13 @@
 <p class="error" *ngIf="appStateService.Error">
     {{ appStateService.Error?.message }}
-    <button mat-button
-    [ngClass]="InnerErrorMessageVisible ? 'selected' : ''"
-    (click)="ToggleInnerErrorMessageVisibility()"><mat-icon>menu</mat-icon></button>
-    <button mat-button (click)="ClearErrorMessage()"><mat-icon>close</mat-icon></button>
+    <button mat-button [ngClass]="InnerErrorMessageVisible ? 'selected' : ''"
+        (click)="ToggleInnerErrorMessageVisibility()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-button (click)="ClearErrorMessage()">
+        <mat-icon>redo</mat-icon>
+        {{ appLanguageService.Retry[appLanguageService.LangID] }}
+    </button>
     <span *ngIf="appStateService.Error?.error && InnerErrorMessageVisible">
         <br /><br />
         {{ appStateService.Error?.error }}

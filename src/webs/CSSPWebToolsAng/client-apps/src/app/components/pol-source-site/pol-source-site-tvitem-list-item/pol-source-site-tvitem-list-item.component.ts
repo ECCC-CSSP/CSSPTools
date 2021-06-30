@@ -3,6 +3,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
+import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { PolSourceSiteService } from 'src/app/services/helpers/pol-source-site.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
@@ -19,8 +20,11 @@ export class PolSourceSiteTVItemListItemComponent implements OnInit, OnDestroy {
 
   languageEnum = GetLanguageEnum();
   
+  LocalizeVisible: boolean = false;
+
   constructor(public appStateService: AppStateService,
     public appLanguageService: AppLanguageService,
+    public appLoadedService: AppLoadedService,
     public subPageService: SubPageService,
     public mapService: MapService,
     public showTVItemService: ShowTVItemService,

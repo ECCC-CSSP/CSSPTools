@@ -30,6 +30,8 @@ export class JsonDoUpdateWebMapService {
     }
 
     DoUpdateWebMap(WebType) {
+        if (!this.appStateService.GoogleJSLoaded) return;
+
         this.mapService.ClearMap();
         switch (WebType) {
             case WebTypeEnum.WebArea: this.DoUpdateWebAreaMap(); break;
@@ -45,6 +47,8 @@ export class JsonDoUpdateWebMapService {
 
     DoMikeSourceUpdateWebMap(MikeSourceModelList: MikeSourceModel[])
     {
+        if (!this.appStateService.GoogleJSLoaded) return;
+
         let TVItemModelList: TVItemModel[] = [];
 
         this.appLoadedService.MikeSourceModelList = [];
@@ -65,6 +69,8 @@ export class JsonDoUpdateWebMapService {
 
     DoInfrastructureUpdateWebMap()
     {
+        if (!this.appStateService.GoogleJSLoaded) return;
+
         this.mapService.ClearMap();
         this.mapService.DrawObjects([
             ...this.appLoadedService.TVItemModelInfrastructureList,

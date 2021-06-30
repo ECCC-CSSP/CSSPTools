@@ -28,11 +28,11 @@ export class FileListLocalizeAllComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  LocalizeAllFiles(tvFileModelByPurposeList: TVFileModelByPurpose[]) {
+  LocalizeAllFiles() {
     let TVFileModelList: TVFileModel[] = [];
-    for (let i = 0, countI = tvFileModelByPurposeList.length; i < countI; i++) {
-      for (let j = 0, countJ = tvFileModelByPurposeList[i]?.TVFileModelList.length; j < countJ; j++) {
-        TVFileModelList.push(tvFileModelByPurposeList[i]?.TVFileModelList[j]);
+    for (let i = 0, countI = this.TVFileModelByPurposeList.length; i < countI; i++) {
+      for (let j = 0, countJ = this.TVFileModelByPurposeList[i]?.TVFileModelList.length; j < countJ; j++) {
+        TVFileModelList.push(this.TVFileModelByPurposeList[i]?.TVFileModelList[j]);
       }
     }
 
@@ -40,8 +40,27 @@ export class FileListLocalizeAllComponent implements OnInit, OnDestroy {
     this.fileLocalizeAllAzureFileService.LocalizeAllAzureFile(this.TVType);
   }
 
-  CancelLocalizeAllFiles()
-  {
+  CancelLocalizeAllFiles() {
     this.fileLocalizeAllAzureFileService.CancelLocalizeAllAzureFile();
+  }
+
+  GetLocalizeStats(): string {
+    let FilesCount: number = 0;
+    let FileLocalizedCount: number = 0;
+    let FileLocalizedSize: number = 0;
+    let FileTotalSize: number = 0;
+
+    for (let i = 0, countI = this.TVFileModelByPurposeList?.length; i < countI; i++) {
+      for (let j = 0, countJ = this.TVFileModelByPurposeList[i]?.TVFileModelList.length; j < countJ; j++) {
+        FilesCount += 1;
+        FileTotalSize += this.TVFileModelByPurposeList[i]?.TVFileModelList[j].TVFile.FileSize_kb;
+        if (this.TVFileModelByPurposeList[i]?.TVFileModelList[j].IsLocalized) {
+          FileLocalizedCount += 1;
+          FileLocalizedSize += this.TVFileModelByPurposeList[i]?.TVFileModelList[j].TVFile.FileSize_kb;
+        }
+      }
+    }
+
+    return `(${FileLocalizedCount}/${FilesCount}) --- ${FileLocalizedSize}/${FileTotalSize} ${ this.appLanguageService.KB[this.appLanguageService.LangID]}`;
   }
 }

@@ -1,33 +1,21 @@
-<ng-container *ngIf="showTVItemService.TVItemVisible(InfrastructureModelPath.InfrastructureModel.TVItemModel)">
-    <p>
-        <button mat-raised-button (click)="ShowView = !ShowView" [ngClass]="ShowView ? 'selected' : ''">
+<mat-card>
+    <mat-card-content>
+        <button mat-raised-button (click)="ViewVisible = !ViewVisible" [ngClass]="ViewVisible ? 'selected' : ''">
             {{ appLanguageService.View[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="ShowModify = !ShowModify" [ngClass]="ShowModify ? 'selected' : ''">
+        <button mat-raised-button (click)="ModifyVisible = !ModifyVisible" [ngClass]="ModifyVisible ? 'selected' : ''">
             {{ appLanguageService.Modify[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="ShowCreate = !ShowCreate" [ngClass]="ShowCreate ? 'selected' : ''">
+        <button mat-raised-button (click)="CreateVisible = !CreateVisible" [ngClass]="CreateVisible ? 'selected' : ''">
             {{ appLanguageService.Create[appLanguageService.LangID] }}
         </button>
-    </p>
-    <mat-card *ngIf="ShowView">
-        <mat-card-content>
-            <app-infrastructure-item-view [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-view>
-        </mat-card-content>
-    </mat-card>
-    <p *ngIf="ShowView && ShowModify">&nbsp;</p>
-    <mat-card *ngIf="ShowModify">
-        <mat-card-content>
-            <app-infrastructure-item-modify [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-modify>
-        </mat-card-content>
-    </mat-card>
-    <p *ngIf="(ShowView || ShowModify) && ShowCreate">&nbsp;</p>
-    <mat-card *ngIf="ShowCreate">
-        <mat-card-content>
-            <app-infrastructure-item-create [InfrastructureModelPath]="InfrastructureModelPath"></app-infrastructure-item-create>
-        </mat-card-content>
-    </mat-card>
-
-</ng-container>
+        <app-infrastructure-item-view *ngIf="ViewVisible" [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-infrastructure-item-view>
+        <app-infrastructure-item-modify *ngIf="ModifyVisible" [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-infrastructure-item-modify>
+        <app-infrastructure-item-create *ngIf="CreateVisible" [InfrastructureModelPath]="InfrastructureModelPath">
+        </app-infrastructure-item-create>
+    </mat-card-content>
+</mat-card>
