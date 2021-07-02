@@ -18,7 +18,7 @@ namespace CSSPWebAPIs.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Version: 1.0.0.8";
+            return "Version: 1.0.0.9";
         }
     }
 }

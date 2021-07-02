@@ -44,7 +44,7 @@ namespace CSSPDesktop
         public CSSPDesktopForm()
         {
             InitializeComponent();
-            string Version = "1.0.0.8";
+            string Version = "1.0.0.9";
             lblVersionValue.Text = Version;
             lblVersionTop.Text = Version;
 

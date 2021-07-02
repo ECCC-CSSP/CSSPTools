@@ -6,7 +6,7 @@ import { GetLanguageEnum, LanguageEnum } from '../../enums/generated/LanguageEnu
 })
 export class AppLanguageService {
 
-  Version: string[] = ['Version: 1.0.0.8', 'Version: 1.0.0.8'];
+  Version: string[] = ['Version: 1.0.0.9', 'Version: 1.0.0.9'];
 
   languageEnum = GetLanguageEnum();
 
