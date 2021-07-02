@@ -34,10 +34,10 @@
                     mobile_off</mat-icon>
             </button>
         </ng-container>
-
         <button mat-button>
+            {{ appLanguageService.Version[appLanguageService.LangID] }} &nbsp;&nbsp;
             <mat-icon>account_circle</mat-icon>
-            {{ appLoadedService.LoggedInContact?.LoginEmail }}
+            {{ appLoadedService.LoggedInContact?.LoginEmail }}   
         </button>
         <button mat-button *ngIf="(appLanguageService.Language == languageEnum.fr)"
             (click)="SetLanguage(languageEnum.en)">English</button>

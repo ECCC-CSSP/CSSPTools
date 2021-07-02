@@ -11,3 +11,7 @@ mat-card {
   min-width: 400px;
   margin: 20px;
 }
+
+.spanSmall {
+  font-size: small;
+}

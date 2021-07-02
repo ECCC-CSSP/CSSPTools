@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ReadGzFileServices;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,6 +44,10 @@ namespace CSSPDesktop
         public CSSPDesktopForm()
         {
             InitializeComponent();
+            string Version = "1.0.0.8";
+            lblVersionValue.Text = Version;
+            lblVersionTop.Text = Version;
+
             Setup().GetAwaiter().GetResult();
         }
         #endregion Constructors

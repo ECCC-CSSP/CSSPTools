@@ -6,6 +6,8 @@ import { GetLanguageEnum, LanguageEnum } from '../../enums/generated/LanguageEnu
 })
 export class AppLanguageService {
 
+  Version: string[] = ['Version: 1.0.0.8', 'Version: 1.0.0.8'];
+
   languageEnum = GetLanguageEnum();
 
   constructor() {
@@ -574,4 +576,16 @@ export class AppLanguageService {
   Year: string[] = ['Year', 'Année'];
   YearOfSampling: string[] = ['Year of sampling', 'Année d\'échantillonnage'];
   Yes: string[] = ['Yes', 'Oui'];
+
+
+
+
+
+
+
+
+
+
+
+  
 }

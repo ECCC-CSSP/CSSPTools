@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panelLanguageCenter = new System.Windows.Forms.Panel();
+            this.lblVersionValue = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.butSetLanguageToFrancais = new System.Windows.Forms.Button();
             this.butSetLanguageToEnglish = new System.Windows.Forms.Button();
             this.splitContainerFirst = new System.Windows.Forms.SplitContainer();
@@ -88,6 +90,8 @@
             this.butLogoff = new System.Windows.Forms.Button();
             this.panelTopSpace1 = new System.Windows.Forms.Panel();
             this.richTextBoxStatus = new System.Windows.Forms.RichTextBox();
+            this.lblVersionTop = new System.Windows.Forms.Label();
+            this.lblVersionText = new System.Windows.Forms.Label();
             this.panelLanguageCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
             this.splitContainerFirst.Panel1.SuspendLayout();
@@ -106,6 +110,8 @@
             // 
             // panelLanguageCenter
             // 
+            this.panelLanguageCenter.Controls.Add(this.lblVersionValue);
+            this.panelLanguageCenter.Controls.Add(this.lblVersion);
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToFrancais);
             this.panelLanguageCenter.Controls.Add(this.butSetLanguageToEnglish);
             this.panelLanguageCenter.Location = new System.Drawing.Point(383, 83);
@@ -113,6 +119,28 @@
             this.panelLanguageCenter.Name = "panelLanguageCenter";
             this.panelLanguageCenter.Size = new System.Drawing.Size(306, 120);
             this.panelLanguageCenter.TabIndex = 0;
+            // 
+            // lblVersionValue
+            // 
+            this.lblVersionValue.AutoSize = true;
+            this.lblVersionValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblVersionValue.Location = new System.Drawing.Point(140, 90);
+            this.lblVersionValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVersionValue.Name = "lblVersionValue";
+            this.lblVersionValue.Size = new System.Drawing.Size(57, 20);
+            this.lblVersionValue.TabIndex = 7;
+            this.lblVersionValue.Text = "1.0.0.0";
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblVersion.Location = new System.Drawing.Point(56, 89);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(76, 20);
+            this.lblVersion.TabIndex = 6;
+            this.lblVersion.Text = "Version #";
             // 
             // butSetLanguageToFrancais
             // 
@@ -499,6 +527,8 @@
             // 
             // panelLoginEmail
             // 
+            this.panelLoginEmail.Controls.Add(this.lblVersionText);
+            this.panelLoginEmail.Controls.Add(this.lblVersionTop);
             this.panelLoginEmail.Controls.Add(this.lblContactLoggedIn);
             this.panelLoginEmail.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLoginEmail.Location = new System.Drawing.Point(0, 36);
@@ -785,6 +815,30 @@
             this.richTextBoxStatus.TabIndex = 1;
             this.richTextBoxStatus.Text = "";
             // 
+            // lblVersionTop
+            // 
+            this.lblVersionTop.AutoSize = true;
+            this.lblVersionTop.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblVersionTop.Enabled = false;
+            this.lblVersionTop.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblVersionTop.Location = new System.Drawing.Point(1053, 0);
+            this.lblVersionTop.Name = "lblVersionTop";
+            this.lblVersionTop.Size = new System.Drawing.Size(55, 21);
+            this.lblVersionTop.TabIndex = 10;
+            this.lblVersionTop.Text = "1.0.0.0";
+            // 
+            // lblVersionText
+            // 
+            this.lblVersionText.AutoSize = true;
+            this.lblVersionText.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblVersionText.Enabled = false;
+            this.lblVersionText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblVersionText.Location = new System.Drawing.Point(984, 0);
+            this.lblVersionText.Name = "lblVersionText";
+            this.lblVersionText.Size = new System.Drawing.Size(69, 21);
+            this.lblVersionText.TabIndex = 11;
+            this.lblVersionText.Text = "Version: ";
+            // 
             // CSSPDesktopForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -884,6 +938,10 @@
         private System.Windows.Forms.Label lblConfirmPasswordRegister;
         private System.Windows.Forms.LinkLabel linkLabelGoToLogin;
         private System.Windows.Forms.LinkLabel linkLabelGotoRegister;
+        private System.Windows.Forms.Label lblVersionValue;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblVersionTop;
+        private System.Windows.Forms.Label lblVersionText;
     }
 }
 

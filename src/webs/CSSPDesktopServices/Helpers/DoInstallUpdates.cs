@@ -231,14 +231,59 @@ namespace CSSPDesktopServices.Services
 
                 if (zipFileName.Contains("csspclient"))
                 {
+                    DirectoryInfo di = new DirectoryInfo(CSSPWebAPIsLocalPath + "\\csspclient");
+
+                    if (di.Exists)
+                    {
+                        try
+                        {
+                            di.Delete(true);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDeleteDirectory_Error_, di.FullName, ex.Message)));
+                            return await Task.FromResult(false);
+                        }
+                    }
+
                     ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPWebAPIsLocalPath + "\\csspclient", true);
                 }
                 else if (zipFileName.Contains("csspotherfiles"))
                 {
+                    DirectoryInfo di = new DirectoryInfo(CSSPOtherFilesPath);
+
+                    if (di.Exists)
+                    {
+                        try
+                        {
+                            di.Delete(true);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDeleteDirectory_Error_, di.FullName, ex.Message)));
+                            return await Task.FromResult(false);
+                        }
+                    }
+
                     ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPOtherFilesPath, true);
                 }
                 else
                 {
+                    DirectoryInfo di = new DirectoryInfo(CSSPWebAPIsLocalPath);
+
+                    if (di.Exists)
+                    {
+                        try
+                        {
+                            di.Delete(true);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDeleteDirectory_Error_, di.FullName, ex.Message)));
+                            return await Task.FromResult(false);
+                        }
+                    }
+
                     ZipFile.ExtractToDirectory(fiLocal.FullName, CSSPWebAPIsLocalPath, true);
                 }
             }
