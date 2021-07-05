@@ -9,10 +9,6 @@
 
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_package\</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <Content Include="appsettings_csspdblocalservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

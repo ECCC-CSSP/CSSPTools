@@ -13,7 +13,7 @@ namespace CSSPDesktopInstallPostBuild
     {
         private async Task<bool> CSSPClientCompressAndSendToAzure()
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\_packageCSSPClient\csspclient\");
+            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\csspclient\");
 
             if (!di.Exists)
             {
@@ -21,7 +21,7 @@ namespace CSSPDesktopInstallPostBuild
                 return await Task.FromResult(false);
             }
 
-            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\_packageCSSPClient\csspclient.zip");
+            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\csspclient.zip");
             if (fi.Exists)
             {
                 try
@@ -37,12 +37,15 @@ namespace CSSPDesktopInstallPostBuild
 
             ZipFile.CreateFromDirectory(di.FullName, fi.FullName);
 
+            fi = new FileInfo($@"C:\CSSPTools\src\webs\csspclient.zip");
             int countSeconds = 0;
             while (!fi.Exists)
             {
                 Console.WriteLine($"Zip file does not exist [{ fi.FullName }]. Time elapse {countSeconds} seconds.");
                 countSeconds += 1;
                 Thread.Sleep(1000);
+
+                fi = new FileInfo($@"C:\CSSPTools\src\webs\csspclient.zip");
             }
 
             try

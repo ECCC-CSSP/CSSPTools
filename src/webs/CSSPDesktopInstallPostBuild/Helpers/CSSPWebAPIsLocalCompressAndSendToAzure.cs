@@ -13,7 +13,7 @@ namespace CSSPDesktopInstallPostBuild
     {
         private async Task<bool> CSSPWebAPIsLocalCompressAndSendToAzure()
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\_packageCSSPWebAPIsLocal\net5.0\");
+            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\CSSPWebAPIsLocal\bin\Release\net5.0\publish\");
 
             if (!di.Exists)
             {
@@ -21,7 +21,7 @@ namespace CSSPDesktopInstallPostBuild
                 return await Task.FromResult(false);
             }
 
-            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\_packageCSSPWebAPIsLocal\csspwebapislocal.zip");
+            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPWebAPIsLocal\bin\Release\net5.0\csspwebapislocal.zip");
             if (fi.Exists)
             {
                 try
@@ -37,12 +37,16 @@ namespace CSSPDesktopInstallPostBuild
 
             ZipFile.CreateFromDirectory(di.FullName, fi.FullName);
 
+            fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPWebAPIsLocal\bin\Release\net5.0\csspwebapislocal.zip");
+
             int countSeconds = 0;
             while (!fi.Exists)
             {
                 Console.WriteLine($"Zip file does not exist [{ fi.FullName }]. Time elapse {countSeconds} seconds.");
                 countSeconds += 1;
                 Thread.Sleep(1000);
+
+                fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPWebAPIsLocal\bin\Release\net5.0\csspwebapislocal.zip");
             }
 
             try

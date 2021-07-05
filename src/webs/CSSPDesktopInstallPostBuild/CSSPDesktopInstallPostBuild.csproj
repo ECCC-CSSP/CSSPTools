@@ -6,10 +6,6 @@
     <UserSecretsId>1f0910b7-2452-49bd-b68e-4661df5d54d7</UserSecretsId>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_package\</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="appsettings_csspdesktopinstallpostbuild.json" />
   </ItemGroup>

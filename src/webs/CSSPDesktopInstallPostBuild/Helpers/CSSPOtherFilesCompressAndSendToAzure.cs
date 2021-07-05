@@ -45,6 +45,8 @@ namespace CSSPDesktopInstallPostBuild
                 Console.WriteLine($"Zip file does not exist [{ fi.FullName }]. Time elapse {countSeconds} seconds.");
                 countSeconds += 1;
                 Thread.Sleep(1000);
+
+                fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
             }
 
             try

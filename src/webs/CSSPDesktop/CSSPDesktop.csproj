@@ -8,10 +8,6 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_packageCSSPDesktop\</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <Content Include="appsettings_csspdesktop.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -7,14 +7,6 @@
 
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\_package\</OutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings_csspdbmodelstests.json" />
-  </ItemGroup>
-
   <ItemGroup>
     <Content Include="appsettings_csspdbmodelstests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
