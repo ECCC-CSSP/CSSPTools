@@ -99,6 +99,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateFillPolSourceGroupi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBManageServices", "..\dlls\CSSPDBManageServices\CSSPDBManageServices.csproj", "{ABA38894-3FA5-4B86-93FE-4B60D4129C4D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UploadFilesCleanup", "UploadFilesCleanup\UploadFilesCleanup.csproj", "{8242692C-B956-4802-83D4-66C463A9F91E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -685,6 +687,18 @@ Global
 		{ABA38894-3FA5-4B86-93FE-4B60D4129C4D}.Release|x64.Build.0 = Release|x64
 		{ABA38894-3FA5-4B86-93FE-4B60D4129C4D}.Release|x86.ActiveCfg = Release|x86
 		{ABA38894-3FA5-4B86-93FE-4B60D4129C4D}.Release|x86.Build.0 = Release|x86
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Debug|x64.Build.0 = Debug|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Debug|x86.Build.0 = Debug|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Release|x64.ActiveCfg = Release|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Release|x64.Build.0 = Release|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8242692C-B956-4802-83D4-66C463A9F91E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
