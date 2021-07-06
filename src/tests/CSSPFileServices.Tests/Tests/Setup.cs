@@ -1,7 +1,6 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPScrambleServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -118,7 +117,6 @@ namespace FileServices.Tests
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IFileService, FileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);

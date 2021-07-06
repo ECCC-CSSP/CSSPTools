@@ -6,7 +6,6 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPScrambleServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -80,7 +79,6 @@ namespace CSSPAzureAppTaskServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IAzureAppTaskService, AzureAppTaskService>();
 
             Provider = Services.BuildServiceProvider();

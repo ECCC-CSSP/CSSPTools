@@ -1,6 +1,5 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPScrambleServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,7 +55,6 @@ namespace LoggedInServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
 
             /* ---------------------------------------------------------------------------------

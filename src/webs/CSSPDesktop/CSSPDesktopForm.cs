@@ -5,7 +5,6 @@ using CSSPDesktopServices.Models;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPHelperModels;
-using CSSPScrambleServices;
 using CSSPSQLiteServices;
 using FileServices;
 using LoggedInServices;
@@ -36,7 +35,7 @@ namespace CSSPDesktop
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        private IScrambleService ScrambleService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -392,7 +391,7 @@ namespace CSSPDesktop
                     LoginModel loginModel = new LoginModel()
                     {
                         LoginEmail = CSSPDesktopService.contact.LoginEmail,
-                        Password = ScrambleService.Descramble(CSSPDesktopService.contact.PasswordHash),
+                        Password = LoggedInService.Descramble(CSSPDesktopService.contact.PasswordHash),
                     };
 
                     if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
@@ -463,12 +462,10 @@ namespace CSSPDesktop
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<IFileService, FileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
 
             /* ---------------------------------------------------------------------------------
              * using TestDB
@@ -539,10 +536,10 @@ namespace CSSPDesktop
 
             CSSPCultureService.SetCulture("en-CA");
 
-            ScrambleService = Provider.GetService<IScrambleService>();
-            if (ScrambleService == null)
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            if (LoggedInService == null)
             {
-                richTextBoxStatus.AppendText("ScrambleService should not be null\r\n");
+                richTextBoxStatus.AppendText("LoggedInService should not be null\r\n");
                 return await Task.FromResult(false);
             }
 

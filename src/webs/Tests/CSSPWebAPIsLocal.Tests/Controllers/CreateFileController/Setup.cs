@@ -6,7 +6,6 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPScrambleServices;
 using FileServices;
 using LoggedInServices;
 using ManageServices;
@@ -82,7 +81,6 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>(); 
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IFileService, FileService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();

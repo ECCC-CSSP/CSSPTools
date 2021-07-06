@@ -1,20 +1,7 @@
-﻿using CSSPEnums;
-using CSSPDBModels;
-using CSSPSQLiteServices;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using System.ComponentModel.DataAnnotations;
-using CSSPHelperModels;
 
 namespace CSSPSQLiteServices.Tests
 {

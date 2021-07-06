@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Blobs;
-using CSSPScrambleServices;
+using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -26,7 +26,7 @@ namespace CSSPDesktopInstallPostBuild
             IConfiguration Configuration;
             IServiceProvider Provider;
             IServiceCollection Services;
-            IScrambleService ScrambleService;
+            ILoggedInService LoggedInService;
 
             Configuration = new ConfigurationBuilder()
                               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -37,16 +37,16 @@ namespace CSSPDesktopInstallPostBuild
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
-            Services.AddSingleton<IScrambleService, ScrambleService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null) return await Task.FromResult(1);
 
-            ScrambleService = Provider.GetService<IScrambleService>();
-            if (ScrambleService == null) return await Task.FromResult(1);
+            LoggedInService = Provider.GetService<ILoggedInService>();
+            if (LoggedInService == null) return await Task.FromResult(1);
 
 
-            Startup startup = new Startup(Configuration, ScrambleService);
+            Startup startup = new Startup(Configuration, LoggedInService);
 
             if (!await startup.Run()) return await Task.FromResult(1);
 

@@ -6,7 +6,6 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPScrambleServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -79,7 +78,6 @@ namespace CSSPSyncDBsServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ISyncDBsService, SyncDBsService>();
 
             Provider = Services.BuildServiceProvider();

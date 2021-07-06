@@ -50,7 +50,7 @@ namespace CSSPDesktopServices.Services
 
                 contact.HasInternetConnection = true;
                 contact.IsLoggedIn = true;
-                contact.GoogleMapKeyHash = ScrambleService.Scramble(GoogleMapKey);
+                contact.GoogleMapKeyHash = LoggedInService.Scramble(GoogleMapKey);
 
                 try
                 {

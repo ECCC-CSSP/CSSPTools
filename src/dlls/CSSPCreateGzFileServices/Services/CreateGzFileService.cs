@@ -13,7 +13,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using LoggedInServices;
-using CSSPScrambleServices;
 using System.ComponentModel.DataAnnotations;
 
 namespace CreateGzFileServices
@@ -36,7 +35,6 @@ namespace CreateGzFileServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IEnums enums { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
@@ -46,19 +44,18 @@ namespace CreateGzFileServices
 
         #region Constructors
         public CreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService,
-            IScrambleService ScrambleService, IEnums enums, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null)
+            IEnums enums, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.db = db;
             this.dbLocal = dbLocal;
 
             // used with db
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
 
             // used with dbLocal
             CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");

@@ -19,7 +19,6 @@ using FileServices;
 using ReadGzFileServices;
 using Microsoft.AspNetCore.Http.Features;
 using LoggedInServices;
-using CSSPScrambleServices;
 using CSSPDBLocalServices;
 using CreateGzFileServices;
 using CSSPWebAPIsLocal.Controllers;
@@ -83,7 +82,6 @@ namespace CSSPWebAPIsLocal
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
-            services.AddScoped<IScrambleService, ScrambleService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
 
             //LoadAllDBServices(services);
@@ -119,10 +117,10 @@ namespace CSSPWebAPIsLocal
             }
             else
             {
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 

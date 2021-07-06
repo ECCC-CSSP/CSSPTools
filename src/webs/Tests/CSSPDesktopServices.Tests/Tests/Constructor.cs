@@ -2,7 +2,6 @@
 using CSSPDBModels;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
-using CSSPScrambleServices;
 using CSSPSQLiteServices;
 using FileServices;
 using LoggedInServices;
@@ -62,7 +61,6 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<IFileService, FileService>();

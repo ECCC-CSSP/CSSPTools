@@ -7,7 +7,6 @@ using CreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPScrambleServices;
 using CSSPSQLiteServices;
 using FileServices;
 using LoggedInServices;
@@ -85,7 +84,6 @@ namespace CSSPDBLocalServices.Tests
             Services.AddSingleton<IConfiguration>(Configuration);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();

@@ -1,7 +1,7 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPScrambleServices;
 using CSSPSQLiteServices;
+using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,7 +75,7 @@ namespace ManageServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICommandLogService, CommandLogService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();

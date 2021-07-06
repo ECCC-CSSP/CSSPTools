@@ -7,7 +7,6 @@
 //using CSSPCultureServices.Services;
 //using CSSPDBModels;
 //using CSSPEnums;
-//using CSSPScrambleServices;
 //using FileServices;
 //using LoggedInServices;
 //using ManageServices;
@@ -114,7 +113,6 @@
 //            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
 //            Services.AddSingleton<ILoggedInService, LoggedInService>();
 //            Services.AddSingleton<IEnums, Enums>();
-//            Services.AddSingleton<IScrambleService, ScrambleService>();
 //            Services.AddSingleton<IManageFileService, ManageFileService>();
 //            Services.AddSingleton<IFileService, FileService>();
 //            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();

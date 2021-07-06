@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CSSPHelperModels;
-using CSSPScrambleServices;
 using ManageServices;
 using LoggedInServices;
 
@@ -78,7 +77,6 @@ namespace CSSPDesktopServices.Services
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         private IReadGzFileService ReadGzFileService { get; }
-        private IScrambleService ScrambleService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
         private string CSSPDesktopPath { get; set; }
@@ -95,8 +93,7 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
-            CSSPDBLocalContext dbLocal, CSSPDBManageContext dbManage, IReadGzFileService ReadGzFileService, ILoggedInService LoggedInService,
-            IScrambleService ScrambleService)
+            CSSPDBLocalContext dbLocal, CSSPDBManageContext dbManage, IReadGzFileService ReadGzFileService, ILoggedInService LoggedInService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -105,7 +102,6 @@ namespace CSSPDesktopServices.Services
             this.dbManage = dbManage;
             this.ReadGzFileService = ReadGzFileService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
 
             contact = new Contact();
         }

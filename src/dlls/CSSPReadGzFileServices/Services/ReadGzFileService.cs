@@ -4,7 +4,6 @@
  */
 using CSSPCultureServices.Services;
 using CSSPEnums;
-using CSSPScrambleServices;
 using CSSPWebModels;
 using FileServices;
 using LoggedInServices;
@@ -35,7 +34,6 @@ namespace ReadGzFileServices
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
         private IFileService FileService { get; }
-        private IScrambleService ScrambleService { get; }
         private IManageFileService ManageFileService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
@@ -47,20 +45,19 @@ namespace ReadGzFileServices
 
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IScrambleService ScrambleService, IEnums enums, IFileService FileService, 
+            IEnums enums, IFileService FileService, 
             IManageFileService ManageFileService, CSSPDBManageContext dbManage)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.ScrambleService = ScrambleService;
             this.enums = enums;
             this.FileService = FileService;
             this.ManageFileService = ManageFileService;
             this.dbManage = dbManage;
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
             CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
             CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
             CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");

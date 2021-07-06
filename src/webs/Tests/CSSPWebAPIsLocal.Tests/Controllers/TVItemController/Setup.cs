@@ -5,7 +5,6 @@
 
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPScrambleServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -111,7 +110,6 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
 
             Provider = Services.BuildServiceProvider();

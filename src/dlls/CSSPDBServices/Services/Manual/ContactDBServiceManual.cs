@@ -57,8 +57,8 @@ namespace CSSPDBServices
         //        return await Task.FromResult(BadRequest(ValidationResults));
         //    }
 
-        //    string passwordHash = await ScrambleService.Scramble(registerModel.Password);
-        //    string password = await ScrambleService.Descramble(passwordHash);
+        //    string passwordHash = await LoggedInService.Scramble(registerModel.Password);
+        //    string password = await LoggedInService.Descramble(passwordHash);
 
         //    if (password != registerModel.Password)
         //    {

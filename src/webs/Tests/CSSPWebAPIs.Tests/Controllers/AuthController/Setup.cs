@@ -9,7 +9,6 @@ using CSSPDBServices;
 using CSSPEnums;
 using CSSPHelperModels;
 using CSSPHelperServices;
-using CSSPScrambleServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -116,7 +115,6 @@ namespace CSSPWebAPIs.AuthController.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
 

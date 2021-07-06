@@ -4,7 +4,6 @@ using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
 using CSSPHelperServices;
-using CSSPScrambleServices;
 using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -85,7 +84,6 @@ namespace UploadAllJsonFilesToAzure
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();

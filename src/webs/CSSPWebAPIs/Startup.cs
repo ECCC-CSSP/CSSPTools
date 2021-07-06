@@ -1,25 +1,19 @@
-using CSSPEnums;
+using CSSPAzureAppTaskServices;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
-using CSSPCultureServices.Services;
+using CSSPEnums;
+using CSSPHelperServices;
+using LoggedInServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using LoggedInServices;
-using CSSPScrambleServices;
-using CSSPHelperServices;
-using CSSPAzureAppTaskServices;
 
 namespace CSSPWebAPIs
 {
@@ -78,7 +72,6 @@ namespace CSSPWebAPIs
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
-            services.AddScoped<IScrambleService, ScrambleService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
 
             services.AddScoped<ILoginModelService, LoginModelService>();

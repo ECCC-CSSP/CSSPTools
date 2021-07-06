@@ -1,4 +1,4 @@
-﻿using CSSPScrambleServices;
+﻿using LoggedInServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +18,7 @@ namespace UploadAllFilesToAzure
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private IScrambleService ScrambleService { get; set; }
+        private ILoggedInService LoggedInService { get; set; }
         public string AzureStore { get; set; }
         public string AzureStoreCSSPFilesPath { get; set; }
         #endregion Properties
@@ -56,7 +56,7 @@ namespace UploadAllFilesToAzure
                 return false;
             }
 
-            Services.AddSingleton<IScrambleService, ScrambleService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
@@ -65,9 +65,9 @@ namespace UploadAllFilesToAzure
                 return false;
             }
 
-            ScrambleService = Provider.GetService<IScrambleService>();
+            LoggedInService = Provider.GetService<ILoggedInService>();
 
-            AzureStore = ScrambleService.Descramble(AzureStore);
+            AzureStore = LoggedInService.Descramble(AzureStore);
 
             return true;
         }

@@ -4,7 +4,6 @@ using CSSPDBServices;
 using CSSPEnums;
 using CSSPHelperModels;
 using CSSPHelperServices;
-using CSSPScrambleServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +66,6 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IScrambleService, ScrambleService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 

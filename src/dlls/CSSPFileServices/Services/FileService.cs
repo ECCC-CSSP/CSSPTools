@@ -12,7 +12,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using CSSPScrambleServices;
 using CSSPWebModels;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
@@ -45,7 +44,6 @@ namespace FileServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IScrambleService ScrambleService { get; }
         private IManageFileService ManageFileService { get; }
         private IEnums enums { get; }
         private string AzureStore { get; set; }
@@ -59,7 +57,7 @@ namespace FileServices
 
         #region Constructors
         public FileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IScrambleService ScrambleService, IEnums enums, IManageFileService ManageFileService) : base()
+            IEnums enums, IManageFileService ManageFileService) : base()
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -67,7 +65,7 @@ namespace FileServices
             this.enums = enums;
             this.ManageFileService = ManageFileService;
 
-            AzureStore = ScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
             AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
             CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
             CSSPOtherFilesPath = Configuration.GetValue<string>("CSSPOtherFilesPath");

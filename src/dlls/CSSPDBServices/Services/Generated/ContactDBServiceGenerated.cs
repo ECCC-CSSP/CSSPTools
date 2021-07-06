@@ -19,14 +19,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CSSPHelperModels;
 using CSSPHelperServices;
-using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -51,7 +49,6 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ILoginModelService LoginModelService { get; }
         private IRegisterModelService RegisterModelService { get; }
-        private IScrambleService ScrambleService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
@@ -64,12 +61,10 @@ namespace CSSPDBServices
            ILoginModelService LoginModelService,
            IRegisterModelService RegisterModelService,
            ILoggedInService LoggedInService,
-           IScrambleService ScrambleService,
            CSSPDBContext db)
         {
             this.LoginModelService = LoginModelService;
             this.RegisterModelService = RegisterModelService;
-            this.ScrambleService = ScrambleService;
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
@@ -204,7 +199,7 @@ namespace CSSPDBServices
                     return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
                 }
                 
-                if (loginModel.Password == ScrambleService.Descramble(contact.PasswordHash))
+                if (loginModel.Password == LoggedInService.Descramble(contact.PasswordHash))
                 {
 
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));
