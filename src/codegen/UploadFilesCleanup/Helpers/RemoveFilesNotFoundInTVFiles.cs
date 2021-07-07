@@ -90,7 +90,7 @@ namespace UploadAllFilesToAzure
             }
 
             List<int> ParentIDList = (from c in ParentAndFileNameList
-                                      where c.ParentID == 1
+                                      //where c.ParentID == 1
                                       orderby c.ParentID
                                       select c.ParentID).Distinct().ToList();
 
