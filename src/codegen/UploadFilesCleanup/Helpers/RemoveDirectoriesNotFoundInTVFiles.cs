@@ -74,9 +74,25 @@ namespace UploadAllFilesToAzure
                                       where c.ToString() == diSub.Name
                                       select c).FirstOrDefault();
 
-                if (ParentIDExist == null)
+                if (ParentIDExist == 0)
                 {
+                    if (diSub.Name == "WebTide")
+                    {
+                        continue;
+                    }
+
                     sb.AppendLine($@"Deleting local directory --> {diSub.Name}");
+
+                    try
+                    {
+                        diSub.Delete();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Could not delete local File [{diSub.FullName}]. Error: {ex.Message}");
+                        return false;
+                    }
+
                 }
             }
             sb.AppendLine($@"Ended local directory cleanup");
@@ -94,146 +110,97 @@ namespace UploadAllFilesToAzure
                                       where c.ToString() == diSub.Name
                                       select c).FirstOrDefault();
 
-                if (ParentIDExist == null)
+                if (ParentIDExist == 0)
                 {
+                    if (diSub.Name == "WebTide")
+                    {
+                        continue;
+                    }
+
                     sb.AppendLine($@"Deleting national directory --> {diSub.Name}");
+
+                    try
+                    {
+                        diSub.Delete();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Could not delete national File [{diSub.FullName}]. Error: {ex.Message}");
+                        return false;
+                    }
                 }
             }
             sb.AppendLine($@"Ended national directory cleanup");
 
-            //int count = 0;
-            //total = ParentIDList.Count;
-            //foreach (int ParentID in ParentIDList)
-            //{
-            //    ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
-            //    ShareDirectoryClient directory = shareClient.GetDirectoryClient(ParentID.ToString());
 
-            //    count += 1;
-            //    if (count % 1 == 0)
-            //    {
-            //        Console.WriteLine($"Count -> {count}/{total} doing ParentID {ParentID}");
-            //    }
+            // ---------------------------------------------
+            // Cleaning Azure drive
+            //----------------------------------------------
 
-            //    DirectoryInfo diParent = new DirectoryInfo($@"{di.FullName}{ParentID}\");
-            //    List<FileInfo> FileInfoList = new List<FileInfo>();
-            //    if (diParent.Exists)
-            //    {
-            //        FileInfoList = diParent.GetFiles().ToList();
-            //    }
+            sb.AppendLine($@"Starting Azure directory cleanup");
 
-            //    DirectoryInfo diParentNat = new DirectoryInfo($@"{diNat.FullName}{ParentID}\");
-            //    List<FileInfo> FileInfoNatList = new List<FileInfo>();
-            //    if (diParentNat.Exists)
-            //    {
-            //        FileInfoNatList = diParentNat.GetFiles().ToList();
-            //    }
+            ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
+            ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
-            //    List<ParentAndFileName> parentAndFileNameList = (from c in ParentAndFileNameList
-            //                                                     where c.ParentID == ParentID
-            //                                                     orderby c.ServerFileName
-            //                                                     select c).ToList();
+            Pageable<ShareFileItem> shareFileItemList = directory.GetFilesAndDirectories();
 
-            //    foreach (ParentAndFileName parentAndFileName in parentAndFileNameList)
-            //    {
-            //        if (!FileInfoList.Where(c => c.Name == parentAndFileName.ServerFileName).Any())
-            //        {
-            //            Console.WriteLine($@"Deleting TVFile and TVItem --> {parentAndFileName.ParentID}\{parentAndFileName.ServerFileName}");
-            //            sb.AppendLine($@"Deleting TVFile and TVItem --> {parentAndFileName.ParentID}\{parentAndFileName.ServerFileName}");
+            foreach (ShareFileItem shareFileItem in shareFileItemList)
+            {
+                int? ParentIDExist = (from c in ParentIDList
+                                      where c.ToString() == shareFileItem.Name
+                                      select c).FirstOrDefault();
 
-            //            TVItem tvItem = (from c in db.TVItems
-            //                             where c.TVType == TVTypeEnum.File
-            //                             && c.TVItemID == parentAndFileName.TVItemID
-            //                             orderby c.TVLevel
-            //                             select c).FirstOrDefault();
+                if (ParentIDExist == 0)
+                {
+                    if (shareFileItem.Name == "WebTide")
+                    {
+                        continue;
+                    }
 
-            //            TVFile tvFile = (from c in db.TVFiles
-            //                             where c.TVFileID == parentAndFileName.TVFileID
-            //                             select c).FirstOrDefault();
+                    Console.WriteLine($@"Deleting azure directory --> {shareFileItem.Name}");
+                    sb.AppendLine($@"Deleting azure directory --> {shareFileItem.Name}");
 
-            //            if (tvItem != null && tvFile != null)
-            //            {
-            //                try
-            //                {
-            //                    db.TVFiles.Remove(tvFile);
-            //                    db.SaveChanges();
-            //                }
-            //                catch (Exception ex)
-            //                {
-            //                    Console.WriteLine($"Could not delete TVFile with TVFileID == {parentAndFileName.TVFileID}. Error: {ex.Message}");
-            //                    return false;
-            //                }
+                    if (shareFileItem.IsDirectory)
+                    {
+                        ShareClient shareClientSub = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
+                        ShareDirectoryClient directorySub = shareClientSub.GetDirectoryClient(shareFileItem.Name);
 
-            //                try
-            //                {
-            //                    db.TVItems.Remove(tvItem);
-            //                    db.SaveChanges();
-            //                }
-            //                catch (Exception ex)
-            //                {
-            //                    Console.WriteLine($"Could not delete TVItem with TVItemID == {parentAndFileName.TVItemID}. Error: {ex.Message}");
-            //                    return false;
-            //                }
-            //            }
-            //        }
-            //    }
+                        if (directorySub.Exists())
+                        {
+                            foreach (ShareFileItem shareFileItemSub in directorySub.GetFilesAndDirectories())
+                            {
+                                ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
 
-            //    foreach (FileInfo fileInfo in FileInfoList)
-            //    {
-            //        if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfo.Name).Any())
-            //        {
-            //            Console.WriteLine($@"Deleting file on local --> {ParentID}\{fileInfo.Name}");
-            //            sb.AppendLine($@"Deleting file on local --> {ParentID}\{fileInfo.Name}");
+                                Console.WriteLine($@"                Deleting azure file --> {shareFileItem.Name}\{shareFileItemSub.Name}");
+                                sb.AppendLine($@"                Deleting azure file --> {shareFileItem.Name}\{shareFileItemSub.Name}");
 
-            //            try
-            //            {
-            //                fileInfo.Delete();
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Console.WriteLine($"Could not delete File [{fileInfo.FullName}]. Error: {ex.Message}");
-            //                return false;
-            //            }
+                                Response<bool> responseFile = file.DeleteIfExists();
 
-            //            // deleting the file from Azure
+                                if (responseFile.Value)
+                                {
+                                    Console.WriteLine($@"                Deleted file from Azure --> {shareFileItem.Name}\{ shareFileItemSub.Name }");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($@"              Error deleting from Azure --> {shareFileItem.Name}\{ shareFileItemSub.Name }");
+                                }
+                            }
+                        }
 
-            //            if (directory.Exists())
-            //            {
-            //                ShareFileClient file = directory.GetFileClient(fileInfo.Name);
+                        Response<bool> responseDir = directorySub.DeleteIfExists();
 
-            //                Response<bool> response = file.DeleteIfExists();
-            //                //Response response = directory.DeleteFile(fileInfo.Name);
-
-            //                if (response.Value)
-            //                {
-            //                    Console.WriteLine($@"Deleted from Azure --> {ParentID}\{ fileInfo.Name }");
-            //                }
-            //                else
-            //                {
-            //                    Console.WriteLine($@"Error deleting from Azure --> {ParentID}\{ fileInfo.Name }");
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    foreach (FileInfo fileInfoNat in FileInfoNatList)
-            //    {
-            //        if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfoNat.Name).Any())
-            //        {
-            //            Console.WriteLine($@"Deleting on National --> {ParentID}\{fileInfoNat.Name}");
-            //            sb.AppendLine($@"Deleting on National --> {ParentID}\{fileInfoNat.Name}");
-
-            //            try
-            //            {
-            //                fileInfoNat.Delete();
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Console.WriteLine($"Could not delete File [{fileInfoNat.FullName}]. Error: {ex.Message}");
-            //                return false;
-            //            }
-            //        }
-            //    }
-            //}
+                        if (responseDir.Value)
+                        {
+                            Console.WriteLine($@"              Deleted directory from Azure --> {shareFileItem.Name}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($@"            Error deleting directory from Azure --> {shareFileItem.Name}");
+                        }
+                    }
+                }
+            }
+            sb.AppendLine($@"Ended Azure directory cleanup");
 
             StreamWriter sw = fi.CreateText();
             sw.Write(sb.ToString());
