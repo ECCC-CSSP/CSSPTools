@@ -40,12 +40,12 @@ namespace UploadAllFilesToAzure
                 return false;
             }
 
-            //DirectoryInfo diNat = new DirectoryInfo(StartPathMQEM_NATIONAL);
-            //if (!diNat.Exists)
-            //{
-            //    Console.WriteLine($"StartPathMQEM_NATIONAL does not exist {diNat.FullName}");
-            //    return false;
-            //}
+            DirectoryInfo diNat = new DirectoryInfo(StartPathMQEM_NATIONAL);
+            if (!diNat.Exists)
+            {
+                Console.WriteLine($"StartPathMQEM_NATIONAL does not exist {diNat.FullName}");
+                return false;
+            }
 
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\codegen\UploadFilesCleanup\ListOfRemoveDirectoriesNotFoundInTVFiles.csv");
 
@@ -56,35 +56,15 @@ namespace UploadAllFilesToAzure
                                        orderby c.TVLevel
                                        select c).AsNoTracking().ToList();
 
-            //List<TVFile> TVFileList = (from c in db.TVFiles
-            //                           select c).AsNoTracking().ToList();
-
-            //List<ParentAndFileName> ParentAndFileNameList = new List<ParentAndFileName>();
-
-            //int count = 0;
-            //int total = TVFileList.Count;
-            //foreach (TVFile tvFile in TVFileList)
-            //{
-            //    count += 1;
-            //    if (count % 1000 == 0)
-            //    {
-            //        Console.WriteLine($"Count -> {count}/{total}");
-            //    }
-
-            //    TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
-            //    if (tvItem == null)
-            //    {
-            //        Console.WriteLine($"Could not find tvItem for tvFile.TVFileTVItemID -> {tvFile.TVFileTVItemID}");
-            //        return false;
-            //    }
-
-
-            //    ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
-            //}
 
             List<int> ParentIDList = (from c in TVItemList
                                       orderby c.ParentID
                                       select (int)c.ParentID).Distinct().ToList();
+
+            // ---------------------------------------------
+            // Cleaning Local drive
+            //----------------------------------------------
+            sb.AppendLine($@"Starting local directory cleanup");
 
             List<DirectoryInfo> diSubList = di.GetDirectories().OrderBy(c => c.Name).ToList();
 
@@ -96,9 +76,30 @@ namespace UploadAllFilesToAzure
 
                 if (ParentIDExist == null)
                 {
-                    sb.AppendLine($@"Deleting directory --> {diSub.Name}");
+                    sb.AppendLine($@"Deleting local directory --> {diSub.Name}");
                 }
             }
+            sb.AppendLine($@"Ended local directory cleanup");
+
+            // ---------------------------------------------
+            // Cleaning National drive
+            //----------------------------------------------
+
+            sb.AppendLine($@"Starting national directory cleanup");
+            List<DirectoryInfo> diNatSubList = diNat.GetDirectories().OrderBy(c => c.Name).ToList();
+
+            foreach (DirectoryInfo diSub in diNatSubList)
+            {
+                int? ParentIDExist = (from c in ParentIDList
+                                      where c.ToString() == diSub.Name
+                                      select c).FirstOrDefault();
+
+                if (ParentIDExist == null)
+                {
+                    sb.AppendLine($@"Deleting national directory --> {diSub.Name}");
+                }
+            }
+            sb.AppendLine($@"Ended national directory cleanup");
 
             //int count = 0;
             //total = ParentIDList.Count;
