@@ -19,13 +19,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace UploadAllFilesToAzure
 {
-    public class ParentAndFileName
-    {
-        public int TVFileID { get; set; }
-        public int TVItemID { get; set; }
-        public int ParentID { get; set; }
-        public string ServerFileName { get; set; }
-    }
     public partial class Startup
     {
         #region Variables

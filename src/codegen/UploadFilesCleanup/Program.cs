@@ -22,9 +22,10 @@ namespace UploadAllFilesToAzure
 
             if (!startup.Setup()) return;
 
-            startup.RemoveTVItemsNoAssociatedWithTVFiles();
-            startup.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
-            startup.RemoveFilesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\");
+            //startup.RemoveTVItemsNoAssociatedWithTVFiles();
+            //startup.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
+            //startup.RemoveFilesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\");
+            startup.RemoveDirectoriesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\");
 
         }
     }
