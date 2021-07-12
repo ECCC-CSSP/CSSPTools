@@ -64,6 +64,8 @@ namespace UploadAllFilesToAzure
             // ---------------------------------------------
             // Cleaning Local drive
             //----------------------------------------------
+            
+            Console.WriteLine($@"Starting local directory cleanup");
             sb.AppendLine($@"Starting local directory cleanup");
 
             List<DirectoryInfo> diSubList = di.GetDirectories().OrderBy(c => c.Name).ToList();
@@ -81,11 +83,12 @@ namespace UploadAllFilesToAzure
                         continue;
                     }
 
+                    Console.WriteLine($@"Deleting local directory --> {diSub.Name}");
                     sb.AppendLine($@"Deleting local directory --> {diSub.Name}");
 
                     try
                     {
-                        diSub.Delete();
+                        diSub.Delete(true);
                     }
                     catch (Exception ex)
                     {
@@ -95,12 +98,14 @@ namespace UploadAllFilesToAzure
 
                 }
             }
+            Console.WriteLine($@"Ended local directory cleanup");
             sb.AppendLine($@"Ended local directory cleanup");
 
             // ---------------------------------------------
             // Cleaning National drive
             //----------------------------------------------
 
+            Console.WriteLine($@"Starting national directory cleanup");
             sb.AppendLine($@"Starting national directory cleanup");
             List<DirectoryInfo> diNatSubList = diNat.GetDirectories().OrderBy(c => c.Name).ToList();
 
@@ -117,11 +122,12 @@ namespace UploadAllFilesToAzure
                         continue;
                     }
 
+                    Console.WriteLine($@"Deleting national directory --> {diSub.Name}");
                     sb.AppendLine($@"Deleting national directory --> {diSub.Name}");
 
                     try
                     {
-                        diSub.Delete();
+                        diSub.Delete(true);
                     }
                     catch (Exception ex)
                     {
@@ -130,6 +136,7 @@ namespace UploadAllFilesToAzure
                     }
                 }
             }
+            Console.WriteLine($@"Ended national directory cleanup");
             sb.AppendLine($@"Ended national directory cleanup");
 
 
@@ -137,6 +144,7 @@ namespace UploadAllFilesToAzure
             // Cleaning Azure drive
             //----------------------------------------------
 
+            Console.WriteLine($@"Starting Azure directory cleanup");
             sb.AppendLine($@"Starting Azure directory cleanup");
 
             ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
@@ -200,6 +208,7 @@ namespace UploadAllFilesToAzure
                     }
                 }
             }
+            Console.WriteLine($@"Ended Azure directory cleanup");
             sb.AppendLine($@"Ended Azure directory cleanup");
 
             StreamWriter sw = fi.CreateText();
