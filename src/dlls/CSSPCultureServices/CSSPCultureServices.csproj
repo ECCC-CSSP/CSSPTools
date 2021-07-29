@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\CSSPCultureDesktopRes.Designer.cs">
+    <Compile Update="Resources\CSSPCultureDesktopRes - Copy.Designer.cs">
+      <DependentUpon>CSSPCultureDesktopRes.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>CSSPCultureDesktopRes.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\CSSPCultureEnumsRes.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -36,15 +36,35 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CSSPCultureServicesRes.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\CSSPCultureUpdateRes.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CSSPCultureUpdateRes.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\CSSPCultureUpdateRes.fr..Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CSSPCultureUpdateRes.fr..resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\CSSPCultureUpdateRes.fr..resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CSSPCultureUpdateRes.fr..Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\CSSPCultureUpdateRes.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CSSPCultureUpdateRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureDesktopRes.fr.resx">
       <LastGenOutput>CSSPCultureDesktopRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureDesktopRes.resx">
-      <LastGenOutput>CSSPCultureDesktopRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>CSSPCultureUpdateRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureModelsRes.resx">

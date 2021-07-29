@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>09d53909-cf94-4a43-8051-a08ffe256d85</UserSecretsId>
+    <UserSecretsId>f1d5ece7-8bc6-44ff-8611-8899787c64a9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,11 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPUpdateServices\CSSPUpdateServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings_csspupdatechanges.json">
+    <None Update="appsettings_csspupdate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_csspupdateall.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

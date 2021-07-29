@@ -1,32 +1,87 @@
-﻿using Azure;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using Azure.Storage.Files.Shares;
-using Azure.Storage.Files;
-using Azure.Storage.Files.Shares.Models;
+using System.Threading.Tasks;
 
 namespace CSSPUpdateAll
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            //int CountFileTotal = 0;
-            //int CountFileUploaded = 0;
+            //bool HasErrors = false;
 
-            Console.WriteLine("Hello World!");
+            //Startup startup = new Startup();
 
-            Startup startup = new Startup();
+            //if (!await startup.Setup()) return;
 
-            if (!startup.Setup()) return;
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.RemoveTVItemsNoAssociatedWithTVFiles())
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
+            
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile())
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
 
-            startup.RemoveTVItemsNoAssociatedWithTVFiles();
-            startup.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
-            startup.RemoveFilesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\");
-            startup.RemoveDirectoriesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\");
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.RemoveFilesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\"))
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
 
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.RemoveDirectoriesNotFoundInTVFiles($@"E:\inetpub\wwwroot\csspwebtools\App_Data\", $@"\\int.ec.gc.ca\SHARES\M\MQEM_NATIONAL\Charles_E_Drive_Backup\inetpub\wwwroot\csspwebtools\App_Data\"))
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
+
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.UploadAllFilesToAzure($@"E:\inetpub\wwwroot\csspwebtools\App_Data\"))
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
+
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.UploadAllJsonFilesToAzure())
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
+
+            //if (!HasErrors)
+            //{
+            //    if (!await startup.UpdateAllTVItemStats())
+            //    {
+            //        HasErrors = true;
+            //    }
+            //}
+
+            //if ()
+            //{
+
+            //}
+            //else
+            //{
+            //    StreamWriter sw = new StreamWriter($@"C:\CSSPTools\src\webs\CSSPUpdateAll\CSSPUpdateAllLog.txt");
+            //    sw.WriteLine(startup.sb.ToString());
+            //    sw.Close();
+            //}
+
+            return;
         }
     }
 }

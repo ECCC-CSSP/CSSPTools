@@ -45,6 +45,7 @@ namespace CSSPCultureServices.Tests
             Assert.Equal(new CultureInfo(culture), CSSPCultureModelsRes.Culture);
             Assert.Equal(new CultureInfo(culture), CSSPCulturePolSourcesRes.Culture);
             Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
+            Assert.Equal(new CultureInfo(culture), CSSPCultureUpdateRes.Culture);
         }
         [Theory]
         [InlineData("en-US")]
@@ -59,6 +60,7 @@ namespace CSSPCultureServices.Tests
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureModelsRes.Culture);
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCulturePolSourcesRes.Culture);
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureServicesRes.Culture);
+            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureUpdateRes.Culture);
         }
         #endregion Tests Functions public
 

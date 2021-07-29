@@ -1,12 +1,14 @@
-﻿using CSSPCultureServices.Services;
+﻿using CreateGzFileServices;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
+using CSSPDBServices;
 using CSSPEnums;
+using CSSPHelperServices;
 using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +21,20 @@ namespace CSSPUpdateAll
         #endregion Variables
 
         #region Properties
+        public StringBuilder sbError { get; set; }
+        public StringBuilder sbLog { get; set; }
+
+
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        public string AzureStore { get; set; }
-        public string AzureStoreCSSPFilesPath { get; set; }
-        public CSSPDBContext db { get; set; }
+        private ICreateGzFileService CreateGzFileService { get; set; }
+        private string AzureStore { get; set; }
+        private string AzureStoreCSSPFilesPath { get; set; }
+        private string AzureStoreCSSPJSONPath { get; set; }
+        private CSSPDBContext db { get; set; }
+
         #endregion Properties
 
         #region Constructors
@@ -35,7 +44,7 @@ namespace CSSPUpdateAll
         #endregion Constructors
 
         #region Functions private
-        public bool Setup()
+        public async Task<bool> Setup()
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -51,19 +60,31 @@ namespace CSSPUpdateAll
             if (string.IsNullOrEmpty(AzureStore))
             {
                 Console.WriteLine("Error: Could not find AzureStoreCSSPJSONPath withing UserSecret");
-                return false;
+                return await Task.FromResult(false);
             }
 
             AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
             if (string.IsNullOrEmpty(AzureStoreCSSPFilesPath))
             {
                 Console.WriteLine("Error: Could not find AzureStoreCSSPFilesPath withing UserSecret");
-                return false;
+                return await Task.FromResult(false);
+            }
+
+            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+            if (string.IsNullOrEmpty(AzureStoreCSSPJSONPath))
+            {
+                Console.WriteLine("Error: Could not find AzureStoreCSSPJsonPath withing UserSecret");
+                return await Task.FromResult(false);
             }
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ILoginModelService, LoginModelService>();
+            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<IContactDBService, ContactDBService>();
+            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<ITVItemDBService, TVItemDBService>();
 
             /* ---------------------------------------------------------------------------------
            * CSSPDBContext
@@ -73,7 +94,7 @@ namespace CSSPUpdateAll
             if (string.IsNullOrWhiteSpace(CSSPDB))
             {
                 Console.WriteLine("Error: Could not read CSSPDB");
-                return false;
+                return await Task.FromResult(false);
             }
 
             Services.AddDbContext<CSSPDBContext>(options =>
@@ -85,40 +106,50 @@ namespace CSSPUpdateAll
             if (Provider == null)
             {
                 Console.WriteLine("Provider should not be null");
-                return false;
+                return await Task.FromResult(false);
             }
 
             db = Provider.GetService<CSSPDBContext>();
             if (db == null)
             {
                 Console.WriteLine("Error: db should not be null");
-                return false;
+                return await Task.FromResult(false);
             }
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             if (LoggedInService == null)
             {
                 Console.WriteLine("LoggedInService should not be null");
-                return false;
+                return await Task.FromResult(false);
             }
 
             string LoginEmail = Configuration.GetValue<string>("LoginEmail");
             if (LoginEmail == null)
             {
                 Console.WriteLine("LoginEmail should not be null");
-                return false;
+                return await Task.FromResult(false);
             }
 
-            LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 Console.WriteLine("LoggedInService.LoggedInContactInfo should not be null");
-                return false;
+                return await Task.FromResult(false);
+            }
+
+            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            if (CreateGzFileService == null)
+            {
+                Console.WriteLine("CreateGzFileService should not be null");
+                return await Task.FromResult(false);
             }
 
             AzureStore = LoggedInService.Descramble(AzureStore);
 
-            return true;
+            //sb = new StringBuilder();
+
+
+            return await Task.FromResult(true);
         }
         #endregion Functions private
     }

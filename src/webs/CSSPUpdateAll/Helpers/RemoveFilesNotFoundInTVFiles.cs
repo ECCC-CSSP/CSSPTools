@@ -1,50 +1,33 @@
-﻿using CSSPCultureServices.Services;
+﻿using Azure;
+using Azure.Storage.Files.Shares;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Security.Cryptography;
-using Azure.Storage.Files.Shares;
-using Azure;
-using Azure.Storage.Files.Shares.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace CSSPUpdateAll
 {
     public partial class Startup
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Functions private
-        public bool RemoveFilesNotFoundInTVFiles(string StartPathLocal, string StartPathMQEM_NATIONAL)
+        public async Task<bool> RemoveFilesNotFoundInTVFiles(string StartPathLocal, string StartPathMQEM_NATIONAL)
         {
             DirectoryInfo di = new DirectoryInfo(StartPathLocal);
             if (!di.Exists)
             {
                 Console.WriteLine($"StartPathLocal does not exist {di.FullName}");
-                return false;
+                return await Task.FromResult(false);
             }
 
             DirectoryInfo diNat = new DirectoryInfo(StartPathMQEM_NATIONAL);
             if (!diNat.Exists)
             {
                 Console.WriteLine($"StartPathMQEM_NATIONAL does not exist {diNat.FullName}");
-                return false;
+                return await Task.FromResult(false);
             }
 
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveFilesNotFoundInTVFiles.csv");
@@ -75,7 +58,7 @@ namespace CSSPUpdateAll
                 if (tvItem == null)
                 {
                     Console.WriteLine($"Could not find tvItem for tvFile.TVFileTVItemID -> {tvFile.TVFileTVItemID}");
-                    return false;
+                    return await Task.FromResult(false);
                 }
 
 
@@ -147,7 +130,7 @@ namespace CSSPUpdateAll
                             catch (Exception ex)
                             {
                                 Console.WriteLine($"Could not delete TVFile with TVFileID == {parentAndFileName.TVFileID}. Error: {ex.Message}");
-                                return false;
+                                return await Task.FromResult(false);
                             }
 
                             try
@@ -158,7 +141,7 @@ namespace CSSPUpdateAll
                             catch (Exception ex)
                             {
                                 Console.WriteLine($"Could not delete TVItem with TVItemID == {parentAndFileName.TVItemID}. Error: {ex.Message}");
-                                return false;
+                                return await Task.FromResult(false);
                             }
                         }
                     }
@@ -178,7 +161,7 @@ namespace CSSPUpdateAll
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Could not delete File [{fileInfo.FullName}]. Error: {ex.Message}");
-                            return false;
+                            return await Task.FromResult(false);
                         }
 
                         // deleting the file from Azure
@@ -216,7 +199,7 @@ namespace CSSPUpdateAll
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Could not delete File [{fileInfoNat.FullName}]. Error: {ex.Message}");
-                            return false;
+                            return await Task.FromResult(false);
                         }
                     }
                 }
@@ -226,8 +209,7 @@ namespace CSSPUpdateAll
             sw.Write(sb.ToString());
             sw.Close();
 
-            return true;
+            return await Task.FromResult(true);
         }
-        #endregion Functions private
     }
 }

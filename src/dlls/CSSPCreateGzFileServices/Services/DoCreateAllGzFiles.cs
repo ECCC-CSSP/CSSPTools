@@ -17,51 +17,72 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateAllGzFiles()
         {
-            
+
             if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 return await Task.FromResult(false);
             }
 
-            Console.WriteLine("Create WebAllAddresses doing...");
-            await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
-            Console.WriteLine("Create WebAllContacts doing...");
-            await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
-            Console.WriteLine("CreateAllCountries doing...");
-            await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
-            Console.WriteLine("Create WebAllEmails doing...");
-            await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
-            Console.WriteLine("Create WebAllHelpDocs doing...");
-            await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
-            Console.WriteLine("Create WebAllMunicipalities doing...");
-            await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
-            Console.WriteLine("Create WebAllMWQMLookupMPNs doing...");
-            await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-            Console.WriteLine("Create WebAllPolSourceGroupings doing...");
-            await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
-            Console.WriteLine("Create WebAllPolSourceSiteEffectTerms doing...");
-            await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
-            Console.WriteLine("Create WebAllProvinces doing...");
-            await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
-            Console.WriteLine("Create WebAllReportTypes doing...");
-            await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
-            Console.WriteLine("Create WebAllTels doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTels, 0);
-            Console.WriteLine("Create WebAllTideLocations doing...");
-            await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
-            Console.WriteLine("Create WebRoot doing...");
-            await CreateGzFile(WebTypeEnum.WebRoot, 0);
-            Console.WriteLine("Create WebAllSearch doing...");
-            await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
+            //Console.WriteLine("Create WebAllAddresses doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
+            //Console.WriteLine("Create WebAllContacts doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
+            //Console.WriteLine("CreateAllCountries doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
+            //Console.WriteLine("Create WebAllEmails doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
+            //Console.WriteLine("Create WebAllHelpDocs doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
+            //Console.WriteLine("Create WebAllMunicipalities doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
+            //Console.WriteLine("Create WebAllMWQMLookupMPNs doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+            //Console.WriteLine("Create WebAllPolSourceGroupings doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
+            //Console.WriteLine("Create WebAllPolSourceSiteEffectTerms doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
+            //Console.WriteLine("Create WebAllProvinces doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
+            //Console.WriteLine("Create WebAllReportTypes doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
+            //Console.WriteLine("Create WebAllTels doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllTels, 0);
+            //Console.WriteLine("Create WebAllTideLocations doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
+            //Console.WriteLine("Create WebRoot doing...");
+            //await CreateGzFile(WebTypeEnum.WebRoot, 0);
+            //Console.WriteLine("Create WebAllSearch doing...");
+            //await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
+
+
+            //foreach (TVItem tvItem in (from c in db.TVItems
+            //                           where c.TVType == TVTypeEnum.Country
+            //                           select c).ToList())
+            //{
+            //    Console.WriteLine($"Create WebMonitoringRoutineStatsCountry [{tvItem.TVItemID}] doing...");
+            //    await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
+            //    Console.WriteLine($"Create WebMonitoringOtherStatsCountry [{tvItem.TVItemID}] doing...");
+            //    await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
+            //}
+
+            //foreach (TVItem tvItem in (from c in db.TVItems
+            //                           where c.TVType == TVTypeEnum.Province
+            //                           select c).ToList())
+            //{
+            //    Console.WriteLine($"Create WebMonitoringRoutineStatsProvince [{tvItem.TVItemID}] doing...");
+            //    await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
+            //    Console.WriteLine($"Create WebMonitoringOtherStatsProvince [{tvItem.TVItemID}] doing...");
+            //    await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
+            //}
 
             List<TVTypeEnum> tvTypeEnumList = new List<TVTypeEnum>()
             {
-                TVTypeEnum.Country,
-                TVTypeEnum.Province,
-                TVTypeEnum.Area,
-                TVTypeEnum.Sector,
-                TVTypeEnum.Subsector,
-                TVTypeEnum.Municipality,
+                //TVTypeEnum.Country,
+                //TVTypeEnum.Province,
+                //TVTypeEnum.Area,
+                //TVTypeEnum.Sector,
+                //TVTypeEnum.Subsector,
+                //TVTypeEnum.Municipality,
             };
 
             foreach (TVTypeEnum tvType in tvTypeEnumList)
@@ -70,7 +91,7 @@ namespace CreateGzFileServices
                                            where c.TVType == tvType
                                            select c).ToList();
 
-                foreach(TVItem tvItem in tvItemList)
+                foreach (TVItem tvItem in tvItemList)
                 {
                     switch (tvType)
                     {
@@ -84,10 +105,6 @@ namespace CreateGzFileServices
                             {
                                 Console.WriteLine($"Create WebCountry [{tvItem.TVItemID}] doing...");
                                 await CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringRoutineStatsCountry [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringOtherStatsCountry [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Municipality:
@@ -110,10 +127,6 @@ namespace CreateGzFileServices
                                 await CreateGzFile(WebTypeEnum.WebTideSites, tvItem.TVItemID);
                                 Console.WriteLine($"Create WebDrogueRuns [{tvItem.TVItemID}] doing...");
                                 await CreateGzFile(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringRoutineStatsProvince [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
-                                Console.WriteLine($"Create WebMonitoringOtherStatsProvince [{tvItem.TVItemID}] doing...");
-                                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
                             }
                             break;
                         case TVTypeEnum.Sector:

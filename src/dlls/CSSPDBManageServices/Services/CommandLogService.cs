@@ -161,6 +161,7 @@ namespace ManageServices
                 commandLogAddOrModify.CommandName = commandLog.CommandName;
                 commandLogAddOrModify.DateTimeUTC = commandLog.DateTimeUTC;
                 commandLogAddOrModify.ErrorMessage = commandLog.ErrorMessage;
+                commandLogAddOrModify.DetailLog = commandLog.DetailLog;
                 commandLogAddOrModify.Successful = commandLog.Successful;
             }
 
@@ -208,9 +209,18 @@ namespace ManageServices
             // doing ErrorMessage
             if (!string.IsNullOrWhiteSpace(commandLog.ErrorMessage))
             {
-                if (commandLog.ErrorMessage.Length > 1000)
+                if (commandLog.ErrorMessage.Length > 10000000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorMessage", "1000"), new[] { "ErrorMessage" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorMessage", "10000000"), new[] { "ErrorMessage" });
+                }
+            }
+
+            // doing DetailLog
+            if (!string.IsNullOrWhiteSpace(commandLog.DetailLog))
+            {
+                if (commandLog.DetailLog.Length > 10000000)
+                {
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DetailLog", "10000000"), new[] { "DetailLog" });
                 }
             }
 

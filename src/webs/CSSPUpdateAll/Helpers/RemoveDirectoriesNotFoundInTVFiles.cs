@@ -1,50 +1,34 @@
-﻿using CSSPCultureServices.Services;
+﻿using Azure;
+using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Models;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Security.Cryptography;
-using Azure.Storage.Files.Shares;
-using Azure;
-using Azure.Storage.Files.Shares.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace CSSPUpdateAll
 {
     public partial class Startup
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Functions private
-        public bool RemoveDirectoriesNotFoundInTVFiles(string StartPathLocal, string StartPathMQEM_NATIONAL)
+        public async Task<bool> RemoveDirectoriesNotFoundInTVFiles(string StartPathLocal, string StartPathMQEM_NATIONAL)
         {
             DirectoryInfo di = new DirectoryInfo(StartPathLocal);
             if (!di.Exists)
             {
                 Console.WriteLine($"StartPathLocal does not exist {di.FullName}");
-                return false;
+                return await Task.FromResult(false);
             }
 
             DirectoryInfo diNat = new DirectoryInfo(StartPathMQEM_NATIONAL);
             if (!diNat.Exists)
             {
                 Console.WriteLine($"StartPathMQEM_NATIONAL does not exist {diNat.FullName}");
-                return false;
+                return await Task.FromResult(false);
             }
 
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveDirectoriesNotFoundInTVFiles.csv");
@@ -100,7 +84,7 @@ namespace CSSPUpdateAll
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Could not delete local File [{fiDel.FullName}]. Error: {ex.Message}");
-                            return false;
+                            return await Task.FromResult(false);
                         }
                     }
 
@@ -111,7 +95,7 @@ namespace CSSPUpdateAll
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Could not delete local Directory [{diSub.FullName}]. Error: {ex.Message}");
-                        return false;
+                        return await Task.FromResult(false);
                     }
 
                 }
@@ -150,7 +134,7 @@ namespace CSSPUpdateAll
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Could not delete national File [{diSub.FullName}]. Error: {ex.Message}");
-                        return false;
+                        return await Task.FromResult(false);
                     }
                 }
             }
@@ -233,8 +217,7 @@ namespace CSSPUpdateAll
             sw.Write(sb.ToString());
             sw.Close();
 
-            return true;
+            return await Task.FromResult(true);
         }
-        #endregion Functions private
     }
 }

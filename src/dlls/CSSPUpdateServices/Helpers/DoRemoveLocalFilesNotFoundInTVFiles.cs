@@ -1,53 +1,29 @@
-﻿using CSSPCultureServices.Services;
+﻿using Azure;
+using Azure.Storage.Files.Shares;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Security.Cryptography;
-using Azure.Storage.Files.Shares;
-using Azure;
-using Azure.Storage.Files.Shares.Models;
-using Microsoft.AspNetCore.Http;
 
-namespace CSSPUpdateChanges
+namespace CSSPUpdateServices
 {
-    public partial class Startup
+    public partial class CSSPUpdateService : ICSSPUpdateService
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Functions private
-        public bool RemoveFilesNotFoundInTVFiles(string StartPathLocal, string StartPathMQEM_NATIONAL)
+        public async Task<bool> DoRemoveLocalFilesNotFoundInTVFiles()
         {
-            DirectoryInfo di = new DirectoryInfo(StartPathLocal);
+            DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                Console.WriteLine($"StartPathLocal does not exist {di.FullName}");
-                return false;
+                Console.WriteLine($"LocalAppDataPath does not exist {di.FullName}");
+                return await Task.FromResult(false);
             }
 
-            DirectoryInfo diNat = new DirectoryInfo(StartPathMQEM_NATIONAL);
-            if (!diNat.Exists)
-            {
-                Console.WriteLine($"StartPathMQEM_NATIONAL does not exist {diNat.FullName}");
-                return false;
-            }
-
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateChanges\ListOfRemoveFilesNotFoundInTVFiles.csv");
+            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveFilesNotFoundInTVFiles.csv");
 
             StringBuilder sb = new StringBuilder();
 
@@ -75,7 +51,7 @@ namespace CSSPUpdateChanges
                 if (tvItem == null)
                 {
                     Console.WriteLine($"Could not find tvItem for tvFile.TVFileTVItemID -> {tvFile.TVFileTVItemID}");
-                    return false;
+                    return await Task.FromResult(false);
                 }
 
 
@@ -92,9 +68,6 @@ namespace CSSPUpdateChanges
             total = ParentIDList.Count;
             foreach (int ParentID in ParentIDList)
             {
-                ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
-                ShareDirectoryClient directory = shareClient.GetDirectoryClient(ParentID.ToString());
-
                 count += 1;
                 if (count % 1 == 0)
                 {
@@ -106,13 +79,6 @@ namespace CSSPUpdateChanges
                 if (diParent.Exists)
                 {
                     FileInfoList = diParent.GetFiles().ToList();
-                }
-
-                DirectoryInfo diParentNat = new DirectoryInfo($@"{diNat.FullName}{ParentID}\");
-                List<FileInfo> FileInfoNatList = new List<FileInfo>();
-                if (diParentNat.Exists)
-                {
-                    FileInfoNatList = diParentNat.GetFiles().ToList();
                 }
 
                 List<ParentAndFileName> parentAndFileNameList = (from c in ParentAndFileNameList
@@ -147,7 +113,7 @@ namespace CSSPUpdateChanges
                             catch (Exception ex)
                             {
                                 Console.WriteLine($"Could not delete TVFile with TVFileID == {parentAndFileName.TVFileID}. Error: {ex.Message}");
-                                return false;
+                                return await Task.FromResult(false);
                             }
 
                             try
@@ -158,7 +124,7 @@ namespace CSSPUpdateChanges
                             catch (Exception ex)
                             {
                                 Console.WriteLine($"Could not delete TVItem with TVItemID == {parentAndFileName.TVItemID}. Error: {ex.Message}");
-                                return false;
+                                return await Task.FromResult(false);
                             }
                         }
                     }
@@ -178,45 +144,7 @@ namespace CSSPUpdateChanges
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Could not delete File [{fileInfo.FullName}]. Error: {ex.Message}");
-                            return false;
-                        }
-
-                        // deleting the file from Azure
-
-                        if (directory.Exists())
-                        {
-                            ShareFileClient file = directory.GetFileClient(fileInfo.Name);
-
-                            Response<bool> response = file.DeleteIfExists();
-                            //Response response = directory.DeleteFile(fileInfo.Name);
-
-                            if (response.Value)
-                            {
-                                Console.WriteLine($@"Deleted from Azure --> {ParentID}\{ fileInfo.Name }");
-                            }
-                            else
-                            {
-                                Console.WriteLine($@"Error deleting from Azure --> {ParentID}\{ fileInfo.Name }");
-                            }
-                        }
-                    }
-                }
-
-                foreach (FileInfo fileInfoNat in FileInfoNatList)
-                {
-                    if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfoNat.Name).Any())
-                    {
-                        Console.WriteLine($@"Deleting on National --> {ParentID}\{fileInfoNat.Name}");
-                        sb.AppendLine($@"Deleting on National --> {ParentID}\{fileInfoNat.Name}");
-
-                        try
-                        {
-                            fileInfoNat.Delete();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Could not delete File [{fileInfoNat.FullName}]. Error: {ex.Message}");
-                            return false;
+                            return await Task.FromResult(false);
                         }
                     }
                 }
@@ -226,8 +154,7 @@ namespace CSSPUpdateChanges
             sw.Write(sb.ToString());
             sw.Close();
 
-            return true;
+            return await Task.FromResult(true);
         }
-        #endregion Functions private
     }
 }

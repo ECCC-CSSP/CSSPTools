@@ -22,8 +22,10 @@ namespace ManageServices
         public string CommandName { get; set; }
         [CSSPAllowNull]
         public bool? Successful { get; set; }
-        [CSSPMaxLength(1000)]
+        [CSSPMaxLength(10000000)]
         public string ErrorMessage { get; set; }
+        [CSSPMaxLength(10000000)]
+        public string DetailLog { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime DateTimeUTC { get; set; }
         #endregion Properties in DB

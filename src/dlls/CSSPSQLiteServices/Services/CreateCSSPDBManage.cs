@@ -57,6 +57,7 @@ namespace CSSPSQLiteServices
                 "CommandName TEXT NOT NULL, " +
                 "Successful INTEGER, " +
                 "ErrorMessage TEXT NULL, " +
+                "DetailLog TEXT NULL, " +
                 "DateTimeUTC TEXT NOT NULL)";
 
             using (var command = dbManage.Database.GetDbConnection().CreateCommand())

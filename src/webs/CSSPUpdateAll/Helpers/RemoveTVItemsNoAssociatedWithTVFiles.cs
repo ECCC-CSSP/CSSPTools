@@ -1,32 +1,17 @@
-﻿using CSSPCultureServices.Services;
-using CSSPDBModels;
+﻿using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace CSSPUpdateAll
 {
     public partial class Startup
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Functions private
-        public bool RemoveTVItemsNoAssociatedWithTVFiles()
+        public async Task<bool> RemoveTVItemsNoAssociatedWithTVFiles()
         {
             FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfTVItemsRemoved.csv");
 
@@ -75,8 +60,7 @@ namespace CSSPUpdateAll
                 Console.WriteLine($"Could not save all removed TVItems. {ex.Message}");
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
-        #endregion Functions private
     }
 }

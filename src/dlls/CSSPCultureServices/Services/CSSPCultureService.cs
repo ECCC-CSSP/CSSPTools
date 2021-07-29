@@ -29,8 +29,9 @@ namespace CSSPCultureServices.Services
             CSSPCultureDesktopRes.Culture = new CultureInfo(culture);
             CSSPCultureEnumsRes.Culture = new CultureInfo(culture);
             CSSPCultureModelsRes.Culture = new CultureInfo(culture);
-            CSSPCultureServicesRes.Culture = new CultureInfo(culture);
             CSSPCulturePolSourcesRes.Culture = new CultureInfo(culture);
+            CSSPCultureServicesRes.Culture = new CultureInfo(culture);
+            CSSPCultureUpdateRes.Culture = new CultureInfo(culture);
         }
     }
 }
