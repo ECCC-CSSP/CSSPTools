@@ -5,12 +5,8 @@
 using CreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using FileServices;
 using LoggedInServices;
 using ManageServices;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Text;
@@ -54,6 +50,9 @@ namespace CSSPUpdateServices
         private string CSSPJSONPathLocal { get; set; }
         private string LocalAppDataPath { get; set; }
         private string NationalBackupAppDataPath { get; set; }
+        private string ComputerName { get; set; }
+        private string azure_csspjson_backup_uncompress { get; set; }
+        private string azure_csspjson_backup { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         private StringBuilder sbLog { get; set; }
@@ -73,7 +72,7 @@ namespace CSSPUpdateServices
             sbLog =  new StringBuilder();
             sbError = new StringBuilder();
 
-            if (!DoReadConfiguration().GetAwaiter().GetResult())
+            if (!ReadConfiguration().GetAwaiter().GetResult())
             {
                 return;
             }

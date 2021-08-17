@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Storage.Files.Shares;
+using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
 using Microsoft.EntityFrameworkCore;
@@ -16,16 +17,21 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveAzureFilesNotFoundInTVFiles()
         {
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveAzureFilesNotFoundInTVFiles ...");
+
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                Console.WriteLine($"LocalAppDataPath does not exist {di.FullName}");
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+
+                await StoreInCommandLog(sbLog, sbError, "RemoveAzureDirectoriesNotFoundInTVFiles");
+
                 return await Task.FromResult(false);
             }
-
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveFilesNotFoundInTVFiles.csv");
-
-            StringBuilder sb = new StringBuilder();
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -50,7 +56,10 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    Console.WriteLine($"Could not find tvItem for tvFile.TVFileTVItemID -> {tvFile.TVFileTVItemID}");
+                    ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+
+                    await StoreInCommandLog(sbLog, sbError, "RemoveAzureDirectoriesNotFoundInTVFiles");
+
                     return await Task.FromResult(false);
                 }
 
@@ -101,22 +110,23 @@ namespace CSSPUpdateServices
 
                             Response<bool> response = file.DeleteIfExists();
 
+                            string dirFile = $@"{ AzureStoreCSSPFilesPath }\{ ParentID }\{ fileInfo.Name }";
                             if (response.Value)
                             {
-                                Console.WriteLine($@"Deleted from Azure --> {ParentID}\{ fileInfo.Name }");
+                                LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
                             }
                             else
                             {
-                                Console.WriteLine($@"Error deleting from Azure --> {ParentID}\{ fileInfo.Name }");
+                                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }");
                             }
                         }
                     }
                 }
             }
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveAzureFilesNotFoundInTVFiles ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoRemoveAzureFilesNotFoundInTVFiles");
 
             return await Task.FromResult(true);
         }

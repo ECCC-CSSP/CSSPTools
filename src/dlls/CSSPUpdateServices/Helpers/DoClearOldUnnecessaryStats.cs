@@ -1,4 +1,9 @@
-﻿using CSSPDBModels;
+﻿/*
+ * Manually edited
+ * 
+ */
+using CSSPCultureServices.Resources;
+using CSSPDBModels;
 using CSSPEnums;
 using ManageServices;
 using System;
@@ -13,8 +18,13 @@ namespace CSSPUpdateServices
     {
         private async Task<bool> DoClearOldUnnecessaryStats()
         {
-            LogAppend(sbLog, $"Starting DoClearOldUnnecessaryStats ...");
-            LogAppend(sbLog, $"Reading TVItemStats for deleting unnecessary stats ...");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoClearOldUnnecessaryStats ...");
+
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.ReadingTVItemStatsForDeletingUnnecessaryStats } ...");
 
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                                where !(c.TVType == TVTypeEnum.Root
@@ -36,7 +46,7 @@ namespace CSSPUpdateServices
                                                || c.TVType == TVTypeEnum.VisualPlumesScenario)
                                                select c).ToList();
 
-            LogAppend(sbLog, $"Cleaning CSSPDB of old TVItemStats --- removing {TVItemStatList.Count} unnecessary stats");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.ReadingTVItemStatsForDeletingUnnecessaryStats } --- { CSSPCultureUpdateRes.removing } [{TVItemStatList.Count}] { CSSPCultureUpdateRes.unnecessaryStats }");
 
             try
             {
@@ -45,7 +55,7 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                ErrorAppend(sbError, $"Could not remove TVItemStats from CSSPDB. Ex: {ex.Message}");
+                ErrorAppend(sbError, $"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) }");
 
                 await StoreInCommandLog(sbLog, sbError, "ClearOldUnnecessaryStats");
 
@@ -64,7 +74,7 @@ namespace CSSPUpdateServices
                               || t.TVType == TVTypeEnum.Municipality)
                               select c).ToList();
 
-            LogAppend(sbLog, $"Cleaning CSSPDB of old TVItemStats --- removing {TVItemStatList.Count} unnecessary stats");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats } --- { CSSPCultureUpdateRes.removing } {TVItemStatList.Count} { CSSPCultureUpdateRes.unnecessaryStats }");
 
             try
             {
@@ -73,7 +83,7 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                ErrorAppend(sbError, $"Could not remove TVItemStats from CSSPDB. Ex: {ex.Message}");
+                ErrorAppend(sbError, $"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) }");
 
                 await StoreInCommandLog(sbLog, sbError, "ClearOldUnnecessaryStats");
 
@@ -97,7 +107,7 @@ namespace CSSPUpdateServices
                                   || c.TVType == TVTypeEnum.MikeScenario)
                                   select c).ToList();
 
-                LogAppend(sbLog, $"Cleaning CSSPDB of old TVItemStats --- removing {TVItemStatList.Count} unnecessary stats");
+                LogAppend(sbLog, $"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats } --- { CSSPCultureUpdateRes.removing } {TVItemStatList.Count} { CSSPCultureUpdateRes.unnecessaryStats }");
 
                 try
                 {
@@ -106,7 +116,7 @@ namespace CSSPUpdateServices
                 }
                 catch (Exception ex)
                 {
-                    ErrorAppend(sbError, $"Could not remove TVItemStats from CSSPDB. Ex: {ex.Message}");
+                    ErrorAppend(sbError, $"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) }");
 
                     await StoreInCommandLog(sbLog, sbError, "ClearOldUnnecessaryStats");
 
@@ -114,8 +124,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            LogAppend(sbLog, $"End DoClearOldUnnecessaryStats ...");
-            LogAppend(sbLog, $"Success ...");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoClearOldUnnecessaryStats ...");
 
             await StoreInCommandLog(sbLog, sbError, "ClearOldUnnecessaryStats");
 

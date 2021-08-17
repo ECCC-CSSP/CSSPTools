@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CSSPWebModels;
 using System.Text.Json;
 using System.IO;
+using CSSPCultureServices.Resources;
 
 namespace CSSPUpdateServices
 {
@@ -17,11 +18,18 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoUpdateAllTVItemStats()
         {
-            Console.WriteLine($"Updating all TVItemStats time started { DateTime.Now }");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoUpdateAllTVItemStats ...");
 
-            Console.WriteLine("Cleaning CSSPDB of old TVItemStats");
+            if (!await CheckComputerName()) return await Task.FromResult(false);
 
-            Console.WriteLine($"Reading TVItems ...");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.UpdatingAllTVItemStatsTimeStarted_, DateTime.Now) }");
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats }");
+
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } ...");
+
             List<TVItem> TVItemList = (from c in db.TVItems
                                        select c).AsNoTracking().ToList();
 
@@ -39,58 +47,65 @@ namespace CSSPUpdateServices
                                            where c.TVType == TVTypeEnum.Province
                                            select c).ToList();
 
-            await ClearOldUnnecessaryStats();
+            if (!await ClearOldUnnecessaryStats())
+            {
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorInClearOldUnnecessaryStatsFrom_, "DoUpdateAllTVItemStats") }");
 
-            Console.WriteLine($"Reading TVItems ...");
+                await StoreInCommandLog(sbLog, sbError, "DoUpdateAllTVItemStats");
+
+                return await Task.FromResult(false);
+            }
+
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } ...");
             TVItemList = (from c in db.TVItems
                           select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading TVItemStats ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemStats") } ...");
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                                select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading TVItemLinks ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemLinks") } ...");
             List<TVItemLink> TVItemLinkList = (from c in db.TVItemLinks
                                                select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading Infrastructures ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "Infrastructures") } ...");
             List<Infrastructure> InfrastructureList = (from c in db.Infrastructures
                                                        select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading PolSourceSites ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "PolSourceSites") } ...");
             List<PolSourceSite> PolSourceSiteList = (from c in db.PolSourceSites
                                                      select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading BoxModels ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "BoxModels") } ...");
             List<BoxModel> BoxModelList = (from c in db.BoxModels
                                            select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading UseOfSites ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "UseOfSites") } ...");
             List<UseOfSite> UseOfSiteList = (from c in db.UseOfSites
                                              select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading TVFiles ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVFiles") } ...");
             List<TVFile> TVFileList = (from c in db.TVFiles
                                        select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading MWQMSamples ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "MWQMSamples") } ...");
             List<MWQMSample> MWQMSampleList = (from c in db.MWQMSamples
                                                select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading Spills ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "Spills") } ...");
             List<Spill> SpillList = (from c in db.Spills
                                      select c).AsNoTracking().ToList();
 
-            Console.WriteLine($"Reading VPScenarios ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "VPScenarios") } ...");
             List<VPScenario> VPScenarioList = (from c in db.VPScenarios
                                                select c).AsNoTracking().ToList();
 
             List<TVItemStat> TVItemStat2List = new List<TVItemStat>();
 
-            Console.WriteLine($"Collecting stats for Country MWQMRun, MWQMSite, MWQMSiteSample ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.CollectingStatsFor_, "Country MWQMRun, MWQMSite, MWQMSiteSample") } ...");
             await GetRunSiteSampleStatsForCountry(TVItemStat2List);
 
-            Console.WriteLine($"Collecting stats under Province MWQMRun, MWQMSite, MWQMSiteSample ...");
+            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.CollectingStatsUnder_, "Province MWQMRun, MWQMSite, MWQMSiteSample") } ...");
             await GetRunSiteSampleStatsUnderProvince(TVItemList, TVItemProvList, TVItemStat2List);
 
             int count = 0;
@@ -300,9 +315,12 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: Could not save changes. Ex: {ex.Message}");
-                return await Task.FromResult(false);
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }");
             }
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoUpdateAllTVItemStats ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoUpdateAllTVItemStats");
 
             return await Task.FromResult(true);
         }

@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Storage.Files.Shares;
+using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
 using Microsoft.EntityFrameworkCore;
@@ -16,16 +17,21 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveLocalFilesNotFoundInTVFiles()
         {
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveLocalFilesNotFoundInTVFiles ...");
+
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                Console.WriteLine($"LocalAppDataPath does not exist {di.FullName}");
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+
+                await StoreInCommandLog(sbLog, sbError, "DoRemoveLocalFilesNotFoundInTVFiles");
+
                 return await Task.FromResult(false);
             }
-
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveFilesNotFoundInTVFiles.csv");
-
-            StringBuilder sb = new StringBuilder();
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -50,10 +56,12 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    Console.WriteLine($"Could not find tvItem for tvFile.TVFileTVItemID -> {tvFile.TVFileTVItemID}");
+                    ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+
+                    await StoreInCommandLog(sbLog, sbError, "DoRemoveLocalFilesNotFoundInTVFiles");
+
                     return await Task.FromResult(false);
                 }
-
 
                 ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
             }
@@ -90,8 +98,9 @@ namespace CSSPUpdateServices
                 {
                     if (!FileInfoList.Where(c => c.Name == parentAndFileName.ServerFileName).Any())
                     {
-                        Console.WriteLine($@"Deleting TVFile and TVItem --> {parentAndFileName.ParentID}\{parentAndFileName.ServerFileName}");
-                        sb.AppendLine($@"Deleting TVFile and TVItem --> {parentAndFileName.ParentID}\{parentAndFileName.ServerFileName}");
+                        string ParentIDFileName = $@"{parentAndFileName.ParentID}\{parentAndFileName.ServerFileName}";
+
+                        LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletingTVFileAndTVItem_, ParentIDFileName) }");
 
                         TVItem tvItem = (from c in db.TVItems
                                          where c.TVType == TVTypeEnum.File
@@ -112,8 +121,7 @@ namespace CSSPUpdateServices
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"Could not delete TVFile with TVFileID == {parentAndFileName.TVFileID}. Error: {ex.Message}");
-                                return await Task.FromResult(false);
+                                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotDeleteTVFileWithTVFileID_Error_, parentAndFileName.TVFileID, ex.Message) }");
                             }
 
                             try
@@ -123,8 +131,7 @@ namespace CSSPUpdateServices
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"Could not delete TVItem with TVItemID == {parentAndFileName.TVItemID}. Error: {ex.Message}");
-                                return await Task.FromResult(false);
+                                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotDeleteTVItemWithTVItemID_Error_, parentAndFileName.TVItemID, ex.Message) }");
                             }
                         }
                     }
@@ -134,8 +141,7 @@ namespace CSSPUpdateServices
                 {
                     if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfo.Name).Any())
                     {
-                        Console.WriteLine($@"Deleting file on local --> {ParentID}\{fileInfo.Name}");
-                        sb.AppendLine($@"Deleting file on local --> {ParentID}\{fileInfo.Name}");
+                        LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletingLocalFile_, fileInfo.FullName) }");
 
                         try
                         {
@@ -143,18 +149,18 @@ namespace CSSPUpdateServices
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Could not delete File [{fileInfo.FullName}]. Error: {ex.Message}");
-                            return await Task.FromResult(false);
+                            ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingLocalFile_Error_, fileInfo.FullName, ex.Message) }");
                         }
                     }
                 }
             }
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveLocalFilesNotFoundInTVFiles ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoRemoveLocalFilesNotFoundInTVFiles");
 
             return await Task.FromResult(true);
+
         }
     }
 }

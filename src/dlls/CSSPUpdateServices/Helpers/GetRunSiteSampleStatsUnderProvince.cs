@@ -27,12 +27,12 @@ namespace CSSPUpdateServices
                 WebMonitoringRoutineStatsProvince webMonitoringRoutineStatsProvince;
                 WebMonitoringOtherStatsProvince webMonitoringOtherStatsProvince;
 
-                using (StreamReader srLocal = new StreamReader($@"C:\azure_csspjson_backup_uncompress\WebMonitoringRoutineStatsProvince_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringRoutineStatsProvince_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringRoutineStatsProvince = JsonSerializer.Deserialize<WebMonitoringRoutineStatsProvince>(srLocal.ReadToEnd());
                 }
 
-                using (StreamReader srLocal = new StreamReader($@"C:\azure_csspjson_backup_uncompress\WebMonitoringOtherStatsProvince_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringOtherStatsProvince_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringOtherStatsProvince = JsonSerializer.Deserialize<WebMonitoringOtherStatsProvince>(srLocal.ReadToEnd());
                 }

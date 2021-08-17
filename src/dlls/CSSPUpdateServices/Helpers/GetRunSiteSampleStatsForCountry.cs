@@ -29,12 +29,12 @@ namespace CSSPUpdateServices
                 WebMonitoringRoutineStatsCountry webMonitoringRoutineStatsCountry;
                 WebMonitoringOtherStatsCountry webMonitoringOtherStatsCountry;
 
-                using (StreamReader srLocal = new StreamReader($@"C:\azure_csspjson_backup_uncompress\WebMonitoringRoutineStatsCountry_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringRoutineStatsCountry_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringRoutineStatsCountry = JsonSerializer.Deserialize<WebMonitoringRoutineStatsCountry>(srLocal.ReadToEnd());
                 }
 
-                using (StreamReader srLocal = new StreamReader($@"C:\azure_csspjson_backup_uncompress\WebMonitoringOtherStatsCountry_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringOtherStatsCountry_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringOtherStatsCountry = JsonSerializer.Deserialize<WebMonitoringOtherStatsCountry>(srLocal.ReadToEnd());
                 }

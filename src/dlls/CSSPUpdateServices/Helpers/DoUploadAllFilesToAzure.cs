@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
+using CSSPCultureServices.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,12 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoUploadAllFilesToAzure()
         {
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoUploadAllFilesToAzure ...");
+
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
             int CountFileTotal = 0;
             int CountFileUploaded = 0;
 
@@ -37,7 +44,10 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ d.FullName } --- ERROR: { ex.Message }");
+                        ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
+
+                        await StoreInCommandLog(sbLog, sbError, "DoUploadAllFilesToAzure");
+
                         return await Task.FromResult(false);
                     }
                 }
@@ -73,22 +83,30 @@ namespace CSSPUpdateServices
                             {
                                 if (fi.Length != 0)
                                 {
+
                                     file.Create(stream.Length);
                                     file.Upload(stream);
 
                                     CountFileUploaded += 1;
-                                    Console.WriteLine($"\t\t File Updaloaded Count {CountFileUploaded} -- { fi.FullName }");
+                                    LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"{ fi.FullName } --- ERROR: { ex.Message }");
+                            ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
+
+                            await StoreInCommandLog(sbLog, sbError, "DoUploadAllFilesToAzure");
+
                             return await Task.FromResult(false);
                         }
                     }
                 }
             }
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoUploadAllFilesToAzure ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoUploadAllFilesToAzure");
 
             return await Task.FromResult(true);
         }

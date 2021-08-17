@@ -50,7 +50,7 @@ namespace FileServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspFileServicestests.json")
+               .AddJsonFile("appsettings_csspfileservicestests.json")
                .AddUserSecrets("82e4fd10-d824-4d2a-afef-8a95e0902d75")
                .Build();
 

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.9.1" />
+    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
@@ -25,8 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPDBManageServices\CSSPDBManageServices.csproj" />
+    <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
-    <ProjectReference Include="..\CSSPLogServices\CSSPLogServices.csproj" />
     <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 

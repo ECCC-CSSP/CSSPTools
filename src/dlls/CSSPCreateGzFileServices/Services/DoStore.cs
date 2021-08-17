@@ -22,9 +22,9 @@ namespace CreateGzFileServices
         {
             bool ShouldSendToAzure = false;
 
-            FileInfo fi = new FileInfo($@"C:\azure_csspjson_backup_uncompress\{fileName.Replace("gz", "json")}");
-            FileInfo fi2 = new FileInfo($@"C:\azure_csspjson_backup_uncompress\{fileName.Replace("gz", "json2")}");
-            FileInfo fiComp = new FileInfo($@"C:\azure_csspjson_backup\{fileName}");
+            FileInfo fi = new FileInfo($@"{azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json")}");
+            FileInfo fi2 = new FileInfo($@"{azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json2")}");
+            FileInfo fiComp = new FileInfo($@"{azure_csspjson_backup}\{fileName}");
 
             if (!fiComp.Exists)
             {

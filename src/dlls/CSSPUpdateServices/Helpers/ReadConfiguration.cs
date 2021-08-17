@@ -6,7 +6,7 @@ namespace CSSPUpdateServices
 {
     public partial class CSSPUpdateService : ICSSPUpdateService
     {
-        private async Task<bool> DoReadConfiguration()
+        private async Task<bool> ReadConfiguration()
         {
             bool ReadOK = true;
             LogAppend(sbLog, CSSPCultureDesktopRes.ReadingConfiguration);
@@ -71,6 +71,27 @@ namespace CSSPUpdateServices
             if (string.IsNullOrWhiteSpace(NationalBackupAppDataPath))
             {
                 ErrorAppend(sbError, string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "NationalBackupAppDataPath", "appsettings_csspupdate.json"));
+                ReadOK = false;
+            }
+
+            ComputerName = Configuration.GetValue<string>("ComputerName");
+            if (string.IsNullOrWhiteSpace(ComputerName))
+            {
+                ErrorAppend(sbError, string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "ComputerName", "appsettings_csspupdate.json"));
+                ReadOK = false;
+            }
+
+            azure_csspjson_backup_uncompress = Configuration.GetValue<string>("azure_csspjson_backup_uncompress");
+            if (string.IsNullOrWhiteSpace(azure_csspjson_backup_uncompress))
+            {
+                ErrorAppend(sbError, string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "azure_csspjson_backup_uncompress", "appsettings_csspupdate.json"));
+                ReadOK = false;
+            }
+
+            azure_csspjson_backup = Configuration.GetValue<string>("azure_csspjson_backup");
+            if (string.IsNullOrWhiteSpace(azure_csspjson_backup))
+            {
+                ErrorAppend(sbError, string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "azure_csspjson_backup", "appsettings_csspupdate.json"));
                 ReadOK = false;
             }
 

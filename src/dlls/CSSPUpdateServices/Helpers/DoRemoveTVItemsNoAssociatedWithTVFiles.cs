@@ -1,4 +1,5 @@
-﻿using CSSPDBModels;
+﻿using CSSPCultureServices.Resources;
+using CSSPDBModels;
 using CSSPEnums;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveTVItemsNoAssociatedWithTVFiles()
         {
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfTVItemsRemoved.csv");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveTVItemsNoAssociatedWithTVFiles ...");
 
-            StringBuilder sb = new StringBuilder();
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -38,18 +41,14 @@ namespace CSSPUpdateServices
 
                 if (!(TVFileList.Where(c => c.TVFileTVItemID == tvItem.TVItemID).Any()))
                 {
-                    sb.Append($"{tvItem.TVItemID},{tvItem.ParentID}\r\n");
-                    Console.WriteLine($"{count}/{total} --- {tvItem.TVItemID} --- {tvItem.ParentID}");
+                    string dupText = $@"{tvItem.TVItemID} --- {tvItem.ParentID}";
+
+                    LogAppend(sbLog, $"{ dupText }");
 
                     db.TVItems.Remove(tvItem);
                 }
 
             }
-
-
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
 
             try
             {
@@ -57,8 +56,12 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Could not save all removed TVItems. {ex.Message}");
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
             }
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveTVItemsNoAssociatedWithTVFiles ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoRemoveTVItemsNoAssociatedWithTVFiles");
 
             return await Task.FromResult(true);
         }

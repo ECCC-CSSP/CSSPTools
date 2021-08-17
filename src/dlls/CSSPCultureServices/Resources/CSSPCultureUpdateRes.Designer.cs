@@ -70,6 +70,33 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cleaning CSSPDB of old TVItemStats.
+        /// </summary>
+        public static string CleaningCSSPDBOfOldTVItemStats {
+            get {
+                return ResourceManager.GetString("CleaningCSSPDBOfOldTVItemStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collecting stats for {0}.
+        /// </summary>
+        public static string CollectingStatsFor_ {
+            get {
+                return ResourceManager.GetString("CollectingStatsFor_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collecting stats under {0}.
+        /// </summary>
+        public static string CollectingStatsUnder_ {
+            get {
+                return ResourceManager.GetString("CollectingStatsUnder_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not add CommandLog {0}. Error: {1}.
         /// </summary>
         public static string CouldNotAddCommandLog_Error_ {
@@ -79,11 +106,371 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not create directory {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotCreateDirectory_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotCreateDirectory_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete TVFile with TVFileID {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotDeleteTVFileWithTVFileID_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDeleteTVFileWithTVFileID_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete TVItem with TVItemID {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotDeleteTVItemWithTVItemID_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotDeleteTVItemWithTVItemID_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find tvItem for tvFile.TVFileTVItemID equal {0}.
+        /// </summary>
+        public static string CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove TVItemStats from CSSPDB. Ex: {0}.
+        /// </summary>
+        public static string CouldNotRemoveTVItemStatsFromCSSPDBError_ {
+            get {
+                return ResourceManager.GetString("CouldNotRemoveTVItemStatsFromCSSPDBError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save all removed TVItems. Error: {0}.
+        /// </summary>
+        public static string CouldNotSaveAllRemovedTVItemsError_ {
+            get {
+                return ResourceManager.GetString("CouldNotSaveAllRemovedTVItemsError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not upload file {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotUploadFile_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotUploadFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tDeleted Azure directory --&gt; {0}.
+        /// </summary>
+        public static string DeletedAzureDirectory_ {
+            get {
+                return ResourceManager.GetString("DeletedAzureDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tDeleted Azure file --&gt; {0}.
+        /// </summary>
+        public static string DeletedAzureFile_ {
+            get {
+                return ResourceManager.GetString("DeletedAzureFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting Azure directory --&gt; {0}.
+        /// </summary>
+        public static string DeletingAzureDirectory_ {
+            get {
+                return ResourceManager.GetString("DeletingAzureDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tDeleting Azure file --&gt; {0}.
+        /// </summary>
+        public static string DeletingAzureFile_ {
+            get {
+                return ResourceManager.GetString("DeletingAzureFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting local directory {0}.
+        /// </summary>
+        public static string DeletingLocalDirectory_ {
+            get {
+                return ResourceManager.GetString("DeletingLocalDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tDeleting local file --&gt; {0}.
+        /// </summary>
+        public static string DeletingLocalFile_ {
+            get {
+                return ResourceManager.GetString("DeletingLocalFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting national directory {0}.
+        /// </summary>
+        public static string DeletingNationalDirectory_ {
+            get {
+                return ResourceManager.GetString("DeletingNationalDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tDeleting national file --&gt; {0}.
+        /// </summary>
+        public static string DeletingNationalFile_ {
+            get {
+                return ResourceManager.GetString("DeletingNationalFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting TVFile and TVItem ---&gt; {0}.
+        /// </summary>
+        public static string DeletingTVFileAndTVItem_ {
+            get {
+                return ResourceManager.GetString("DeletingTVFileAndTVItem_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate TVFileTVItemID --&gt; {0}.
+        /// </summary>
+        public static string DuplicateTVFileTVItemID {
+            get {
+                return ResourceManager.GetString("DuplicateTVFileTVItemID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string End {
+            get {
+                return ResourceManager.GetString("End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting Azure directory --&gt; {0}.
+        /// </summary>
+        public static string ErrorDeletingAzureDirectory_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingAzureDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting Azure file --&gt; {0}.
+        /// </summary>
+        public static string ErrorDeletingAzureFile_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingAzureFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting local directory --&gt; {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorDeletingLocalDirectory_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingLocalDirectory_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting local file --&gt; {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorDeletingLocalFile_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingLocalFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting national directory --&gt; {0}.
+        /// </summary>
+        public static string ErrorDeletingNationalDirectory_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingNationalDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting national file --&gt; {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorDeletingNationalFile_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingNationalFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error in ClearOldUnnecessaryState from {0}.
+        /// </summary>
+        public static string ErrorInClearOldUnnecessaryStatsFrom_ {
+            get {
+                return ResourceManager.GetString("ErrorInClearOldUnnecessaryStatsFrom_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while CreateAllGzFiles.
+        /// </summary>
+        public static string ErrorWhileCreateAllGzFiles {
+            get {
+                return ResourceManager.GetString("ErrorWhileCreateAllGzFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while saving all TVItemStats changes. Error: {0}.
+        /// </summary>
+        public static string ErrorWhileSavingAllTVItemStatsChanges_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileSavingAllTVItemStatsChanges_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LocalAppDataPath does not exist {0}.
+        /// </summary>
+        public static string LocalAppDataPathDoesNotExist_ {
+            get {
+                return ResourceManager.GetString("LocalAppDataPathDoesNotExist_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading {0} ....
+        /// </summary>
+        public static string Reading_ {
+            get {
+                return ResourceManager.GetString("Reading_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading TVItemStats for deleting unnecessary stats.
+        /// </summary>
+        public static string ReadingTVItemStatsForDeletingUnnecessaryStats {
+            get {
+                return ResourceManager.GetString("ReadingTVItemStatsForDeletingUnnecessaryStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to removing.
+        /// </summary>
+        public static string removing {
+            get {
+                return ResourceManager.GetString("removing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running CSSPUpdate.
         /// </summary>
         public static string RunningCSSPUpdate {
             get {
                 return ResourceManager.GetString("RunningCSSPUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running on.
+        /// </summary>
+        public static string RunningOn {
+            get {
+                return ResourceManager.GetString("RunningOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting.
+        /// </summary>
+        public static string Starting {
+            get {
+                return ResourceManager.GetString("Starting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Azure directory cleanup.
+        /// </summary>
+        public static string StartingAzureDirectoryCleanup {
+            get {
+                return ResourceManager.GetString("StartingAzureDirectoryCleanup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This app can only be run on computer name.
+        /// </summary>
+        public static string ThisAppCanOnlyBeRunOnComputerName {
+            get {
+                return ResourceManager.GetString("ThisAppCanOnlyBeRunOnComputerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This computer name is.
+        /// </summary>
+        public static string ThisComputerNameIs {
+            get {
+                return ResourceManager.GetString("ThisComputerNameIs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unnecessary stats.
+        /// </summary>
+        public static string unnecessaryStats {
+            get {
+                return ResourceManager.GetString("unnecessaryStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating all TVItemStats. Time started {0}.
+        /// </summary>
+        public static string UpdatingAllTVItemStatsTimeStarted_ {
+            get {
+                return ResourceManager.GetString("UpdatingAllTVItemStatsTimeStarted_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploaded count {0} --- file {1}.
+        /// </summary>
+        public static string UploadedCount_AndFile_ {
+            get {
+                return ResourceManager.GetString("UploadedCount_AndFile_", resourceCulture);
             }
         }
     }

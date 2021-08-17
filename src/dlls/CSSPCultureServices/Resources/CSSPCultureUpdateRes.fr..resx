@@ -120,10 +120,142 @@
   <data name="AllowableCommandsAre" xml:space="preserve">
     <value>Les commandes disponible sont</value>
   </data>
+  <data name="CleaningCSSPDBOfOldTVItemStats" xml:space="preserve">
+    <value>Netoyage de CSSPDB de vieux TVItemStats</value>
+  </data>
+  <data name="CollectingStatsFor_" xml:space="preserve">
+    <value>Collection de stats pour {0}</value>
+  </data>
+  <data name="CollectingStatsUnder_" xml:space="preserve">
+    <value>Collection de stats sous {0}</value>
+  </data>
   <data name="CouldNotAddCommandLog_Error_" xml:space="preserve">
     <value>Dans l'impossibiliité d'ajouter CommandLog {0}. Erreur: {1}</value>
   </data>
+  <data name="CouldNotCreateDirectory_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de créer le directoire {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotDeleteTVFileWithTVFileID_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de supprimer TVFile avec TVFileID {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotDeleteTVItemWithTVItemID_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de supprimer TVItem avec TVItemID {0}. Erreur: {1}</value>
+  </data>
+  <data name="CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver tvItem pour tvFile.TVFileTVItemID egale à {0}</value>
+  </data>
+  <data name="CouldNotRemoveTVItemStatsFromCSSPDBError_" xml:space="preserve">
+    <value>Dans l'impossibilité d'enlever TVItemStats de CSSPDB. Erreur: {0}</value>
+  </data>
+  <data name="CouldNotSaveAllRemovedTVItemsError_" xml:space="preserve">
+    <value>Dans l'impossibilité de sauvegarder tous les TVItems. Error: {0}</value>
+  </data>
+  <data name="CouldNotUploadFile_Error_" xml:space="preserve">
+    <value>Dans l'impossibilité de télécharger la filière {0}. Erreur: {1}</value>
+  </data>
+  <data name="DeletedAzureDirectory_" xml:space="preserve">
+    <value>\tDirectoire d'Azure supprimée --&gt; {0}</value>
+  </data>
+  <data name="DeletedAzureFile_" xml:space="preserve">
+    <value>\tFilière d'Azure supprimée --&gt; {0}</value>
+  </data>
+  <data name="DeletingAzureDirectory_" xml:space="preserve">
+    <value>Suppression du directoire Azure --&gt; {0}</value>
+  </data>
+  <data name="DeletingAzureFile_" xml:space="preserve">
+    <value>\tSuppression de la filière Azure --&gt; {0}</value>
+  </data>
+  <data name="DeletingLocalDirectory_" xml:space="preserve">
+    <value>Suppression du directoire local --&gt; {0}</value>
+  </data>
+  <data name="DeletingLocalFile_" xml:space="preserve">
+    <value>\tSuppression de la filière local --&gt; {0}</value>
+  </data>
+  <data name="DeletingNationalDirectory_" xml:space="preserve">
+    <value>Suppression du directoire national --&gt; {0}</value>
+  </data>
+  <data name="DeletingNationalFile_" xml:space="preserve">
+    <value>\tSuppression de la filière national --&gt; {0}</value>
+  </data>
+  <data name="DeletingTVFileAndTVItem_" xml:space="preserve">
+    <value>Suppression de TVFile et TVItem ---&gt; {0}</value>
+  </data>
+  <data name="DuplicateTVFileTVItemID" xml:space="preserve">
+    <value>Dupliquer TVFileTVItemID --&gt; {0}</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Fin</value>
+  </data>
+  <data name="EndedAzureDirectoryCleanup" xml:space="preserve">
+    <value>\tErreur lors de la suppression du directoire Azure --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingAzureDirectory_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du directoire Azure --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingAzureFile_" xml:space="preserve">
+    <value>\tErreur lors de la suppression de la filière Azure --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingLocalDirectory_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du répertoire local --&gt; {0}. Erreur: {1}</value>
+  </data>
+  <data name="ErrorDeletingLocalFile_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression de la filière local --&gt; {0}. Erreur: {1}</value>
+  </data>
+  <data name="ErrorDeletingNationalDirectory_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du directoire national --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingNationalFile_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression de la filière national --&gt; {0}. Erreur {1}</value>
+  </data>
+  <data name="ErrorInClearOldUnnecessaryStatsFrom_" xml:space="preserve">
+    <value>Erreur dans ClearOldUnnecessaryState de {0}</value>
+  </data>
+  <data name="ErrorWhileCreateAllGzFiles" xml:space="preserve">
+    <value>Erreur lors de l'exécution de CreateAllGzFiles</value>
+  </data>
+  <data name="ErrorWhileSavingAllTVItemStatsChanges_" xml:space="preserve">
+    <value>Erreur lors de la sauvegarde de tous les changements TVItemStats. Erreur: {0}</value>
+  </data>
+  <data name="LocalAppDataPathDoesNotExist_" xml:space="preserve">
+    <value>LocalAppDataPath n'existe pas {0}</value>
+  </data>
+  <data name="ReadingTVItemStatsForDeletingUnnecessaryStats" xml:space="preserve">
+    <value>Lecture de TVItemStats pour enlever les stats non nécessaire</value>
+  </data>
+  <data name="Reading_" xml:space="preserve">
+    <value>Lecture de {0} ...</value>
+  </data>
+  <data name="removing" xml:space="preserve">
+    <value>enlève</value>
+  </data>
   <data name="RunningCSSPUpdate" xml:space="preserve">
     <value>Excécution de CSSPUpdate</value>
+  </data>
+  <data name="RunningOn" xml:space="preserve">
+    <value>Excécution sur</value>
+  </data>
+  <data name="Starting" xml:space="preserve">
+    <value>Départ de</value>
+  </data>
+  <data name="StartingAzureDirectoryCleanup" xml:space="preserve">
+    <value>Départ du netoyage de directoire d'Azure</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Succès</value>
+  </data>
+  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
+    <value>Cette application ne peux qu'être exécuté sur l'ordinateur</value>
+  </data>
+  <data name="ThisComputerNameIs" xml:space="preserve">
+    <value>Cette ordinateur est </value>
+  </data>
+  <data name="unnecessaryStats" xml:space="preserve">
+    <value>non nécessaire</value>
+  </data>
+  <data name="UpdatingAllTVItemStatsTimeStarted_" xml:space="preserve">
+    <value>Mise a jour de tous les TVItemStats. Temps de départ {0}</value>
+  </data>
+  <data name="UploadedCount_AndFile_" xml:space="preserve">
+    <value>Rélécharger # {0} --- filière {1}</value>
   </data>
 </root>

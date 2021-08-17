@@ -1,4 +1,5 @@
-﻿using CSSPDBModels;
+﻿using CSSPCultureServices.Resources;
+using CSSPDBModels;
 using CSSPEnums;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile()
         {
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfDuplicateTVFilesRemoved.csv");
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile ...");
 
-            StringBuilder sb = new StringBuilder();
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -30,15 +33,13 @@ namespace CSSPUpdateServices
             {
                 if (TVFileList[i].TVFileTVItemID == TVFileList[i + 1].TVFileTVItemID)
                 {
-                    Console.WriteLine($"duplicate TVFileTVItemID ---> {TVFileList[i].TVFileTVItemID} -- {TVFileList[i].ServerFileName} -- {TVFileList[i + 1].ServerFileName}");
-                    sb.AppendLine($"duplicate TVFileTVItemID ---> {TVFileList[i].TVFileTVItemID} -- {TVFileList[i].ServerFileName} -- {TVFileList[i + 1].ServerFileName}");
+                    string dupText = $@"{TVFileList[i].TVFileTVItemID} -- {TVFileList[i].ServerFileName} -- {TVFileList[i + 1].ServerFileName}";
+
+                    LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DuplicateTVFileTVItemID, dupText) }");
+
                     db.TVFiles.Remove(TVFileList[i + 1]);
                 }
             }
-
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
 
             try
             {
@@ -46,8 +47,12 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Could not save all removed TVItems. {ex.Message}");
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
             }
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile");
 
             return await Task.FromResult(true);
         }

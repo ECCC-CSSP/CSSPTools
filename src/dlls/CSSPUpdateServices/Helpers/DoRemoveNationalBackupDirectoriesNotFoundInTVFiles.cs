@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
+using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +18,21 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveNationalBackupDirectoriesNotFoundInTVFiles()
         {
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveNationalBackupDirectoriesNotFoundInTVFiles ...");
+
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
             DirectoryInfo diNat = new DirectoryInfo(NationalBackupAppDataPath);
             if (!diNat.Exists)
             {
-                Console.WriteLine($"NationalBackupAppDataPath does not exist {diNat.FullName}");
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }");
+
+                await StoreInCommandLog(sbLog, sbError, "DoRemoveNationalBackupDirectoriesNotFoundInTVFiles");
+
                 return await Task.FromResult(false);
             }
-
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveDirectoriesNotFoundInTVFiles.csv");
-
-            StringBuilder sb = new StringBuilder();
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -42,8 +48,6 @@ namespace CSSPUpdateServices
             // Cleaning National drive
             //----------------------------------------------
 
-            Console.WriteLine($@"Starting national directory cleanup");
-            sb.AppendLine($@"Starting national directory cleanup");
             List<DirectoryInfo> diNatSubList = diNat.GetDirectories().OrderBy(c => c.Name).ToList();
 
             foreach (DirectoryInfo diSub in diNatSubList)
@@ -59,8 +63,7 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    Console.WriteLine($@"Deleting national directory --> {diSub.Name}");
-                    sb.AppendLine($@"Deleting national directory --> {diSub.Name}");
+                    LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletingNationalDirectory_, diSub.Name) }");
 
                     try
                     {
@@ -68,18 +71,14 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Could not delete national File [{diSub.FullName}]. Error: {ex.Message}");
-                        return await Task.FromResult(false);
+                        ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalDirectory_, diSub.Name) }");
                     }
                 }
             }
-          
-            Console.WriteLine($@"Ended national directory cleanup");
-            sb.AppendLine($@"Ended national directory cleanup");
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveNationalBackupDirectoriesNotFoundInTVFiles ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoRemoveNationalBackupDirectoriesNotFoundInTVFiles");
 
             return await Task.FromResult(true);
         }

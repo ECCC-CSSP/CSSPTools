@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
+using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +18,21 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveLocalDirectoriesNotFoundInTVFiles()
         {
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveLocalDirectoriesNotFoundInTVFiles ...");
+
+            if (!await CheckComputerName()) return await Task.FromResult(false);
+
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                Console.WriteLine($"LocalAppDataPath does not exist {di.FullName}");
+                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+
+                await StoreInCommandLog(sbLog, sbError, "DoRemoveLocalDirectoriesNotFoundInTVFiles");
+
                 return await Task.FromResult(false);
             }
-
-            FileInfo fi = new FileInfo(@"C:\CSSPTools\src\webs\CSSPUpdateAll\ListOfRemoveDirectoriesNotFoundInTVFiles.csv");
-
-            StringBuilder sb = new StringBuilder();
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -42,9 +48,6 @@ namespace CSSPUpdateServices
             // Cleaning Local drive
             //----------------------------------------------
             
-            Console.WriteLine($@"Starting local directory cleanup");
-            sb.AppendLine($@"Starting local directory cleanup");
-
             List<DirectoryInfo> diSubList = di.GetDirectories().OrderBy(c => c.Name).ToList();
 
             foreach (DirectoryInfo diSub in diSubList)
@@ -60,8 +63,7 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    Console.WriteLine($@"Deleting local directory --> {diSub.Name}");
-                    sb.AppendLine($@"Deleting local directory --> {diSub.Name}");
+                    LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletingLocalDirectory_, diSub.Name) }");
 
                     List<FileInfo> fiList = diSub.GetFiles().ToList();
 
@@ -69,15 +71,13 @@ namespace CSSPUpdateServices
                     {
                         try
                         {
-                            Console.WriteLine($@"     Deleting local file --> {fiDel.FullName}");
-                            sb.AppendLine($@"     Deleting local file --> {fiDel.FullName}");
+                            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletingLocalFile_, fiDel.FullName) }");
 
                             fiDel.Delete();
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Could not delete local File [{fiDel.FullName}]. Error: {ex.Message}");
-                            return await Task.FromResult(false);
+                            ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingLocalFile_Error_, fiDel.FullName, ex.Message) }");
                         }
                     }
 
@@ -87,19 +87,15 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Could not delete local Directory [{diSub.FullName}]. Error: {ex.Message}");
-                        return await Task.FromResult(false);
+                        ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingLocalDirectory_Error_, diSub.FullName, ex.Message) }");
                     }
 
                 }
             }
-            
-            Console.WriteLine($@"Ended local directory cleanup");
-            sb.AppendLine($@"Ended local directory cleanup");
 
-            StreamWriter sw = fi.CreateText();
-            sw.Write(sb.ToString());
-            sw.Close();
+            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveLocalDirectoriesNotFoundInTVFiles ...");
+
+            await StoreInCommandLog(sbLog, sbError, "DoRemoveLocalDirectoriesNotFoundInTVFiles");
 
             return await Task.FromResult(true);
         }
