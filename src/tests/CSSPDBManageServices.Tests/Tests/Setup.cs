@@ -26,15 +26,7 @@ namespace ManageServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICommandLogService CommandLogService { get; set; }
         private IManageFileService ManageFileService { get; set; }
-        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        private string CSSPDB { get; set; }
-        private string CSSPDBLocal { get; set; }
-        private string CSSPDBManage { get; set; }
-        private CSSPDBContext db { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        private FileInfo fiCSSPDBLocal { get; set; }
-        private FileInfo fiCSSPDBManage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,22 +39,6 @@ namespace ManageServices.Tests
         #endregion Tests
 
         #region Functions private
-        private async Task CreateCSSPDBManage()
-        {
-            if (fiCSSPDBManage.Exists)
-            {
-                try
-                {
-                    fiCSSPDBManage.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-
-            await CSSPSQLiteService.CreateSQLiteCSSPDBManage();
-        }
         private async Task<bool> Setup(string culture)
         {
             Configuration = new ConfigurationBuilder()
@@ -78,48 +54,37 @@ namespace ManageServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICommandLogService, CommandLogService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
-            /* ---------------------------------------------------------------------------------
-            * CSSPDBContext
-            * ---------------------------------------------------------------------------------      
-            */
-            CSSPDB = Configuration.GetValue<string>("CSSPDB");
-            Assert.NotNull(CSSPDB);
+            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(CSSPDBManage);
 
-            Services.AddDbContext<CSSPDBContext>(options =>
+            string CSSPDBManageTest = CSSPDBManage.Replace(".db", "_test.db");
+
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+
+            Assert.True(fiCSSPDBManage.Exists);
+
+            FileInfo fiCSSPDBManageTest = new FileInfo(CSSPDBManageTest);
+            if (!fiCSSPDBManageTest.Exists)
             {
-                options.UseSqlServer(CSSPDB);
-            });
-
-            /* ---------------------------------------------------------------------------------
-            * CSSPDBLocalContext
-            * ---------------------------------------------------------------------------------      
-            */
-
-            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
-
-            fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+                try
+                {
+                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
+                }
+            }
 
             /* ---------------------------------------------------------------------------------
              * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
 
-            CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(CSSPDBManage);
-
-            fiCSSPDBManage = new FileInfo(CSSPDBManage);
-
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManageTest.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();
@@ -133,20 +98,37 @@ namespace ManageServices.Tests
             ManageFileService = Provider.GetService<IManageFileService>();
             Assert.NotNull(ManageFileService);
 
-            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
-            Assert.NotNull(CSSPSQLiteService);
-
             CommandLogService = Provider.GetService<ICommandLogService>();
             Assert.NotNull(CommandLogService);
 
-            db = Provider.GetService<CSSPDBContext>();
-            Assert.NotNull(db);
-
-            dbLocal = Provider.GetService<CSSPDBLocalContext>();
-            Assert.NotNull(dbLocal);
-
             dbManage = Provider.GetService<CSSPDBManageContext>();
             Assert.NotNull(dbManage);
+
+            List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
+                                                       select c).ToList();
+
+            try
+            {
+                dbManage.CommandLogs.RemoveRange(commandLogToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}");
+            }
+
+            List<ManageFile> manageFileToDeleteList = (from c in dbManage.ManageFiles
+                                                       select c).ToList();
+
+            try
+            {
+                dbManage.ManageFiles.RemoveRange(manageFileToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all ManageFiles from {fiCSSPDBManageTest.FullName}");
+            }
 
             return await Task.FromResult(true);
         }

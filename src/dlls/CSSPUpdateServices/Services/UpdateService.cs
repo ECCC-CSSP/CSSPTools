@@ -5,6 +5,7 @@
 using CreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
+using CSSPLogServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.Extensions.Configuration;
@@ -26,8 +27,11 @@ namespace CSSPUpdateServices
         Task<bool> RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
         Task<bool> RemoveTVItemsNoAssociatedWithTVFiles();
         Task<bool> UpdateAllTVItemStats();
+        Task<bool> UpdateChangedTVItemStats();
         Task<bool> UploadAllFilesToAzure();
         Task<bool> UploadAllJsonFilesToAzure();
+        Task<bool> UploadChangedFilesToAzure();
+        Task<bool> UploadChangedJsonFilesToAzure();
     }
     public partial class CSSPUpdateService : ICSSPUpdateService
     {
@@ -40,6 +44,7 @@ namespace CSSPUpdateServices
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
+        private ICSSPLogService CSSPLogService { get; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPFilesPath { get; set; }
@@ -55,22 +60,19 @@ namespace CSSPUpdateServices
         private string azure_csspjson_backup { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        private StringBuilder sbLog { get; set; }
-        private StringBuilder sbError { get; set; }
         #endregion Properties
 
         #region Constructors
         public CSSPUpdateService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            CSSPDBContext db, CSSPDBManageContext dbManage, ICreateGzFileService CreateGzFileService)
+            CSSPDBContext db, CSSPDBManageContext dbManage, ICSSPLogService CSSPLogService, ICreateGzFileService CreateGzFileService)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.db = db;
             this.dbManage = dbManage;
+            this.CSSPLogService = CSSPLogService;
             this.CreateGzFileService = CreateGzFileService;
-            sbLog =  new StringBuilder();
-            sbError = new StringBuilder();
 
             if (!ReadConfiguration().GetAwaiter().GetResult())
             {
@@ -120,6 +122,10 @@ namespace CSSPUpdateServices
         {
             return await DoUpdateAllTVItemStats();
         }
+        public async Task<bool> UpdateChangedTVItemStats()
+        {
+            return await DoUpdateChangedTVItemStats();
+        }
         public async Task<bool> UploadAllFilesToAzure()
         {
             return await DoUploadAllFilesToAzure();
@@ -127,6 +133,14 @@ namespace CSSPUpdateServices
         public async Task<bool> UploadAllJsonFilesToAzure()
         {
             return await DoUploadAllJsonFilesToAzure();
+        }
+        public async Task<bool> UploadChangedFilesToAzure()
+        {
+            return await DoUploadChangedFilesToAzure();
+        }
+        public async Task<bool> UploadChangedJsonFilesToAzure()
+        {
+            return await DoUploadChangedJsonFilesToAzure();
         }
 
         #endregion Functions public

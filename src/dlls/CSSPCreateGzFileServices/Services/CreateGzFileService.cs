@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using LoggedInServices;
 using System.ComponentModel.DataAnnotations;
-using LogServices;
+using CSSPLogServices;
 
 namespace CreateGzFileServices
 {
@@ -36,7 +36,7 @@ namespace CreateGzFileServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private ILogService LogService { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private string CSSPJSONPathLocal { get; set; }
@@ -47,13 +47,13 @@ namespace CreateGzFileServices
 
         #region Constructors
         public CreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService,
-            IEnums enums, ILogService LogService, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null)
+            IEnums enums, ICSSPLogService CSSPLogService, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
-            this.LogService = LogService;
+            this.CSSPLogService = CSSPLogService;
             this.db = db;
             this.dbLocal = dbLocal;
 

@@ -643,7 +643,6 @@ namespace CSSPDesktop
                 // nothing
             }
 
-
             // PanelTop
             butShowLanguagePanel.Text = CSSPCultureDesktopRes.butShowLanguagePanelText;
             butShowHelpPanel.Text = CSSPCultureDesktopRes.butShowHelpPanelText;

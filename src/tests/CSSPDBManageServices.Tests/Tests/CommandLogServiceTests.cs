@@ -1,4 +1,5 @@
 using CSSPCultureServices.Resources;
+using CSSPEnums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,15 +30,16 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
@@ -50,8 +52,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLog.CommandLogID, commandLogNewPost.CommandLogID);
             Assert.Equal(commandLog.AppName, commandLogNewPost.AppName);
             Assert.Equal(commandLog.CommandName, commandLogNewPost.CommandName);
-            Assert.Equal(commandLog.Successful, commandLogNewPost.Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLog.DateTimeUTC, commandLogNewPost.DateTimeUTC);
 
             // testing AddOrModify -- modify
@@ -64,8 +65,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLogNewPost.CommandLogID, commandLogNewPut.CommandLogID);
             Assert.Equal(commandLogNewPost.AppName, commandLogNewPut.AppName);
             Assert.Equal(commandLogNewPost.CommandName, commandLogNewPut.CommandName);
-            Assert.Equal(commandLogNewPost.Successful, commandLogNewPut.Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLogNewPost.DateTimeUTC, commandLogNewPut.DateTimeUTC);
 
             // testing GetWithCommandLogID
@@ -77,8 +77,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLogNewPut.CommandLogID, commandLogNewGetWithID.CommandLogID);
             Assert.Equal(commandLogNewPut.AppName, commandLogNewGetWithID.AppName);
             Assert.Equal(commandLogNewPut.CommandName, commandLogNewGetWithID.CommandName);
-            Assert.Equal(commandLogNewPut.Successful, commandLogNewGetWithID.Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLogNewPut.DateTimeUTC, commandLogNewGetWithID.DateTimeUTC);
 
             // testing GetCSSPCommandLogTodayList
@@ -90,8 +89,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLogNewGetWithID.CommandLogID, commandLogNewGetWithSuccessfulAndAppNameList[0].CommandLogID);
             Assert.Equal(commandLogNewGetWithID.AppName, commandLogNewGetWithSuccessfulAndAppNameList[0].AppName);
             Assert.Equal(commandLogNewGetWithID.CommandName, commandLogNewGetWithSuccessfulAndAppNameList[0].CommandName);
-            Assert.Equal(commandLogNewGetWithID.Successful, commandLogNewGetWithSuccessfulAndAppNameList[0].Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLogNewGetWithID.DateTimeUTC, commandLogNewGetWithSuccessfulAndAppNameList[0].DateTimeUTC);
 
             // testing GetCSSPCommandLogLastWeekList
@@ -103,8 +101,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLogNewGetWithID.CommandLogID, commandLogNewGetWithSuccessfulAndAppNameList2[0].CommandLogID);
             Assert.Equal(commandLogNewGetWithID.AppName, commandLogNewGetWithSuccessfulAndAppNameList2[0].AppName);
             Assert.Equal(commandLogNewGetWithID.CommandName, commandLogNewGetWithSuccessfulAndAppNameList2[0].CommandName);
-            Assert.Equal(commandLogNewGetWithID.Successful, commandLogNewGetWithSuccessfulAndAppNameList2[0].Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLogNewGetWithID.DateTimeUTC, commandLogNewGetWithSuccessfulAndAppNameList2[0].DateTimeUTC);
 
             // testing GetCSSPCommandLogLastMonthList
@@ -116,8 +113,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLogNewGetWithID.CommandLogID, commandLogNewGetWithSuccessfulAndAppNameList3[0].CommandLogID);
             Assert.Equal(commandLogNewGetWithID.AppName, commandLogNewGetWithSuccessfulAndAppNameList3[0].AppName);
             Assert.Equal(commandLogNewGetWithID.CommandName, commandLogNewGetWithSuccessfulAndAppNameList3[0].CommandName);
-            Assert.Equal(commandLogNewGetWithID.Successful, commandLogNewGetWithSuccessfulAndAppNameList3[0].Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLogNewGetWithID.DateTimeUTC, commandLogNewGetWithSuccessfulAndAppNameList3[0].DateTimeUTC);
 
             // testing GetCommandLogBetweenDatesList
@@ -131,8 +127,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLogNewGetWithID.CommandLogID, commandLogNewGetWithSuccessfulAndAppNameList4[0].CommandLogID);
             Assert.Equal(commandLogNewGetWithID.AppName, commandLogNewGetWithSuccessfulAndAppNameList4[0].AppName);
             Assert.Equal(commandLogNewGetWithID.CommandName, commandLogNewGetWithSuccessfulAndAppNameList4[0].CommandName);
-            Assert.Equal(commandLogNewGetWithID.Successful, commandLogNewGetWithSuccessfulAndAppNameList4[0].Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNewPost.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNewPost.Error);
             Assert.Equal(commandLogNewGetWithID.DateTimeUTC, commandLogNewGetWithSuccessfulAndAppNameList4[0].DateTimeUTC);
 
             // testing Delete
@@ -149,8 +144,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             string error = string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "commandLog");
 
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(null);
@@ -164,8 +157,6 @@ namespace ManageServices.Tests
         public async Task CommandLogService_Delete_BadRequest_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             int CommandLogID = 1234;
             string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString());
@@ -182,8 +173,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             int CommandLogID = 1234;
             string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString());
 
@@ -199,15 +188,16 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
@@ -229,15 +219,16 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
@@ -259,15 +250,16 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
@@ -289,15 +281,16 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
@@ -315,25 +308,26 @@ namespace ManageServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CommandLogService_ValidateAddOrModify_ErrorMessage_Length_BadRequest_Test(string culture)
+        public async Task CommandLogService_ValidateAddOrModify_Error_Length_BadRequest_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
-            commandLog.ErrorMessage = "".PadRight(1001, 'a');
+            commandLog.Error = "".PadRight(10000001, 'a');
 
-            string error = string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorMessage", "1000");
+            string error = string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Error", "10000000");
 
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
@@ -349,16 +343,17 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
-                DateTimeUTC = new DateTime(1978, 1, 1),
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
+                DateTimeUTC = new DateTime(1979, 1, 1),
             };
 
             string error = string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTimeUTC", "1980");
@@ -377,15 +372,16 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
+            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
+            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
 
             CommandLog commandLog = new CommandLog()
             {
                 CommandLogID = 0,
-                AppName = "TestingAppName",
-                CommandName = "TestingCommandName",
-                Successful = true,
-                ErrorMessage = "TestingErrorMessage",
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Log = "Testing Log",
+                Error = "Testing Error",
                 DateTimeUTC = DateTime.UtcNow,
             };
 
@@ -398,8 +394,7 @@ namespace ManageServices.Tests
             Assert.Equal(commandLog.CommandLogID, commandLogNew.CommandLogID);
             Assert.Equal(commandLog.AppName, commandLogNew.AppName);
             Assert.Equal(commandLog.CommandName, commandLogNew.CommandName);
-            Assert.Equal(commandLog.Successful, commandLogNew.Successful);
-            Assert.Equal(commandLog.ErrorMessage, commandLogNew.ErrorMessage);
+            Assert.Equal(commandLog.Error, commandLogNew.Error);
             Assert.Equal(commandLog.DateTimeUTC, commandLogNew.DateTimeUTC);
 
             commandLogNew.CommandLogID = 1234; // will not find

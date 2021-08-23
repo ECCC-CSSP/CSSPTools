@@ -12,18 +12,19 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
-namespace LogServices
+namespace CSSPLogServices
 {
-    public interface ILogService
+    public interface ICSSPLogService
     {
         StringBuilder sbError { get; set; }
         StringBuilder sbLog { get; set; }
         void AppendError(string errorText);
         void AppendLog(string logText);
-        Task<ActionResult<bool>> StoreInCommandLog(string appName, string commandName);
+        Task<ActionResult<bool>> StoreInCommandLog(CSSPAppNameEnum csspAppName, CSSPCommandNameEnum csspCommandName);
     }
-    public partial class LogService : ControllerBase, ILogService
+    public partial class CSSPLogService : ControllerBase, ICSSPLogService
     {
         #region Variables
         #endregion Variables
@@ -37,7 +38,7 @@ namespace LogServices
         #endregion Properties
 
         #region Constructors
-        public LogService(ILoggedInService LoggedInService, CSSPDBManageContext dbManage) : base()
+        public CSSPLogService(ILoggedInService LoggedInService, CSSPDBManageContext dbManage) : base()
         {
             this.LoggedInService = LoggedInService;
             this.dbManage = dbManage;
@@ -55,39 +56,42 @@ namespace LogServices
             Console.WriteLine($"\r{logText}");
             sbLog.AppendLine(logText);
         }
-        public async Task<ActionResult<bool>> StoreInCommandLog(string appName, string commandName)
+        public async Task<ActionResult<bool>> StoreInCommandLog(CSSPAppNameEnum csspAppName, CSSPCommandNameEnum csspCommandName)
         {
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                return await Task.FromResult(Unauthorized(""));
+                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
             }
+
+            int nextCommandLogID = (from c in dbManage.CommandLogs
+                                    orderby c.CommandLogID descending
+                                    select c.CommandLogID).FirstOrDefault() + 1;
 
             CommandLog commandLog = new CommandLog()
             {
-                CommandLogID = 0,
-                AppName = appName,
-                CommandName = commandName,
-                Successful = false,
-                DetailLog = sbLog.ToString(),
-                ErrorMessage = sbError.ToString(),
+                CommandLogID = nextCommandLogID,
+                AppName = csspAppName.ToString(),
+                CommandName = csspCommandName.ToString(),
+                Error = sbError.ToString(),
+                Log = sbLog.ToString(),
                 DateTimeUTC = DateTime.UtcNow,
             };
 
             try
             {
-                commandLog.DetailLog = sbLog.ToString();
-                commandLog.ErrorMessage = sbError.ToString();
+                commandLog.Error = sbError.ToString();
+                commandLog.Log = sbLog.ToString();
                 dbManage.CommandLogs.Add(commandLog);
                 dbManage.SaveChanges();
             }
             catch (Exception ex)
             {
-                string AppAndCommandName = $"AppName: {appName } - CommandName: {commandName}";
+                string AppAndCommandName = $"AppName: {csspAppName } - CommandName: {csspCommandName}";
                 Console.WriteLine($"{String.Format(CSSPCultureUpdateRes.CouldNotAddCommandLog_Error_, AppAndCommandName, ex.Message)}");
-                return await Task.FromResult(false);
+                return await Task.FromResult(BadRequest($"{String.Format(CSSPCultureUpdateRes.CouldNotAddCommandLog_Error_, AppAndCommandName, ex.Message)}"));
             }
 
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
 
         #endregion Functions public

@@ -160,9 +160,8 @@ namespace ManageServices
                 commandLogAddOrModify.AppName = commandLog.AppName;
                 commandLogAddOrModify.CommandName = commandLog.CommandName;
                 commandLogAddOrModify.DateTimeUTC = commandLog.DateTimeUTC;
-                commandLogAddOrModify.ErrorMessage = commandLog.ErrorMessage;
-                commandLogAddOrModify.DetailLog = commandLog.DetailLog;
-                commandLogAddOrModify.Successful = commandLog.Successful;
+                commandLogAddOrModify.Error = commandLog.Error;
+                commandLogAddOrModify.Log = commandLog.Log;
             }
 
             try
@@ -206,21 +205,21 @@ namespace ManageServices
                 }
             }
 
-            // doing ErrorMessage
-            if (!string.IsNullOrWhiteSpace(commandLog.ErrorMessage))
+            // doing Error
+            if (!string.IsNullOrWhiteSpace(commandLog.Error))
             {
-                if (commandLog.ErrorMessage.Length > 10000000)
+                if (commandLog.Error.Length > 10000000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorMessage", "10000000"), new[] { "ErrorMessage" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Error", "10000000"), new[] { "Error" });
                 }
             }
 
-            // doing DetailLog
-            if (!string.IsNullOrWhiteSpace(commandLog.DetailLog))
+            // doing Log
+            if (!string.IsNullOrWhiteSpace(commandLog.Log))
             {
-                if (commandLog.DetailLog.Length > 10000000)
+                if (commandLog.Log.Length > 10000000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DetailLog", "10000000"), new[] { "DetailLog" });
+                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Log", "10000000"), new[] { "Log" });
                 }
             }
 

@@ -17,18 +17,18 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveNationalBackupFilesNotFoundInTVFiles()
         {
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveNationalBackupFilesNotFoundInTVFiles ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveNationalBackupFilesNotFoundInTVFiles ...");
 
             if (!await CheckComputerName()) return await Task.FromResult(false);
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
             DirectoryInfo diNat = new DirectoryInfo(NationalBackupAppDataPath);
             if (!diNat.Exists)
             {
-                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }");
 
-                await StoreInCommandLog(sbLog, sbError, "DoRemoveNationalBackupFilesNotFoundInTVFiles");
+                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles);
 
                 return await Task.FromResult(false);
             }
@@ -56,9 +56,9 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
 
-                    await StoreInCommandLog(sbLog, sbError, "DoRemoveNationalBackupFilesNotFoundInTVFiles");
+                    await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles);
 
                     return await Task.FromResult(false);
                 }
@@ -101,7 +101,7 @@ namespace CSSPUpdateServices
                     {
                         string DirNat = $@"{ParentID}\{fileInfoNat.Name}";
 
-                        LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DeletingNationalFile_, DirNat) }");
+                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingNationalFile_, DirNat) }");
 
                         try
                         {
@@ -109,15 +109,15 @@ namespace CSSPUpdateServices
                         }
                         catch (Exception ex)
                         {
-                            ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalFile_Error_, DirNat, ex.Message) }");
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalFile_Error_, DirNat, ex.Message) }");
                         }
                     }
                 }
             }
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveNationalBackupFilesNotFoundInTVFiles ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveNationalBackupFilesNotFoundInTVFiles ...");
 
-            await StoreInCommandLog(sbLog, sbError, "DoRemoveNationalBackupFilesNotFoundInTVFiles");
+            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles);
 
             return await Task.FromResult(true);
         }

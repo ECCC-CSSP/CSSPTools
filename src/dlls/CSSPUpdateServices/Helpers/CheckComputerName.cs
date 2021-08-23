@@ -20,9 +20,9 @@ namespace CSSPUpdateServices
         {
             if (Environment.MachineName.ToString().ToLower() != ComputerName)
             {
-                ErrorAppend(sbError, $"{ CSSPCultureUpdateRes.ThisAppCanOnlyBeRunOnComputerName } { ComputerName }. { CSSPCultureUpdateRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }");
+                CSSPLogService.AppendError($"{ CSSPCultureUpdateRes.ThisAppCanOnlyBeRunOnComputerName } { ComputerName }. { CSSPCultureUpdateRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }");
 
-                await StoreInCommandLog(sbLog, sbError, "ClearOldUnnecessaryStats");
+                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.ClearOldUnnecessaryStats);
 
                 return await Task.FromResult(false);
             }

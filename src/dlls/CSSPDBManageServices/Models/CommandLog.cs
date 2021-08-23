@@ -20,12 +20,10 @@ namespace ManageServices
         public string AppName { get; set; }
         [CSSPMaxLength(200)]
         public string CommandName { get; set; }
-        [CSSPAllowNull]
-        public bool? Successful { get; set; }
         [CSSPMaxLength(10000000)]
-        public string ErrorMessage { get; set; }
+        public string Error { get; set; }
         [CSSPMaxLength(10000000)]
-        public string DetailLog { get; set; }
+        public string Log { get; set; }
         [CSSPAfter(Year = 1980)]
         public DateTime DateTimeUTC { get; set; }
         #endregion Properties in DB

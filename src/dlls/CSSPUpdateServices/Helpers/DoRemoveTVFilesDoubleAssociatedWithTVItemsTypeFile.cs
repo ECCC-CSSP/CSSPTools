@@ -14,11 +14,11 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile()
         {
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile ...");
 
             if (!await CheckComputerName()) return await Task.FromResult(false);
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -35,7 +35,7 @@ namespace CSSPUpdateServices
                 {
                     string dupText = $@"{TVFileList[i].TVFileTVItemID} -- {TVFileList[i].ServerFileName} -- {TVFileList[i + 1].ServerFileName}";
 
-                    LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.DuplicateTVFileTVItemID, dupText) }");
+                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DuplicateTVFileTVItemID, dupText) }");
 
                     db.TVFiles.Remove(TVFileList[i + 1]);
                 }
@@ -47,12 +47,12 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
             }
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile ...");
 
-            await StoreInCommandLog(sbLog, sbError, "DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile");
+            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile);
 
             return await Task.FromResult(true);
         }

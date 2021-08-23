@@ -1135,6 +1135,110 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_CSSPAppNameEnum_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(CSSPAppNameEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(CSSPAppNameEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(CSSPAppNameEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(CSSPAppNameEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(CSSPAppNameEnum), i);
+
+                switch ((CSSPAppNameEnum)i)
+                {
+                    case CSSPAppNameEnum.CSSPUpdate:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPAppNameEnumCSSPUpdate, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task GetResValueForTypeAndID_ForEnum_CSSPCommandNameEnum_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.GetResValueForTypeAndID(typeof(CSSPCommandNameEnum), -100);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(CSSPCommandNameEnum), 10000000);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(CSSPCommandNameEnum), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
+            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+
+            foreach (int i in Enum.GetValues(typeof(CSSPCommandNameEnum)))
+            {
+                retStr = enums.GetResValueForTypeAndID(typeof(CSSPCommandNameEnum), i);
+
+                switch ((CSSPCommandNameEnum)i)
+                {
+                    case CSSPCommandNameEnum.ClearOldUnnecessaryStats:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumClearOldUnnecessaryStats, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveAzureDirectoriesNotFoundInTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveAzureFilesNotFoundInTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveLocalDirectoriesNotFoundInTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveLocalDirectoriesNotFoundInTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveLocalFilesNotFoundInTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveNationalBackupDirectoriesNotFoundInTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveNationalBackupFilesNotFoundInTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile, retStr);
+                        break;
+                    case CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles, retStr);
+                        break;
+                    case CSSPCommandNameEnum.UpdateAllTVItemStats:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumUpdateAllTVItemStats, retStr);
+                        break;
+                    case CSSPCommandNameEnum.UpdateChangedTVItemStats:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumUpdateChangedTVItemStats, retStr);
+                        break;
+                    case CSSPCommandNameEnum.UploadAllFilesToAzure:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumUploadAllFilesToAzure, retStr);
+                        break;
+                    case CSSPCommandNameEnum.UploadAllJsonFilesToAzure:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumUploadAllJsonFilesToAzure, retStr);
+                        break;
+                    case CSSPCommandNameEnum.UploadChangedFilesToAzure:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumUploadChangedFilesToAzure, retStr);
+                        break;
+                    case CSSPCommandNameEnum.UploadChangedJsonFilesToAzure:
+                        Assert.Equal(CSSPCultureEnumsRes.CSSPCommandNameEnumUploadChangedJsonFilesToAzure, retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CSSPWQInputSheetTypeEnum_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -6498,6 +6602,82 @@ namespace CSSPEnums.Tests
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
+        public async Task Enums_CSSPAppNameOK_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(CSSPAppNameEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(CSSPAppNameEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPAppNameEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(CSSPAppNameEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPAppNameEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(CSSPAppNameEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(CSSPAppNameEnum), i);
+
+                switch ((CSSPAppNameEnum)i)
+                {
+                     case CSSPAppNameEnum.CSSPUpdate:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPAppNameEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_CSSPCommandNameOK_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            string retStr = enums.EnumTypeOK(typeof(CSSPCommandNameEnum), null);
+            Assert.Equal("", retStr);
+
+            retStr = enums.EnumTypeOK(typeof(CSSPCommandNameEnum), -100);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPCommandNameEnum"), retStr);
+
+            retStr = enums.EnumTypeOK(typeof(CSSPCommandNameEnum), 10000000);
+            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPCommandNameEnum"), retStr);
+
+            foreach (int i in Enum.GetValues(typeof(CSSPCommandNameEnum)))
+            {
+                retStr = enums.EnumTypeOK(typeof(CSSPCommandNameEnum), i);
+
+                switch ((CSSPCommandNameEnum)i)
+                {
+                     case CSSPCommandNameEnum.ClearOldUnnecessaryStats:
+                     case CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles:
+                     case CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles:
+                     case CSSPCommandNameEnum.RemoveLocalDirectoriesNotFoundInTVFiles:
+                     case CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles:
+                     case CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles:
+                     case CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles:
+                     case CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile:
+                     case CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles:
+                     case CSSPCommandNameEnum.UpdateAllTVItemStats:
+                     case CSSPCommandNameEnum.UpdateChangedTVItemStats:
+                     case CSSPCommandNameEnum.UploadAllFilesToAzure:
+                     case CSSPCommandNameEnum.UploadAllJsonFilesToAzure:
+                     case CSSPCommandNameEnum.UploadChangedFilesToAzure:
+                     case CSSPCommandNameEnum.UploadChangedJsonFilesToAzure:
+                        Assert.Equal("", retStr);
+                        break;
+                    default:
+                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "CSSPCommandNameEnum"), retStr);
+                        break;
+                }
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
         public async Task Enums_CSSPWQInputSheetTypeOK_Test(string culture)
         {
             Assert.True(await Setup(culture));
@@ -11824,6 +12004,58 @@ namespace CSSPEnums.Tests
             enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
             List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CountrySubComponentEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_CSSPAppNameEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(CSSPAppNameEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(CSSPAppNameEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CSSPAppNameEnum));
+            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+
+            EnumIDAndText enumTextOrdered = new EnumIDAndText();
+            Assert.NotNull(enumTextOrdered);
+
+            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+            {
+                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        [InlineData("fr-CA")]
+        public async Task Enums_CSSPCommandNameEnumTextOrdered_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+            foreach (int i in Enum.GetValues(typeof(CSSPCommandNameEnum)))
+            {
+                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(CSSPCommandNameEnum), i) });
+            }
+            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+
+            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(CSSPCommandNameEnum));
             Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
             EnumIDAndText enumTextOrdered = new EnumIDAndText();

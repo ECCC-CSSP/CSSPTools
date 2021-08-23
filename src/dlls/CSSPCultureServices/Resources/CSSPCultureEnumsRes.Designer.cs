@@ -1595,6 +1595,150 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSSPUpdate.
+        /// </summary>
+        public static string CSSPAppNameEnumCSSPUpdate {
+            get {
+                return ResourceManager.GetString("CSSPAppNameEnumCSSPUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ClearOldUnnecessaryStats.
+        /// </summary>
+        public static string CSSPCommandNameEnumClearOldUnnecessaryStats {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumClearOldUnnecessaryStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveAzureDirectoriesNotFoundInTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveAzureDirectoriesNotFoundInTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveAzureDirectoriesNotFoundInTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveAzureFilesNotFoundInTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveAzureFilesNotFoundInTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveAzureFilesNotFoundInTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveLocalDirectoriesNotFoundInTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveLocalDirectoriesNotFoundInTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveLocalDirectoriesNotFoundInTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveLocalFilesNotFoundInTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveLocalFilesNotFoundInTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveLocalFilesNotFoundInTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveNationalBackupDirectoriesNotFoundInTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveNationalBackupDirectoriesNotFoundInTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveNationalBackupDirectoriesNotFoundInTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveNationalBackupFilesNotFoundInTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveNationalBackupFilesNotFoundInTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveNationalBackupFilesNotFoundInTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RemoveTVItemsNoAssociatedWithTVFiles.
+        /// </summary>
+        public static string CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdateAllTVItemStats.
+        /// </summary>
+        public static string CSSPCommandNameEnumUpdateAllTVItemStats {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUpdateAllTVItemStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpdateChangedTVItemStats.
+        /// </summary>
+        public static string CSSPCommandNameEnumUpdateChangedTVItemStats {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUpdateChangedTVItemStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UploadAllFilesToAzure.
+        /// </summary>
+        public static string CSSPCommandNameEnumUploadAllFilesToAzure {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUploadAllFilesToAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UploadAllJsonFilesToAzure.
+        /// </summary>
+        public static string CSSPCommandNameEnumUploadAllJsonFilesToAzure {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUploadAllJsonFilesToAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UploadChangedFilesToAzure.
+        /// </summary>
+        public static string CSSPCommandNameEnumUploadChangedFilesToAzure {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUploadChangedFilesToAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UploadChangedJsonFilesToAzure.
+        /// </summary>
+        public static string CSSPCommandNameEnumUploadChangedJsonFilesToAzure {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUploadChangedJsonFilesToAzure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string CSSPError {

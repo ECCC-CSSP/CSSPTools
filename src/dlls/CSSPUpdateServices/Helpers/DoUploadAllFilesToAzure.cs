@@ -2,6 +2,7 @@
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 using CSSPCultureServices.Resources;
+using CSSPEnums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,11 +15,11 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoUploadAllFilesToAzure()
         {
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoUploadAllFilesToAzure ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoUploadAllFilesToAzure ...");
 
             if (!await CheckComputerName()) return await Task.FromResult(false);
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
             int CountFileTotal = 0;
             int CountFileUploaded = 0;
@@ -44,9 +45,9 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
+                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
 
-                        await StoreInCommandLog(sbLog, sbError, "DoUploadAllFilesToAzure");
+                        await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllFilesToAzure);
 
                         return await Task.FromResult(false);
                     }
@@ -88,15 +89,15 @@ namespace CSSPUpdateServices
                                     file.Upload(stream);
 
                                     CountFileUploaded += 1;
-                                    LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
+                                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
 
-                            await StoreInCommandLog(sbLog, sbError, "DoUploadAllFilesToAzure");
+                            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllFilesToAzure);
 
                             return await Task.FromResult(false);
                         }
@@ -104,9 +105,9 @@ namespace CSSPUpdateServices
                 }
             }
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoUploadAllFilesToAzure ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoUploadAllFilesToAzure ...");
 
-            await StoreInCommandLog(sbLog, sbError, "DoUploadAllFilesToAzure");
+            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllFilesToAzure);
 
             return await Task.FromResult(true);
         }

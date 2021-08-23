@@ -33,8 +33,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            Assert.NotNull(db);
-            Assert.NotNull(dbLocal);
             Assert.NotNull(dbManage);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(CommandLogService);

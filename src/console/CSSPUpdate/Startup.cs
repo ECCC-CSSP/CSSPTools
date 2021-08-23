@@ -34,7 +34,7 @@ namespace CSSPUpdate
         private string AzureStoreCSSPFilesPath { get; set; }
         private string AzureStoreCSSPJSONPath { get; set; }
         private CSSPDBContext db { get; set; }
-        
+       
         
         public ICSSPUpdateService CSSPUpdateService { get; set; }
 
@@ -52,7 +52,7 @@ namespace CSSPUpdate
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspupdate.json")
-               //.AddUserSecrets("f1d5ece7-8bc6-44ff-8611-8899787c64a9")
+               .AddUserSecrets("f1d5ece7-8bc6-44ff-8611-8899787c64a9")
                .Build();
 
             Services = new ServiceCollection();

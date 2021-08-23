@@ -32,8 +32,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             ManageFile manageFile = new ManageFile()
             {
                 ManageFileID = 0,
@@ -130,8 +128,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             string AzureStorage = "WillNotFind";
             string AzureFileName = "WillNotFind";
 
@@ -148,8 +144,6 @@ namespace ManageServices.Tests
         public async Task ManageFileService_GetManageFileList_Skip_2_Take_3_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             int skip = 2;
             int take = 3;
@@ -197,8 +191,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             int ManageFileID = 0;
 
             string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", ManageFileID.ToString());
@@ -215,8 +207,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             ManageFile manageFile = null;
 
             string error = string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "manageFile");
@@ -232,8 +222,6 @@ namespace ManageServices.Tests
         public async Task ManageFileService_ValidateAddOrModify_AzureFileName_Empty_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             ManageFile manageFile = new ManageFile()
             {
@@ -261,8 +249,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             ManageFile manageFile = new ManageFile()
             {
                 ManageFileID = 0,
@@ -288,8 +274,6 @@ namespace ManageServices.Tests
         public async Task ManageFileService_ValidateAddOrModify_AzureETag_Empty_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             ManageFile manageFile = new ManageFile()
             {
@@ -317,8 +301,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             ManageFile manageFile = new ManageFile()
             {
                 ManageFileID = 0,
@@ -344,8 +326,6 @@ namespace ManageServices.Tests
         public async Task ManageFileService_ValidateAddOrModify_AzureStorage_Empty_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             ManageFile manageFile = new ManageFile()
             {
@@ -373,8 +353,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             ManageFile manageFile = new ManageFile()
             {
                 ManageFileID = 0,
@@ -400,8 +378,6 @@ namespace ManageServices.Tests
         public async Task ManageFileService_ValidateAddOrModify_AlreadyExist_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             ManageFile manageFile = new ManageFile()
             {
@@ -442,8 +418,6 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            await CreateCSSPDBManage();
-
             ManageFile manageFile = new ManageFile()
             {
                 ManageFileID = 0,
@@ -482,8 +456,6 @@ namespace ManageServices.Tests
         public async Task ManageFileService_ValidateAddOrModify_AzureCreationTimeUTC_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
-
-            await CreateCSSPDBManage();
 
             ManageFile manageFile = new ManageFile()
             {

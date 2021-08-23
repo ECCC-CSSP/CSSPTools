@@ -18,17 +18,17 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoUpdateAllTVItemStats()
         {
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoUpdateAllTVItemStats ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoUpdateAllTVItemStats ...");
 
             if (!await CheckComputerName()) return await Task.FromResult(false);
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.UpdatingAllTVItemStatsTimeStarted_, DateTime.Now) }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UpdatingAllTVItemStatsTimeStarted_, DateTime.Now) }");
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats }");
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } ...");
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        select c).AsNoTracking().ToList();
@@ -49,63 +49,63 @@ namespace CSSPUpdateServices
 
             if (!await ClearOldUnnecessaryStats())
             {
-                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorInClearOldUnnecessaryStatsFrom_, "DoUpdateAllTVItemStats") }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorInClearOldUnnecessaryStatsFrom_, "DoUpdateAllTVItemStats") }");
 
-                await StoreInCommandLog(sbLog, sbError, "DoUpdateAllTVItemStats");
+                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UpdateAllTVItemStats);
 
                 return await Task.FromResult(false);
             }
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } ...");
             TVItemList = (from c in db.TVItems
                           select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemStats") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemStats") } ...");
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                                select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemLinks") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemLinks") } ...");
             List<TVItemLink> TVItemLinkList = (from c in db.TVItemLinks
                                                select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "Infrastructures") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Infrastructures") } ...");
             List<Infrastructure> InfrastructureList = (from c in db.Infrastructures
                                                        select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "PolSourceSites") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "PolSourceSites") } ...");
             List<PolSourceSite> PolSourceSiteList = (from c in db.PolSourceSites
                                                      select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "BoxModels") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "BoxModels") } ...");
             List<BoxModel> BoxModelList = (from c in db.BoxModels
                                            select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "UseOfSites") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "UseOfSites") } ...");
             List<UseOfSite> UseOfSiteList = (from c in db.UseOfSites
                                              select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVFiles") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVFiles") } ...");
             List<TVFile> TVFileList = (from c in db.TVFiles
                                        select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "MWQMSamples") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "MWQMSamples") } ...");
             List<MWQMSample> MWQMSampleList = (from c in db.MWQMSamples
                                                select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "Spills") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Spills") } ...");
             List<Spill> SpillList = (from c in db.Spills
                                      select c).AsNoTracking().ToList();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.Reading_, "VPScenarios") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "VPScenarios") } ...");
             List<VPScenario> VPScenarioList = (from c in db.VPScenarios
                                                select c).AsNoTracking().ToList();
 
             List<TVItemStat> TVItemStat2List = new List<TVItemStat>();
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.CollectingStatsFor_, "Country MWQMRun, MWQMSite, MWQMSiteSample") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.CollectingStatsFor_, "Country MWQMRun, MWQMSite, MWQMSiteSample") } ...");
             await GetRunSiteSampleStatsForCountry(TVItemStat2List);
 
-            LogAppend(sbLog, $"{ String.Format(CSSPCultureUpdateRes.CollectingStatsUnder_, "Province MWQMRun, MWQMSite, MWQMSiteSample") } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.CollectingStatsUnder_, "Province MWQMRun, MWQMSite, MWQMSiteSample") } ...");
             await GetRunSiteSampleStatsUnderProvince(TVItemList, TVItemProvList, TVItemStat2List);
 
             int count = 0;
@@ -315,12 +315,12 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }");
             }
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoUpdateAllTVItemStats ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoUpdateAllTVItemStats ...");
 
-            await StoreInCommandLog(sbLog, sbError, "DoUpdateAllTVItemStats");
+            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UpdateAllTVItemStats);
 
             return await Task.FromResult(true);
         }

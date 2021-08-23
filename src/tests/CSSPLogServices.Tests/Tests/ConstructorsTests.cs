@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FileServices.Tests
+namespace CSSPLogServices.Tests
 {
-    public partial class FileServiceTests
+    public partial class CSSPLogServiceTests
     {
         #region Variables
         #endregion Variables
@@ -12,19 +12,21 @@ namespace FileServices.Tests
         #endregion Properties
 
         #region Constructors
-        // see under GzFileServices Setup.cs
+        // see under Setup.cs
         #endregion Constructors
 
         #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_Constructor_Good_Test(string culture)
+        public async Task CSSPLogService_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLogService);
+            Assert.NotNull(dbManage);
         }
         #endregion Tests 
 

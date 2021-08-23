@@ -2871,4 +2871,52 @@
   <data name="WebChartAndTableTypeEnumInfrastructureUnderMunicipality" xml:space="preserve">
     <value>InfrastructureUnderMunicipality</value>
   </data>
+  <data name="CSSPAppNameEnumCSSPUpdate" xml:space="preserve">
+    <value>CSSPUpdate</value>
+  </data>
+  <data name="CSSPCommandNameEnumClearOldUnnecessaryStats" xml:space="preserve">
+    <value>ClearOldUnnecessaryStats</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveAzureDirectoriesNotFoundInTVFiles" xml:space="preserve">
+    <value>RemoveAzureDirectoriesNotFoundInTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveAzureFilesNotFoundInTVFiles" xml:space="preserve">
+    <value>RemoveAzureFilesNotFoundInTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveLocalDirectoriesNotFoundInTVFiles" xml:space="preserve">
+    <value>RemoveLocalDirectoriesNotFoundInTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveLocalFilesNotFoundInTVFiles" xml:space="preserve">
+    <value>RemoveLocalFilesNotFoundInTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveNationalBackupDirectoriesNotFoundInTVFiles" xml:space="preserve">
+    <value>RemoveNationalBackupDirectoriesNotFoundInTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveNationalBackupFilesNotFoundInTVFiles" xml:space="preserve">
+    <value>RemoveNationalBackupFilesNotFoundInTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile" xml:space="preserve">
+    <value>RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile</value>
+  </data>
+  <data name="CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles" xml:space="preserve">
+    <value>RemoveTVItemsNoAssociatedWithTVFiles</value>
+  </data>
+  <data name="CSSPCommandNameEnumUpdateAllTVItemStats" xml:space="preserve">
+    <value>UpdateAllTVItemStats</value>
+  </data>
+  <data name="CSSPCommandNameEnumUploadAllFilesToAzure" xml:space="preserve">
+    <value>UploadAllFilesToAzure</value>
+  </data>
+  <data name="CSSPCommandNameEnumUploadAllJsonFilesToAzure" xml:space="preserve">
+    <value>UploadAllJsonFilesToAzure</value>
+  </data>
+  <data name="CSSPCommandNameEnumUpdateChangedTVItemStats" xml:space="preserve">
+    <value>UpdateChangedTVItemStats</value>
+  </data>
+  <data name="CSSPCommandNameEnumUploadChangedFilesToAzure" xml:space="preserve">
+    <value>UploadChangedFilesToAzure</value>
+  </data>
+  <data name="CSSPCommandNameEnumUploadChangedJsonFilesToAzure" xml:space="preserve">
+    <value>UploadChangedJsonFilesToAzure</value>
+  </data>
 </root>

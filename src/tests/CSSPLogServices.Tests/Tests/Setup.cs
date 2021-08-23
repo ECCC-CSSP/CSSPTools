@@ -3,24 +3,26 @@
  * 
  */
 using CSSPCultureServices.Services;
-using CSSPDBModels;
 using CSSPEnums;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Xunit;
+using System.Linq;
 
-namespace FileServices.Tests
+namespace CSSPLogServices.Tests
 {
     [Collection("Sequential")]
 
-    public partial class FileServiceTests
+    public partial class CSSPLogServiceTests
     {
         #region Variables
         #endregion Variables
@@ -31,6 +33,9 @@ namespace FileServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
+        private CSSPDBManageContext dbManage { get; set; }
+        private FileInfo fiCSSPDBManageTest { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -53,22 +58,45 @@ namespace FileServices.Tests
             Services.AddSingleton<IConfiguration>(Configuration);
 
             /* ---------------------------------------------------------------------------------
-             * CSSPDBManageContext
+             * Creating an empty CSSPDBManage SQLite test database
              * ---------------------------------------------------------------------------------      
              */
             string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
             Assert.NotNull(CSSPDBManage);
 
-            FileInfo fiCSSPDBManageFileName = new FileInfo(CSSPDBManage);
+            string CSSPDBManageTest = CSSPDBManage.Replace(".db", "_test.db");
+
+            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+
+            Assert.True(fiCSSPDBManage.Exists);
+
+            fiCSSPDBManageTest = new FileInfo(CSSPDBManageTest);
+            if (!fiCSSPDBManageTest.Exists)
+            {
+                try
+                {
+                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
+                }
+            }
+
+            /* ---------------------------------------------------------------------------------
+             * CSSPDBManageContext
+             * ---------------------------------------------------------------------------------      
+             */
 
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManageFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManageTest.FullName }");
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -84,6 +112,25 @@ namespace FileServices.Tests
             await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+
+            CSSPLogService = Provider.GetService<ICSSPLogService>();
+            Assert.NotNull(CSSPLogService);
+
+            dbManage = Provider.GetService<CSSPDBManageContext>();
+            Assert.NotNull(dbManage);
+
+            List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
+                                                   select c).ToList();
+
+            try
+            {
+                dbManage.RemoveRange(commandLogToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}");
+            }
 
             return await Task.FromResult(true);
         }

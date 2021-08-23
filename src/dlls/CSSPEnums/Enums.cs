@@ -278,6 +278,28 @@ namespace CSSPEnums
         EmailDistributionList = 4,
         RainExceedance = 5,
     }
+    public enum CSSPAppNameEnum
+    {
+        CSSPUpdate = 1,
+    }
+    public enum CSSPCommandNameEnum
+    {
+        ClearOldUnnecessaryStats = 1,
+        RemoveAzureDirectoriesNotFoundInTVFiles = 2,
+        RemoveAzureFilesNotFoundInTVFiles = 3,
+        RemoveLocalDirectoriesNotFoundInTVFiles = 4,
+        RemoveLocalFilesNotFoundInTVFiles = 5,
+        RemoveNationalBackupDirectoriesNotFoundInTVFiles = 6,
+        RemoveNationalBackupFilesNotFoundInTVFiles = 7,
+        RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile = 8,
+        RemoveTVItemsNoAssociatedWithTVFiles = 9,
+        UpdateAllTVItemStats = 10,
+        UpdateChangedTVItemStats = 11,
+        UploadAllFilesToAzure = 12,
+        UploadAllJsonFilesToAzure = 13,
+        UploadChangedFilesToAzure = 14,
+        UploadChangedJsonFilesToAzure = 15,
+    }
     public enum CSSPWQInputSheetTypeEnum
     {
         A1 = 1,

@@ -14,11 +14,11 @@ namespace CSSPUpdateServices
     {
         public async Task<bool> DoRemoveTVItemsNoAssociatedWithTVFiles()
         {
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.Starting } DoRemoveTVItemsNoAssociatedWithTVFiles ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveTVItemsNoAssociatedWithTVFiles ...");
 
             if (!await CheckComputerName()) return await Task.FromResult(false);
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -43,7 +43,7 @@ namespace CSSPUpdateServices
                 {
                     string dupText = $@"{tvItem.TVItemID} --- {tvItem.ParentID}";
 
-                    LogAppend(sbLog, $"{ dupText }");
+                    CSSPLogService.AppendLog($"{ dupText }");
 
                     db.TVItems.Remove(tvItem);
                 }
@@ -56,12 +56,12 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                ErrorAppend(sbError, $"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
             }
 
-            LogAppend(sbLog, $"{ CSSPCultureUpdateRes.End } DoRemoveTVItemsNoAssociatedWithTVFiles ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveTVItemsNoAssociatedWithTVFiles ...");
 
-            await StoreInCommandLog(sbLog, sbError, "DoRemoveTVItemsNoAssociatedWithTVFiles");
+            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles);
 
             return await Task.FromResult(true);
         }

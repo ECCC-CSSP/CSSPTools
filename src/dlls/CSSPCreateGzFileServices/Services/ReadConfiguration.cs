@@ -14,44 +14,44 @@ namespace CreateGzFileServices
         private async Task<bool> ReadConfiguration()
         {
             bool ReadOK = true;
-            LogService.AppendLog(CSSPCultureDesktopRes.ReadingConfiguration);
+            CSSPLogService.AppendLog(CSSPCultureDesktopRes.ReadingConfiguration);
 
             AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
-                LogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "AzureStore", "appsettings_csspupdate.json"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "AzureStore", "appsettings_csspupdate.json"));
                 ReadOK = false;
             }
 
             AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
             if (string.IsNullOrWhiteSpace(AzureStoreCSSPJSONPath))
             {
-                LogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPJSONPath", "appsettings_csspupdate.json"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "AzureStoreCSSPJSONPath", "appsettings_csspupdate.json"));
                 ReadOK = false;
             }
 
             CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
             if (string.IsNullOrWhiteSpace(CSSPJSONPathLocal))
             {
-                LogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPJSONPathLocal", "appsettings_csspupdate.json"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "CSSPJSONPathLocal", "appsettings_csspupdate.json"));
                 ReadOK = false;
             }
 
             azure_csspjson_backup_uncompress = Configuration.GetValue<string>("azure_csspjson_backup_uncompress");
             if (string.IsNullOrWhiteSpace(azure_csspjson_backup_uncompress))
             {
-                LogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "azure_csspjson_backup_uncompress", "appsettings_csspupdate.json"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "azure_csspjson_backup_uncompress", "appsettings_csspupdate.json"));
                 ReadOK = false;
             }
 
             azure_csspjson_backup = Configuration.GetValue<string>("azure_csspjson_backup");
             if (string.IsNullOrWhiteSpace(azure_csspjson_backup))
             {
-                LogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "azure_csspjson_backup", "appsettings_csspupdate.json"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._CouldNotBeFoundInConfigurationFile_, "azure_csspjson_backup", "appsettings_csspupdate.json"));
                 ReadOK = false;
             }
 
-            LogService.AppendLog("");
+            CSSPLogService.AppendLog("");
 
             return ReadOK ? await Task.FromResult(true) : await Task.FromResult(false);
         }

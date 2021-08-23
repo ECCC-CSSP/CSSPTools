@@ -1,14 +1,9 @@
-﻿using CSSPDBModels;
-using CSSPDBServices;
-using CSSPEnums;
+﻿using CSSPEnums;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System;
 
 namespace CSSPUpdateServices
 {
-        public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ICSSPUpdateService
     {
         private List<TVTypeEnum> GetSubTVTypeForTVItemStat(TVTypeEnum TVType)
         {

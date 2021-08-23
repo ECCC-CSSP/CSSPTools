@@ -1,4 +1,5 @@
 ﻿using CSSPCultureServices.Resources;
+using CSSPEnums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,82 +12,102 @@ namespace CSSPUpdate
     {
         public static async Task Main(string[] args)
         {
+            Startup startup = new Startup();
+
+            if (!await startup.Setup()) return;
+
             Console.WriteLine($"{CSSPCultureUpdateRes.RunningCSSPUpdate} ...");
 
-            List<string> AllowableCommandList = new List<string>()
+            List<CSSPCommandNameEnum> AllowableCSSPCommandNameList = new List<CSSPCommandNameEnum>()
             {
-                "ClearOldUnnecessaryStats",
-                "RemoveAzureDirectoriesNotFoundInTVFiles",
-                "RemoveAzureFilesNotFoundInTVFiles",
-                "RemoveLocalDirectoriesNotFoundInTVFiles",
-                "RemoveLocalFilesNotFoundInTVFiles",
-                "RemoveNationalBackupDirectoriesNotFoundInTVFiles",
-                "RemoveNationalBackupFilesNotFoundInTVFiles",
-                "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile",
-                "RemoveTVItemsNoAssociatedWithTVFiles",
-                "UpdateAllTVItemStats",
-                "UploadAllFilesToAzure",
-                "UploadAllJsonFilesToAzure",
+                CSSPCommandNameEnum.ClearOldUnnecessaryStats,
+                CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles,
+                CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles,
+                CSSPCommandNameEnum.RemoveLocalDirectoriesNotFoundInTVFiles,
+                CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles,
+                CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles,
+                CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles,
+                CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile,
+                CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles,
+                CSSPCommandNameEnum.UpdateAllTVItemStats,
+                CSSPCommandNameEnum.UploadAllFilesToAzure,
+                CSSPCommandNameEnum.UploadAllJsonFilesToAzure,
             };
 
             if (args.Count() != 1)
             {
                 Console.WriteLine($"{CSSPCultureUpdateRes.AllowableCommandsAre}:");
-                foreach (string s in AllowableCommandList)
+                foreach (CSSPCommandNameEnum CSSPCommandName in AllowableCSSPCommandNameList)
                 {
-                    Console.WriteLine($"CSSPUpdate.exe {s}");
+                    Console.WriteLine($"CSSPUpdate.exe {CSSPCommandName}");
                 }
             }
             else
             {
-                Startup startup = new Startup();
+                CSSPCommandNameEnum CSSPCommandName = (CSSPCommandNameEnum)0;
 
-                if (!await startup.Setup()) return;
-
-                switch (args[0])
+                foreach (CSSPCommandNameEnum CSSPCommandNameToFind in AllowableCSSPCommandNameList)
                 {
-                    case "ClearOldUnnecessaryStats":
+                    if (args[0] == CSSPCommandNameToFind.ToString())
+                    {
+                        CSSPCommandName = CSSPCommandNameToFind;
+                        break;
+                    }
+                }
+                 
+                switch (CSSPCommandName)
+                {
+                    case CSSPCommandNameEnum.ClearOldUnnecessaryStats:
                         await startup.CSSPUpdateService.ClearOldUnnecessaryStats();
                         break;
-                    case "RemoveAzureDirectoriesNotFoundInTVFiles":
+                    case CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles:
                         await startup.CSSPUpdateService.RemoveAzureDirectoriesNotFoundInTVFiles();
                         break;
-                    case "RemoveAzureFilesNotFoundInTVFiles":
+                    case CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles:
                         await startup.CSSPUpdateService.RemoveAzureFilesNotFoundInTVFiles();
                         break;
-                    case "RemoveLocalDirectoriesNotFoundInTVFiles":
+                    case CSSPCommandNameEnum.RemoveLocalDirectoriesNotFoundInTVFiles:
                         await startup.CSSPUpdateService.RemoveLocalDirectoriesNotFoundInTVFiles();
                         break;
-                    case "RemoveLocalFilesNotFoundInTVFiles":
+                    case CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles:
                         await startup.CSSPUpdateService.RemoveLocalFilesNotFoundInTVFiles();
                         break;
-                    case "RemoveNationalBackupDirectoriesNotFoundInTVFiles":
+                    case CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles:
                         await startup.CSSPUpdateService.RemoveNationalBackupDirectoriesNotFoundInTVFiles();
                         break;
-                    case "RemoveNationalBackupFilesNotFoundInTVFiles":
+                    case CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles:
                         await startup.CSSPUpdateService.RemoveNationalBackupFilesNotFoundInTVFiles();
                         break;
-                    case "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile":
+                    case CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile:
                         await startup.CSSPUpdateService.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
                         break;
-                    case "RemoveTVItemsNoAssociatedWithTVFiles":
+                    case CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles:
                         await startup.CSSPUpdateService.RemoveTVItemsNoAssociatedWithTVFiles();
                         break;
-                    case "UpdateAllTVItemStats":
+                    case CSSPCommandNameEnum.UpdateAllTVItemStats:
                         await startup.CSSPUpdateService.UpdateAllTVItemStats();
                         break;
-                    case "UploadAllFilesToAzure":
+                    case CSSPCommandNameEnum.UpdateChangedTVItemStats:
+                        await startup.CSSPUpdateService.UpdateChangedTVItemStats();
+                        break;
+                    case CSSPCommandNameEnum.UploadAllFilesToAzure:
                         await startup.CSSPUpdateService.UploadAllFilesToAzure();
                         break;
-                    case "UploadAllJsonFilesToAzure":
+                    case CSSPCommandNameEnum.UploadAllJsonFilesToAzure:
                         await startup.CSSPUpdateService.UploadAllJsonFilesToAzure();
+                        break;
+                    case CSSPCommandNameEnum.UploadChangedFilesToAzure:
+                        await startup.CSSPUpdateService.UploadChangedFilesToAzure();
+                        break;
+                    case CSSPCommandNameEnum.UploadChangedJsonFilesToAzure:
+                        await startup.CSSPUpdateService.UploadChangedJsonFilesToAzure();
                         break;
                     default:
                         {
                             Console.WriteLine($"{CSSPCultureUpdateRes.AllowableCommandsAre}:");
-                            foreach (string s in AllowableCommandList)
+                            foreach (CSSPCommandNameEnum CSSPCommandNameItem in AllowableCSSPCommandNameList)
                             {
-                                Console.WriteLine($"CSSPUpdate.exe {s}");
+                                Console.WriteLine($"CSSPUpdate.exe {CSSPCommandNameItem}");
                             }
                         }
                         break;
