@@ -141,6 +141,9 @@
   <data name="CouldNotDeleteTVItemWithTVItemID_Error_" xml:space="preserve">
     <value>Dans l'impossibilité de supprimer TVItem avec TVItemID {0}. Erreur: {1}</value>
   </data>
+  <data name="CouldNotFindAnyFileUnder_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver au moins une filière sous {0}</value>
+  </data>
   <data name="CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver tvItem pour tvFile.TVFileTVItemID egale à {0}</value>
   </data>

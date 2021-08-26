@@ -30,8 +30,11 @@ namespace CSSPUpdate
                 CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile,
                 CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles,
                 CSSPCommandNameEnum.UpdateAllTVItemStats,
+                CSSPCommandNameEnum.UpdateChangedTVItemStats,
                 CSSPCommandNameEnum.UploadAllFilesToAzure,
                 CSSPCommandNameEnum.UploadAllJsonFilesToAzure,
+                CSSPCommandNameEnum.UploadChangedFilesToAzure,
+                CSSPCommandNameEnum.UploadChangedJsonFilesToAzure,
             };
 
             if (args.Count() != 1)

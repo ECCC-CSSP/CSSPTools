@@ -133,6 +133,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dans l&apos;impossibilité de trouver au moins une filière sous {0}.
+        /// </summary>
+        public static string CouldNotFindAnyFileUnder_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindAnyFileUnder_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dans l&apos;impossibilité de trouver tvItem pour tvFile.TVFileTVItemID egale à {0}.
         /// </summary>
         public static string CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_ {

@@ -10,6 +10,7 @@ using LoggedInServices;
 using ManageServices;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,46 @@ namespace CSSPUpdateServices
         Task<bool> UploadAllJsonFilesToAzure();
         Task<bool> UploadChangedFilesToAzure();
         Task<bool> UploadChangedJsonFilesToAzure();
+
+        Task<bool> GetNeedToChangedWebAllAddresses(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllContacts(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllCountries(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllEmails(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllHelpDocs(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllMunicipalities(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllMWQMLookupMPNs(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllPolSourceGroupings(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllPolSourceSiteEffectTerms(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllProvinces(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllReportTypes(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllSearch(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllTels(DateTime LastUpdate);
+        Task<bool> GetNeedToChangedWebAllTideLocations(DateTime LastUpdate);
+
+        Task<List<int>> GetTVItemIDListAllOfChangedMapInfo(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListAllOfChangedTVFile(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListAllOfChangedTVItem(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListAllOfChangedTVItemLink(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListAllOfChangedUseOfSite(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListCountryOfChangedEmailDistributionList(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListCountryOfChangedRainExceedance(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListMunicipalityOfChangedBoxModel(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListMunicipalityOfChangedInfrastructure(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListMunicipalityOfChangedMikeScenario(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListMunicipalityOfChangedVPScenario(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListProvinceOfChangedClimateSite(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListProvinceOfChangedDrogueRun(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListProvinceOfChangedHydrometricSite(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListProvinceOfChangedSamplingPlan(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListProvinceOfChangedTideSite(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedClassification(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedLabSheet(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedMWQMAnalysisReportParameter(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedMWQMRun(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedMWQMSample(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedMWQMSite(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedMWQMSubsector(DateTime LastUpdate);
+        Task<List<int>> GetTVItemIDListSubsectorOfChangedPolSourceSite(DateTime LastUpdate);
     }
     public partial class CSSPUpdateService : ICSSPUpdateService
     {
