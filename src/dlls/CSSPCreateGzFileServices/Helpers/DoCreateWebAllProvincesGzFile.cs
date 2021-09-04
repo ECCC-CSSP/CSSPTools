@@ -25,7 +25,8 @@ namespace CreateGzFileServices
 
             if (TVItemRoot == null || TVItemRoot.TVType != TVTypeEnum.Root)
             {
-                await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, "TVItem", "TVType", TVTypeEnum.Root.ToString()), new[] { "" }));
+                await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, 
+                    "TVItem", "TVType", TVTypeEnum.Root.ToString()), new[] { "" }));
                 await CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
