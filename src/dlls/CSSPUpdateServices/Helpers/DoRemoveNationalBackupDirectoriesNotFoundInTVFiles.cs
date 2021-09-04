@@ -4,34 +4,35 @@ using Azure.Storage.Files.Shares.Models;
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoRemoveNationalBackupDirectoriesNotFoundInTVFiles()
+        public async Task<ActionResult<bool>> DoRemoveNationalBackupDirectoriesNotFoundInTVFiles()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveNationalBackupDirectoriesNotFoundInTVFiles ...");
-
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             DirectoryInfo diNat = new DirectoryInfo(NationalBackupAppDataPath);
             if (!diNat.Exists)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
             List<TVItem> TVItemList = (from c in db.TVItems
@@ -63,7 +64,7 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingNationalDirectory_, diSub.Name) }");
+                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingNationalDirectory_, diSub.Name) }");
 
                     try
                     {
@@ -71,16 +72,20 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalDirectory_, diSub.Name) }");
+                        await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalDirectory_, diSub.Name) }", new[] { "" }));
+
+                        await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                        await CSSPLogService.Save();
+
+                        return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                     }
                 }
             }
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveNationalBackupDirectoriesNotFoundInTVFiles ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

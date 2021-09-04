@@ -1,3 +1,5 @@
+using CSSPCultureServices.Resources;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -26,9 +28,9 @@ namespace CSSPLogServices.Tests
             string ErrorStr = "Testing";
 
             Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
-            CSSPLogService.AppendError(ErrorStr);
+            await CSSPLogService.AppendError(new ValidationResult(ErrorStr, new[] { "" }));
             Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
-            Assert.StartsWith(ErrorStr, CSSPLogService.sbError.ToString());
+            Assert.StartsWith($"{ CSSPCultureUpdateRes.ERROR}: {ErrorStr}", CSSPLogService.sbError.ToString());
         }
         #endregion Tests 
 

@@ -3,23 +3,21 @@ using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 using CSSPCultureServices.Resources;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoUploadChangedFilesToAzure()
+        public async Task<ActionResult<bool>> DoUploadChangedFilesToAzure()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoUploadChangedFilesToAzure ...");
-
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             //int CountFileTotal = 0;
             //int CountFileUploaded = 0;
@@ -45,11 +43,12 @@ namespace CSSPUpdateServices
             //        }
             //        catch (Exception ex)
             //        {
-            //            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
+            //            await CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
 
             //            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllFilesToAzure);
 
-            //            return await Task.FromResult(false);
+            //            return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+
             //        }
             //    }
 
@@ -89,27 +88,26 @@ namespace CSSPUpdateServices
             //                        file.Upload(stream);
 
             //                        CountFileUploaded += 1;
-            //                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
+            //                        await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
             //                    }
             //                }
             //            }
             //            catch (Exception ex)
             //            {
-            //                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
+            //                await CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
 
             //                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllFilesToAzure);
 
-            //                return await Task.FromResult(false);
+            //                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+
             //            }
             //        }
             //    }
             //}
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoUploadChangedFilesToAzure ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllFilesToAzure);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

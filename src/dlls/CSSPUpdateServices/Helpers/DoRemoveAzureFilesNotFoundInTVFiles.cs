@@ -3,34 +3,35 @@ using Azure.Storage.Files.Shares;
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoRemoveAzureFilesNotFoundInTVFiles()
+        public async Task<ActionResult<bool>> DoRemoveAzureFilesNotFoundInTVFiles()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveAzureFilesNotFoundInTVFiles ...");
-
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
             List<TVItem> TVItemList = (from c in db.TVItems
@@ -56,11 +57,13 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+                    await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }", new[] { "" }));
 
-                    await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles);
+                    await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                    return await Task.FromResult(false);
+                    await CSSPLogService.Save();
+
+                    return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                 }
 
 
@@ -113,22 +116,26 @@ namespace CSSPUpdateServices
                             string dirFile = $@"{ AzureStoreCSSPFilesPath }\{ ParentID }\{ fileInfo.Name }";
                             if (response.Value)
                             {
-                                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
+                                await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
                             }
                             else
                             {
-                                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }");
+                                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }", new[] { "" }));
+
+                                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                                await CSSPLogService.Save();
+
+                                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                             }
                         }
                     }
                 }
             }
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveAzureFilesNotFoundInTVFiles ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

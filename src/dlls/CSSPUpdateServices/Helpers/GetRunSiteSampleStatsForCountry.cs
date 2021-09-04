@@ -1,26 +1,29 @@
 ﻿using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        private async Task GetRunSiteSampleStatsForCountry(List<TVItemStat> TVItemStat2List)
+        public async Task<ActionResult<bool>> GetRunSiteSampleStatsForCountry(List<TVItemStat> TVItemStat2List)
         {
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
             foreach (TVItem tvItem in (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.Country
                                        select c).ToList())
             {
-                Console.WriteLine($"Create WebMonitoringRoutineStatsCountry [{tvItem.TVItemID}] doing...");
                 await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
-                Console.WriteLine($"Create WebMonitoringOtherStatsCountry [{tvItem.TVItemID}] doing...");
+
                 await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
 
                 WebMonitoringRoutineStatsCountry webMonitoringRoutineStatsCountry;
@@ -63,6 +66,9 @@ namespace CSSPUpdateServices
 
             }
 
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+            return await Task.FromResult(Ok(true));
         }
     }
 }

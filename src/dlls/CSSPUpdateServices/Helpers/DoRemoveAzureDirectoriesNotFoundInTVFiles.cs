@@ -8,34 +8,35 @@ using Azure.Storage.Files.Shares.Models;
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoRemoveAzureDirectoriesNotFoundInTVFiles()
+        public async Task<ActionResult<bool>> DoRemoveAzureDirectoriesNotFoundInTVFiles()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveAzureDirectoriesNotFoundInTVFiles ...");
-
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
             List<TVItem> TVItemList = (from c in db.TVItems
@@ -53,7 +54,7 @@ namespace CSSPUpdateServices
             // Cleaning Azure drive
             //----------------------------------------------
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.StartingAzureDirectoryCleanup }");
+            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.StartingAzureDirectoryCleanup }");
 
             ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
@@ -73,7 +74,7 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureDirectory_, shareFileItem.Name) }");
+                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureDirectory_, shareFileItem.Name) }");
 
                     if (shareFileItem.IsDirectory)
                     {
@@ -87,17 +88,17 @@ namespace CSSPUpdateServices
                                 ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
 
                                 string dirFile = $@"{shareFileItem.Name}\{shareFileItemSub.Name}";
-                                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureFile_, dirFile) }");
+                                await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureFile_, dirFile) }");
 
                                 Response<bool> responseFile = file.DeleteIfExists();
 
                                 if (responseFile.Value)
                                 {
-                                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
+                                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
                                 }
                                 else
                                 {
-                                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }");
+                                    await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }", new[] { "" }));
                                 }
                             }
                         }
@@ -106,21 +107,21 @@ namespace CSSPUpdateServices
 
                         if (responseDir.Value)
                         {
-                            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureDirectory_, shareFileItem.Name) }");
+                            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureDirectory_, shareFileItem.Name) }");
                         }
                         else
                         {
-                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureDirectory_, shareFileItem.Name) }");
+                            await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureDirectory_, shareFileItem.Name) }", new[] { "" }));
                         }
                     }
                 }
             }
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveAzureDirectoriesNotFoundInTVFiles ...");
+            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveAzureDirectoriesNotFoundInTVFiles ...");
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles);
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

@@ -1,34 +1,34 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoUploadAllJsonFilesToAzure()
+        public async Task<ActionResult<bool>> DoUploadAllJsonFilesToAzure()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoUploadAllJsonFilesToAzure ...");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
-
-            if (!await CreateGzFileService.CreateAllGzFiles())
+            var actionRes = await CreateGzFileService.CreateAllGzFiles();
+            if (((ObjectResult)actionRes.Result).StatusCode != 200)
             {
-                CSSPLogService.AppendError($"{ CSSPCultureUpdateRes.ErrorWhileCreateAllGzFiles  }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ CSSPCultureUpdateRes.ErrorWhileCreateAllGzFiles  }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllJsonFilesToAzure);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoUploadAllJsonFilesToAzure ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllJsonFilesToAzure);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

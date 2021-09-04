@@ -76,17 +76,9 @@ namespace UploadAllJsonFilesToAzure
                 options.UseSqlServer(CSSPDBConnString);
             });
 
-            //Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(CSSPDBConnString));
-
-            //Services.AddIdentityCore<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
@@ -105,14 +97,7 @@ namespace UploadAllJsonFilesToAzure
                 return false;
             }
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            if (LoginEmail == null)
-            {
-                Console.WriteLine("LoginEmail should not be null");
-                return false;
-            }
-
-            LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            LoggedInService.SetLoggedInLocalContactInfo();
             if (LoggedInService.LoggedInContactInfo == null)
             {
                 Console.WriteLine("LoggedInService.LoggedInContactInfo should not be null");

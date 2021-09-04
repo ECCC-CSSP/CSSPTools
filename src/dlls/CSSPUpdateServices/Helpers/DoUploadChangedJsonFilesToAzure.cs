@@ -1,34 +1,31 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoUploadChangedJsonFilesToAzure()
+        public async Task<ActionResult<bool>> DoUploadChangedJsonFilesToAzure()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoUploadChangedJsonFilesToAzure ...");
-
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             //if (!await CreateGzFileService.CreateChangedGzFiles())
             //{
-            //    CSSPLogService.AppendError($"{ CSSPCultureUpdateRes.ErrorWhileCreateAllGzFiles  }");
+            //    await CSSPLogService.AppendError($"{ CSSPCultureUpdateRes.ErrorWhileCreateAllGzFiles  }");
 
             //    await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllJsonFilesToAzure);
 
-            //    return await Task.FromResult(false);
+            //    return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+
             //}
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoUploadChangedJsonFilesToAzure ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllJsonFilesToAzure);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

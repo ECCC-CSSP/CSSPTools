@@ -1,11 +1,12 @@
 ﻿using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        private List<TVTypeEnum> GetSubTVTypeForTVItemStat(TVTypeEnum TVType)
+        public List<TVTypeEnum> GetSubTVTypeForTVItemStat(TVTypeEnum TVType)
         {
             List<TVTypeEnum> SubTVTypeList = new List<TVTypeEnum>();
             switch (TVType)

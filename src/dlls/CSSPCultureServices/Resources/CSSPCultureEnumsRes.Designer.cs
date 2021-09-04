@@ -1604,6 +1604,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string CSSPAppNameEnumUnknown {
+            get {
+                return ResourceManager.GetString("CSSPAppNameEnumUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClearOldUnnecessaryStats.
         /// </summary>
         public static string CSSPCommandNameEnumClearOldUnnecessaryStats {
@@ -1681,6 +1690,15 @@ namespace CSSPCultureServices.Resources {
         public static string CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles {
             get {
                 return ResourceManager.GetString("CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string CSSPCommandNameEnumUnknown {
+            get {
+                return ResourceManager.GetString("CSSPCommandNameEnumUnknown", resourceCulture);
             }
         }
         

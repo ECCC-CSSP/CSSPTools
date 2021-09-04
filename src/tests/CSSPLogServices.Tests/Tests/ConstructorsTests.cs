@@ -1,3 +1,4 @@
+using CSSPEnums;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -25,8 +26,12 @@ namespace CSSPLogServices.Tests
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(CSSPLogService);
             Assert.NotNull(dbManage);
+            Assert.NotNull(CSSPLogService);
+            Assert.Equal("Unknown", CSSPLogService.CSSPAppName);
+            Assert.Equal("Unknown", CSSPLogService.CSSPCommandName);
+            Assert.Equal("", CSSPLogService.sbError.ToString());
+            Assert.Equal("", CSSPLogService.sbLog.ToString());
         }
         #endregion Tests 
 

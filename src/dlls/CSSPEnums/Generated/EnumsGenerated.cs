@@ -152,10 +152,10 @@ namespace CSSPEnums
                     return GetEnumText_ContentSizeEnum((ContentSizeEnum?)ID);
                 case "CountrySubComponentEnum":
                     return GetEnumText_CountrySubComponentEnum((CountrySubComponentEnum?)ID);
-                case "CSSPAppNameEnum":
-                    return GetEnumText_CSSPAppNameEnum((CSSPAppNameEnum?)ID);
-                case "CSSPCommandNameEnum":
-                    return GetEnumText_CSSPCommandNameEnum((CSSPCommandNameEnum?)ID);
+                //case "CSSPAppNameEnum":
+                //    return GetEnumText_CSSPAppNameEnum((CSSPAppNameEnum?)ID);
+                //case "CSSPCommandNameEnum":
+                //    return GetEnumText_CSSPCommandNameEnum((CSSPCommandNameEnum?)ID);
                 case "CSSPWQInputSheetTypeEnum":
                     return GetEnumText_CSSPWQInputSheetTypeEnum((CSSPWQInputSheetTypeEnum?)ID);
                 case "CSSPWQInputTypeEnum":
@@ -902,60 +902,64 @@ namespace CSSPEnums
                     return CSSPCultureEnumsRes.Empty;
             }
         }
-        private string GetEnumText_CSSPAppNameEnum(CSSPAppNameEnum? cSSPAppName)
-        {
-            if (cSSPAppName == null)
-                return CSSPCultureEnumsRes.Empty;
+        //private string GetEnumText_CSSPAppNameEnum(CSSPAppNameEnum? cSSPAppName)
+        //{
+        //    if (cSSPAppName == null)
+        //        return CSSPCultureEnumsRes.Empty;
 
-            switch (cSSPAppName)
-            {
-                case CSSPAppNameEnum.CSSPUpdate:
-                    return CSSPCultureEnumsRes.CSSPAppNameEnumCSSPUpdate;
-                default:
-                    return CSSPCultureEnumsRes.Empty;
-            }
-        }
-        private string GetEnumText_CSSPCommandNameEnum(CSSPCommandNameEnum? cSSPCommandName)
-        {
-            if (cSSPCommandName == null)
-                return CSSPCultureEnumsRes.Empty;
+        //    switch (cSSPAppName)
+        //    {
+        //        case CSSPAppNameEnum.Unknown:
+        //            return CSSPCultureEnumsRes.CSSPAppNameEnumUnknown;
+        //        case CSSPAppNameEnum.CSSPUpdate:
+        //            return CSSPCultureEnumsRes.CSSPAppNameEnumCSSPUpdate;
+        //        default:
+        //            return CSSPCultureEnumsRes.Empty;
+        //    }
+        //}
+        //private string GetEnumText_CSSPCommandNameEnum(CSSPCommandNameEnum? cSSPCommandName)
+        //{
+        //    if (cSSPCommandName == null)
+        //        return CSSPCultureEnumsRes.Empty;
 
-            switch (cSSPCommandName)
-            {
-                case CSSPCommandNameEnum.ClearOldUnnecessaryStats:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumClearOldUnnecessaryStats;
-                case CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveAzureDirectoriesNotFoundInTVFiles;
-                case CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveAzureFilesNotFoundInTVFiles;
-                case CSSPCommandNameEnum.RemoveLocalDirectoriesNotFoundInTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveLocalDirectoriesNotFoundInTVFiles;
-                case CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveLocalFilesNotFoundInTVFiles;
-                case CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveNationalBackupDirectoriesNotFoundInTVFiles;
-                case CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveNationalBackupFilesNotFoundInTVFiles;
-                case CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile;
-                case CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles;
-                case CSSPCommandNameEnum.UpdateAllTVItemStats:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumUpdateAllTVItemStats;
-                case CSSPCommandNameEnum.UpdateChangedTVItemStats:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumUpdateChangedTVItemStats;
-                case CSSPCommandNameEnum.UploadAllFilesToAzure:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadAllFilesToAzure;
-                case CSSPCommandNameEnum.UploadAllJsonFilesToAzure:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadAllJsonFilesToAzure;
-                case CSSPCommandNameEnum.UploadChangedFilesToAzure:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadChangedFilesToAzure;
-                case CSSPCommandNameEnum.UploadChangedJsonFilesToAzure:
-                    return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadChangedJsonFilesToAzure;
-                default:
-                    return CSSPCultureEnumsRes.Empty;
-            }
-        }
+        //    switch (cSSPCommandName)
+        //    {
+        //        case CSSPCommandNameEnum.Unknown:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUnknown;
+        //        case CSSPCommandNameEnum.ClearOldUnnecessaryStats:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumClearOldUnnecessaryStats;
+        //        case CSSPCommandNameEnum.RemoveAzureDirectoriesNotFoundInTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveAzureDirectoriesNotFoundInTVFiles;
+        //        case CSSPCommandNameEnum.RemoveAzureFilesNotFoundInTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveAzureFilesNotFoundInTVFiles;
+        //        case CSSPCommandNameEnum.RemoveLocalDirectoriesNotFoundInTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveLocalDirectoriesNotFoundInTVFiles;
+        //        case CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveLocalFilesNotFoundInTVFiles;
+        //        case CSSPCommandNameEnum.RemoveNationalBackupDirectoriesNotFoundInTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveNationalBackupDirectoriesNotFoundInTVFiles;
+        //        case CSSPCommandNameEnum.RemoveNationalBackupFilesNotFoundInTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveNationalBackupFilesNotFoundInTVFiles;
+        //        case CSSPCommandNameEnum.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile;
+        //        case CSSPCommandNameEnum.RemoveTVItemsNoAssociatedWithTVFiles:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumRemoveTVItemsNoAssociatedWithTVFiles;
+        //        case CSSPCommandNameEnum.UpdateAllTVItemStats:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUpdateAllTVItemStats;
+        //        case CSSPCommandNameEnum.UpdateChangedTVItemStats:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUpdateChangedTVItemStats;
+        //        case CSSPCommandNameEnum.UploadAllFilesToAzure:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadAllFilesToAzure;
+        //        case CSSPCommandNameEnum.UploadAllJsonFilesToAzure:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadAllJsonFilesToAzure;
+        //        case CSSPCommandNameEnum.UploadChangedFilesToAzure:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadChangedFilesToAzure;
+        //        case CSSPCommandNameEnum.UploadChangedJsonFilesToAzure:
+        //            return CSSPCultureEnumsRes.CSSPCommandNameEnumUploadChangedJsonFilesToAzure;
+        //        default:
+        //            return CSSPCultureEnumsRes.Empty;
+        //    }
+        //}
         private string GetEnumText_CSSPWQInputSheetTypeEnum(CSSPWQInputSheetTypeEnum? cSSPWQInputSheetType)
         {
             if (cSSPWQInputSheetType == null)

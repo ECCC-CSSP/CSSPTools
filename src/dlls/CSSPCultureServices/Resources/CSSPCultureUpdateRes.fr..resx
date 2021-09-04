@@ -192,6 +192,9 @@
   <data name="EndedAzureDirectoryCleanup" xml:space="preserve">
     <value>\tErreur lors de la suppression du directoire Azure --&gt; {0}</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ERREUR</value>
+  </data>
   <data name="ErrorDeletingAzureDirectory_" xml:space="preserve">
     <value>\tErreur lors de la suppression du directoire Azure --&gt; {0}</value>
   </data>
@@ -219,14 +222,26 @@
   <data name="ErrorWhileSavingAllTVItemStatsChanges_" xml:space="preserve">
     <value>Erreur lors de la sauvegarde de tous les changements TVItemStats. Erreur: {0}</value>
   </data>
+  <data name="LastWriteTimeUtc_" xml:space="preserve">
+    <value>Dernier temps d'écriture UTC: {0}</value>
+  </data>
   <data name="LocalAppDataPathDoesNotExist_" xml:space="preserve">
     <value>LocalAppDataPath n'existe pas {0}</value>
+  </data>
+  <data name="NumberOfTVItemIDAffected_" xml:space="preserve">
+    <value>Nombre de TVItemID affectés {0}</value>
+  </data>
+  <data name="ReadingConfiguration" xml:space="preserve">
+    <value>Lecture de configuration</value>
   </data>
   <data name="ReadingTVItemStatsForDeletingUnnecessaryStats" xml:space="preserve">
     <value>Lecture de TVItemStats pour enlever les stats non nécessaire</value>
   </data>
   <data name="Reading_" xml:space="preserve">
-    <value>Lecture de {0} ...</value>
+    <value>Lecture de {0}</value>
+  </data>
+  <data name="RecalculatingTheTVItemStats" xml:space="preserve">
+    <value>Présentement recalculage des TVItemStats affectés</value>
   </data>
   <data name="removing" xml:space="preserve">
     <value>enlève</value>
@@ -237,8 +252,11 @@
   <data name="RunningOn" xml:space="preserve">
     <value>Excécution sur</value>
   </data>
-  <data name="Starting" xml:space="preserve">
-    <value>Départ de</value>
+  <data name="SavingInCSSPDBManageDatabase" xml:space="preserve">
+    <value>Sauvegarde dans CSSPDBManage database</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Début</value>
   </data>
   <data name="StartingAzureDirectoryCleanup" xml:space="preserve">
     <value>Départ du netoyage de directoire d'Azure</value>
@@ -255,10 +273,10 @@
   <data name="unnecessaryStats" xml:space="preserve">
     <value>non nécessaire</value>
   </data>
-  <data name="UpdatingAllTVItemStatsTimeStarted_" xml:space="preserve">
-    <value>Mise a jour de tous les TVItemStats. Temps de départ {0}</value>
-  </data>
   <data name="UploadedCount_AndFile_" xml:space="preserve">
     <value>Rélécharger # {0} --- filière {1}</value>
+  </data>
+  <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
+    <value>Dans l'impossibilité de trouver {0} dans la filière de configuration {1}</value>
   </data>
 </root>

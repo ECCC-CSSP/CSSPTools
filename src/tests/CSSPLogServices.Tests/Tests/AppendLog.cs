@@ -26,9 +26,9 @@ namespace CSSPLogServices.Tests
             string LogStr = "Testing";
 
             Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
-            CSSPLogService.AppendLog(LogStr);
+            await CSSPLogService.AppendLog(LogStr);
             Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
-            Assert.StartsWith(LogStr, CSSPLogService.sbLog.ToString());
+            Assert.Contains(LogStr, CSSPLogService.sbLog.ToString());
         }
         #endregion Tests 
 

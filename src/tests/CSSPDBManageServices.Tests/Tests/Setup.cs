@@ -114,7 +114,7 @@ namespace ManageServices.Tests
             }
             catch (Exception ex)
             {
-                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}");
+                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
             }
 
             List<ManageFile> manageFileToDeleteList = (from c in dbManage.ManageFiles

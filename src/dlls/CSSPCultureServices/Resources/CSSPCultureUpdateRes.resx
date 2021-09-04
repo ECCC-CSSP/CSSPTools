@@ -189,6 +189,9 @@
   <data name="End" xml:space="preserve">
     <value>End</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
   <data name="ErrorDeletingAzureDirectory_" xml:space="preserve">
     <value>\tError deleting Azure directory --&gt; {0}</value>
   </data>
@@ -216,14 +219,26 @@
   <data name="ErrorWhileSavingAllTVItemStatsChanges_" xml:space="preserve">
     <value>Error while saving all TVItemStats changes. Error: {0}</value>
   </data>
+  <data name="LastWriteTimeUtc_" xml:space="preserve">
+    <value>Last write time UTC: {0}</value>
+  </data>
   <data name="LocalAppDataPathDoesNotExist_" xml:space="preserve">
     <value>LocalAppDataPath does not exist {0}</value>
+  </data>
+  <data name="NumberOfTVItemIDAffected_" xml:space="preserve">
+    <value>Number of TVItemID affected {0}</value>
+  </data>
+  <data name="ReadingConfiguration" xml:space="preserve">
+    <value>Reading configuration</value>
   </data>
   <data name="ReadingTVItemStatsForDeletingUnnecessaryStats" xml:space="preserve">
     <value>Reading TVItemStats for deleting unnecessary stats</value>
   </data>
   <data name="Reading_" xml:space="preserve">
-    <value>Reading {0} ...</value>
+    <value>Reading {0}</value>
+  </data>
+  <data name="RecalculatingTheTVItemStats" xml:space="preserve">
+    <value>Recalculating the TVItemStats</value>
   </data>
   <data name="removing" xml:space="preserve">
     <value>removing</value>
@@ -234,8 +249,11 @@
   <data name="RunningOn" xml:space="preserve">
     <value>Running on</value>
   </data>
-  <data name="Starting" xml:space="preserve">
-    <value>Starting</value>
+  <data name="SavingInCSSPDBManageDatabase" xml:space="preserve">
+    <value>Saving in CSSPDBManage database</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="StartingAzureDirectoryCleanup" xml:space="preserve">
     <value>Starting Azure directory cleanup</value>
@@ -252,10 +270,10 @@
   <data name="unnecessaryStats" xml:space="preserve">
     <value>unnecessary stats</value>
   </data>
-  <data name="UpdatingAllTVItemStatsTimeStarted_" xml:space="preserve">
-    <value>Updating all TVItemStats. Time started {0}</value>
-  </data>
   <data name="UploadedCount_AndFile_" xml:space="preserve">
     <value>Uploaded count {0} --- file {1}</value>
+  </data>
+  <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
+    <value>{0} could not be found in the configuration file {1}</value>
   </data>
 </root>

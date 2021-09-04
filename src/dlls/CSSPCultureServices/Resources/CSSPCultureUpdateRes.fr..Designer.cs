@@ -61,6 +61,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dans l&apos;impossibilité de trouver {0} dans la filière de configuration {1}.
+        /// </summary>
+        public static string _CouldNotBeFoundInConfigurationFile_ {
+            get {
+                return ResourceManager.GetString("_CouldNotBeFoundInConfigurationFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Les commandes disponible sont.
         /// </summary>
         public static string AllowableCommandsAre {
@@ -286,6 +295,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ERREUR.
+        /// </summary>
+        public static string ERROR {
+            get {
+                return ResourceManager.GetString("ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to \tErreur lors de la suppression du directoire Azure --&gt; {0}.
         /// </summary>
         public static string ErrorDeletingAzureDirectory_ {
@@ -367,6 +385,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dernier temps d&apos;écriture UTC: {0}.
+        /// </summary>
+        public static string LastWriteTimeUtc_ {
+            get {
+                return ResourceManager.GetString("LastWriteTimeUtc_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LocalAppDataPath n&apos;existe pas {0}.
         /// </summary>
         public static string LocalAppDataPathDoesNotExist_ {
@@ -376,11 +403,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lecture de {0} ....
+        ///   Looks up a localized string similar to Nombre de TVItemID affectés {0}.
+        /// </summary>
+        public static string NumberOfTVItemIDAffected_ {
+            get {
+                return ResourceManager.GetString("NumberOfTVItemIDAffected_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lecture de {0}.
         /// </summary>
         public static string Reading_ {
             get {
                 return ResourceManager.GetString("Reading_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lecture de configuration.
+        /// </summary>
+        public static string ReadingConfiguration {
+            get {
+                return ResourceManager.GetString("ReadingConfiguration", resourceCulture);
             }
         }
         
@@ -390,6 +435,15 @@ namespace CSSPCultureServices.Resources {
         public static string ReadingTVItemStatsForDeletingUnnecessaryStats {
             get {
                 return ResourceManager.GetString("ReadingTVItemStatsForDeletingUnnecessaryStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Présentement recalculage des TVItemStats affectés.
+        /// </summary>
+        public static string RecalculatingTheTVItemStats {
+            get {
+                return ResourceManager.GetString("RecalculatingTheTVItemStats", resourceCulture);
             }
         }
         
@@ -421,11 +475,20 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Départ de.
+        ///   Looks up a localized string similar to Sauvegarde dans CSSPDBManage database.
         /// </summary>
-        public static string Starting {
+        public static string SavingInCSSPDBManageDatabase {
             get {
-                return ResourceManager.GetString("Starting", resourceCulture);
+                return ResourceManager.GetString("SavingInCSSPDBManageDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Début.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
         
@@ -471,15 +534,6 @@ namespace CSSPCultureServices.Resources {
         public static string unnecessaryStats {
             get {
                 return ResourceManager.GetString("unnecessaryStats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mise a jour de tous les TVItemStats. Temps de départ {0}.
-        /// </summary>
-        public static string UpdatingAllTVItemStatsTimeStarted_ {
-            get {
-                return ResourceManager.GetString("UpdatingAllTVItemStatsTimeStarted_", resourceCulture);
             }
         }
         

@@ -30,8 +30,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -188,8 +188,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -219,8 +219,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -250,8 +250,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -281,8 +281,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -312,8 +312,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -343,8 +343,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {
@@ -372,8 +372,8 @@ namespace ManageServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            CSSPAppNameEnum csspAppName = CSSPAppNameEnum.CSSPUpdate;
-            CSSPCommandNameEnum csspCommandName = CSSPCommandNameEnum.ClearOldUnnecessaryStats;
+            string csspAppName = "CSSPUpdate";
+            string csspCommandName = "ClearOldUnnecessaryStats";
 
             CommandLog commandLog = new CommandLog()
             {

@@ -12,14 +12,15 @@ using System.Text.Json;
 using System.IO;
 using CSSPCultureServices.Resources;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
         public async Task<bool> GetNeedToChangedWebAllHelpDocs(DateTime LastWriteTimeUtc)
         {
-
             bool exist = (from c in db.HelpDocs
                      where c.LastUpdateDate_UTC >= LastWriteTimeUtc
                      select c).Any();

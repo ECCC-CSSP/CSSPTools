@@ -8,15 +8,17 @@ namespace CSSPCultureServices.Services
     public partial interface ICSSPCultureService
     {
         List<string> AllowableCultures { get; }
+        int LangID { get; set; }
         void SetCulture(string culture);
     }
     public partial class CSSPCultureService : ICSSPCultureService
     {
         public List<string> AllowableCultures { get; }
+        public int LangID { get; set; }
         public CSSPCultureService()
         {
             AllowableCultures = new List<string>() { "en-CA", "fr-CA" };
-            SetCulture("en-CA"); 
+            SetCulture("en-CA");
         }
 
         public void SetCulture(string culture)
@@ -24,6 +26,15 @@ namespace CSSPCultureServices.Services
             if (!AllowableCultures.Contains(culture))
             {
                 culture = AllowableCultures[0];
+            }
+
+            if (culture == "fr-CA")
+            {
+                LangID = 1;
+            }
+            else
+            {
+                LangID = 0;
             }
 
             CSSPCultureDesktopRes.Culture = new CultureInfo(culture);

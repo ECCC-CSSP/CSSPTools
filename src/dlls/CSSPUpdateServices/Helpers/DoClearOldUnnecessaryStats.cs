@@ -6,25 +6,24 @@ using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
 using ManageServices;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        private async Task<bool> DoClearOldUnnecessaryStats()
+        private async Task<ActionResult<bool>> DoClearOldUnnecessaryStats()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoClearOldUnnecessaryStats ...");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.ReadingTVItemStatsForDeletingUnnecessaryStats } ...");
+            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.ReadingTVItemStatsForDeletingUnnecessaryStats } { DateTime.Now }");
 
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                                where !(c.TVType == TVTypeEnum.Root
@@ -46,7 +45,7 @@ namespace CSSPUpdateServices
                                                || c.TVType == TVTypeEnum.VisualPlumesScenario)
                                                select c).ToList();
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.ReadingTVItemStatsForDeletingUnnecessaryStats } --- { CSSPCultureUpdateRes.removing } [{TVItemStatList.Count}] { CSSPCultureUpdateRes.unnecessaryStats }");
+            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.removing } [{TVItemStatList.Count}] { CSSPCultureUpdateRes.unnecessaryStats } { DateTime.Now }");
 
             try
             {
@@ -55,11 +54,13 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError($"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) } { DateTime.Now }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.ClearOldUnnecessaryStats);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
             TVItemStatList = (from t in db.TVItems
@@ -74,7 +75,7 @@ namespace CSSPUpdateServices
                               || t.TVType == TVTypeEnum.Municipality)
                               select c).ToList();
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats } --- { CSSPCultureUpdateRes.removing } {TVItemStatList.Count} { CSSPCultureUpdateRes.unnecessaryStats }");
+            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.removing } {TVItemStatList.Count} { CSSPCultureUpdateRes.unnecessaryStats } { DateTime.Now }");
 
             try
             {
@@ -83,11 +84,13 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError($"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) } { DateTime.Now }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.ClearOldUnnecessaryStats);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
             List<TVTypeEnum> tvTypeList = new List<TVTypeEnum>() { TVTypeEnum.Area, TVTypeEnum.Sector, TVTypeEnum.Subsector };
@@ -107,7 +110,7 @@ namespace CSSPUpdateServices
                                   || c.TVType == TVTypeEnum.MikeScenario)
                                   select c).ToList();
 
-                CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.CleaningCSSPDBOfOldTVItemStats } --- { CSSPCultureUpdateRes.removing } {TVItemStatList.Count} { CSSPCultureUpdateRes.unnecessaryStats }");
+                await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.removing } {TVItemStatList.Count} { CSSPCultureUpdateRes.unnecessaryStats } { DateTime.Now }");
 
                 try
                 {
@@ -116,19 +119,19 @@ namespace CSSPUpdateServices
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError($"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) }");
+                    await CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureUpdateRes.CouldNotRemoveTVItemStatsFromCSSPDBError_, ex.Message) } { DateTime.Now }", new[] { "" }));
 
-                    await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.ClearOldUnnecessaryStats);
+                    await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                    return await Task.FromResult(false);
+                    await CSSPLogService.Save();
+
+                    return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                 }
             }
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoClearOldUnnecessaryStats ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.ClearOldUnnecessaryStats);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
         }
     }
 }

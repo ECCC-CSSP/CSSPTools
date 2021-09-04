@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,8 +13,8 @@ namespace UpdateServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            bool retBool = await CSSPUpdateService.RemoveTVItemsNoAssociatedWithTVFiles();
-            Assert.True(retBool);
+            var actionRes = await CSSPUpdateService.RemoveTVItemsNoAssociatedWithTVFiles();
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
         }
     }
 }

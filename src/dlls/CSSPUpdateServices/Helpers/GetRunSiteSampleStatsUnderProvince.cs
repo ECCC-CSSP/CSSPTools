@@ -1,24 +1,27 @@
-﻿using CSSPDBModels;
+﻿using CSSPCultureServices.Resources;
+using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        private async Task GetRunSiteSampleStatsUnderProvince(List<TVItem> TVItemList, List<TVItem> TVItemProvList, List<TVItemStat> TVItemStat2List)
+        public async Task<ActionResult<bool>> GetRunSiteSampleStatsUnderProvince(List<TVItem> TVItemList, List<TVItem> TVItemProvList, List<TVItemStat> TVItemStat2List)
         {
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
             foreach (TVItem tvItem in TVItemProvList)
             {
-                Console.WriteLine($"Create WebMonitoringRoutineStatsProvince [{tvItem.TVItemID}] doing...");
                 await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
-                Console.WriteLine($"Create WebMonitoringOtherStatsProvince [{tvItem.TVItemID}] doing...");
                 await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
 
                 WebMonitoringRoutineStatsProvince webMonitoringRoutineStatsProvince;
@@ -161,6 +164,10 @@ namespace CSSPUpdateServices
                     TVItemStat2List.Add(new TVItemStat() { TVItemID = tvItem.TVItemID, DBCommand = DBCommandEnum.Original, TVType = TVTypeEnum.MWQMSiteSample, ChildCount = ChildMWQMSampleCountSubsector, LastUpdateDate_UTC = DateTime.Now, LastUpdateContactTVItemID = 2 });
                 }
             }
+
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+            return await Task.FromResult(Ok(true));
         }
     }
 }

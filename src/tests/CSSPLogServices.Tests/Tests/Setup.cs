@@ -17,6 +17,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
+using CSSPLogServices.Models;
 
 namespace CSSPLogServices.Tests
 {
@@ -36,6 +37,7 @@ namespace CSSPLogServices.Tests
         private ICSSPLogService CSSPLogService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         private FileInfo fiCSSPDBManageTest { get; set; }
+        private CSSPLogServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,6 +49,8 @@ namespace CSSPLogServices.Tests
         #region Functions private
         private async Task<bool> Setup(string culture)
         {
+            config = new CSSPLogServiceConfigModel();
+
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_cssplogservicestests.json")
@@ -61,16 +65,16 @@ namespace CSSPLogServices.Tests
              * Creating an empty CSSPDBManage SQLite test database
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(CSSPDBManage);
+            config.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(config.CSSPDBManage);
 
-            string CSSPDBManageTest = CSSPDBManage.Replace(".db", "_test.db");
+            config.CSSPDBManageTest = config.CSSPDBManage.Replace(".db", "_test.db");
 
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+            FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
 
             Assert.True(fiCSSPDBManage.Exists);
 
-            fiCSSPDBManageTest = new FileInfo(CSSPDBManageTest);
+            fiCSSPDBManageTest = new FileInfo(config.CSSPDBManageTest);
             if (!fiCSSPDBManageTest.Exists)
             {
                 try
@@ -116,6 +120,8 @@ namespace CSSPLogServices.Tests
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
 
+            await CSSPLogService.FillConfigModel(config);
+
             dbManage = Provider.GetService<CSSPDBManageContext>();
             Assert.NotNull(dbManage);
 
@@ -129,7 +135,7 @@ namespace CSSPLogServices.Tests
             }
             catch (Exception ex)
             {
-                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}");
+                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
             }
 
             return await Task.FromResult(true);

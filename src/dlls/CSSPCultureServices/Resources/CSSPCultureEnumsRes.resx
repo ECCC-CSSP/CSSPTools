@@ -3423,4 +3423,10 @@
   <data name="CSSPCommandNameEnumUploadChangedJsonFilesToAzure" xml:space="preserve">
     <value>UploadChangedJsonFilesToAzure</value>
   </data>
+  <data name="CSSPAppNameEnumUnknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="CSSPCommandNameEnumUnknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>

@@ -32,7 +32,7 @@ namespace CSSPDesktopServices.Services
             }
             catch (Exception ex)
             {
-                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotSetAllManageFilesLoadedOnceToFalse));
+                AppendStatus(new AppendEventArgs($"{CSSPCultureDesktopRes.CouldNotSetAllManageFilesLoadedOnceToFalse} Ex: { ex.Message }"));
             }
 
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.SetAllManageFilesLoadedOnceToFalse));

@@ -3,34 +3,35 @@ using Azure.Storage.Files.Shares;
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPUpdateServices
 {
-    public partial class CSSPUpdateService : ICSSPUpdateService
+    public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<bool> DoRemoveLocalFilesNotFoundInTVFiles()
+        public async Task<ActionResult<bool>> DoRemoveLocalFilesNotFoundInTVFiles()
         {
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.Starting } DoRemoveLocalFilesNotFoundInTVFiles ...");
-
-            if (!await CheckComputerName()) return await Task.FromResult(false);
-
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RunningOn } { Environment.MachineName.ToString().ToLower() }");
+            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }", new[] { "" }));
 
-                await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles);
+                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                return await Task.FromResult(false);
+                await CSSPLogService.Save();
+
+                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
             List<TVItem> TVItemList = (from c in db.TVItems
@@ -56,11 +57,13 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+                    await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }", new[] { "" }));
 
-                    await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles);
+                    await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-                    return await Task.FromResult(false);
+                    await CSSPLogService.Save();
+
+                    return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                 }
 
                 ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
@@ -100,7 +103,7 @@ namespace CSSPUpdateServices
                     {
                         string ParentIDFileName = $@"{parentAndFileName.ParentID}\{parentAndFileName.ServerFileName}";
 
-                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingTVFileAndTVItem_, ParentIDFileName) }");
+                        await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingTVFileAndTVItem_, ParentIDFileName) }");
 
                         TVItem tvItem = (from c in db.TVItems
                                          where c.TVType == TVTypeEnum.File
@@ -121,7 +124,13 @@ namespace CSSPUpdateServices
                             }
                             catch (Exception ex)
                             {
-                                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotDeleteTVFileWithTVFileID_Error_, parentAndFileName.TVFileID, ex.Message) }");
+                                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotDeleteTVFileWithTVFileID_Error_, parentAndFileName.TVFileID, ex.Message) }", new[] { "" }));
+
+                                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                                await CSSPLogService.Save();
+
+                                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                             }
 
                             try
@@ -131,7 +140,13 @@ namespace CSSPUpdateServices
                             }
                             catch (Exception ex)
                             {
-                                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotDeleteTVItemWithTVItemID_Error_, parentAndFileName.TVItemID, ex.Message) }");
+                                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotDeleteTVItemWithTVItemID_Error_, parentAndFileName.TVItemID, ex.Message) }", new[] { "" }));
+
+                                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                                await CSSPLogService.Save();
+
+                                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                             }
                         }
                     }
@@ -141,7 +156,7 @@ namespace CSSPUpdateServices
                 {
                     if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfo.Name).Any())
                     {
-                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingLocalFile_, fileInfo.FullName) }");
+                        await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingLocalFile_, fileInfo.FullName) }");
 
                         try
                         {
@@ -149,17 +164,21 @@ namespace CSSPUpdateServices
                         }
                         catch (Exception ex)
                         {
-                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingLocalFile_Error_, fileInfo.FullName, ex.Message) }");
+                            await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingLocalFile_Error_, fileInfo.FullName, ex.Message) }", new[] { "" }));
+
+                            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                            await CSSPLogService.Save();
+
+                            return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
                         }
                     }
                 }
             }
 
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveLocalFilesNotFoundInTVFiles ...");
+            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.RemoveLocalFilesNotFoundInTVFiles);
-
-            return await Task.FromResult(true);
+            return await Task.FromResult(Ok(true));
 
         }
     }
