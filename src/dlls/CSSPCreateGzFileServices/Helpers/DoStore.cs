@@ -5,8 +5,10 @@
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using CSSPCultureServices.Resources;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -47,77 +49,99 @@ namespace CreateGzFileServices
                 FileExistInAzure = false;
             }
 
-            if (!FileExistInAzure)
+            FileInfo fi = new FileInfo($@"{config.azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json")}");
+            FileInfo fi2 = new FileInfo($@"{config.azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json2")}");
+            FileInfo fiComp = new FileInfo($@"{config.azure_csspjson_backup}\{fileName}");
+
+            if (fi.Exists)
             {
-                FileInfo fi = new FileInfo($@"{config.azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json")}");
-                FileInfo fi2 = new FileInfo($@"{config.azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json2")}");
-                FileInfo fiComp = new FileInfo($@"{config.azure_csspjson_backup}\{fileName}");
-
-                if (!fiComp.Exists)
-                {
-                    FileStream fsComp = new FileStream(fiComp.FullName, FileMode.Create);
-
-                    Stream msComp = Compress(new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson))));
-                    msComp.CopyTo(fsComp);
-                    msComp.Close();
-
-                    fsComp.Close();
-
-                    FileStream fs = new FileStream(fi.FullName, FileMode.Create);
-
-                    MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson)));
-                    ms.CopyTo(fs);
-                    ms.Close();
-
-                    fs.Close();
-
-                    ShouldSendToAzure = true;
-                }
-
-                if (!ShouldSendToAzure)
+                try
                 {
                     System.IO.File.Move(fi.FullName, fi2.FullName, true);
+                }
+                catch (Exception ex)
+                {
+                    string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    return await Task.FromResult(false);
+                }
+            }
 
+            try
+            {
+                FileStream fs = new FileStream(fi.FullName, FileMode.Create);
+                MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson)));
+                ms.CopyTo(fs);
+                ms.Close();
+                fs.Close();
+            }
+            catch (Exception ex)
+            {
+                string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+                await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                await CSSPLogService.EndFunctionLog(FunctionName);
+                return await Task.FromResult(false);
+            }
+
+            if (fi.Exists && fi2.Exists)
+            {
+                if (!FileCompare(fi.FullName, fi2.FullName))
+                {
+                    ShouldSendToAzure = true;
+                }
+            }
+
+            if (!fiComp.Exists || ShouldSendToAzure)
+            {
+                try
+                {
                     FileStream fsComp = new FileStream(fiComp.FullName, FileMode.Create);
-
                     Stream msComp = Compress(new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson))));
                     msComp.CopyTo(fsComp);
                     msComp.Close();
-
                     fsComp.Close();
-
-                    FileStream fs = new FileStream(fi.FullName, FileMode.Create);
-
-                    MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson)));
-                    ms.CopyTo(fs);
-                    ms.Close();
-
-                    fs.Close();
                 }
-
-                if (fi2.Exists)
+                catch (Exception ex)
                 {
-                    if (!FileCompare(fi.FullName, fi2.FullName))
-                    {
-                        ShouldSendToAzure = true;
-                    }
+                    string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    return await Task.FromResult(false);
                 }
 
-                if (fi2.Exists)
+                ShouldSendToAzure = true;
+            }
+
+            if (fi2.Exists)
+            {
+                try
                 {
                     fi2.Delete();
+                }
+                catch (Exception ex)
+                {
+                    string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    return await Task.FromResult(false);
                 }
             }
 
             if (ShouldSendToAzure || !FileExistInAzure)
             {
-                //BlobClient blobClient = new BlobClient(config.AzureStore, config.AzureStoreCSSPJSONPath, fileName);
-                await blobClient.UploadAsync(Compress(new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson)))), true);
-
-                //BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, fileName.Replace("gz", "json"));
-                //await blobClient.UploadAsync(new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson))), true);
+                try
+                {
+                    await blobClient.UploadAsync(Compress(new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson)))), true);
+                }
+                catch (Exception ex)
+                {
+                    string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    return await Task.FromResult(false);
+                }
             }
-
 
             await CSSPLogService.EndFunctionLog(FunctionName);
 
