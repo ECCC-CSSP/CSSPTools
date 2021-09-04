@@ -35,7 +35,19 @@ namespace CreateGzFileServices.Tests
             Assert.True(await Setup(culture));
 
             SetVar(WebTypeEnum.WebAllAddresses);
-            var actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllAddresses);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllAddresses);
+            CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
+
+            Assert.True(await Setup(culture));
+
+            SetVar(WebTypeEnum.WebAllAddresses);
+            actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllAddresses);
+            CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
+
+            Assert.True(await Setup(culture));
+
+            SetVar(WebTypeEnum.WebAllAddresses);
+            actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllAddresses);
             CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
         }
         #endregion Functions private
