@@ -19,7 +19,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillAllSearchTVItemModelList(List<TVItemModel> TVItemSearchList)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVItemModel> TVItemSearchList)";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVItemModel> TVItemSearchList)";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<TVItem> TVItemList = await GetSearchableTVItem();

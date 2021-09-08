@@ -46,9 +46,6 @@ namespace CreateGzFileServices.Tests
         #region Constructors
         #endregion Constructors
 
-        #region Tests Generated CRUD
-        #endregion Tests Generated CRUD
-
         #region Functions private
         private async Task<bool> Setup(string culture)
         {

@@ -12,14 +12,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CSSPAzureAppTaskServices
 {
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
-        private bool DoAddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
+        private async Task<bool> DoAddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
         {
-            ValidationResults = new List<ValidationResult>();
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
+            await CSSPLogService.FunctionLog(FunctionName);
+            await CSSPLogService.AppendLog($"AppTaskID: { postAppTaskModel.AppTask.AppTaskID} -- AppTaskCommand: { postAppTaskModel.AppTask.AppTaskCommand } -- TVItemID: { postAppTaskModel.AppTask.TVItemID }");
 
             AppTask appTask = new AppTask();
 
@@ -33,7 +37,7 @@ namespace CSSPAzureAppTaskServices
 
                 if (appTask != null)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"), new[] { "" }));
+                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"), new[] { "" }));
                     return false;
                 }
 
@@ -52,7 +56,7 @@ namespace CSSPAzureAppTaskServices
 
                 if (appTask == null)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", postAppTaskModel.AppTask.AppTaskID.ToString()), new[] { "" }));
+                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", postAppTaskModel.AppTask.AppTaskID.ToString()), new[] { "" }));
                     return false;
                 }
 
@@ -80,11 +84,11 @@ namespace CSSPAzureAppTaskServices
             {
                 if (postAppTaskModel.AppTask.AppTaskID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message), new[] { "" }));
+                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message), new[] { "" }));
                 }
                 else
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotModify_Error_, "AppTask", ex.Message), new[] { "" }));
+                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotModify_Error_, "AppTask", ex.Message), new[] { "" }));
                 }
 
                 return false;
@@ -104,7 +108,7 @@ namespace CSSPAzureAppTaskServices
 
                     if (appTaskLanguage == null)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", lang), new[] { "" }));
+                        await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", lang), new[] { "" }));
                         return false;
                     }
 
@@ -118,7 +122,7 @@ namespace CSSPAzureAppTaskServices
 
                     if (appTaskLanguageOfModel == null)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", lang), new[] { "" }));
+                        await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", lang), new[] { "" }));
                         return false;
                     }
 
@@ -140,18 +144,22 @@ namespace CSSPAzureAppTaskServices
                 {
                     if (postAppTaskModel.AppTask.AppTaskID == 0)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message), new[] { "" }));
+                        await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message), new[] { "" }));
                     }
                     else
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotModify_Error_, "AppTaskLanguage", ex.Message), new[] { "" }));
+                        await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotModify_Error_, "AppTaskLanguage", ex.Message), new[] { "" }));
                     }
 
                     return false;
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            await CSSPLogService.EndFunctionLog(FunctionName);
+
+            if (CSSPLogService.ValidationResultList.Count > 0) return await Task.FromResult(false);
+
+            return await Task.FromResult(true);
         }
     }
 }

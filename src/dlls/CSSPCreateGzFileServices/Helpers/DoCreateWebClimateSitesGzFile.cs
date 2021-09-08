@@ -18,7 +18,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebClimateSitesGzFile(int ProvinceTVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(ProvinceTVItemID: { ProvinceTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(ProvinceTVItemID: { ProvinceTVItemID })";
             await CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemProvince = await GetTVItemWithTVItemID(ProvinceTVItemID);

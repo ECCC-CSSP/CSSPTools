@@ -16,13 +16,12 @@ using LoggedInServices;
 using System.ComponentModel.DataAnnotations;
 using CSSPLogServices;
 using System.Reflection;
-using CSSPCreateGzFileServices.Models;
 
 namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task<bool> CheckLogin(string FunctionName)
+        public async Task<bool> CheckLogin(string FunctionName)
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

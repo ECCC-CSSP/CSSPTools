@@ -22,7 +22,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebMonitoringOtherStatsCountryGzFile(int CountryTVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(CountryTVItemID: { CountryTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(CountryTVItemID: { CountryTVItemID })";
 
             await CSSPLogService.FunctionLog(FunctionName);
 

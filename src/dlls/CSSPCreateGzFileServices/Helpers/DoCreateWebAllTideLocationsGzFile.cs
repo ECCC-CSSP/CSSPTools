@@ -18,7 +18,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebAllTideLocationsGzFile()
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             await CSSPLogService.FunctionLog(FunctionName);
 
             WebAllTideLocations webAllTideLocations = new WebAllTideLocations();

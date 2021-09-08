@@ -20,7 +20,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebSectorGzFile(int SectorTVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(SectorTVItemID: { SectorTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(SectorTVItemID: { SectorTVItemID })";
             await CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemSector = await GetTVItemWithTVItemID(SectorTVItemID);

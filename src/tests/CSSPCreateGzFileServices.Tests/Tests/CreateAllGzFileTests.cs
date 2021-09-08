@@ -16,17 +16,6 @@ namespace CreateGzFileServices.Tests
 {
     public partial class CreateGzFileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory(Skip = "Skip as it takes a long time. Still wants a marker however")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -41,10 +30,5 @@ namespace CreateGzFileServices.Tests
             //var actionRes = await CreateGzFileService.CreateAllGzFiles();
             //CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
         }
-        #endregion Tests 
-
-        #region Functions private
-
-        #endregion Functions private
     }
 }

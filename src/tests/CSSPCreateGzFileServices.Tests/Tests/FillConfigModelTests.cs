@@ -16,17 +16,6 @@ namespace CreateGzFileServices.Tests
 {
     public partial class CreateGzFileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -36,6 +25,5 @@ namespace CreateGzFileServices.Tests
 
             Assert.True(await CreateGzFileService.FillConfigModel(config));
         }
-        #endregion Functions private
     }
 }

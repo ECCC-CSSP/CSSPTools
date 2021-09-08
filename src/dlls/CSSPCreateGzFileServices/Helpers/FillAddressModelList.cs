@@ -20,7 +20,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillAddressModelList(List<AddressModel> AddressModelList, TVItem TVItem)
         {
-            await CSSPLogService.FunctionLog($"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<AddressModel> AddressModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })");
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<AddressModel> AddressModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
+            await CSSPLogService.FunctionLog(FunctionName);
 
             List<Address> AddressList = await GetAllAddress();
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.Address);
@@ -50,7 +51,7 @@ namespace CreateGzFileServices
                 }); ;
             }
 
-            await CSSPLogService.EndFunctionLog($"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<AddressModel> AddressModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })");
+            await CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

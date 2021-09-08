@@ -3,10 +3,12 @@
  *
  */
 
+using CSSPAzureAppTaskServices.Models;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CSSPAzureAppTaskServices
@@ -24,6 +27,8 @@ namespace CSSPAzureAppTaskServices
         Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel);
         Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID);
         Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask();
+        Task<bool> FillConfigModel(CSSPAzureAppTaskServiceConfigModel config);
+
     }
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
@@ -35,86 +40,25 @@ namespace CSSPAzureAppTaskServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
+        private ICSSPLogService CSSPLogService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResults { get; set; }
+        private CSSPAzureAppTaskServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors
-        public AzureAppTaskService(ICSSPCultureService CSSPCultureService, IEnums enums, 
-            ILoggedInService LoggedInService, CSSPDBContext db)
+        public AzureAppTaskService(ICSSPCultureService CSSPCultureService, IEnums enums,
+            ILoggedInService LoggedInService, ICSSPLogService CSSPLogService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
+            this.CSSPLogService = CSSPLogService;
             this.enums = enums;
             this.db = db;
         }
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
-        {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-            }
-
-            if (!ValidateAzureAddOrModifyAppTaskModel(postAppTaskModel))
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            if (!DoAddOrModifyAzureAppTask(postAppTaskModel))
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            return await Task.FromResult(Ok(postAppTaskModel));
-        }
-        public async Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID)
-        {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-            }
-
-            if (!ValidateDeleteAzureAppTask(appTaskID))
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            if (!DoDeleteAzureAppTask(appTaskID))
-            {
-                return await Task.FromResult(BadRequest(ValidationResults));
-            }
-
-            return await Task.FromResult(Ok(true));
-        }
-        public async Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask()
-        {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-            }
-
-            List<PostAppTaskModel> appTaskModelList = new List<PostAppTaskModel>();
-
-            List<AppTask> appTaskList = (from c in db.AppTasks select c).ToList();
-            List<AppTaskLanguage> appTaskLanguageList = (from c in db.AppTaskLanguages select c).ToList();
-
-            foreach(AppTask appTask in appTaskList)
-            {
-                appTaskModelList.Add(new PostAppTaskModel()
-                {
-                    AppTask = appTask,
-                    AppTaskLanguageList = (from c in appTaskLanguageList
-                                           where c.AppTaskID == appTask.AppTaskID
-                                           select c).ToList()
-                });
-            }
-
-            return await Task.FromResult(Ok(appTaskModelList));
-        }
         #endregion Functions public
 
         #region Functions private

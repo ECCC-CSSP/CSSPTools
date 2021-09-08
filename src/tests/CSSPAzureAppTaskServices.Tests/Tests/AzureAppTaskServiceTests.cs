@@ -6,8 +6,11 @@
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
 using CSSPWebModels;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,63 +26,95 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_Constructor_Good_Test(string culture)
+        public async Task Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
+            Assert.NotNull(CSSPLogService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
-            Assert.NotNull(db);
             Assert.NotNull(AzureAppTaskService);
+            Assert.NotNull(config);
+            Assert.NotNull(db);
+            Assert.NotNull(dbManage);
 
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_Add_Good_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_Add_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             PostAppTaskModel appTaskModel = FillAppTaskModel();
-
-            List<PostAppTaskModel> appTaskModelListRet2 = await TestGetAll();
-            int appTaskModelCount = appTaskModelListRet2.Count;
-
-            PostAppTaskModel appTaskModelRet = await TestAddOrModify(appTaskModel);
 
             List<PostAppTaskModel> appTaskModelListRet = await TestGetAll();
-            Assert.True(appTaskModelListRet.Count > 0);
-            Assert.Equal(appTaskModelCount + 1, appTaskModelListRet.Count);
+            Assert.Empty(appTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
 
-            await TestDelete(appTaskModelRet.AppTask.AppTaskID);
+            // ----------- 
+            // TestAddOrModify
+            PostAppTaskModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
+            Assert.NotNull(postAppTaskModelRet);
+            Assert.NotNull(postAppTaskModelRet.AppTask);
+            Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(1, await GetCommandLogCount());
+
+
+            appTaskModelListRet = await TestGetAll();
+            Assert.NotEmpty(appTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+
+            // ----------- 
+            // TestDelete
+            await TestDelete(postAppTaskModelRet.AppTask.AppTaskID);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(2, await GetCommandLogCount());
+
+            appTaskModelListRet = await TestGetAll();
+            Assert.Empty(appTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_Modify_Good_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_Modify_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             PostAppTaskModel appTaskModel = FillAppTaskModel();
 
-            List<PostAppTaskModel> appTaskModelListRet2 = await TestGetAll();
-            int appTaskModelCount = appTaskModelListRet2.Count;
+            List<PostAppTaskModel> postAppTaskModelListRet = await TestGetAll();
+            Assert.Empty(postAppTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
 
-            PostAppTaskModel appTaskModelRet = await TestAddOrModify(appTaskModel);
+            PostAppTaskModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
+            Assert.NotNull(postAppTaskModelRet);
+            Assert.NotNull(postAppTaskModelRet.AppTask);
+            Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(1, await GetCommandLogCount());
 
             string StatusText = "New Status Text";
             string ErrorText = "New Error Text";
 
-            appTaskModelRet.AppTask.DBCommand = DBCommandEnum.Modified;
-            appTaskModelRet.AppTaskLanguageList[0].DBCommand = DBCommandEnum.Modified;
-            appTaskModelRet.AppTaskLanguageList[0].StatusText = StatusText;
-            appTaskModelRet.AppTaskLanguageList[0].ErrorText = ErrorText;
-            appTaskModelRet.AppTaskLanguageList[1].DBCommand = DBCommandEnum.Modified;
-            appTaskModelRet.AppTaskLanguageList[1].StatusText = StatusText;
-            appTaskModelRet.AppTaskLanguageList[1].ErrorText = ErrorText;
+            postAppTaskModelRet.AppTask.DBCommand = DBCommandEnum.Modified;
+            postAppTaskModelRet.AppTaskLanguageList[0].DBCommand = DBCommandEnum.Modified;
+            postAppTaskModelRet.AppTaskLanguageList[0].StatusText = StatusText;
+            postAppTaskModelRet.AppTaskLanguageList[0].ErrorText = ErrorText;
+            postAppTaskModelRet.AppTaskLanguageList[1].DBCommand = DBCommandEnum.Modified;
+            postAppTaskModelRet.AppTaskLanguageList[1].StatusText = StatusText;
+            postAppTaskModelRet.AppTaskLanguageList[1].ErrorText = ErrorText;
 
-            PostAppTaskModel appTaskModelRet5 = await TestAddOrModify(appTaskModelRet);
+            PostAppTaskModel appTaskModelRet5 = await TestAddOrModify(postAppTaskModelRet);
+            Assert.NotNull(postAppTaskModelRet);
+            Assert.NotNull(postAppTaskModelRet.AppTask);
+            Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(2, await GetCommandLogCount());
 
             Assert.Equal(DBCommandEnum.Modified, appTaskModelRet5.AppTask.DBCommand);
             Assert.Equal(DBCommandEnum.Modified, appTaskModelRet5.AppTaskLanguageList[0].DBCommand);
@@ -90,32 +125,56 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.Equal(ErrorText, appTaskModelRet5.AppTaskLanguageList[1].ErrorText);
 
             List<PostAppTaskModel> appTaskModelListRet = await TestGetAll();
+            Assert.NotEmpty(appTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
 
-            Assert.True(appTaskModelListRet.Count > 0);
-            Assert.Equal(appTaskModelCount + 1, appTaskModelListRet.Count);
+            await TestDelete(postAppTaskModelRet.AppTask.AppTaskID);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(3, await GetCommandLogCount());
 
-            await TestDelete(appTaskModelRet.AppTask.AppTaskID);
+            appTaskModelListRet = await TestGetAll();
+            Assert.Empty(appTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_Add_AlreayExist_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_Add_AlreayExist_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             PostAppTaskModel appTaskModel = FillAppTaskModel();
 
-            PostAppTaskModel appTaskModelRet = await TestAddOrModify(appTaskModel);
+            List<PostAppTaskModel> postAppTaskModelListRet = await TestGetAll();
+            Assert.Empty(postAppTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+
+            PostAppTaskModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
+            Assert.NotNull(postAppTaskModelRet);
+            Assert.NotNull(postAppTaskModelRet.AppTask);
+            Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(1, await GetCommandLogCount());
 
             PostAppTaskModel appTaskModel2 = FillAppTaskModel();
             await TestAddOrModifyError(appTaskModel2, string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"));
+            Assert.NotEmpty(CSSPLogService.ValidationResultList);
+            Assert.Equal(2, await GetCommandLogCount());
 
-            await TestDelete(appTaskModelRet.AppTask.AppTaskID);
+            CSSPLogService.ValidationResultList = new List<ValidationResult>();
+
+            await TestDelete(postAppTaskModelRet.AppTask.AppTaskID);
+            Assert.Empty(CSSPLogService.ValidationResultList);
+            Assert.Equal(3, await GetCommandLogCount());
+
+            postAppTaskModelListRet = await TestGetAll();
+            Assert.Empty(postAppTaskModelListRet);
+            Assert.Empty(CSSPLogService.ValidationResultList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_Modify_CouldNotFind_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_Modify_CouldNotFind_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -133,12 +192,14 @@ namespace CSSPAzureAppTaskServices.Tests
             appTaskModel2.AppTaskLanguageList[1].AppTaskID = -1;
             await TestAddOrModifyError(appTaskModel2, string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskModel2.AppTask.AppTaskID.ToString()));
 
+            CSSPLogService.ValidationResultList = new List<ValidationResult>();
+
             await TestDelete(AppTaskIDToDelete);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_DeleteAzureAppTask_AppTask_NotFound_Error_Test(string culture)
+        public async Task DeleteAzureAppTask_AppTask_NotFound_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -150,12 +211,14 @@ namespace CSSPAzureAppTaskServices.Tests
 
             await TestDeleteError(AppTaskID, string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString()));
 
+            CSSPLogService.ValidationResultList = new List<ValidationResult>();
+
             await TestDelete(appTaskModelRet.AppTask.AppTaskID);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_DBCommand_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_DBCommand_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -164,11 +227,13 @@ namespace CSSPAzureAppTaskServices.Tests
             appTaskModel.AppTask.DBCommand = (DBCommandEnum)10000;
 
             await TestAddOrModifyError(appTaskModel, string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
+
+            CSSPLogService.ValidationResultList = new List<ValidationResult>();
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_TVItemID_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_TVItemID_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -181,7 +246,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_TVItemID2_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_TVItemID2_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -194,7 +259,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskCommand_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskCommand_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -207,7 +272,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskStatus_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskStatus_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -220,7 +285,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_PercentCompleted_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_PercentCompleted_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -233,7 +298,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_Language_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_Language_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -246,7 +311,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_StartDateTime_UTC_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_StartDateTime_UTC_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -259,7 +324,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_EndDateTime_UTC_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_EndDateTime_UTC_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -272,7 +337,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_CountNot2_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_CountNot2_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -285,7 +350,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_AppTaskLanguageID_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_AppTaskLanguageID_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -298,7 +363,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_AppTaskID_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_AppTaskID_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -312,7 +377,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_DBCommand_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_DBCommand_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -325,7 +390,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_Language_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_Language_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -338,20 +403,20 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_StatusText_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_StatusText_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             PostAppTaskModel appTaskModel = FillAppTaskModel();
 
-            appTaskModel.AppTaskLanguageList[0].StatusText = "".PadLeft(251,'a');
+            appTaskModel.AppTaskLanguageList[0].StatusText = "".PadLeft(251, 'a');
 
             await TestAddOrModifyError(appTaskModel, string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StatusText", 250));
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_ErrorText_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_ErrorText_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -364,7 +429,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_AppTaskLanguage_TranslationStatus_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_AppTaskLanguage_TranslationStatus_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -377,7 +442,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_DeleteAzureAppTask_Error_Test(string culture)
+        public async Task DeleteAzureAppTask_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -388,7 +453,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_AddOrModifyAzureAppTask_Unauthorized_Error_Test(string culture)
+        public async Task AddOrModifyAzureAppTask_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -401,7 +466,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_DeleteAzureAppTask_Unauthorized_Error_Test(string culture)
+        public async Task DeleteAzureAppTask_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -414,7 +479,7 @@ namespace CSSPAzureAppTaskServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AzureAppTaskService_GetAllAzureAppTask_Unauthorized_Error_Test(string culture)
+        public async Task GetAllAzureAppTask_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 

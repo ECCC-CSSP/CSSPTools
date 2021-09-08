@@ -20,7 +20,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillClimateSiteModelList(List<ClimateSiteModel> ClimateSiteModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ClimateSiteModel> ClimateSiteModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ClimateSiteModel> ClimateSiteModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.ClimateSite);

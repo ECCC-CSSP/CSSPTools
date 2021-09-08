@@ -18,7 +18,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebLabSheetsGzFile(int SubsectorTVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(SubsectorTVItemID: { SubsectorTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(SubsectorTVItemID: { SubsectorTVItemID })";
             await CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemSubsector = await GetTVItemWithTVItemID(SubsectorTVItemID);

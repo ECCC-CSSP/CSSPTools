@@ -18,7 +18,7 @@ namespace CreateGzFileServices
     {
         private async Task<ActionResult<bool>> DoCreateAllGzFiles()
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
 
             await CSSPLogService.FunctionLog(FunctionName);
 

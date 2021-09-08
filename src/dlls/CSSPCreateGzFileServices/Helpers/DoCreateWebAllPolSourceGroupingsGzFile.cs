@@ -17,7 +17,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebAllPolSourceGroupingsGzFile()
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             await CSSPLogService.FunctionLog(FunctionName);
 
             WebAllPolSourceGroupings webAllPolSourceGroupings = new WebAllPolSourceGroupings();

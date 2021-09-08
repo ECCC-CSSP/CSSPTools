@@ -10,5 +10,6 @@ namespace CSSPLogServices.Models
     {
         public string CSSPDBManage { get; set; }
         public string CSSPDBManageTest { get; set; }
+        public string ComputerName { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillTelModelList(List<TelModel> TelModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TelModel> TelModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TelModel> TelModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<Tel> TelList = await GetAllTel();

@@ -23,7 +23,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoStore<T>(T webJson, string fileName)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             bool ShouldSendToAzure = false;

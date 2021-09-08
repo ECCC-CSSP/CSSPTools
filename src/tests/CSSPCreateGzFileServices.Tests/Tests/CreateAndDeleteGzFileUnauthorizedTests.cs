@@ -4,31 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Xunit;
 using System.Collections.Generic;
+using ManageServices;
+using System.Linq;
 
 namespace CreateGzFileServices.Tests
 {
     public partial class CreateGzFileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see Helpers.cs
-        #endregion Constructors
-
-        #region Tests 
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CreateGzFileService_CreateGzFile_WebNNNNNNNNN_Unauthorized__Test(string culture)
+        public async Task CreateGzFile_DeleteGzFile_WebNNNNNNNNN_Unauthorized__Test(string culture)
         {
-            Assert.True(await Setup(culture));
-
-            await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
-
             List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
             {
                 WebTypeEnum.WebAllAddresses,
@@ -67,17 +54,61 @@ namespace CreateGzFileServices.Tests
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
+                Assert.True(await Setup(culture));
+
+                await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test
+
+                CSSPLogService.CSSPAppName = "AppNameTest";
+                CSSPLogService.CSSPCommandName = "CommandNameTest";
+
+                WriteTimeSpan(webType);
 
                 // Create gz
                 var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+
+                List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
+                                                   where c.AppName == CSSPLogService.CSSPAppName
+                                                   && c.CommandName == CSSPLogService.CSSPCommandName
+                                                   select c).ToList();
+
+                Assert.True(commandLogList.Count == 1);
+                Assert.False(string.IsNullOrWhiteSpace(commandLogList[0].Error));
+
+                WriteTimeSpan(webType);
+            }
+
+            foreach (WebTypeEnum webTypeToTry in webTypeList)
+            {
+                Assert.True(await Setup(culture));
+
+                await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+
+                WebTypeEnum webType = webTypeToTry;
+                int TVItemID = 1; // not important for this test
+
+                CSSPLogService.CSSPAppName = "AppNameTest";
+                CSSPLogService.CSSPCommandName = "CommandNameTest";
+
+                WriteTimeSpan(webType);
+
+                // Delete gz
+                var actionRes = await CreateGzFileService.DeleteGzFile(webType, TVItemID);
+                Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+
+                List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
+                                                   where c.AppName == CSSPLogService.CSSPAppName
+                                                   && c.CommandName == CSSPLogService.CSSPCommandName
+                                                   select c).ToList();
+
+                Assert.True(commandLogList.Count == 1);
+                Assert.False(string.IsNullOrWhiteSpace(commandLogList[0].Error));
+
+                WriteTimeSpan(webType);
             }
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

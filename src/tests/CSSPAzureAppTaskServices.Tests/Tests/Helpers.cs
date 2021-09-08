@@ -6,6 +6,7 @@
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,13 @@ namespace CSSPAzureAppTaskServices.Tests
 
             return postAppTaskModel;
         }
+        private async Task<int> GetCommandLogCount()
+        {
+            return await Task.FromResult((from c in dbManage.CommandLogs
+                                          where c.AppName == CSSPLogService.CSSPAppName
+                                          && c.CommandName == CSSPLogService.CSSPCommandName
+                                          select c).Count());
+        }
         private async Task<PostAppTaskModel> TestAddOrModify(PostAppTaskModel appTaskModel)
         {
             var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
@@ -87,8 +95,9 @@ namespace CSSPAzureAppTaskServices.Tests
             var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-            var validationResult = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.Equal(errorMessage, validationResult);
+            var validationResultList = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
+            List<ValidationResult> vrList = ((List<ValidationResult>)validationResultList).ToList();
+            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(errorMessage)).Any());
         }
         private async Task<bool> TestDelete(int appTaskID)
         {
@@ -115,8 +124,8 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             var validationResultList = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            var validationResult = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.Equal(errorMessage, validationResult);
+            List<ValidationResult> vrList = ((List<ValidationResult>)validationResultList).ToList();
+            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(errorMessage)).Any());
         }
         private async Task<List<PostAppTaskModel>> TestGetAll()
         {
@@ -134,8 +143,8 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             var validationResultList = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            var validationResult = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.Equal(errorMessage, validationResult);
+            List<ValidationResult> vrList = ((List<ValidationResult>)validationResultList).ToList();
+            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(errorMessage)).Any());
         }
     }
 }

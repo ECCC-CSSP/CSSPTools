@@ -18,7 +18,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebCountryGzFile(int CountryTVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(CountryTVItemID: { CountryTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(CountryTVItemID: { CountryTVItemID })";
             await CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemCountry = await GetTVItemWithTVItemID(CountryTVItemID);

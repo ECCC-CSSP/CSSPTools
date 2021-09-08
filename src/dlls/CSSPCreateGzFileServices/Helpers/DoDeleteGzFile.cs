@@ -18,7 +18,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoDeleteGzFile(WebTypeEnum webType, int TVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum webType, int TVItemID) -- WebTypeEnum: { webType }  TVItemID: { TVItemID }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum webType, int TVItemID) -- WebTypeEnum: { webType }  TVItemID: { TVItemID }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);

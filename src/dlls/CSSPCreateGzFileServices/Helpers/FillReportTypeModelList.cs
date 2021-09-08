@@ -19,7 +19,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillReportTypeModelList(List<ReportTypeModel> ReportTypeModelList)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ReportTypeModel> ReportTypeModelList)";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ReportTypeModel> ReportTypeModelList)";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<ReportType> ReportTypeList = await GetReportTypeList();

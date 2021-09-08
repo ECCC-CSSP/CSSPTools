@@ -20,7 +20,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebAreaGzFile(int AreaTVItemID)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(AreaTVItemID: { AreaTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(AreaTVItemID: { AreaTVItemID })";
             await CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemArea = await GetTVItemWithTVItemID(AreaTVItemID);

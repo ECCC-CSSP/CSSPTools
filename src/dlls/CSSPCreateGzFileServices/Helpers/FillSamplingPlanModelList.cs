@@ -19,7 +19,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillSamplingPlanModelList(List<SamplingPlanModel> SamplingPlanModelList, TVItem tvItem)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<SamplingPlanModel> SamplingPlanModelList, TVItem tvItem) -- TVItem.TVItemID: { tvItem.TVItemID }   TVItem.TVPath: { tvItem.TVPath }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<SamplingPlanModel> SamplingPlanModelList, TVItem tvItem) -- TVItem.TVItemID: { tvItem.TVItemID }   TVItem.TVPath: { tvItem.TVPath }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<SamplingPlan> SamplingPlanList = await GetAllSamplingPlanUnderProvince(tvItem);

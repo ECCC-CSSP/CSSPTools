@@ -19,7 +19,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillMWQMSampleModelList2021_2060(List<MWQMSampleModel> MWQMSampleModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<MWQMSampleModel> MWQMSampleModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<MWQMSampleModel> MWQMSampleModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<MWQMSample> MWQMSampleList = await GetWQMSampleListFromSubsector2021_2060(TVItem);

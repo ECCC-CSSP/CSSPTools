@@ -16,13 +16,12 @@ using LoggedInServices;
 using System.ComponentModel.DataAnnotations;
 using CSSPLogServices;
 using System.Reflection;
-using CSSPCreateGzFileServices.Models;
 
 namespace CreateGzFileServices
 {
     public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
     {
-        private async Task<bool> CheckComputerName(string FunctionName)
+        public async Task<bool> CheckComputerName(string FunctionName)
         {
             if (Environment.MachineName.ToString().ToLower() != config.ComputerName)
             {

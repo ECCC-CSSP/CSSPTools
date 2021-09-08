@@ -19,7 +19,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillChildListTVItemContactModelList(List<ContactModel> ContactModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ContactModel> ContactModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ContactModel> ContactModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
             await CSSPLogService.FunctionLog(FunctionName);
 
             List<Contact> MunicipalityContactList = await GetMunicipalityContactListUnderMunicipality(TVItem);

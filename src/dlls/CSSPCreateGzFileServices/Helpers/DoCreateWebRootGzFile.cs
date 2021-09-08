@@ -20,7 +20,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebRootGzFile()
         {
-            string FunctionName = $"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             await CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemRoot = await GetTVItemRoot();
