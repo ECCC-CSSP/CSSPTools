@@ -34,9 +34,9 @@ namespace ReadGzFileServices
             }
 
             List<MikeScenarioModel> MikeScenarioModelList = (from c in WebMikeScenariosLocal.MikeScenarioModelList
-                                                               where c.MikeScenario.MikeScenarioID != 0
-                                                               && c.MikeScenario.DBCommand != DBCommandEnum.Original
-                                                               select c).ToList();
+                                                             where c.MikeScenario.MikeScenarioID != 0
+                                                             && c.MikeScenario.DBCommand != DBCommandEnum.Original
+                                                             select c).ToList();
 
             foreach (MikeScenarioModel mikeScenarioModel in MikeScenarioModelList)
             {
@@ -54,7 +54,7 @@ namespace ReadGzFileServices
             // checking if files are localized
             foreach (MikeScenarioModel mikeScenarioModel in WebMikeScenarios.MikeScenarioModelList)
             {
-                DirectoryInfo di = new DirectoryInfo($"{CSSPFilesPath}{mikeScenarioModel.TVItemModel.TVItem.TVItemID}\\");
+                DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ mikeScenarioModel.TVItemModel.TVItem.TVItemID }\\");
 
                 if (di.Exists)
                 {

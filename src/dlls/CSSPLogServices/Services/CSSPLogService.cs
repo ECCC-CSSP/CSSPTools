@@ -118,10 +118,10 @@ namespace CSSPLogServices
         }
         public async Task<bool> Save()
         {
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(false);
-            }
+            //if (LoggedInService.LoggedInContactInfo == null)
+            //{
+            //    return await Task.FromResult(false);
+            //}
 
             int nextCommandLogID = (from c in dbManage.CommandLogs
                                     orderby c.CommandLogID descending

@@ -2,42 +2,42 @@
  * Manually edited
  * 
  */
-using Azure;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using CSSPCultureServices.Resources;
 using CSSPEnums;
 using CSSPDBModels;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Azure.Storage.Files.Shares;
-using Azure.Storage.Files;
-using Azure.Storage.Files.Shares.Models;
-using ManageServices;
+using System.Collections.Generic;
 using CSSPWebModels;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using LoggedInServices;
+using ManageServices;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
+using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Models;
 
 namespace FileServices
 {
     public partial class FileService : ControllerBase, IFileService
     {
-        private async Task<ActionResult<bool>> DoLocalizeAzureFile(int ParentTVItemID, string FileName)
+        public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(""));
-            }
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID, string FileName) - ParentTVItemID: { ParentTVItemID }  FileName: { FileName }";
+            await CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
 
             ShareFileClient shareFileClient;
             ShareFileProperties shareFileProperties;
             try
             {
-                ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(config.AzureStore, config.AzureStoreCSSPFilesPath);
                 ShareDirectoryClient shareDirectoryClient = shareClient.GetDirectoryClient($"{ParentTVItemID}");
                 shareFileClient = shareDirectoryClient.GetFileClient(FileName);
                 shareFileProperties = shareFileClient.GetProperties();
@@ -45,15 +45,16 @@ namespace FileServices
             catch (Exception ex)
             {
                 string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
-                return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.ErrorWhileTryingToGetAzureFileInfoFor_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText)));
+
+                return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.ErrorWhileTryingToGetAzureFileInfoFor_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText));
             }
 
-            FileInfo fiDownload = new FileInfo($"{CSSPFilesPath}{ParentTVItemID}\\{FileName}");
+            FileInfo fiDownload = new FileInfo($"{config.CSSPFilesPath}{ParentTVItemID}\\{FileName}");
             bool ShouldDownload = false;
 
             if (fiDownload.Exists)
             {
-                var manageFileExist = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
+                var manageFileExist = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
                 if (((ObjectResult)manageFileExist.Result).StatusCode == 200)
                 {
                     ManageFile manageFile = (ManageFile)((OkObjectResult)manageFileExist.Result).Value;
@@ -69,11 +70,11 @@ namespace FileServices
                         }
                         else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                         {
-                            return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                            return await EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                         }
                         else
                         {
-                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                            return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFileAdded.Result).Value.ToString());
                         }
 
                     }
@@ -89,7 +90,8 @@ namespace FileServices
                         catch (Exception ex)
                         {
                             string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
-                            return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotDeleteFile_Error_, fiDownload.FullName, ErrorText)));
+
+                            return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotDeleteFile_Error_, fiDownload.FullName, ErrorText));
                         }
                     }
                 }
@@ -115,7 +117,8 @@ namespace FileServices
                     catch (Exception ex)
                     {
                         string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
-                        return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNoCreateDirectory_, di.FullName, ErrorText)));
+
+                        return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNoCreateDirectory_, di.FullName, ErrorText));
                     }
                 }
 
@@ -130,16 +133,17 @@ namespace FileServices
                 catch (Exception ex)
                 {
                     string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerException: " + ex.InnerException.Message);
-                    return await Task.FromResult(BadRequest(String.Format(CSSPCultureServicesRes.CouldNotLocalizeAzureFile_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText)));
+
+                    return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotLocalizeAzureFile_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText));
                 }
 
-                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
+                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
                 if (((ObjectResult)actionCSSPFile.Result).StatusCode == 400)
                 {
                     ManageFile manageFile = new ManageFile()
                     {
                         ManageFileID = 0,
-                        AzureStorage = AzureStoreCSSPFilesPath,
+                        AzureStorage = config.AzureStoreCSSPFilesPath,
                         AzureFileName = $"{ParentTVItemID}\\{FileName}",
                         AzureETag = shareFileProperties.ETag.ToString().Replace("\"", ""),
                         AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
@@ -153,11 +157,11 @@ namespace FileServices
                     }
                     else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                     {
-                        return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                        return await EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                     }
                     else
                     {
-                        return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                        return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFileAdded.Result).Value.ToString());
                     }
                 }
                 else
@@ -177,22 +181,22 @@ namespace FileServices
                         }
                         else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
                         {
-                            return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                            return await EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                         }
                         else
                         {
-                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFilePut.Result);
+                            return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFilePut.Result).Value.ToString());
                         }
                     }
                     else
                     {
-                        return await Task.FromResult((BadRequestObjectResult)actionCSSPFile.Result);
+                        return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFile.Result).Value.ToString());
                     }
                 }
 
             }
 
-            return await Task.FromResult(Ok(true));
+            return await EndFunctionReturnOkTrue(FunctionName);
         }
     }
 }

@@ -25,9 +25,9 @@ namespace CreateGzFileServices
         public async Task<ActionResult<bool>> CreateGzFile(WebTypeEnum webType, int TVItemID)
         {
             string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum: { webType }, TVItemID: { TVItemID })";
+            await CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.FunctionLog(FunctionName)) return await Task.FromResult(false);
-            if (!await CheckComputerName(FunctionName)) return await Task.FromResult(false);
+            if (!await CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
             if (!await ValidateDBs(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
 

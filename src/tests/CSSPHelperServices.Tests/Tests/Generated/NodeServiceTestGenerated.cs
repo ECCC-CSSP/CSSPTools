@@ -224,8 +224,8 @@ namespace CSSPHelperServices.Tests
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_CSSPDBServicestests.json")
-               .AddUserSecrets("6f27cbbe-6ffb-4154-b49b-d739597c4f60")
+               .AddJsonFile("appsettings_cssphelperservicestests.json")
+               .AddUserSecrets("a79b4a81-ba75-4dfc-8d95-46259f73f055")
                .Build();
 
             Services = new ServiceCollection();

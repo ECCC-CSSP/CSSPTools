@@ -2,52 +2,55 @@
  * Manually edited
  * 
  */
-using Azure;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using CSSPCultureServices.Resources;
 using CSSPEnums;
 using CSSPDBModels;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using CSSPWebModels;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using LoggedInServices;
 using ManageServices;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
+using Azure.Storage.Blobs;
+using Azure;
 
 namespace FileServices
 {
     public partial class FileService : ControllerBase, IFileService
     {
-        private async Task<ActionResult<bool>> DoDownloadGzFile(WebTypeEnum webType, int TVItemID)
+        public async Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID)
         {
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-            }
+            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum webType, int TVItemID) - webtype: { webType } TVItemID: { TVItemID }";
+            await CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
 
             string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
             try
             {
-                BlobClient blobClient = new BlobClient(AzureStore, AzureStoreCSSPJSONPath, FileName);
+                BlobClient blobClient = new BlobClient(config.AzureStore, config.AzureStoreCSSPJSONPath, FileName);
 
-                Response response = blobClient.DownloadTo($"{ CSSPJSONPath }{ FileName }");
+                Response response = blobClient.DownloadTo($"{ config.CSSPJSONPath }{ FileName }");
                 if (response.Status == 206)
                 {
                     ManageFile manageFile = null;
 
-                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStoreCSSPJSONPath, FileName);
+                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPJSONPath, FileName);
                     if (((ObjectResult)actionCSSPFile.Result).StatusCode == 400)
                     {
                         manageFile = new ManageFile()
                         {
                             ManageFileID = 0,
-                            AzureStorage = AzureStoreCSSPJSONPath,
+                            AzureStorage = config.AzureStoreCSSPJSONPath,
                             AzureFileName = FileName,
                             AzureETag = response.Headers.ETag.ToString(),
                             AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
@@ -61,14 +64,14 @@ namespace FileServices
                         }
                         else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                         {
-                            return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                            return await EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                         }
                         else
                         {
-                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                            return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFileAdded.Result).Value.ToString());
                         }
                     }
-                    else 
+                    else
                     {
                         if (((OkObjectResult)actionCSSPFile.Result).StatusCode == 200)
                         {
@@ -85,29 +88,29 @@ namespace FileServices
                             }
                             else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
                             {
-                                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                                return await EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                             }
                             else
                             {
-                                return await Task.FromResult((BadRequestObjectResult)actionCSSPFilePut.Result);
+                                return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFilePut.Result).Value.ToString());
                             }
                         }
                         else
                         {
-                            return await Task.FromResult((BadRequestObjectResult)actionCSSPFile.Result);
+                            return await EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFile.Result).Value.ToString());
                         }
                     }
 
-                    return await Task.FromResult(Ok(true));
+                    return await EndFunctionReturnOkTrue(FunctionName);
                 }
                 else
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDownload_FromAzure, FileName)));
+                    return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDownload_FromAzure, FileName));
                 }
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDownload_FromAzureException_, FileName, ex.Message)));
+                return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDownload_FromAzureException_, FileName, ex.Message));
             }
         }
     }

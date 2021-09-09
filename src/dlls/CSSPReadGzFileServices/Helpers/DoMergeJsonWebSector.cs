@@ -13,28 +13,28 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebProvince(WebProvince WebProvince, WebProvince WebProvinceLocal)
+        private void DoMergeJsonWebSector(WebSector WebSector, WebSector WebSectorLocal)
         {
-            if (WebProvinceLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebProvinceLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebProvinceLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebProvinceLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            if (WebSectorLocal.TVItemModel.TVItem.TVItemID != 0
+                && (WebSectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || WebSectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || WebSectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
             {
-                WebProvince.TVItemModel = WebProvinceLocal.TVItemModel;
+                WebSector.TVItemModel = WebSectorLocal.TVItemModel;
             }
 
-            if ((from c in WebProvinceLocal.TVItemModelParentList
+            if ((from c in WebSectorLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebProvince.TVItemModelParentList = WebProvinceLocal.TVItemModelParentList;
+                WebSector.TVItemModelParentList = WebSectorLocal.TVItemModelParentList;
             }
 
-            List<TVItemModel> TVItemModelList = (from c in WebProvinceLocal.TVItemModelAreaList
-                                                               where c.TVItem.TVItemID != 0 
+            List<TVItemModel> TVItemModelList = (from c in WebSectorLocal.TVItemModelSubsectorList
+                                                               where c.TVItem.TVItemID != 0
                                                                && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                                || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                                || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
@@ -42,10 +42,10 @@ namespace ReadGzFileServices
 
             foreach (TVItemModel TVItemModel in TVItemModelList)
             {
-                TVItemModel TVItemModelOriginal = WebProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                TVItemModel TVItemModelOriginal = WebSector.TVItemModelSubsectorList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (TVItemModelOriginal == null)
                 {
-                    WebProvince.TVItemModelAreaList.Add(TVItemModelOriginal);
+                    WebSector.TVItemModelSubsectorList.Add(TVItemModelOriginal);
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace ReadGzFileServices
                 }
             }
 
-            List<TVFileModel> TVFileModelList = (from c in WebProvinceLocal.TVFileModelList
+            List<TVFileModel> TVFileModelList = (from c in WebSectorLocal.TVFileModelList
                                                  where c.TVItem.TVItemID != 0
                                                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -62,10 +62,10 @@ namespace ReadGzFileServices
 
             foreach (TVFileModel tvFileModel in TVFileModelList)
             {
-                TVFileModel tvFileModelOriginal = WebProvince.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = WebSector.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
-                    WebProvince.TVFileModelList.Add(tvFileModel);
+                    WebSector.TVFileModelList.Add(tvFileModel);
                 }
                 else
                 {
@@ -74,13 +74,13 @@ namespace ReadGzFileServices
             }
 
             // checking if files are localized
-            DirectoryInfo di = new DirectoryInfo($"{CSSPFilesPath}{WebProvince.TVItemModel.TVItem.TVItemID}\\");
+            DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ WebSector.TVItemModel.TVItem.TVItemID }\\");
 
             if (di.Exists)
             {
                 List<FileInfo> FileInfoList = di.GetFiles().ToList();
 
-                foreach (TVFileModel tvFileModel in WebProvince.TVFileModelList)
+                foreach (TVFileModel tvFileModel in WebSector.TVFileModelList)
                 {
                     if ((from c in FileInfoList
                          where c.Name == tvFileModel.TVFile.ServerFileName

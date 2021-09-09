@@ -56,7 +56,7 @@ namespace ReadGzFileServices
             foreach (PolSourceSiteModel mwqmPolSourceSiteModel in WebPolSourceSites.PolSourceSiteModelList)
             {
                 // checking if files are localized
-                DirectoryInfo di = new DirectoryInfo($"{CSSPFilesPath}{mwqmPolSourceSiteModel.TVItemModel.TVItem.TVItemID}\\");
+                DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ mwqmPolSourceSiteModel.TVItemModel.TVItem.TVItemID }\\");
 
                 if (di.Exists)
                 {

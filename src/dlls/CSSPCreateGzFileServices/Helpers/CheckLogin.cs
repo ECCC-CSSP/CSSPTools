@@ -23,12 +23,10 @@ namespace CreateGzFileServices
     {
         public async Task<bool> CheckLogin(string FunctionName)
         {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 await CSSPLogService.AppendError(new ValidationResult(CSSPCultureServicesRes.YouDoNotHaveAuthorization, new[] { "" }));
-
                 await CSSPLogService.EndFunctionLog(FunctionName);
-
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(false);

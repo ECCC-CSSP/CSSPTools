@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Collections.Generic;
 using CSSPWebModels;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using ManageServices;
 
 namespace FileServices.Tests
 {
@@ -33,7 +36,10 @@ namespace FileServices.Tests
         {
             Assert.True(await Setup(culture));
 
-            FileInfo fi = new FileInfo($@"{CSSPTempFilesPath}\\TestingThisWillBeUnique.csv");
+            CSSPLogService.CSSPAppName = "FileServiceTests";
+            CSSPLogService.CSSPCommandName = "Testing_CreateTempCSV";
+
+            FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\TestingThisWillBeUnique.csv");
             if (fi.Exists)
             {
                 try
@@ -69,17 +75,21 @@ namespace FileServices.Tests
                 }
             }
 
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_CreateTempCSV_Unauthorized_Good_Test(string culture)
+        public async Task FileService_CreateTempCSV_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
+            CSSPLogService.CSSPAppName = "FileServiceTests";
+            CSSPLogService.CSSPCommandName = "Testing_CreateTempCSV_Unauthorized";
+
             LoggedInService.LoggedInContactInfo = null;
 
-            FileInfo fi = new FileInfo($@"{CSSPTempFilesPath}\\TestingThisWillBeUnique.csv");
+            FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\TestingThisWillBeUnique.csv");
             if (fi.Exists)
             {
                 try
@@ -98,6 +108,46 @@ namespace FileServices.Tests
 
             var actionRes = await FileService.CreateTempCSV(tableConvertToCSVModel);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
+            var ValidationResultList = (List<ValidationResult>)((UnauthorizedObjectResult)actionRes.Result).Value;
+            Assert.NotEmpty(ValidationResultList);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_CreateTempCSV_PathDoesNotExist_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            CSSPLogService.CSSPAppName = "FileServiceTests";
+            CSSPLogService.CSSPCommandName = "Testing_CreateTempCSV_PathDoesNotExist_Error";
+
+            FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\TestingThisWillBeUnique.csv");
+            if (fi.Exists)
+            {
+                try
+                {
+                    fi.Delete();
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
+            }
+
+            TableConvertToCSVModel tableConvertToCSVModel = new TableConvertToCSVModel();
+            tableConvertToCSVModel.CSVString = "a,b,c";
+            tableConvertToCSVModel.TableFileName = fi.Name;
+
+            config.CSSPTempFilesPath = config.CSSPTempFilesPath.Replace("cssptempfiles", "notexist");
+
+            var actionRes = await FileService.CreateTempCSV(tableConvertToCSVModel);
+            Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
+            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes.Result).Value;
+            Assert.NotEmpty(ValidationResultList);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         #endregion Tests 
 

@@ -26,12 +26,8 @@ namespace CreateGzFileServices
             if (Environment.MachineName.ToString().ToLower() != config.ComputerName)
             {
                 string errMessage = $"{ CSSPCultureUpdateRes.ThisAppCanOnlyBeRunOnComputerName } { config.ComputerName }. { CSSPCultureUpdateRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }";
-                await CSSPLogService.AppendLog(errMessage);
-
                 await CSSPLogService.AppendError(new ValidationResult(errMessage, new[] { "" }));
-
                 await CSSPLogService.EndFunctionLog(FunctionName);
-
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(false);

@@ -1510,6 +1510,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File not created {0}.
+        /// </summary>
+        public static string FileNotCreated_ {
+            get {
+                return ResourceManager.GetString("FileNotCreated_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File not found [{0}].
         /// </summary>
         public static string FileNotFound_ {

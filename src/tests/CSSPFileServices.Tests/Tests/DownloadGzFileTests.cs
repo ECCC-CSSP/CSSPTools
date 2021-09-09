@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Collections.Generic;
 using CSSPCultureServices.Resources;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace FileServices.Tests
 {
@@ -38,6 +40,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -52,6 +56,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -66,6 +72,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -94,6 +102,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -108,6 +118,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -122,6 +134,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -136,6 +150,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -150,6 +166,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -164,6 +182,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -178,6 +198,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -192,6 +214,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -206,6 +230,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -221,6 +247,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -236,6 +264,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -252,6 +282,25 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_WebDrogueRuns_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
+            int TVItemID = 7;
+
+            var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -267,6 +316,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -282,6 +333,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -297,6 +350,76 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_WebMonitoringOtherStatsCountry_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsCountry;
+            int TVItemID = 5;
+
+            var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_WebMonitoringOtherStatsProvince_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsProvince;
+            int TVItemID = 7;
+
+            var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsCountry;
+            int TVItemID = 5;
+
+            var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsProvince;
+            int TVItemID = 7;
+
+            var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -312,21 +435,25 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMWQMRun_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebMWQMRuns_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
-            int TVItemID = 556;
+            int TVItemID = 635;
 
             var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -342,6 +469,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -357,6 +486,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -372,6 +503,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -387,6 +520,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -402,6 +537,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -416,6 +553,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -431,6 +570,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -446,6 +587,8 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory(Skip = "WebTideSite does not yet have items")]
         [InlineData("en-CA")]
@@ -461,60 +604,91 @@ namespace FileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebNNNNNN_Unauthorized_Good_Test(string culture)
+        public async Task FileService_DownloadGzFile_WebNNNNNN_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
-
-            LoggedInService.LoggedInContactInfo = null;
-
-            List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
-            {
-                WebTypeEnum.WebAllAddresses,
-                WebTypeEnum.WebAllContacts,
-                WebTypeEnum.WebAllCountries,
-                WebTypeEnum.WebAllEmails,
-                WebTypeEnum.WebAllHelpDocs,
-                WebTypeEnum.WebAllMunicipalities,
-                WebTypeEnum.WebAllMWQMLookupMPNs,
-                WebTypeEnum.WebAllPolSourceGroupings,
-                WebTypeEnum.WebAllPolSourceSiteEffectTerms,
-                WebTypeEnum.WebAllProvinces,
-                WebTypeEnum.WebAllReportTypes,
-                WebTypeEnum.WebAllSearch,
-                WebTypeEnum.WebAllTels,
-                WebTypeEnum.WebAllTideLocations,
-                WebTypeEnum.WebArea,
-                WebTypeEnum.WebClimateSites,
-                WebTypeEnum.WebCountry,
-                WebTypeEnum.WebDrogueRuns,
-                WebTypeEnum.WebHydrometricSites,
-                WebTypeEnum.WebLabSheets,
-                WebTypeEnum.WebMikeScenarios,
-                WebTypeEnum.WebMunicipality,
-                WebTypeEnum.WebMWQMRuns,
-                WebTypeEnum.WebMWQMSamples1980_2020,
-                WebTypeEnum.WebMWQMSamples2021_2060,
-                WebTypeEnum.WebMWQMSites,
-                WebTypeEnum.WebPolSourceSites,
-                WebTypeEnum.WebProvince,
-                WebTypeEnum.WebRoot,
-                WebTypeEnum.WebSector,
-                WebTypeEnum.WebSubsector,
-                WebTypeEnum.WebTideSites,
-            };
+            List<WebTypeEnum> webTypeList = GetWebTypeList();
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
+                Assert.True(await Setup(culture));
+
+                LoggedInService.LoggedInContactInfo = null;
+
                 WebTypeEnum webType = webTypeToTry;
 
                 var actionRes = await FileService.DownloadGzFile(webType);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
-                Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionRes.Result).Value);
+                var ValidationResultList = (List<ValidationResult>)((UnauthorizedObjectResult)actionRes.Result).Value;
+                Assert.NotNull(ValidationResultList);
+
+                Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_AzureStore_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
+
+            config.AzureStore = "NotWorking" + config.AzureStore;
+
+            await FileService.FillConfigModel(config);
+
+            var actionRes = await FileService.DownloadGzFile(webType);
+            Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes.Result).Value;
+            Assert.NotNull(ValidationResultList);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_AzureStoreCSSPJSONPath_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
+
+            config.AzureStoreCSSPJSONPath = "notworking" + config.AzureStoreCSSPJSONPath;
+
+            await FileService.FillConfigModel(config);
+
+            var actionRes = await FileService.DownloadGzFile(webType);
+            Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes.Result).Value;
+            Assert.NotNull(ValidationResultList);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task FileService_DownloadGzFile_FileName_Error_Test(string culture)
+        {
+            Assert.True(await Setup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebProvince;
+            int TVItemID = 777777777;
+
+            var actionRes = await FileService.DownloadGzFile(webType, TVItemID);
+            Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes.Result).Value;
+            Assert.NotNull(ValidationResultList);
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         #endregion Tests 
 

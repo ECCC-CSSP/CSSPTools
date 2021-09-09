@@ -11,8 +11,8 @@ namespace GenerateCSSPHelperServices_Tests
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
-            sb.AppendLine(@"               .AddJsonFile(""appsettings_CSSPDBServicestests.json"")");
-            sb.AppendLine(@"               .AddUserSecrets(""6f27cbbe-6ffb-4154-b49b-d739597c4f60"")");
+            sb.AppendLine(@"               .AddJsonFile(""appsettings_cssphelperservicestests.json"")");
+            sb.AppendLine(@"               .AddUserSecrets(""a79b4a81-ba75-4dfc-8d95-46259f73f055"")");
             sb.AppendLine(@"               .Build();");
             sb.AppendLine(@"");
             sb.AppendLine(@"            Services = new ServiceCollection();");

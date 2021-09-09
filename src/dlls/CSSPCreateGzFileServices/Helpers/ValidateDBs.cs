@@ -50,7 +50,6 @@ namespace CreateGzFileServices
             if (CSSPLogService.ValidationResultList.Count > 0)
             {
                 await CSSPLogService.EndFunctionLog(FunctionName);
-
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(false);                

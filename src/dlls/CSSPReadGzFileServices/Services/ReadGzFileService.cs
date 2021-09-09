@@ -4,6 +4,8 @@
  */
 using CSSPCultureServices.Services;
 using CSSPEnums;
+using CSSPLogServices;
+using CSSPReadGzFileServices.Models;
 using CSSPWebModels;
 using FileServices;
 using LoggedInServices;
@@ -16,9 +18,10 @@ namespace ReadGzFileServices
 {
     public interface IReadGzFileService
     {
-        WebAppLoaded webAppLoaded { get; set; }
-        Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0);
+        Task<bool> FillConfigModel(CSSPReadGzFileServiceConfigModel config);
         Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0);
+        Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0);
+        //WebAppLoaded webAppLoaded { get; set; }
     }
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
@@ -26,7 +29,7 @@ namespace ReadGzFileServices
         #endregion Variables
 
         #region Properties
-        public WebAppLoaded webAppLoaded { get; set; } = new WebAppLoaded();
+        //public WebAppLoaded webAppLoaded { get; set; } = new WebAppLoaded();
 
         private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
@@ -35,47 +38,40 @@ namespace ReadGzFileServices
         private IEnums enums { get; }
         private IFileService FileService { get; }
         private IManageFileService ManageFileService { get; }
-        private string AzureStore { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string CSSPJSONPath { get; set; }
-        private string CSSPJSONPathLocal { get; set; }
-        private string CSSPAzureUrl { get; set; }
-        private string CSSPFilesPath { get; set; }
+        private ICSSPLogService CSSPLogService { get; }
+        private CSSPReadGzFileServiceConfigModel config { get; set; }
+
+        //private string AzureStore { get; set; }
+        //private string AzureStoreCSSPJSONPath { get; set; }
+        //private string CSSPJSONPath { get; set; }
+        //private string CSSPJSONPathLocal { get; set; }
+        //private string CSSPAzureUrl { get; set; }
+        //private string CSSPFilesPath { get; set; }
         #endregion Properties
 
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, IFileService FileService, 
-            IManageFileService ManageFileService, CSSPDBManageContext dbManage)
+            IEnums enums, IFileService FileService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService, CSSPDBManageContext dbManage)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.FileService = FileService;
+            this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
             this.dbManage = dbManage;
 
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
-            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
-            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
+            //AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
+            //AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            //CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
+            //CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
+            //CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
+            //CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
         }
         #endregion Constructors
 
         #region Functions public
-        public async Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0)
-        {
-            return await DoReadJSON<T>(webType, TVItemID);
-        }
-        public async Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0)
-        {
-            var actionRes = await ReadJSON<T>(webType, TVItemID);
-            return (T)((OkObjectResult)actionRes.Result).Value;
-        }
-
         #endregion Functions public
 
         #region Functions private

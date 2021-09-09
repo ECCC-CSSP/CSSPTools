@@ -31,12 +31,15 @@ namespace FileServices.Tests
         public async Task FileService_Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ManageFileService);
-            Assert.NotNull(ReadGzFileService);
             Assert.NotNull(FileService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLogService);
+            Assert.NotNull(dbManage);
+            Assert.NotNull(config);
         }
         #endregion Tests 
 
