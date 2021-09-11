@@ -22,15 +22,15 @@ namespace CSSPAzureAppTaskServices
     {
         private async Task<bool> ValidateDeleteAzureAppTask(int appTaskID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: { appTaskID }";
-            if (!await CSSPLogService.FunctionLog(FunctionName)) return await Task.FromResult(false);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: { appTaskID }";
+            CSSPLogService.FunctionLog(FunctionName);
 
             if (appTaskID == 0)
             {
-                await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { "AppTaskID" }));
+                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { "AppTaskID" }));
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             if (CSSPLogService.ValidationResultList.Count > 0) return await Task.FromResult(false);
 

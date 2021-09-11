@@ -17,7 +17,7 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> DoRemoveTVItemsNoAssociatedWithTVFiles()
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -42,7 +42,7 @@ namespace CSSPUpdateServices
                 {
                     string dupText = $@"{tvItem.TVItemID} --- {tvItem.ParentID}";
 
-                    await CSSPLogService.AppendLog($"{ dupText }");
+                    CSSPLogService.AppendLog($"{ dupText }");
 
                     db.TVItems.Remove(tvItem);
                 }
@@ -55,16 +55,16 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }", new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }", new[] { "" }));
 
-                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

@@ -22,9 +22,9 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebMonitoringOtherStatsCountryGzFile(int CountryTVItemID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(CountryTVItemID: { CountryTVItemID })";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(CountryTVItemID: { CountryTVItemID })";
 
-            await CSSPLogService.FunctionLog(FunctionName);
+            CSSPLogService.FunctionLog(FunctionName);
 
             TVItem tvItemRoot = await GetTVItemRoot();
 
@@ -33,8 +33,8 @@ namespace CreateGzFileServices
 
             if (tvItemTest == null || tvItemTest.TVType != TVTypeEnum.Country)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, "TVItem", "TVType", TVTypeEnum.Country.ToString()) } { DateTime.Now }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, "TVItem", "TVType", TVTypeEnum.Country.ToString()) } { DateTime.Now }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
@@ -47,7 +47,7 @@ namespace CreateGzFileServices
 
             for (int year = DateTime.Now.Year; year >= 1980; year--)
             {
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { tvItemLanguageTestList[CSSPCultureService.LangID].TVText } { year } { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { tvItemLanguageTestList[CSSPCultureService.LangID].TVText } { year } { DateTime.Now }");
 
                 MonitoringStatByYear monitoringStatByYearOther = new MonitoringStatByYear();
                 monitoringStatByYearOther.Year = year;
@@ -62,7 +62,7 @@ namespace CreateGzFileServices
 
             for (int month = 1; month < 13 ; month++)
             {
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { tvItemLanguageTestList[CSSPCultureService.LangID].TVText } { month } { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { tvItemLanguageTestList[CSSPCultureService.LangID].TVText } { month } { DateTime.Now }");
 
                 MonitoringStatByMonth monitoringStatByMonthOther = new MonitoringStatByMonth();
                 monitoringStatByMonthOther.Month = (MonthEnum)month;
@@ -77,7 +77,7 @@ namespace CreateGzFileServices
 
             for (int season = 1; season < 5; season++)
             {
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { tvItemLanguageTestList[CSSPCultureService.LangID].TVText } { season } { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { tvItemLanguageTestList[CSSPCultureService.LangID].TVText } { season } { DateTime.Now }");
 
                 MonitoringStatBySeason monitoringStatBySeasonOther = new MonitoringStatBySeason();
                 monitoringStatBySeasonOther.Season = (SeasonEnum)season;
@@ -118,12 +118,12 @@ namespace CreateGzFileServices
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

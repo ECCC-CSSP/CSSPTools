@@ -25,7 +25,7 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask()
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
 
             if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
 

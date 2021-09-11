@@ -7,6 +7,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -14,6 +15,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebDrogueRuns(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             if (WebDrogueRunsLocal.TVItemModel.TVItem.TVItemID != 0
                 && (WebDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -52,6 +56,8 @@ namespace ReadGzFileServices
                     drogueRunModelOriginal = drogueRunModel;
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

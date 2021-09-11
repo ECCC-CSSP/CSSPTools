@@ -25,13 +25,14 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
-            if (!await CSSPLogService.FunctionLog(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
-            await CSSPLogService.AppendLog($"AppTaskID: { postAppTaskModel.AppTask.AppTaskID} -- AppTaskCommand: { postAppTaskModel.AppTask.AppTaskCommand } -- TVItemID: { postAppTaskModel.AppTask.TVItemID }");
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
+            CSSPLogService.FunctionLog(FunctionName);
+            
+            CSSPLogService.AppendLog($"AppTaskID: { postAppTaskModel.AppTask.AppTaskID} -- AppTaskCommand: { postAppTaskModel.AppTask.AppTaskCommand } -- TVItemID: { postAppTaskModel.AppTask.TVItemID }");
 
             if (!await CheckLogin(FunctionName))
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
@@ -39,7 +40,7 @@ namespace CSSPAzureAppTaskServices
 
             if (!await ValidateAzureAddOrModifyAppTaskModel(postAppTaskModel))
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
@@ -47,13 +48,13 @@ namespace CSSPAzureAppTaskServices
 
             if (!await DoAddOrModifyAzureAppTask(postAppTaskModel))
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
             await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(postAppTaskModel));

@@ -23,8 +23,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoStore<T>(T webJson, string fileName)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }";
+            CSSPLogService.FunctionLog(FunctionName);
 
             bool ShouldSendToAzure = false;
             bool FileExistInAzure = true;
@@ -62,8 +62,8 @@ namespace CreateGzFileServices
                 catch (Exception ex)
                 {
                     string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    CSSPLogService.EndFunctionLog(FunctionName);
                     return await Task.FromResult(false);
                 }
             }
@@ -79,8 +79,8 @@ namespace CreateGzFileServices
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
@@ -105,8 +105,8 @@ namespace CreateGzFileServices
                 catch (Exception ex)
                 {
                     string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    CSSPLogService.EndFunctionLog(FunctionName);
                     return await Task.FromResult(false);
                 }
 
@@ -122,8 +122,8 @@ namespace CreateGzFileServices
                 catch (Exception ex)
                 {
                     string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    CSSPLogService.EndFunctionLog(FunctionName);
                     return await Task.FromResult(false);
                 }
             }
@@ -137,13 +137,13 @@ namespace CreateGzFileServices
                 catch (Exception ex)
                 {
                     string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                    await CSSPLogService.EndFunctionLog(FunctionName);
+                    CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    CSSPLogService.EndFunctionLog(FunctionName);
                     return await Task.FromResult(false);
                 }
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

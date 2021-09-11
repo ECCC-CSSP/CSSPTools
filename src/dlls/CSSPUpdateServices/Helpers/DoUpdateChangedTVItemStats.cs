@@ -22,9 +22,9 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> DoUpdateChangedTVItemStats()
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } { DateTime.Now } ...");
             List<TVItem> TVItemList = (from c in db.TVItems
                           select c).AsNoTracking().ToList();
 
@@ -38,49 +38,49 @@ namespace CSSPUpdateServices
                                               || c.TVType == TVTypeEnum.Municipality
                                               select c).ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemStats") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemStats") } { DateTime.Now } ...");
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                                select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemLinks") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemLinks") } { DateTime.Now } ...");
             List<TVItemLink> TVItemLinkList = (from c in db.TVItemLinks
                                                select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Infrastructures") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Infrastructures") } { DateTime.Now } ...");
             List<Infrastructure> InfrastructureList = (from c in db.Infrastructures
                                                        select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "PolSourceSites") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "PolSourceSites") } { DateTime.Now } ...");
             List<PolSourceSite> PolSourceSiteList = (from c in db.PolSourceSites
                                                      select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "BoxModels") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "BoxModels") } { DateTime.Now } ...");
             List<BoxModel> BoxModelList = (from c in db.BoxModels
                                            select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "UseOfSites") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "UseOfSites") } { DateTime.Now } ...");
             List<UseOfSite> UseOfSiteList = (from c in db.UseOfSites
                                              select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVFiles") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVFiles") } { DateTime.Now } ...");
             List<TVFile> TVFileList = (from c in db.TVFiles
                                        select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "MWQMSamples") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "MWQMSamples") } { DateTime.Now } ...");
             List<MWQMSample> MWQMSampleList = (from c in db.MWQMSamples
                                                select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Spills") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Spills") } { DateTime.Now } ...");
             List<Spill> SpillList = (from c in db.Spills
                                      select c).AsNoTracking().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "VPScenarios") } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "VPScenarios") } { DateTime.Now } ...");
             List<VPScenario> VPScenarioList = (from c in db.VPScenarios
                                                select c).AsNoTracking().ToList();
 
             List<TVItemStat> TVItemStat2List = new List<TVItemStat>();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, azure_csspjson_backup) } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, azure_csspjson_backup) } { DateTime.Now } ...");
             DirectoryInfo di = new DirectoryInfo($"{azure_csspjson_backup}");
 
             FileInfo fiJSONLatest = (from c in di.GetFiles()
@@ -89,9 +89,9 @@ namespace CSSPUpdateServices
 
             if (fiJSONLatest == null)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindAnyFileUnder_, di.FullName) }", new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindAnyFileUnder_, di.FullName) }", new[] { "" }));
 
-                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
@@ -100,7 +100,7 @@ namespace CSSPUpdateServices
 
             DateTime LastWriteTimeUtc = fiJSONLatest.LastWriteTimeUtc;
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.LastWriteTimeUtc_, LastWriteTimeUtc) } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.LastWriteTimeUtc_, LastWriteTimeUtc) } { DateTime.Now } ...");
 
             List<TVItem> TVItemForChangedStatList = new List<TVItem>();
 
@@ -129,7 +129,7 @@ namespace CSSPUpdateServices
             TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedMWQMSubsector(LastWriteTimeUtc)).Distinct().ToList();
             TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedPolSourceSite(LastWriteTimeUtc)).Distinct().ToList();
 
-            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.NumberOfTVItemIDAffected_, TVItemIDList.Count) } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.NumberOfTVItemIDAffected_, TVItemIDList.Count) } { DateTime.Now } ...");
 
             foreach (int TVItemID in TVItemIDList)
             {
@@ -161,7 +161,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RecalculatingTheTVItemStats } { DateTime.Now } ...");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RecalculatingTheTVItemStats } { DateTime.Now } ...");
 
             int count = 0;
             int total = TVItemForChangedStatList.Count;
@@ -368,22 +368,22 @@ namespace CSSPUpdateServices
 
             try
             {
-                await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.SavingInCSSPDBManageDatabase } { DateTime.Now } ...");
+                CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.SavingInCSSPDBManageDatabase } { DateTime.Now } ...");
 
                 db.SaveChanges();
             }
             catch (Exception ex)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }", new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult($"{String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }", new[] { "" }));
 
-                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

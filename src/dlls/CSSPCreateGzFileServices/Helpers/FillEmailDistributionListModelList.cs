@@ -19,8 +19,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillEmailDistributionListModelList(List<EmailDistributionListModel> EmailDistributionListModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<EmailDistributionListModel> EmailDistributionListModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<EmailDistributionListModel> EmailDistributionListModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<EmailDistributionList> EmailDistributionListList = await GetEmailDistributionListListUnderCountry(TVItem);
             List<EmailDistributionListLanguage> EmailDistributionListLanguageList = await GetEmailDistributionListLanguageListUnderCountry(TVItem);
@@ -49,7 +49,7 @@ namespace CreateGzFileServices
                 }); ;
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

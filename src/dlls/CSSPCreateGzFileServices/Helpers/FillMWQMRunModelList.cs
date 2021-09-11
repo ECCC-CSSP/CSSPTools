@@ -20,8 +20,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillMWQMRunModelList(List<MWQMRunModel> MWQMRunModelList, TVItem TVItem, TVTypeEnum TVType)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<MWQMRunModel> MWQMRunModelList, TVItem TVItem, TVTypeEnum TVType) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }  TVType: { TVType }";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<MWQMRunModel> MWQMRunModelList, TVItem TVItem, TVTypeEnum TVType) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }  TVType: { TVType }";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVType);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVType);
@@ -57,7 +57,7 @@ namespace CreateGzFileServices
                 MWQMRunModelList.Add(mwqmRunModel);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

@@ -20,8 +20,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillHydrometricSiteModelList(List<HydrometricSiteModel> HydrometricSiteModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<HydrometricSiteModel> HydrometricSiteModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<HydrometricSiteModel> HydrometricSiteModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<TVItem> TVItemList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.HydrometricSite);
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.HydrometricSite);
@@ -80,7 +80,7 @@ namespace CreateGzFileServices
                 HydrometricSiteModelList.Add(hydrometricModel);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

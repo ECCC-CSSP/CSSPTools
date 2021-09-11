@@ -18,7 +18,7 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> DoUploadAllFilesToAzure()
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             int CountFileTotal = 0;
             int CountFileUploaded = 0;
@@ -44,9 +44,9 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }", new[] { "" }));
+                        CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }", new[] { "" }));
 
-                        await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                        CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                         await CSSPLogService.Save();
 
@@ -90,15 +90,15 @@ namespace CSSPUpdateServices
                                     file.Upload(stream);
 
                                     CountFileUploaded += 1;
-                                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
+                                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }", new[] { "" }));
+                            CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }", new[] { "" }));
 
-                            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                             await CSSPLogService.Save();
 
@@ -108,7 +108,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

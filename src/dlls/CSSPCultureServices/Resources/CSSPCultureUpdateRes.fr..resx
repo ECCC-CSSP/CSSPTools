@@ -129,9 +129,6 @@
   <data name="CollectingStatsUnder_" xml:space="preserve">
     <value>Collection de stats sous {0}</value>
   </data>
-  <data name="CouldNotAddCommandLog_Error_" xml:space="preserve">
-    <value>Dans l'impossibiliité d'ajouter CommandLog {0}. Erreur: {1}</value>
-  </data>
   <data name="CouldNotCreateDirectory_Error_" xml:space="preserve">
     <value>Dans l'impossibilité de créer le directoire {0}. Erreur: {1}</value>
   </data>
@@ -186,14 +183,8 @@
   <data name="DuplicateTVFileTVItemID" xml:space="preserve">
     <value>Dupliquer TVFileTVItemID --&gt; {0}</value>
   </data>
-  <data name="End" xml:space="preserve">
-    <value>Fin</value>
-  </data>
   <data name="EndedAzureDirectoryCleanup" xml:space="preserve">
     <value>\tErreur lors de la suppression du directoire Azure --&gt; {0}</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ERREUR</value>
   </data>
   <data name="ErrorDeletingAzureDirectory_" xml:space="preserve">
     <value>\tErreur lors de la suppression du directoire Azure --&gt; {0}</value>
@@ -255,20 +246,11 @@
   <data name="SavingInCSSPDBManageDatabase" xml:space="preserve">
     <value>Sauvegarde dans CSSPDBManage database</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Début</value>
-  </data>
   <data name="StartingAzureDirectoryCleanup" xml:space="preserve">
     <value>Départ du netoyage de directoire d'Azure</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Succès</value>
-  </data>
-  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
-    <value>Cette application ne peux qu'être exécuté sur l'ordinateur</value>
-  </data>
-  <data name="ThisComputerNameIs" xml:space="preserve">
-    <value>Cette ordinateur est </value>
   </data>
   <data name="unnecessaryStats" xml:space="preserve">
     <value>non nécessaire</value>

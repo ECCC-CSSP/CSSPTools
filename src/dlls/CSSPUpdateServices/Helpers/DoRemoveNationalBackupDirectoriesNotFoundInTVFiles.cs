@@ -21,14 +21,14 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> DoRemoveNationalBackupDirectoriesNotFoundInTVFiles()
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             DirectoryInfo diNat = new DirectoryInfo(NationalBackupAppDataPath);
             if (!diNat.Exists)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }", new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }", new[] { "" }));
 
-                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
@@ -64,7 +64,7 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingNationalDirectory_, diSub.Name) }");
+                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingNationalDirectory_, diSub.Name) }");
 
                     try
                     {
@@ -72,9 +72,9 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalDirectory_, diSub.Name) }", new[] { "" }));
+                        CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalDirectory_, diSub.Name) }", new[] { "" }));
 
-                        await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                        CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                         await CSSPLogService.Save();
 
@@ -83,7 +83,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

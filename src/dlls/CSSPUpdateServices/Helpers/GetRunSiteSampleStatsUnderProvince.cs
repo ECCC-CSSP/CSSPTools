@@ -17,7 +17,7 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> GetRunSiteSampleStatsUnderProvince(List<TVItem> TVItemList, List<TVItem> TVItemProvList, List<TVItemStat> TVItemStat2List)
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             foreach (TVItem tvItem in TVItemProvList)
             {
@@ -165,7 +165,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

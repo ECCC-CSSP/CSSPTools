@@ -17,18 +17,18 @@ using System.ComponentModel.DataAnnotations;
 using CSSPLogServices;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPLogServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPLogService : ControllerBase, ICSSPLogService
     {
         public async Task<bool> CheckComputerName(string FunctionName)
         {
             if (Environment.MachineName.ToString().ToLower() != config.ComputerName)
             {
-                string errMessage = $"{ CSSPCultureUpdateRes.ThisAppCanOnlyBeRunOnComputerName } { config.ComputerName }. { CSSPCultureUpdateRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }";
-                await CSSPLogService.AppendError(new ValidationResult(errMessage, new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
+                string errMessage = $"{ CSSPCultureServicesRes.ThisAppCanOnlyBeRunOnComputerName } { config.ComputerName }. { CSSPCultureServicesRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }";
+                AppendError(new ValidationResult(errMessage, new[] { "" }));
+                EndFunctionLog(FunctionName);
+                await Save();
 
                 return await Task.FromResult(false);
             }

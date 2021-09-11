@@ -25,14 +25,14 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> DoRemoveAzureDirectoriesNotFoundInTVFiles()
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }", new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }", new[] { "" }));
 
-                await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
@@ -54,7 +54,7 @@ namespace CSSPUpdateServices
             // Cleaning Azure drive
             //----------------------------------------------
 
-            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.StartingAzureDirectoryCleanup }");
+            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.StartingAzureDirectoryCleanup }");
 
             ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
@@ -74,7 +74,7 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureDirectory_, shareFileItem.Name) }");
+                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureDirectory_, shareFileItem.Name) }");
 
                     if (shareFileItem.IsDirectory)
                     {
@@ -88,17 +88,17 @@ namespace CSSPUpdateServices
                                 ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
 
                                 string dirFile = $@"{shareFileItem.Name}\{shareFileItemSub.Name}";
-                                await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureFile_, dirFile) }");
+                                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingAzureFile_, dirFile) }");
 
                                 Response<bool> responseFile = file.DeleteIfExists();
 
                                 if (responseFile.Value)
                                 {
-                                    await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
+                                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
                                 }
                                 else
                                 {
-                                    await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }", new[] { "" }));
+                                    CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }", new[] { "" }));
                                 }
                             }
                         }
@@ -107,19 +107,17 @@ namespace CSSPUpdateServices
 
                         if (responseDir.Value)
                         {
-                            await CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureDirectory_, shareFileItem.Name) }");
+                            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureDirectory_, shareFileItem.Name) }");
                         }
                         else
                         {
-                            await CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureDirectory_, shareFileItem.Name) }", new[] { "" }));
+                            CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureDirectory_, shareFileItem.Name) }", new[] { "" }));
                         }
                     }
                 }
             }
 
-            await CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.End } DoRemoveAzureDirectoriesNotFoundInTVFiles ...");
-
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

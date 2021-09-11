@@ -19,8 +19,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillReportTypeModelList(List<ReportTypeModel> ReportTypeModelList)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ReportTypeModel> ReportTypeModelList)";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ReportTypeModel> ReportTypeModelList)";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<ReportType> ReportTypeList = await GetReportTypeList();
             List<ReportSection> ReportSectionList = await GetReportSectionList();
@@ -34,7 +34,7 @@ namespace CreateGzFileServices
                 ReportTypeModelList.Add(ReportTypeModel);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

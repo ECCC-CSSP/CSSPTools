@@ -25,12 +25,12 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: { appTaskID }";
-            if (!await CSSPLogService.FunctionLog(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: { appTaskID }";
+            CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CheckLogin(FunctionName))
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
@@ -38,7 +38,7 @@ namespace CSSPAzureAppTaskServices
 
             if (!await ValidateDeleteAzureAppTask(appTaskID))
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
@@ -46,13 +46,13 @@ namespace CSSPAzureAppTaskServices
 
             if (!await DoDeleteAzureAppTask(appTaskID))
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
             await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(true));

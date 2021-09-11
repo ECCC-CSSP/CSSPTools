@@ -21,6 +21,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
+using CSSPLogServices.Models;
 
 namespace CreateGzFileServices.Tests
 {
@@ -40,6 +41,7 @@ namespace CreateGzFileServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private CSSPCreateGzFileServiceConfigModel config { get; set; }
+        private CSSPLogServiceConfigModel config2 { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
 
@@ -50,6 +52,7 @@ namespace CreateGzFileServices.Tests
         private async Task<bool> Setup(string culture)
         {
             config = new CSSPCreateGzFileServiceConfigModel();
+            config2 = new CSSPLogServiceConfigModel();
 
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -114,6 +117,15 @@ namespace CreateGzFileServices.Tests
             config.CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
             Assert.NotNull(config.CSSPJSONPathLocal);
 
+
+            // config2
+            config2.ComputerName = Configuration.GetValue<string>("ComputerName");
+            Assert.NotNull(config2.ComputerName);
+
+            config2.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+            Assert.NotNull(config2.CSSPDBManage);
+            Assert.DoesNotContain("_test", config2.CSSPDBManage);
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
@@ -167,6 +179,9 @@ namespace CreateGzFileServices.Tests
 
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
+
+            var res2 = CSSPLogService.FillConfigModel(config2);
+            Assert.True(res2);
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);

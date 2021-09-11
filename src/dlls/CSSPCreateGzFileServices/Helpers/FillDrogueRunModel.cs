@@ -20,8 +20,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillDrogueRunModel(List<DrogueRunModel> DrogueRunModelList, TVItem TVItemProvince)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<DrogueRunModel> DrogueRunModelList, TVItem TVItemProvince) -- TVItem.TVItemID: { TVItemProvince.TVItemID }   TVItem.TVPath: { TVItemProvince.TVPath })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<DrogueRunModel> DrogueRunModelList, TVItem TVItemProvince) -- TVItem.TVItemID: { TVItemProvince.TVItemID }   TVItem.TVPath: { TVItemProvince.TVPath })";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<DrogueRun> drogueRunList = await GetDrogueRunListUnderProvince(TVItemProvince);
             List<DrogueRunPosition> drogueRunPositionList = await GetDrogueRunPositionListUnderProvince(TVItemProvince);
@@ -40,7 +40,7 @@ namespace CreateGzFileServices
                 DrogueRunModelList.Add(drogueRunModel);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

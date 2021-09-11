@@ -17,14 +17,14 @@ using System.ComponentModel.DataAnnotations;
 using CSSPLogServices;
 using System.Reflection;
 
-namespace FileServices
+namespace CSSPLogServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPLogService : ControllerBase, ICSSPLogService
     {
-        private async Task<ActionResult<bool>> EndFunctionReturnOkTrue(string FunctionName)
+        public async Task<ActionResult> EndFunctionReturnOkTrue(string FunctionName)
         {
-            await CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
+            EndFunctionLog(FunctionName);
+            await Save();
 
             return await Task.FromResult(Ok(true));
         }

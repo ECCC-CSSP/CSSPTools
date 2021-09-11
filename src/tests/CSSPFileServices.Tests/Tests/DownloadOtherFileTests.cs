@@ -16,21 +16,10 @@ namespace FileServices.Tests
     //[Collection("Sequential")]
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadOtherFile_Good_Test(string culture)
+        public async Task DownloadOtherFile_Good_Test(string culture)
         {
             List<string> otherFileList = new List<string>()
             {
@@ -40,6 +29,8 @@ namespace FileServices.Tests
             foreach (string fileName in otherFileList)
             {
                 Assert.True(await Setup(culture));
+
+                Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
                 var actionRes = await FileService.DownloadOtherFile(fileName);
                 Assert.NotNull(((FileStreamResult)actionRes).FileStream);
@@ -50,7 +41,7 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadOtherFile_Unauthorized_Error_Test(string culture)
+        public async Task DownloadOtherFile_Unauthorized_Error_Test(string culture)
         {
             List<string> otherFileList = new List<string>()
             {
@@ -60,6 +51,8 @@ namespace FileServices.Tests
             foreach (string fileName in otherFileList)
             {
                 Assert.True(await Setup(culture));
+
+                Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
                 LoggedInService.LoggedInContactInfo = null;
 
@@ -74,9 +67,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadOtherFile_FileDoesNotExist_Error_Test(string culture)
+        public async Task DownloadOtherFile_FileDoesNotExist_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             string FileName = "NotExist.css";
 
@@ -87,9 +82,5 @@ namespace FileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

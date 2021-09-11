@@ -19,8 +19,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillLabSheetModelList(List<LabSheetModel> LabSheetModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<LabSheetModel> LabSheetModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<LabSheetModel> LabSheetModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<LabSheet> LabSheetList = await GetLabSheetListUnderSubsector(TVItem.TVItemID);
             List<LabSheetDetail> LabSheetDetailList = await GetLabSheetDetailListUnderSubsector(TVItem.TVItemID);
@@ -39,7 +39,7 @@ namespace CreateGzFileServices
                 LabSheetModelList.Add(LabSheetModel);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

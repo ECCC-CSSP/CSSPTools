@@ -24,16 +24,16 @@ namespace CreateGzFileServices
     {
         public async Task<ActionResult<bool>> DeleteGzFile(WebTypeEnum webType, int TVItemID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum: { webType }, TVItemID: { TVItemID })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum: { webType }, TVItemID: { TVItemID })";
+            CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
-            if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
             if (!await ValidateDBs(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
 
             await DoDeleteGzFile(webType, TVItemID);
 
-            return await EndFunctionReturn(FunctionName);
+            return await CSSPLogService.EndFunctionReturnOkTrue(FunctionName);
         }
     }
 }

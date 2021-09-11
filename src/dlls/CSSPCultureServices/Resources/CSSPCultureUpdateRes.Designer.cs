@@ -106,15 +106,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add CommandLog {0}. Error: {1}.
-        /// </summary>
-        public static string CouldNotAddCommandLog_Error_ {
-            get {
-                return ResourceManager.GetString("CouldNotAddCommandLog_Error_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not create directory {0}. Error: {1}.
         /// </summary>
         public static string CouldNotCreateDirectory_Error_ {
@@ -273,24 +264,6 @@ namespace CSSPCultureServices.Resources {
         public static string DuplicateTVFileTVItemID {
             get {
                 return ResourceManager.GetString("DuplicateTVFileTVItemID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End.
-        /// </summary>
-        public static string End {
-            get {
-                return ResourceManager.GetString("End", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ERROR.
-        /// </summary>
-        public static string ERROR {
-            get {
-                return ResourceManager.GetString("ERROR", resourceCulture);
             }
         }
         
@@ -475,15 +448,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        public static string Start {
-            get {
-                return ResourceManager.GetString("Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Starting Azure directory cleanup.
         /// </summary>
         public static string StartingAzureDirectoryCleanup {
@@ -498,24 +462,6 @@ namespace CSSPCultureServices.Resources {
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This app can only be run on computer name.
-        /// </summary>
-        public static string ThisAppCanOnlyBeRunOnComputerName {
-            get {
-                return ResourceManager.GetString("ThisAppCanOnlyBeRunOnComputerName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This computer name is.
-        /// </summary>
-        public static string ThisComputerNameIs {
-            get {
-                return ResourceManager.GetString("ThisComputerNameIs", resourceCulture);
             }
         }
         

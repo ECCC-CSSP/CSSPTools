@@ -36,7 +36,6 @@ namespace CSSPLogServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        private FileInfo fiCSSPDBManageTest { get; set; }
         private CSSPLogServiceConfigModel config { get; set; }
         #endregion Properties
 
@@ -54,7 +53,7 @@ namespace CSSPLogServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_cssplogservicestests.json")
-               .AddUserSecrets("9991f472-24ee-41c9-971f-2d92278f2970")
+               //.AddUserSecrets("9991f472-24ee-41c9-971f-2d92278f2970")
                .Build();
 
             Services = new ServiceCollection();
@@ -70,11 +69,14 @@ namespace CSSPLogServices.Tests
 
             config.CSSPDBManageTest = config.CSSPDBManage.Replace(".db", "_test.db");
 
+            config.ComputerName = Configuration.GetValue<string>("ComputerName");
+            Assert.NotNull(config.ComputerName);
+
             FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
 
             Assert.True(fiCSSPDBManage.Exists);
 
-            fiCSSPDBManageTest = new FileInfo(config.CSSPDBManageTest);
+            FileInfo fiCSSPDBManageTest = new FileInfo(config.CSSPDBManageTest);
             if (!fiCSSPDBManageTest.Exists)
             {
                 try
@@ -120,7 +122,10 @@ namespace CSSPLogServices.Tests
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
 
-            await CSSPLogService.FillConfigModel(config);
+            CSSPLogService.CSSPAppName = "CSSPLogService_AppName";
+            CSSPLogService.CSSPCommandName = "CSSPLogService_CommandName";
+
+            CSSPLogService.FillConfigModel(config);
 
             dbManage = Provider.GetService<CSSPDBManageContext>();
             Assert.NotNull(dbManage);

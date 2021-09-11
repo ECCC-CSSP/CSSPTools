@@ -20,16 +20,16 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebAreaGzFile(int AreaTVItemID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(AreaTVItemID: { AreaTVItemID })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(AreaTVItemID: { AreaTVItemID })";
+            CSSPLogService.FunctionLog(FunctionName);
 
             TVItem TVItemArea = await GetTVItemWithTVItemID(AreaTVItemID);
 
             if (TVItemArea == null || TVItemArea.TVType != TVTypeEnum.Area)
             {
-                await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, 
+                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, 
                     "TVItem", "TVType", TVTypeEnum.Area.ToString()), new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
@@ -55,12 +55,12 @@ namespace CreateGzFileServices
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

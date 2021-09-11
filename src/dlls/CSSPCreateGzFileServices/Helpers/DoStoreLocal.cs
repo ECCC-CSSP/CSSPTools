@@ -22,7 +22,7 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoStoreLocal<T>(T webJson, string fileName)
         {
-            await CSSPLogService.FunctionLog($"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }");
+            CSSPLogService.FunctionLog($"{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }");
 
             FileInfo fi = new FileInfo($"{ config.CSSPJSONPathLocal }{ fileName }");
 
@@ -35,7 +35,7 @@ namespace CreateGzFileServices
                 catch (Exception ex)
                 {
                     string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                    await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                    CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
 
                     return await Task.FromResult(false);
                 }
@@ -47,7 +47,7 @@ namespace CreateGzFileServices
                 //new MemoryStream(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<T>(webJson))).CopyTo(compressedFileStream);
             }
 
-            await CSSPLogService.EndFunctionLog($"{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }");
+            CSSPLogService.EndFunctionLog($"{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }");
 
             return await Task.FromResult(true);
         }

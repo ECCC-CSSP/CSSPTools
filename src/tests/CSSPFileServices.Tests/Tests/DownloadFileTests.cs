@@ -15,23 +15,14 @@ namespace FileServices.Tests
 {
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadFile_Good_Test(string culture)
+        public async Task DownloadFile_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             CSSPLogService.CSSPAppName = "FileServiceTests";
             CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests";
@@ -50,9 +41,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadFile_Unauthorized_Error_Test(string culture)
+        public async Task DownloadFile_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             CSSPLogService.CSSPAppName = "FileServiceTests";
             CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests";
@@ -75,9 +68,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadFile_FileNotExist_Error_Test(string culture)
+        public async Task DownloadFile_FileNotExist_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             CSSPLogService.CSSPAppName = "FileServiceTests";
             CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests_FileNotExist";
@@ -95,9 +90,5 @@ namespace FileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

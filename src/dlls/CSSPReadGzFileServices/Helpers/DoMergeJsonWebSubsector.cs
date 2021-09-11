@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -15,6 +16,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebSubsector(WebSubsector WebSubsector, WebSubsector WebSubsectorLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebSubsector WebSubsector, WebSubsector WebSubsectorLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             if (WebSubsectorLocal.TVItemModel.TVItem.TVItemID != 0
                 && (WebSubsectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                || WebSubsectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -75,6 +79,7 @@ namespace ReadGzFileServices
                 }
             }
 
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

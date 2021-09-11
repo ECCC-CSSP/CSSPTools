@@ -15,23 +15,14 @@ namespace FileServices.Tests
     //[Collection("Sequential")]
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory(Skip = "Will need to figure out a way to write the test function")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_CreateTempPNG_Good_Test(string culture)
+        public async Task CreateTempPNG_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(true);
         }
@@ -39,17 +30,15 @@ namespace FileServices.Tests
         [Theory(Skip = "Will need to figure out a way to write the test function")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_CreateTempPNG_Unauthorized_Good_Test(string culture)
+        public async Task CreateTempPNG_Unauthorized_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             LoggedInService.LoggedInContactInfo = null;
 
             Assert.True(true);
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

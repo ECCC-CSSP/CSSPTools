@@ -17,17 +17,17 @@ using System.ComponentModel.DataAnnotations;
 using CSSPLogServices;
 using System.Reflection;
 
-namespace FileServices
+namespace CSSPLogServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPLogService : ControllerBase, ICSSPLogService
     {
         public async Task<bool> CheckLogin(string FunctionName)
         {
             if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                await CSSPLogService.AppendError(new ValidationResult(CSSPCultureServicesRes.YouDoNotHaveAuthorization, new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
+                AppendError(new ValidationResult(CSSPCultureServicesRes.YouDoNotHaveAuthorization, new[] { "" }));
+                EndFunctionLog(FunctionName);
+                await Save();
 
                 return await Task.FromResult(false);
             }

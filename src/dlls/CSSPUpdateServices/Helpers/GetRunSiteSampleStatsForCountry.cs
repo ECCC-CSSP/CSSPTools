@@ -16,7 +16,7 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> GetRunSiteSampleStatsForCountry(List<TVItemStat> TVItemStat2List)
         {
-            await CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             foreach (TVItem tvItem in (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.Country
@@ -66,7 +66,7 @@ namespace CSSPUpdateServices
 
             }
 
-            await CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             return await Task.FromResult(Ok(true));
         }

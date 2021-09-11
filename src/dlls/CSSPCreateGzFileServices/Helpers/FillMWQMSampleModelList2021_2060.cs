@@ -19,8 +19,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillMWQMSampleModelList2021_2060(List<MWQMSampleModel> MWQMSampleModelList, TVItem TVItem)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<MWQMSampleModel> MWQMSampleModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<MWQMSampleModel> MWQMSampleModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath }";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<MWQMSample> MWQMSampleList = await GetWQMSampleListFromSubsector2021_2060(TVItem);
             List<MWQMSampleLanguage> MWQMSampleLanguageList = await GetWQMSampleLanguageListFromSubsector2021_2060(TVItem);
@@ -36,7 +36,7 @@ namespace CreateGzFileServices
                 MWQMSampleModelList.Add(mwqmSampleModel);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

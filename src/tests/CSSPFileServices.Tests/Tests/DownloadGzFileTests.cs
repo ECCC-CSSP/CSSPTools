@@ -16,23 +16,14 @@ namespace FileServices.Tests
     //[Collection("Sequential")]
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllAddresses_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllAddresses_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
@@ -46,9 +37,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllContacts_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllContacts_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllContacts;
 
@@ -62,9 +55,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllCountries_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllCountries_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllCountries;
 
@@ -78,9 +73,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllEmails_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllEmails_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllEmails;
 
@@ -92,9 +89,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllHelpDocs_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllHelpDocs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
 
@@ -108,9 +107,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllMunicipalities_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllMunicipalities_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllMunicipalities;
 
@@ -124,9 +125,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllMWQMLookupMPNs_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
 
@@ -140,9 +143,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllPolSourceGroupings_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllPolSourceGroupings_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
 
@@ -156,9 +161,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
 
@@ -172,9 +179,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllProvinces_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllProvinces_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllProvinces;
 
@@ -188,9 +197,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllReportTypes_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllReportTypes_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
 
@@ -204,9 +215,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllTels_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllTels_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllTels;
 
@@ -220,9 +233,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebAllTideLocations_Good_Test(string culture)
+        public async Task DownloadGzFile_WebAllTideLocations_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
 
@@ -236,9 +251,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebArea_Good_Test(string culture)
+        public async Task DownloadGzFile_WebArea_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 629;
@@ -253,9 +270,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebClimateSite_Good_Test(string culture)
+        public async Task DownloadGzFile_WebClimateSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebClimateSites;
             int TVItemID = 7;
@@ -270,9 +289,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebCountry_Good_Test(string culture)
+        public async Task DownloadGzFile_WebCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 5;
@@ -288,9 +309,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebDrogueRuns_Good_Test(string culture)
+        public async Task DownloadGzFile_WebDrogueRuns_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
             int TVItemID = 7;
@@ -305,9 +328,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebHydrometricSite_Good_Test(string culture)
+        public async Task DownloadGzFile_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebHydrometricSites;
             int TVItemID = 7;
@@ -322,9 +347,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebLabSheet_Good_Test(string culture)
+        public async Task DownloadGzFile_WebLabSheet_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebLabSheets;
             int TVItemID = 635;
@@ -339,9 +366,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMikeScenarios_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMikeScenarios_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMikeScenarios;
             int TVItemID = 27764;
@@ -356,9 +385,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMonitoringOtherStatsCountry_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMonitoringOtherStatsCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsCountry;
             int TVItemID = 5;
@@ -373,9 +404,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMonitoringOtherStatsProvince_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMonitoringOtherStatsProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsProvince;
             int TVItemID = 7;
@@ -390,9 +423,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsCountry;
             int TVItemID = 5;
@@ -407,9 +442,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsProvince;
             int TVItemID = 7;
@@ -424,9 +461,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMunicipality_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMunicipality_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 27764;
@@ -441,9 +480,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMWQMRuns_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMWQMRuns_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
             int TVItemID = 635;
@@ -458,10 +499,12 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMWQMSamples1980_2020_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMWQMSamples1980_2020_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+            
             WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
             int TVItemID = 635;
 
@@ -475,10 +518,12 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMWQMSamples2021_2060_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMWQMSamples2021_2060_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+            
             WebTypeEnum webType = WebTypeEnum.WebMWQMSamples2021_2060;
             int TVItemID = 635;
 
@@ -492,9 +537,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebMWQMSite_Good_Test(string culture)
+        public async Task DownloadGzFile_WebMWQMSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
             int TVItemID = 635;
@@ -509,9 +556,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebPolSourceSite_Good_Test(string culture)
+        public async Task DownloadGzFile_WebPolSourceSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSites;
             int TVItemID = 635;
@@ -526,9 +575,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebProvince_Good_Test(string culture)
+        public async Task DownloadGzFile_WebProvince_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
@@ -543,9 +594,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebRoot_Good_Test(string culture)
+        public async Task DownloadGzFile_WebRoot_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebRoot;
 
@@ -559,9 +612,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebSector_Good_Test(string culture)
+        public async Task DownloadGzFile_WebSector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 633;
@@ -576,9 +631,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebSubsector_Good_Test(string culture)
+        public async Task DownloadGzFile_WebSubsector_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 635;
@@ -593,9 +650,11 @@ namespace FileServices.Tests
         [Theory(Skip = "WebTideSite does not yet have items")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebTideSite_Good_Test(string culture)
+        public async Task DownloadGzFile_WebTideSite_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebTideSites;
             int TVItemID = 635;
@@ -610,13 +669,15 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_WebNNNNNN_Unauthorized_Error_Test(string culture)
+        public async Task DownloadGzFile_WebNNNNNN_Unauthorized_Error_Test(string culture)
         {
             List<WebTypeEnum> webTypeList = GetWebTypeList();
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
                 Assert.True(await Setup(culture));
+
+                Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
                 LoggedInService.LoggedInContactInfo = null;
 
@@ -633,9 +694,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_AzureStore_Error_Test(string culture)
+        public async Task DownloadGzFile_AzureStore_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
@@ -654,9 +717,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_AzureStoreCSSPJSONPath_Error_Test(string culture)
+        public async Task DownloadGzFile_AzureStoreCSSPJSONPath_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
@@ -675,9 +740,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadGzFile_FileName_Error_Test(string culture)
+        public async Task DownloadGzFile_FileName_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 777777777;
@@ -690,9 +757,5 @@ namespace FileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

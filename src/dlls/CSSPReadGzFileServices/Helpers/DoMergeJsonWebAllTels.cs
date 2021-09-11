@@ -7,6 +7,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -14,6 +15,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllTels(WebAllTels WebAllTels, WebAllTels WebAllTelsLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllTels WebAllTels, WebAllTels WebAllTelsLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             List<TelModel> telModelLocalList = (from c in WebAllTelsLocal.TelModelList
                                                     where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                                     || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -32,6 +36,8 @@ namespace ReadGzFileServices
                     telModelOriginal = telModelLocal;
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(config);
+            Assert.NotNull(config2);
             Assert.NotNull(dbManage);
         }
     }

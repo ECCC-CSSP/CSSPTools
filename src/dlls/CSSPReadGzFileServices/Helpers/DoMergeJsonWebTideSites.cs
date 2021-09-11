@@ -7,6 +7,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -14,6 +15,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebTideSites(WebTideSites WebTideSites, WebTideSites WebTideSitesLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTideSites WebTideSites, WebTideSites WebTideSitesLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             if (WebTideSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (WebTideSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                 || WebTideSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -52,6 +56,8 @@ namespace ReadGzFileServices
                     tideSiteModelOriginal = tideSiteModel;
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

@@ -22,8 +22,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebMonitoringRoutineStatsProvinceGzFile(int ProvinceTVItemID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(ProvinceTVItemID: { ProvinceTVItemID })";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(ProvinceTVItemID: { ProvinceTVItemID })";
+            CSSPLogService.FunctionLog(FunctionName);
 
             TVItem tvItemRoot = await GetTVItemRoot();
 
@@ -32,8 +32,8 @@ namespace CreateGzFileServices
 
             if (tvItemTest == null || tvItemTest.TVType != TVTypeEnum.Province)
             {
-                await CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, "TVItem", "TVType", TVTypeEnum.Province.ToString()) } { DateTime.Now }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, "TVItem", "TVType", TVTypeEnum.Province.ToString()) } { DateTime.Now }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
@@ -54,7 +54,7 @@ namespace CreateGzFileServices
                                                              select c).ToList();
 
                 string TVTextSS = TVItemLanguageSSList[CSSPCultureService.LangID].TVText;
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextSS } { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextSS } { DateTime.Now }");
 
                 string subsector = TVTextSS;
 
@@ -298,7 +298,7 @@ namespace CreateGzFileServices
                                                                  select c).ToList();
 
                 string TVTextSector = TVItemLanguageSectorList[CSSPCultureService.LangID].TVText;
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextSector } { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextSector } { DateTime.Now }");
 
                 for (int year = DateTime.Now.Year; year >= 1980; year--)
                 {
@@ -405,7 +405,7 @@ namespace CreateGzFileServices
                                                                select c).ToList();
 
                 string TVTextArea = TVItemLanguageAreaList[CSSPCultureService.LangID].TVText;
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextArea } { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextArea } { DateTime.Now }");
 
                 for (int year = DateTime.Now.Year; year >= 1980; year--)
                 {
@@ -507,7 +507,7 @@ namespace CreateGzFileServices
                                                                select c).ToList();
 
             string TVTextProvince = TVItemLanguageProvinceList[CSSPCultureService.LangID].TVText;
-            await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextProvince } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Doing } { TVTextProvince } { DateTime.Now }");
 
             for (int year = DateTime.Now.Year; year >= 1980; year--)
             {
@@ -608,12 +608,12 @@ namespace CreateGzFileServices
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

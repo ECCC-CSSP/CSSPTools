@@ -906,4 +906,22 @@
   <data name="FileNotCreated_" xml:space="preserve">
     <value>La filière n'a pu être créée  {0}</value>
   </data>
+  <data name="CouldNotAddCommandLog_Error_" xml:space="preserve">
+    <value>Dans l'impossibiliité d'ajouter CommandLog {0}. Erreur: {1}</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Fin</value>
+  </data>
+  <data name="ERRORCap" xml:space="preserve">
+    <value>ERREUR</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Début</value>
+  </data>
+  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
+    <value>Cette application ne peux qu'être exécuté sur l'ordinateur</value>
+  </data>
+  <data name="ThisComputerNameIs" xml:space="preserve">
+    <value>Cette ordinateur est </value>
+  </data>
 </root>

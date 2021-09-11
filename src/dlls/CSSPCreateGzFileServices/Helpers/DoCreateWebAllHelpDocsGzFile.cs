@@ -18,8 +18,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> DoCreateWebAllHelpDocsGzFile()
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            CSSPLogService.FunctionLog(FunctionName);
 
             WebAllHelpDocs webAllHelpDocs = new WebAllHelpDocs();
 
@@ -39,12 +39,12 @@ namespace CreateGzFileServices
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                await CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

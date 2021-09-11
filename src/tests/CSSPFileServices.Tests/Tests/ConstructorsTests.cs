@@ -14,21 +14,10 @@ namespace FileServices.Tests
 {
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_Constructor_Good_Test(string culture)
+        public async Task Constructor_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
@@ -41,9 +30,5 @@ namespace FileServices.Tests
             Assert.NotNull(dbManage);
             Assert.NotNull(config);
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

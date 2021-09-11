@@ -7,6 +7,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -14,6 +15,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebHydrometricSites(WebHydrometricSites WebHydrometricSites, WebHydrometricSites WebHydrometricSitesLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebHydrometricSites WebHydrometricSites, WebHydrometricSites WebHydrometricSitesLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             if (WebHydrometricSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (WebHydrometricSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                 || WebHydrometricSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -55,6 +59,7 @@ namespace ReadGzFileServices
                 // will need to do rating curve
             }
 
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

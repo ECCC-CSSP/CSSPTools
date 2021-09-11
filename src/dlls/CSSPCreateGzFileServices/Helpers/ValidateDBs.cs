@@ -24,32 +24,32 @@ namespace CreateGzFileServices
         {
             if (db == null && dbLocal == null)
             {
-                await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db || dbLocal"), new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db || dbLocal"), new[] { "" }));
             }
 
             if (dbLocal != null)
             {
                 if (string.IsNullOrWhiteSpace(config.CSSPJSONPathLocal))
                 {
-                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPJSONPathLocal"), new[] { "" }));
+                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPJSONPathLocal"), new[] { "" }));
                 }
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(config.AzureStoreCSSPJSONPath))
                 {
-                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreCSSPJSONPath"), new[] { "" }));
+                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreCSSPJSONPath"), new[] { "" }));
                 }
 
                 if (string.IsNullOrWhiteSpace(config.AzureStore))
                 {
-                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStore"), new[] { "" }));
+                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStore"), new[] { "" }));
                 }
             }
 
             if (CSSPLogService.ValidationResultList.Count > 0)
             {
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();
 
                 return await Task.FromResult(false);                

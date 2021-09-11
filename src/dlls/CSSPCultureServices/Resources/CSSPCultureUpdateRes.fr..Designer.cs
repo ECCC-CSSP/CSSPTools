@@ -106,15 +106,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dans l&apos;impossibiliité d&apos;ajouter CommandLog {0}. Erreur: {1}.
-        /// </summary>
-        public static string CouldNotAddCommandLog_Error_ {
-            get {
-                return ResourceManager.GetString("CouldNotAddCommandLog_Error_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dans l&apos;impossibilité de créer le directoire {0}. Erreur: {1}.
         /// </summary>
         public static string CouldNotCreateDirectory_Error_ {
@@ -277,29 +268,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fin.
-        /// </summary>
-        public static string End {
-            get {
-                return ResourceManager.GetString("End", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to \tErreur lors de la suppression du directoire Azure --&gt; {0}.
         /// </summary>
         public static string EndedAzureDirectoryCleanup {
             get {
                 return ResourceManager.GetString("EndedAzureDirectoryCleanup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ERREUR.
-        /// </summary>
-        public static string ERROR {
-            get {
-                return ResourceManager.GetString("ERROR", resourceCulture);
             }
         }
         
@@ -484,15 +457,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Début.
-        /// </summary>
-        public static string Start {
-            get {
-                return ResourceManager.GetString("Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Départ du netoyage de directoire d&apos;Azure.
         /// </summary>
         public static string StartingAzureDirectoryCleanup {
@@ -507,24 +471,6 @@ namespace CSSPCultureServices.Resources {
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cette application ne peux qu&apos;être exécuté sur l&apos;ordinateur.
-        /// </summary>
-        public static string ThisAppCanOnlyBeRunOnComputerName {
-            get {
-                return ResourceManager.GetString("ThisAppCanOnlyBeRunOnComputerName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cette ordinateur est .
-        /// </summary>
-        public static string ThisComputerNameIs {
-            get {
-                return ResourceManager.GetString("ThisComputerNameIs", resourceCulture);
             }
         }
         

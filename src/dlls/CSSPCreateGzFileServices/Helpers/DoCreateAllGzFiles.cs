@@ -18,9 +18,9 @@ namespace CreateGzFileServices
     {
         private async Task<ActionResult<bool>> DoCreateAllGzFiles()
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
 
-            await CSSPLogService.FunctionLog(FunctionName);
+            CSSPLogService.FunctionLog(FunctionName);
 
             Console.WriteLine("Create WebAllAddresses doing...");
             await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
@@ -158,7 +158,7 @@ namespace CreateGzFileServices
                 }
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(Ok(true));
         }

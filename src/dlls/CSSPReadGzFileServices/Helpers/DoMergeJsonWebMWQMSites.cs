@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -15,6 +16,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebMWQMSites(WebMWQMSites WebMWQMSites, WebMWQMSites WebMWQMSitesLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMWQMSites WebMWQMSites, WebMWQMSites WebMWQMSitesLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             List<MWQMSiteModel> MWQMSiteModelList = (from c in WebMWQMSitesLocal.MWQMSiteModelList
                                                      where c.MWQMSite.MWQMSiteID != 0
                                                      && c.MWQMSite.DBCommand != DBCommandEnum.Original
@@ -77,6 +81,8 @@ namespace ReadGzFileServices
                     }
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

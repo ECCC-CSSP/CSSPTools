@@ -129,9 +129,6 @@
   <data name="CollectingStatsUnder_" xml:space="preserve">
     <value>Collecting stats under {0}</value>
   </data>
-  <data name="CouldNotAddCommandLog_Error_" xml:space="preserve">
-    <value>Could not add CommandLog {0}. Error: {1}</value>
-  </data>
   <data name="CouldNotCreateDirectory_Error_" xml:space="preserve">
     <value>Could not create directory {0}. Error: {1}</value>
   </data>
@@ -185,12 +182,6 @@
   </data>
   <data name="DuplicateTVFileTVItemID" xml:space="preserve">
     <value>Duplicate TVFileTVItemID --&gt; {0}</value>
-  </data>
-  <data name="End" xml:space="preserve">
-    <value>End</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ERROR</value>
   </data>
   <data name="ErrorDeletingAzureDirectory_" xml:space="preserve">
     <value>\tError deleting Azure directory --&gt; {0}</value>
@@ -252,20 +243,11 @@
   <data name="SavingInCSSPDBManageDatabase" xml:space="preserve">
     <value>Saving in CSSPDBManage database</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
   <data name="StartingAzureDirectoryCleanup" xml:space="preserve">
     <value>Starting Azure directory cleanup</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
-  </data>
-  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
-    <value>This app can only be run on computer name</value>
-  </data>
-  <data name="ThisComputerNameIs" xml:space="preserve">
-    <value>This computer name is</value>
   </data>
   <data name="unnecessaryStats" xml:space="preserve">
     <value>unnecessary stats</value>

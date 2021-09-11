@@ -8,6 +8,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -15,6 +16,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebAllHelpDocs(WebAllHelpDocs WebAllHelpDocs, WebAllHelpDocs WebAllHelpDocsLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllHelpDocs WebAllHelpDocs, WebAllHelpDocs WebAllHelpDocsLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             List<HelpDoc> helpDocLocalList = (from c in WebAllHelpDocsLocal.HelpDocList
                                                     where c.DBCommand != DBCommandEnum.Original
                                                     select c).ToList();
@@ -31,6 +35,8 @@ namespace ReadGzFileServices
                     helpDocOriginal = helpDocLocal;
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

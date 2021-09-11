@@ -22,9 +22,9 @@ namespace CSSPAzureAppTaskServices
     {
         private async Task<bool> DoDeleteAzureAppTask(int appTaskID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
 
-            if (!await CSSPLogService.FunctionLog(FunctionName)) return await Task.FromResult(false);
+            CSSPLogService.FunctionLog(FunctionName);
 
             AppTask appTask = (from c in db.AppTasks
                                where c.AppTaskID == appTaskID
@@ -32,7 +32,7 @@ namespace CSSPAzureAppTaskServices
 
             if (appTask == null)
             {
-                await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()), new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()), new[] { "" }));
                 return false;
             }
             else
@@ -45,13 +45,13 @@ namespace CSSPAzureAppTaskServices
                 }
                 catch (Exception ex)
                 {
-                    await CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message), new[] { "AppTask" }));
+                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message), new[] { "AppTask" }));
                     return false;
                 }
 
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             if (CSSPLogService.ValidationResultList.Count > 0) return await Task.FromResult(false);
 

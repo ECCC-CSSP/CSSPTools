@@ -7,6 +7,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -14,6 +15,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebClimateSites(WebClimateSites WebClimateSites, WebClimateSites WebClimateSitesLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebClimateSites WebClimateSites, WebClimateSites WebClimateSitesLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             if (WebClimateSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (WebClimateSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                 || WebClimateSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -52,6 +56,8 @@ namespace ReadGzFileServices
                     climateSiteModelOriginal = climateSiteModel;
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

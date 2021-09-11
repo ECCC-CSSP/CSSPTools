@@ -912,4 +912,22 @@
   <data name="FileNotCreated_" xml:space="preserve">
     <value>File not created {0}</value>
   </data>
+  <data name="CouldNotAddCommandLog_Error_" xml:space="preserve">
+    <value>Could not add CommandLog {0}. Error: {1}</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="ERRORCap" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
+    <value>This app can only be run on computer name</value>
+  </data>
+  <data name="ThisComputerNameIs" xml:space="preserve">
+    <value>This computer name is</value>
+  </data>
 </root>

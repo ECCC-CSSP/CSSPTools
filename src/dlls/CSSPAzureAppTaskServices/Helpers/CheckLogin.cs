@@ -26,9 +26,9 @@ namespace CSSPAzureAppTaskServices
         {
             if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                await CSSPLogService.AppendError(new ValidationResult(CSSPCultureServicesRes.YouDoNotHaveAuthorization, new[] { "" }));
+                CSSPLogService.AppendError(new ValidationResult(CSSPCultureServicesRes.YouDoNotHaveAuthorization, new[] { "" }));
 
-                await CSSPLogService.EndFunctionLog(FunctionName);
+                CSSPLogService.EndFunctionLog(FunctionName);
 
                 await CSSPLogService.Save();
 

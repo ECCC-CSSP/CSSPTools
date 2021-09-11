@@ -19,16 +19,12 @@ namespace CSSPLogServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPLogService_FunctionLog_Good_Test(string culture)
+        public async Task FillConfigModel_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
 
-            string ThisFunction = "ThisFunction";
-            Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
-            Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
-            Assert.True(await CSSPLogService.FunctionLog($"<{ThisFunction}>"));
-            Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
-            Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
+            Assert.True(CSSPLogService.FillConfigModel(config));
+
         }
         #endregion Tests 
 

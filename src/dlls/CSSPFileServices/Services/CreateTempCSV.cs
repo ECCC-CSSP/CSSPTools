@@ -26,16 +26,16 @@ namespace FileServices
     {
         public async Task<ActionResult<bool>> CreateTempCSV(TableConvertToCSVModel tableConvertToCSVModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TableConvertToCSVModel tableConvertToCSVModel) -- TableFileName: { tableConvertToCSVModel.TableFileName }";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TableConvertToCSVModel tableConvertToCSVModel) -- TableFileName: { tableConvertToCSVModel.TableFileName }";
+            CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
       
             try
             {
                 FileInfo fi = new FileInfo($"{config.CSSPTempFilesPath}\\{tableConvertToCSVModel.TableFileName}");
 
-                await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Creating } { fi.FullName }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Creating } { fi.FullName }");
 
                 System.IO.File.WriteAllText(fi.FullName, tableConvertToCSVModel.CSVString);
 
@@ -43,17 +43,17 @@ namespace FileServices
 
                 if (!fi.Exists)
                 {
-                    return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.FileNotCreated_, fi.FullName));
+                    return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.FileNotCreated_, fi.FullName));
                 }
             }
             catch (Exception ex)
             {
                 string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerExcecption: " + ex.InnerException.Message);
 
-                return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotCreateTemp_FileError_, "CSV", ErrorText));
+                return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotCreateTemp_FileError_, "CSV", ErrorText));
             }
 
-            return await EndFunctionReturnOkTrue(FunctionName);
+            return await CSSPLogService.EndFunctionReturnOkTrue(FunctionName);
         }
     }
 }

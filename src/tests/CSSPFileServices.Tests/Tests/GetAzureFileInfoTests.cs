@@ -15,23 +15,14 @@ namespace FileServices.Tests
 {
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_GetAzureFileInfo_Good_Test(string culture)
+        public async Task GetAzureFileInfo_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
@@ -47,9 +38,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_GetAzureFileInfo_Unauthorized_Error_Test(string culture)
+        public async Task GetAzureFileInfo_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
@@ -66,9 +59,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_GetAzureFileInfo_ParentTVItemIDNotFound_Error_Test(string culture)
+        public async Task GetAzureFileInfo_ParentTVItemIDNotFound_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 111111111;
             string FileName = "BarTopBottom.png";
@@ -83,9 +78,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_GetAzureFileInfo_FileDoesNotExist_Error_Test(string culture)
+        public async Task GetAzureFileInfo_FileDoesNotExist_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 1;
             string FileName = "NotExist.png";
@@ -100,9 +97,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_GetAzureFileInfo_AzureStore_Error_Test(string culture)
+        public async Task GetAzureFileInfo_AzureStore_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
@@ -121,9 +120,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_GetAzureFileInfo_AzureStoreCSSPFilesPath_Error_Test(string culture)
+        public async Task GetAzureFileInfo_AzureStoreCSSPFilesPath_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
@@ -139,9 +140,5 @@ namespace FileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

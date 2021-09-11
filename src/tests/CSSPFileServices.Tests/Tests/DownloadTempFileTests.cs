@@ -16,23 +16,14 @@ namespace FileServices.Tests
     //[Collection("Sequential")]
     public partial class FileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see under GzFileServices Setup.cs
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadTempFile_Good_Test(string culture)
+        public async Task DownloadTempFile_Good_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\ThisFileShoulBeUnique743Testing.txt");
 
@@ -58,9 +49,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadTempFile_Unauthorized_Error_Test(string culture)
+        public async Task DownloadTempFile_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\ThisFileShoulBeUnique743Testing.txt");
 
@@ -78,9 +71,11 @@ namespace FileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FileService_DownloadTempFile_FileDoesNotExist_Error_Test(string culture)
+        public async Task DownloadTempFile_FileDoesNotExist_Error_Test(string culture)
         {
             Assert.True(await Setup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             string FileName = "doesnotexist.css";
 
@@ -91,9 +86,5 @@ namespace FileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

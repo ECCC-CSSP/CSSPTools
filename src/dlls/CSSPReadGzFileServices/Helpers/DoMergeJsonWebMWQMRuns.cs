@@ -7,6 +7,7 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
@@ -14,6 +15,9 @@ namespace ReadGzFileServices
     {
         private void DoMergeJsonWebMWQMRuns(WebMWQMRuns WebMWQMRuns, WebMWQMRuns WebMWQMRunsLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMWQMRuns WebMWQMRuns, WebMWQMRuns WebMWQMRunsLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             List<MWQMRunModel> MWQMRunModelList = (from c in WebMWQMRunsLocal.MWQMRunModelList
                                                    where c.MWQMRun.MWQMRunID != 0
                                                    && c.MWQMRun.DBCommand != DBCommandEnum.Original
@@ -31,6 +35,8 @@ namespace ReadGzFileServices
                     mwqmRunModelOriginal = mwqmRunModel;
                 }
             }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
         }
     }
 }

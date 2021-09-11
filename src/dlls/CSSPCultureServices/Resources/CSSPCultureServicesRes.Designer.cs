@@ -754,6 +754,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add CommandLog {0}. Error: {1}.
+        /// </summary>
+        public static string CouldNotAddCommandLog_Error_ {
+            get {
+                return ResourceManager.GetString("CouldNotAddCommandLog_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not create directory [{0}].
         /// </summary>
         public static string CouldNotCreateDirectory_ {
@@ -1330,6 +1339,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End.
+        /// </summary>
+        public static string End {
+            get {
+                return ResourceManager.GetString("End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
@@ -1353,6 +1371,15 @@ namespace CSSPCultureServices.Resources {
         public static string ERROR_IsEqualTo0 {
             get {
                 return ResourceManager.GetString("ERROR_IsEqualTo0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ERROR.
+        /// </summary>
+        public static string ERRORCap {
+            get {
+                return ResourceManager.GetString("ERRORCap", resourceCulture);
             }
         }
         
@@ -2140,6 +2167,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting.
         /// </summary>
         public static string Starting {
@@ -2217,6 +2253,24 @@ namespace CSSPCultureServices.Resources {
         public static string ThatGroupCSSPID {
             get {
                 return ResourceManager.GetString("ThatGroupCSSPID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This app can only be run on computer name.
+        /// </summary>
+        public static string ThisAppCanOnlyBeRunOnComputerName {
+            get {
+                return ResourceManager.GetString("ThisAppCanOnlyBeRunOnComputerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This computer name is.
+        /// </summary>
+        public static string ThisComputerNameIs {
+            get {
+                return ResourceManager.GetString("ThisComputerNameIs", resourceCulture);
             }
         }
         

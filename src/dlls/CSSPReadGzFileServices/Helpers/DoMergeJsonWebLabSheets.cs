@@ -7,13 +7,17 @@ using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private static void DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
+        private void DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
         {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)";
+            CSSPLogService.FunctionLog(FunctionName);
+
             if (WebLabSheetsLocal.TVItemModel.TVItem.TVItemID != 0
                 && (WebLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -53,6 +57,8 @@ namespace ReadGzFileServices
                     labSheetModelOriginal = labSheetModel;
                 }
             }
+
+            CSSPLogService.FunctionLog(FunctionName);
         }
     }
 }

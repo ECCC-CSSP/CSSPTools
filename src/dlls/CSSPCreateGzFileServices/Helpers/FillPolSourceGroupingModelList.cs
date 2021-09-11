@@ -19,8 +19,8 @@ namespace CreateGzFileServices
     {
         private async Task<bool> FillPolSourceGroupingModelList(List<PolSourceGroupingModel> PolSourceGroupingModelList)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<PolSourceGroupingModel> PolSourceGroupingModelList)";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<PolSourceGroupingModel> PolSourceGroupingModelList)";
+            CSSPLogService.FunctionLog(FunctionName);
 
             List<PolSourceGrouping> PolSourceGroupingList = await GetPolSourceGroupingList();
             List<PolSourceGroupingLanguage> PolSourceGroupingLanguageList = await GetPolSourceGroupingLanguageList();
@@ -34,7 +34,7 @@ namespace CreateGzFileServices
                 });
             }
 
-            await CSSPLogService.EndFunctionLog(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }

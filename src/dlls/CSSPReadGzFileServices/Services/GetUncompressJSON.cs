@@ -10,6 +10,7 @@ using LoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ReadGzFileServices

@@ -26,10 +26,10 @@ namespace FileServices
     {
         public async Task<ActionResult<bool>> CreateTempPNG(HttpRequest request)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ await CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(HttpRequest request)";
-            await CSSPLogService.FunctionLog(FunctionName);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(HttpRequest request)";
+            CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
 
             try
             {
@@ -39,25 +39,25 @@ namespace FileServices
                 {
                     FileInfo fi = new FileInfo($"{config.CSSPTempFilesPath}{file.FileName}");
 
-                    await CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Creating } { fi.FullName }");
+                    CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Creating } { fi.FullName }");
 
                     using (FileStream stream = new FileStream(fi.FullName, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
 
-                    return await EndFunctionReturnOkTrue(FunctionName);
+                    return await CSSPLogService.EndFunctionReturnOkTrue(FunctionName);
                 }
                 else
                 {
-                    return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.File_LengthIs0, file.FileName));
+                    return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.File_LengthIs0, file.FileName));
                 }
             }
             catch (Exception ex)
             {
                 string ErrorText = ex.Message + (ex.InnerException == null ? "" : " InnerExcecption: " + ex.InnerException.Message);
 
-                return await EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotCreateTemp_FileError_, ErrorText));
+                return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotCreateTemp_FileError_, ErrorText));
             }
         }
     }

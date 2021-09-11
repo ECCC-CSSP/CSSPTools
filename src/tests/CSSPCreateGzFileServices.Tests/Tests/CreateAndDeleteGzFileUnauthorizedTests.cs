@@ -56,7 +56,9 @@ namespace CreateGzFileServices.Tests
             {
                 Assert.True(await Setup(culture));
 
-                await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+                Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+                LoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test
@@ -78,6 +80,8 @@ namespace CreateGzFileServices.Tests
                 Assert.True(commandLogList.Count == 1);
                 Assert.False(string.IsNullOrWhiteSpace(commandLogList[0].Error));
 
+                Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
                 WriteTimeSpan(webType);
             }
 
@@ -85,7 +89,9 @@ namespace CreateGzFileServices.Tests
             {
                 Assert.True(await Setup(culture));
 
-                await LoggedInService.SetLoggedInContactInfo("NotAnExistingId");
+                Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+                LoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test
@@ -106,6 +112,8 @@ namespace CreateGzFileServices.Tests
 
                 Assert.True(commandLogList.Count == 1);
                 Assert.False(string.IsNullOrWhiteSpace(commandLogList[0].Error));
+
+                Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
                 WriteTimeSpan(webType);
             }
