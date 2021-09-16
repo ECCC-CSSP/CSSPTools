@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ILastUpdateAndContactService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class LastUpdateAndContactService : ILastUpdateAndContactService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,28 +46,26 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             LastUpdateAndContact lastUpdateAndContact = validationContext.ObjectInstance as LastUpdateAndContact;
 
             if (lastUpdateAndContact.LastUpdateAndContactDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"), new[] { "LastUpdateAndContactDate_UTC" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndContactDate_UTC"));
             }
             else
             {
                 if (lastUpdateAndContact.LastUpdateAndContactDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"), new[] { "LastUpdateAndContactDate_UTC" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndContactDate_UTC", "1980"));
                 }
             }
 
             if (lastUpdateAndContact.LastUpdateAndContactTVItemID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"), new[] { "LastUpdateAndContactTVItemID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "LastUpdateAndContactTVItemID", "1"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

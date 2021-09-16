@@ -30,7 +30,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_All_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -126,7 +126,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_GetWithAzureStorageAndAzureFileName_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string AzureStorage = "WillNotFind";
             string AzureFileName = "WillNotFind";
@@ -143,7 +143,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_GetManageFileList_Skip_2_Take_3_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             int skip = 2;
             int take = 3;
@@ -189,7 +189,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_Delete_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             int ManageFileID = 0;
 
@@ -205,7 +205,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_AddOrModify_BadRequest_ManageFile_Equal_null_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = null;
 
@@ -221,7 +221,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureFileName_Empty_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -247,7 +247,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureFileName_Length_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -273,7 +273,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureETag_Empty_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -299,7 +299,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureETag_Length_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -325,7 +325,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureStorage_Empty_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -351,7 +351,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureStorage_Length_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -377,7 +377,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AlreadyExist_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -416,7 +416,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AlreadyExistWithDifferent_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {
@@ -455,7 +455,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageFileService_ValidateAddOrModify_AzureCreationTimeUTC_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             ManageFile manageFile = new ManageFile()
             {

@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IContactSearchService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class ContactSearchService : IContactSearchService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,31 +46,29 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             ContactSearch contactSearch = validationContext.ObjectInstance as ContactSearch;
 
             if (contactSearch.ContactID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"));
             }
 
             if (contactSearch.ContactTVItemID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"));
             }
 
             if (string.IsNullOrWhiteSpace(contactSearch.FullName))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"), new[] { "FullName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "FullName"));
             }
 
             if (!string.IsNullOrWhiteSpace(contactSearch.FullName) && contactSearch.FullName.Length > 255)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"), new[] { "FullName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FullName", "255"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

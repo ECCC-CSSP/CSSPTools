@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.BoxModelResultType = (BoxModelResultTypeEnum)1000000;
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "BoxModelResultType"))).Any());
 
 
             // -----------------------------------
@@ -97,8 +97,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.CalLength_m = -1.0D;
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalLength_m", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -111,8 +111,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.CalRadius_m = -1.0D;
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalRadius_m", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -125,8 +125,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.CalSurface_m2 = -1.0D;
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalSurface_m2", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -139,8 +139,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.CalVolume_m3 = -1.0D;
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalVolume_m3", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -153,8 +153,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.CalWidth_m = -1.0D;
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "CalWidth_m", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -179,8 +179,8 @@ namespace CSSPHelperServices.Tests
             boxModelCalNumb = GetFilledRandomBoxModelCalNumb("");
             boxModelCalNumb.BoxModelResultTypeText = GetRandomString("", 101);
             BoxModelCalNumbService.Validate(new ValidationContext(boxModelCalNumb));
-            Assert.True(BoxModelCalNumbService.ValidationResults.Count() > 0);
-            Assert.True(BoxModelCalNumbService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"))).Any());
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Count() > 0);
+            Assert.True(BoxModelCalNumbService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "BoxModelResultTypeText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

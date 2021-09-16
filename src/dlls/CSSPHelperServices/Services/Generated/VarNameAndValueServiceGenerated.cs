@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IVarNameAndValueService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class VarNameAndValueService : IVarNameAndValueService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,31 +46,29 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             VarNameAndValue varNameAndValue = validationContext.ObjectInstance as VarNameAndValue;
 
             if (string.IsNullOrWhiteSpace(varNameAndValue.VariableName))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"), new[] { "VariableName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"));
             }
 
             if (!string.IsNullOrWhiteSpace(varNameAndValue.VariableName) && varNameAndValue.VariableName.Length > 200)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "200"), new[] { "VariableName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "200"));
             }
 
             if (string.IsNullOrWhiteSpace(varNameAndValue.VariableValue))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"), new[] { "VariableValue" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"));
             }
 
             if (!string.IsNullOrWhiteSpace(varNameAndValue.VariableValue) && varNameAndValue.VariableValue.Length > 300)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"), new[] { "VariableValue" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

@@ -28,7 +28,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_All_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -142,7 +142,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_AddOrModify_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string error = string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "commandLog");
 
@@ -156,7 +156,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_Delete_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             int CommandLogID = 1234;
             string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString());
@@ -171,7 +171,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_GetWithCommandLogID_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             int CommandLogID = 1234;
             string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString());
@@ -186,7 +186,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_ValidateAddOrModify_AppName_Required_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -217,7 +217,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_ValidateAddOrModify_AppName_Length_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -248,7 +248,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_ValidateAddOrModify_CommandName_Required_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -279,7 +279,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_ValidateAddOrModify_CommandName_Length_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -310,7 +310,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_ValidateAddOrModify_Error_Length_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -341,7 +341,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_ValidateAddOrModify_DateTimeUTC_Length_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";
@@ -370,7 +370,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task CommandLogService_AddOrModify_CouldNotFind_For_Modify_BadRequest_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             string csspAppName = "CSSPUpdate";
             string csspCommandName = "ClearOldUnnecessaryStats";

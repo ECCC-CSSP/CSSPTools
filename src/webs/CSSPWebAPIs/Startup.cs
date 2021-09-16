@@ -4,6 +4,7 @@ using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
 using CSSPHelperServices;
+using CSSPLogServices;
 using LoggedInServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -65,10 +66,21 @@ namespace CSSPWebAPIs
                 };
             });
 
-            string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
+            string IsTesting = Configuration.GetValue<string>("IsTesting");
+            if (string.IsNullOrWhiteSpace(IsTesting)) // then we are not testing use normal DB
+            {
+                string DBConnStr = Configuration.GetValue<string>("AzureCSSPDB");
 
-            services.AddDbContext<CSSPDBContext>(options =>
-                options.UseSqlServer(DBConnStr));
+                services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(DBConnStr));
+            }
+            else
+            {
+                string DBConnStr = Configuration.GetValue<string>("AzureCSSPDBTest");
+
+                services.AddDbContext<CSSPDBContext>(options =>
+                    options.UseSqlServer(DBConnStr));
+            }
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();

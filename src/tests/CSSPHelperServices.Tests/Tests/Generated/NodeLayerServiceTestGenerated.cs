@@ -82,15 +82,15 @@ namespace CSSPHelperServices.Tests
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Layer = 0;
             NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
-            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            Assert.True(NodeLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(NodeLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             nodeLayer = null;
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Layer = 101;
             NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
-            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            Assert.True(NodeLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(NodeLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -103,15 +103,15 @@ namespace CSSPHelperServices.Tests
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Z = -10001.0D;
             NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
-            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+            Assert.True(NodeLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(NodeLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
 
             nodeLayer = null;
             nodeLayer = GetFilledRandomNodeLayer("");
             nodeLayer.Z = 10001.0D;
             NodeLayerService.Validate(new ValidationContext(nodeLayer));
-            Assert.True(NodeLayerService.ValidationResults.Count() > 0);
-            Assert.True(NodeLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
+            Assert.True(NodeLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(NodeLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-10000", "10000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

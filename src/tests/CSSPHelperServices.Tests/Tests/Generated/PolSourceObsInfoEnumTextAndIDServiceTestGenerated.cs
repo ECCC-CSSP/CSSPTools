@@ -81,16 +81,16 @@ namespace CSSPHelperServices.Tests
             polSourceObsInfoEnumTextAndID = null;
             polSourceObsInfoEnumTextAndID = GetFilledRandomPolSourceObsInfoEnumTextAndID("Text");
             PolSourceObsInfoEnumTextAndIDService.Validate(new ValidationContext(polSourceObsInfoEnumTextAndID));
-            Assert.True(PolSourceObsInfoEnumTextAndIDService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoEnumTextAndIDService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+            Assert.True(PolSourceObsInfoEnumTextAndIDService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoEnumTextAndIDService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
 
 
             polSourceObsInfoEnumTextAndID = null;
             polSourceObsInfoEnumTextAndID = GetFilledRandomPolSourceObsInfoEnumTextAndID("");
             polSourceObsInfoEnumTextAndID.Text = GetRandomString("", 1001);
             PolSourceObsInfoEnumTextAndIDService.Validate(new ValidationContext(polSourceObsInfoEnumTextAndID));
-            Assert.True(PolSourceObsInfoEnumTextAndIDService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoEnumTextAndIDService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"))).Any());
+            Assert.True(PolSourceObsInfoEnumTextAndIDService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoEnumTextAndIDService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -103,8 +103,8 @@ namespace CSSPHelperServices.Tests
             polSourceObsInfoEnumTextAndID = GetFilledRandomPolSourceObsInfoEnumTextAndID("");
             polSourceObsInfoEnumTextAndID.ID = 0;
             PolSourceObsInfoEnumTextAndIDService.Validate(new ValidationContext(polSourceObsInfoEnumTextAndID));
-            Assert.True(PolSourceObsInfoEnumTextAndIDService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoEnumTextAndIDService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
+            Assert.True(PolSourceObsInfoEnumTextAndIDService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoEnumTextAndIDService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
         }
         #endregion Tests Generated Properties
 

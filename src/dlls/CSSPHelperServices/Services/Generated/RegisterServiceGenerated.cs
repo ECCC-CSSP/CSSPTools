@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IRegisterService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class RegisterService : IRegisterService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,76 +46,74 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             Register register = validationContext.ObjectInstance as Register;
 
             if (string.IsNullOrWhiteSpace(register.LoginEmail))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"), new[] { "LoginEmail" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.LoginEmail) && (register.LoginEmail.Length < 6 || register.LoginEmail.Length > 255))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"), new[] { "LoginEmail" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "6", "255"));
             }
 
             if (string.IsNullOrWhiteSpace(register.FirstName))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"), new[] { "FirstName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.FirstName) && (register.FirstName.Length < 1 || register.FirstName.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"), new[] { "FirstName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.Initial) && register.Initial.Length > 50)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"), new[] { "Initial" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"));
             }
 
             if (string.IsNullOrWhiteSpace(register.LastName))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"), new[] { "LastName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.LastName) && (register.LastName.Length < 1 || register.LastName.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"), new[] { "LastName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"));
             }
 
             if (string.IsNullOrWhiteSpace(register.WebName))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "WebName"), new[] { "WebName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "WebName"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.WebName) && (register.WebName.Length < 1 || register.WebName.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "WebName", "1", "100"), new[] { "WebName" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "WebName", "1", "100"));
             }
 
             if (string.IsNullOrWhiteSpace(register.Password))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Password"), new[] { "Password" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Password"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.Password) && (register.Password.Length < 6 || register.Password.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "6", "100"), new[] { "Password" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "6", "100"));
             }
 
             if (string.IsNullOrWhiteSpace(register.ConfirmPassword))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"), new[] { "ConfirmPassword" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"));
             }
 
             if (!string.IsNullOrWhiteSpace(register.ConfirmPassword) && (register.ConfirmPassword.Length < 6 || register.ConfirmPassword.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "6", "100"), new[] { "ConfirmPassword" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "6", "100"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

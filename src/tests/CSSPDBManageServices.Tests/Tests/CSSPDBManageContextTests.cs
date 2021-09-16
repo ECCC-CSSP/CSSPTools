@@ -31,7 +31,7 @@ namespace ManageServices.Tests
         //[InlineData("fr-CA")]
         public async Task ManageContext_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDBManageServiceSetup(culture));
 
             Assert.NotNull(dbManage);
             Assert.NotNull(ManageFileService);

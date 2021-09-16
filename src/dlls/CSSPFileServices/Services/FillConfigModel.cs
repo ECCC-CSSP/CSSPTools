@@ -17,9 +17,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using CSSPFileServices.Models;
 
-namespace FileServices
+namespace CSSPFileServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPFileService : ControllerBase, ICSSPFileService
     {
         public async Task<bool> FillConfigModel(CSSPFileServiceConfigModel config)
         {

@@ -6,7 +6,7 @@ using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPEnums;
 using CSSPWebModels;
-using FileServices;
+using CSSPFileServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
@@ -33,16 +33,11 @@ namespace ReadGzFileServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum: { webType }, TVItemID: { TVItemID })";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             bool gzExistLocaly = false;
             bool gzLocalIsUpToDate = false;
             bool JustRead = false;
-
-            if (LoggedInService.LoggedInContactInfo == null)
-            {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-            }
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
@@ -99,11 +94,11 @@ namespace ReadGzFileServices
                                 {
                                     if ((int)response.Result.StatusCode == 401)
                                     {
-                                        return await Task.FromResult(BadRequest(CSSPCultureServicesRes.NeedToBeLoggedIn));
+                                        return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                                     }
                                     else if ((int)response.Result.StatusCode == 500)
                                     {
-                                        return await Task.FromResult(BadRequest(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection));
+                                        return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection);
                                     }
                                 }
 
@@ -113,7 +108,9 @@ namespace ReadGzFileServices
                     }
                     catch (Exception ex)
                     {
-                        return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                        string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+
+                        return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, $"{ ex.Message } { inner }");
                     }
 
                     if (blobProperties == null)
@@ -124,7 +121,9 @@ namespace ReadGzFileServices
                         }
                         catch (Exception ex)
                         {
-                            return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message)));
+                            string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+
+                            return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, $"{ ex.Message } { inner }");
                         }
                     }
 
@@ -155,11 +154,11 @@ namespace ReadGzFileServices
                                 }
                                 else if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 401)
                                 {
-                                    return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                                    return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                                 }
                                 else
                                 {
-                                    return await Task.FromResult((BadRequestObjectResult)actionCSSPFileAdded.Result);
+                                    return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFileAdded.Result).Value.ToString());
                                 }
 
                             }
@@ -177,6 +176,8 @@ namespace ReadGzFileServices
 
                         if (((ObjectResult)actionRes.Result).StatusCode != 200)
                         {
+                            CSSPLogService.EndFunctionLog(FunctionName);
+
                             return await Task.FromResult(actionRes.Result);
                         }
                     }
@@ -211,64 +212,64 @@ namespace ReadGzFileServices
                         switch (webType)
                         {
                             case WebTypeEnum.WebAllAddresses:
-                                DoMergeJsonWebAllAddresses(FromAzureStore as WebAllAddresses, FromLocal as WebAllAddresses);
+                                await DoMergeJsonWebAllAddresses(FromAzureStore as WebAllAddresses, FromLocal as WebAllAddresses);
                                 break;
                             case WebTypeEnum.WebAllContacts:
-                                DoMergeJsonWebAllContacts(FromAzureStore as WebAllContacts, FromLocal as WebAllContacts);
+                                await DoMergeJsonWebAllContacts(FromAzureStore as WebAllContacts, FromLocal as WebAllContacts);
                                 break;
                             case WebTypeEnum.WebAllCountries:
-                                DoMergeJsonWebAllCountries(FromAzureStore as WebAllCountries, FromLocal as WebAllCountries);
+                                await DoMergeJsonWebAllCountries(FromAzureStore as WebAllCountries, FromLocal as WebAllCountries);
                                 break;
                             case WebTypeEnum.WebAllEmails:
-                                DoMergeJsonWebAllEmails(FromAzureStore as WebAllEmails, FromLocal as WebAllEmails);
+                                await DoMergeJsonWebAllEmails(FromAzureStore as WebAllEmails, FromLocal as WebAllEmails);
                                 break;
                             case WebTypeEnum.WebAllHelpDocs:
-                                DoMergeJsonWebAllHelpDocs(FromAzureStore as WebAllHelpDocs, FromLocal as WebAllHelpDocs);
+                                await DoMergeJsonWebAllHelpDocs(FromAzureStore as WebAllHelpDocs, FromLocal as WebAllHelpDocs);
                                 break;
                             case WebTypeEnum.WebAllMunicipalities:
-                                DoMergeJsonWebAllMunicipalities(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
+                                await DoMergeJsonWebAllMunicipalities(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
                                 break;
                             case WebTypeEnum.WebAllMWQMLookupMPNs:
-                                DoMergeJsonWebAllMWQMLookupMPNs(FromAzureStore as WebAllMWQMLookupMPNs, FromLocal as WebAllMWQMLookupMPNs);
+                                await DoMergeJsonWebAllMWQMLookupMPNs(FromAzureStore as WebAllMWQMLookupMPNs, FromLocal as WebAllMWQMLookupMPNs);
                                 break;
                             case WebTypeEnum.WebAllPolSourceGroupings:
-                                DoMergeJsonWebAllPolSourceGroupings(FromAzureStore as WebAllPolSourceGroupings, FromLocal as WebAllPolSourceGroupings);
+                                await DoMergeJsonWebAllPolSourceGroupings(FromAzureStore as WebAllPolSourceGroupings, FromLocal as WebAllPolSourceGroupings);
                                 break;
                             case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                                DoMergeJsonWebAllPolSourceSiteEffectTerms(FromAzureStore as WebAllPolSourceSiteEffectTerms, FromLocal as WebAllPolSourceSiteEffectTerms);
+                                await DoMergeJsonWebAllPolSourceSiteEffectTerms(FromAzureStore as WebAllPolSourceSiteEffectTerms, FromLocal as WebAllPolSourceSiteEffectTerms);
                                 break;
                             case WebTypeEnum.WebAllProvinces:
-                                DoMergeJsonWebAllProvinces(FromAzureStore as WebAllProvinces, FromLocal as WebAllProvinces);
+                                await DoMergeJsonWebAllProvinces(FromAzureStore as WebAllProvinces, FromLocal as WebAllProvinces);
                                 break;
                             case WebTypeEnum.WebAllReportTypes:
-                                DoMergeJsonWebAllReportTypes(FromAzureStore as WebAllReportTypes, FromLocal as WebAllReportTypes);
+                                await DoMergeJsonWebAllReportTypes(FromAzureStore as WebAllReportTypes, FromLocal as WebAllReportTypes);
                                 break;
                             case WebTypeEnum.WebAllTels:
-                                DoMergeJsonWebAllTels(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
+                                await DoMergeJsonWebAllTels(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
                                 break;
                             case WebTypeEnum.WebAllTideLocations:
-                                DoMergeJsonWebAllTideLocations(FromAzureStore as WebAllTideLocations, FromLocal as WebAllTideLocations); ;
+                                await DoMergeJsonWebAllTideLocations(FromAzureStore as WebAllTideLocations, FromLocal as WebAllTideLocations); ;
                                 break;
                             case WebTypeEnum.WebArea:
-                                DoMergeJsonWebArea(FromAzureStore as WebArea, FromLocal as WebArea);
+                                await DoMergeJsonWebArea(FromAzureStore as WebArea, FromLocal as WebArea);
                                 break;
                             case WebTypeEnum.WebClimateSites:
-                                DoMergeJsonWebClimateSites(FromAzureStore as WebClimateSites, FromLocal as WebClimateSites);
+                                await DoMergeJsonWebClimateSites(FromAzureStore as WebClimateSites, FromLocal as WebClimateSites);
                                 break;
                             case WebTypeEnum.WebCountry:
-                                DoMergeJsonWebCountry(FromAzureStore as WebCountry, FromLocal as WebCountry);
+                                await DoMergeJsonWebCountry(FromAzureStore as WebCountry, FromLocal as WebCountry);
                                 break;
                             case WebTypeEnum.WebDrogueRuns:
-                                DoMergeJsonWebDrogueRuns(FromAzureStore as WebDrogueRuns, FromLocal as WebDrogueRuns);
+                                await DoMergeJsonWebDrogueRuns(FromAzureStore as WebDrogueRuns, FromLocal as WebDrogueRuns);
                                 break;
                             case WebTypeEnum.WebHydrometricSites:
-                                DoMergeJsonWebHydrometricSites(FromAzureStore as WebHydrometricSites, FromLocal as WebHydrometricSites);
+                                await DoMergeJsonWebHydrometricSites(FromAzureStore as WebHydrometricSites, FromLocal as WebHydrometricSites);
                                 break;
                             case WebTypeEnum.WebLabSheets:
-                                DoMergeJsonWebLabSheets(FromAzureStore as WebLabSheets, FromLocal as WebLabSheets);
+                                await DoMergeJsonWebLabSheets(FromAzureStore as WebLabSheets, FromLocal as WebLabSheets);
                                 break;
                             case WebTypeEnum.WebMikeScenarios:
-                                DoMergeJsonWebMikeScenarios(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
+                                await DoMergeJsonWebMikeScenarios(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
                                 break;
                             case WebTypeEnum.WebMonitoringOtherStatsCountry:
                                 // No merging needed
@@ -283,51 +284,56 @@ namespace ReadGzFileServices
                                 // No merging needed
                                 break;
                             case WebTypeEnum.WebMunicipality:
-                                DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
+                                await DoMergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
                                 break;
                             case WebTypeEnum.WebMWQMRuns:
-                                DoMergeJsonWebMWQMRuns(FromAzureStore as WebMWQMRuns, FromLocal as WebMWQMRuns);
+                                await DoMergeJsonWebMWQMRuns(FromAzureStore as WebMWQMRuns, FromLocal as WebMWQMRuns);
                                 break;
                             case WebTypeEnum.WebMWQMSamples1980_2020:
-                                DoMergeJsonWebMWQMSamples1980_2020(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
+                                await DoMergeJsonWebMWQMSamples1980_2020(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
                                 break;
                             case WebTypeEnum.WebMWQMSamples2021_2060:
-                                DoMergeJsonWebMWQMSamples2021_2060(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
+                                await DoMergeJsonWebMWQMSamples2021_2060(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
                                 break;
                             case WebTypeEnum.WebMWQMSites:
-                                DoMergeJsonWebMWQMSites(FromAzureStore as WebMWQMSites, FromLocal as WebMWQMSites);
+                                await DoMergeJsonWebMWQMSites(FromAzureStore as WebMWQMSites, FromLocal as WebMWQMSites);
                                 break;
                             case WebTypeEnum.WebPolSourceSites:
-                                DoMergeJsonWebPolSourceSites(FromAzureStore as WebPolSourceSites, FromLocal as WebPolSourceSites);
+                                await DoMergeJsonWebPolSourceSites(FromAzureStore as WebPolSourceSites, FromLocal as WebPolSourceSites);
                                 break;
                             case WebTypeEnum.WebProvince:
-                                DoMergeJsonWebProvince(FromAzureStore as WebProvince, FromLocal as WebProvince);
+                                await DoMergeJsonWebProvince(FromAzureStore as WebProvince, FromLocal as WebProvince);
                                 break;
                             case WebTypeEnum.WebRoot:
-                                DoMergeJsonWebRoot(FromAzureStore as WebRoot, FromLocal as WebRoot);
+                                await DoMergeJsonWebRoot(FromAzureStore as WebRoot, FromLocal as WebRoot);
                                 break;
                             case WebTypeEnum.WebAllSearch:
-                                DoMergeJsonWebAllSearch(FromAzureStore as WebAllSearch, FromLocal as WebAllSearch);
+                                await DoMergeJsonWebAllSearch(FromAzureStore as WebAllSearch, FromLocal as WebAllSearch);
                                 break;
                             case WebTypeEnum.WebSector:
-                                DoMergeJsonWebSector(FromAzureStore as WebSector, FromLocal as WebSector);
+                                await DoMergeJsonWebSector(FromAzureStore as WebSector, FromLocal as WebSector);
                                 break;
                             case WebTypeEnum.WebSubsector:
-                                DoMergeJsonWebSubsector(FromAzureStore as WebSubsector, FromLocal as WebSubsector);
+                                await DoMergeJsonWebSubsector(FromAzureStore as WebSubsector, FromLocal as WebSubsector);
                                 break;
                             case WebTypeEnum.WebTideSites:
-                                DoMergeJsonWebTideSites(FromAzureStore as WebTideSites, FromLocal as WebTideSites);
+                                await DoMergeJsonWebTideSites(FromAzureStore as WebTideSites, FromLocal as WebTideSites);
                                 break;
                             default:
                                 break;
+                        }
+
+                        CSSPLogService.EndFunctionLog(FunctionName);
+
+                        if (CSSPLogService.ErrRes.ErrList.Count > 0)
+                        {
+                            return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                         }
 
                         return await Task.FromResult(Ok(FromAzureStore));
                     }
                 }
             }
-
-            //return await DoReadJSON<T>(webType, TVItemID);
         }
     }
 }

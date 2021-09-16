@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IInputSummaryService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class InputSummaryService : IInputSummaryService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,21 +46,19 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             InputSummary inputSummary = validationContext.ObjectInstance as InputSummary;
 
             if (string.IsNullOrWhiteSpace(inputSummary.Summary))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"), new[] { "Summary" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"));
             }
 
             if (!string.IsNullOrWhiteSpace(inputSummary.Summary) && inputSummary.Summary.Length > 1000000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"), new[] { "Summary" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

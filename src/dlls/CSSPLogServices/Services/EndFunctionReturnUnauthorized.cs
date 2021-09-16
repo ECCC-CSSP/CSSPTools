@@ -23,11 +23,11 @@ namespace CSSPLogServices
     {
         public async Task<ActionResult> EndFunctionReturnUnauthorized(string FunctionName, string ErrorText)
         {
-            AppendError(new ValidationResult(ErrorText, new[] { "" }));
+            AppendError(ErrorText);
             EndFunctionLog(FunctionName);
             await Save();
 
-            return await Task.FromResult(Unauthorized(ValidationResultList));
+            return await Task.FromResult(Unauthorized(ErrRes));
         }
     }
 }

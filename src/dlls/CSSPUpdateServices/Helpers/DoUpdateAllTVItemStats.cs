@@ -30,7 +30,7 @@ namespace CSSPUpdateServices
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } { DateTime.Now }");
@@ -309,13 +309,13 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) } { DateTime.Now }", new[] { "" }));
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) } { DateTime.Now }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);

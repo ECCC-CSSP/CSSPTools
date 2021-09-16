@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.ID = 0;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -96,8 +96,8 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.Type = 0;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -110,8 +110,8 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.NumbOfNodes = 0;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -124,15 +124,15 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.Value = -2.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
 
             element = null;
             element = GetFilledRandomElement("");
             element.Value = 0.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -145,15 +145,15 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.XNode0 = -2.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"))).Any());
 
             element = null;
             element = GetFilledRandomElement("");
             element.XNode0 = 0.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -166,15 +166,15 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.YNode0 = -2.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"))).Any());
 
             element = null;
             element = GetFilledRandomElement("");
             element.YNode0 = 0.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -187,15 +187,15 @@ namespace CSSPHelperServices.Tests
             element = GetFilledRandomElement("");
             element.ZNode0 = -2.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"))).Any());
 
             element = null;
             element = GetFilledRandomElement("");
             element.ZNode0 = 0.0D;
             ElementService.Validate(new ValidationContext(element));
-            Assert.True(ElementService.ValidationResults.Count() > 0);
-            Assert.True(ElementService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"))).Any());
+            Assert.True(ElementService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

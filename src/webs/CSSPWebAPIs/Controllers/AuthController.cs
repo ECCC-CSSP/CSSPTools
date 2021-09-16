@@ -35,7 +35,7 @@ namespace CSSPWebAPIs.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AuthController : ControllerBase, IAuthController
     {
         #region Variables
@@ -62,10 +62,11 @@ namespace CSSPWebAPIs.Controllers
         #region Functions public
         [Route("Token")]
         [HttpPost]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<Contact>> Token(LoginModel loginModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await ContactDBService.Login(loginModel);
         }

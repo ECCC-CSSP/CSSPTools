@@ -15,7 +15,7 @@ using System.Threading;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using FileServices;
+using CSSPFileServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -36,12 +36,12 @@ namespace CSSPWebAPIsLocal.Controllers
         private IConfiguration Configuration { get;  }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IFileService FileService { get; }
+        private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
         public LocalFileInfoController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            ILoggedInService LoggedInService, IFileService FileService)
+            ILoggedInService LoggedInService, ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

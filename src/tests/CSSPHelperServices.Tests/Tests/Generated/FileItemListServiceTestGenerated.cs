@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             fileItemList = null;
             fileItemList = GetFilledRandomFileItemList("Text");
             FileItemListService.Validate(new ValidationContext(fileItemList));
-            Assert.True(FileItemListService.ValidationResults.Count() > 0);
-            Assert.True(FileItemListService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+            Assert.True(FileItemListService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemListService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
 
 
             fileItemList = null;
             fileItemList = GetFilledRandomFileItemList("");
             fileItemList.Text = GetRandomString("", 256);
             FileItemListService.Validate(new ValidationContext(fileItemList));
-            Assert.True(FileItemListService.ValidationResults.Count() > 0);
-            Assert.True(FileItemListService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"))).Any());
+            Assert.True(FileItemListService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemListService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"))).Any());
 
             fileItemList = null;
             fileItemList = GetFilledRandomFileItemList("");
             fileItemList.Text = GetRandomString("", 256);
             FileItemListService.Validate(new ValidationContext(fileItemList));
-            Assert.True(FileItemListService.ValidationResults.Count() > 0);
-            Assert.True(FileItemListService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"))).Any());
+            Assert.True(FileItemListService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemListService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -111,23 +111,23 @@ namespace CSSPHelperServices.Tests
             fileItemList = null;
             fileItemList = GetFilledRandomFileItemList("FileName");
             FileItemListService.Validate(new ValidationContext(fileItemList));
-            Assert.True(FileItemListService.ValidationResults.Count() > 0);
-            Assert.True(FileItemListService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"))).Any());
+            Assert.True(FileItemListService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemListService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FileName"))).Any());
 
 
             fileItemList = null;
             fileItemList = GetFilledRandomFileItemList("");
             fileItemList.FileName = GetRandomString("", 256);
             FileItemListService.Validate(new ValidationContext(fileItemList));
-            Assert.True(FileItemListService.ValidationResults.Count() > 0);
-            Assert.True(FileItemListService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"))).Any());
+            Assert.True(FileItemListService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemListService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"))).Any());
 
             fileItemList = null;
             fileItemList = GetFilledRandomFileItemList("");
             fileItemList.FileName = GetRandomString("", 256);
             FileItemListService.Validate(new ValidationContext(fileItemList));
-            Assert.True(FileItemListService.ValidationResults.Count() > 0);
-            Assert.True(FileItemListService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"))).Any());
+            Assert.True(FileItemListService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemListService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FileName", "1", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

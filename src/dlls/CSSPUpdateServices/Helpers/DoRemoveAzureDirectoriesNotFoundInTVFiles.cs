@@ -30,13 +30,13 @@ namespace CSSPUpdateServices
             DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
             if (!di.Exists)
             {
-                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }", new[] { "" }));
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             List<TVItem> TVItemList = (from c in db.TVItems
@@ -98,7 +98,7 @@ namespace CSSPUpdateServices
                                 }
                                 else
                                 {
-                                    CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }", new[] { "" }));
+                                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }");
                                 }
                             }
                         }
@@ -111,7 +111,7 @@ namespace CSSPUpdateServices
                         }
                         else
                         {
-                            CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureDirectory_, shareFileItem.Name) }", new[] { "" }));
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureDirectory_, shareFileItem.Name) }");
                         }
                     }
                 }

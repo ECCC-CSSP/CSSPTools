@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             otherFilesToUpload = GetFilledRandomOtherFilesToUpload("");
             otherFilesToUpload.MikeScenarioID = 0;
             OtherFilesToUploadService.Validate(new ValidationContext(otherFilesToUpload));
-            Assert.True(OtherFilesToUploadService.ValidationResults.Count() > 0);
-            Assert.True(OtherFilesToUploadService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"))).Any());
+            Assert.True(OtherFilesToUploadService.errRes.ErrList.Count() > 0);
+            Assert.True(OtherFilesToUploadService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "MikeScenarioID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

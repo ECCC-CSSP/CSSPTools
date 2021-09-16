@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
 using System.Threading;
-using FileServices;
+using CSSPFileServices;
 using LoggedInServices;
 using CSSPWebModels;
 
@@ -32,12 +32,12 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IFileService FileService { get; }
+        private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
         public DownloadController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IFileService FileService)
+            ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IContactOKService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class ContactOKService : IContactOKService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,21 +46,19 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             ContactOK contactOK = validationContext.ObjectInstance as ContactOK;
 
             if (contactOK.ContactID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"), new[] { "ContactID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"));
             }
 
             if (contactOK.ContactTVItemID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"), new[] { "ContactTVItemID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

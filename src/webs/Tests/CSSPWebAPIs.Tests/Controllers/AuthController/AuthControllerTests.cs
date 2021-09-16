@@ -21,32 +21,18 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using CSSPHelperModels;
+using CSSPLogServices.Models;
 
 namespace CSSPWebAPIs.AuthController.Tests
 {
-    [Collection("Sequential")]
     public partial class CSSPWebAPIsAuthControllerTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        //public CSSPWebAPIsAuthControllerTests()
-        //{
-        // See setup
-        //}
-        #endregion Constructors
-
-        #region Functions public
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task AuthController_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await AuthSetup(culture));
 
             Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
@@ -58,7 +44,7 @@ namespace CSSPWebAPIs.AuthController.Tests
         //[InlineData("fr-CA")]
         public async Task AuthController_Token_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await AuthSetup(culture));
 
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
@@ -68,7 +54,7 @@ namespace CSSPWebAPIs.AuthController.Tests
         //[InlineData("fr-CA")]
         public async Task AuthController_Token_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await AuthSetup(culture));
 
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
@@ -107,7 +93,7 @@ namespace CSSPWebAPIs.AuthController.Tests
         //[InlineData("fr-CA")]
         public async Task AuthController_GoogleMapKey_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await AuthSetup(culture));
 
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
@@ -129,7 +115,7 @@ namespace CSSPWebAPIs.AuthController.Tests
         //[InlineData("fr-CA")]
         public async Task AuthController_GoogleMapKey_Unauthorize_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await AuthSetup(culture));
 
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.Token);
@@ -138,13 +124,12 @@ namespace CSSPWebAPIs.AuthController.Tests
             {
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token + "notworking");
                 HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/{ culture }/Auth/GoogleMapKey").Result;
-                Assert.True((int)response.StatusCode == 401);
+                Assert.Equal(401, (int)response.StatusCode);
+                string jsonStr = await response.Content.ReadAsStringAsync();
+                ErrRes errRes = JsonSerializer.Deserialize<ErrRes>(jsonStr);
+                Assert.NotNull(errRes);
+                Assert.NotEmpty(errRes.ErrList);
             }
         }
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
-
     }
 }

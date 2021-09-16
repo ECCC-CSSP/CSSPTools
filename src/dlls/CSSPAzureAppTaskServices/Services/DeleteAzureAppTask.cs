@@ -8,7 +8,6 @@ using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPLogServices;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
@@ -25,35 +24,21 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: { appTaskID }";
-            CSSPLogService.FunctionLog(FunctionName);
-
-            if (!await CheckLogin(FunctionName))
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+                errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
+                return await Task.FromResult(Unauthorized(errRes));
             }
 
             if (!await ValidateDeleteAzureAppTask(appTaskID))
             {
-                CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             if (!await DoDeleteAzureAppTask(appTaskID))
             {
-                CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(errRes));
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(true));
         }

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FileServices;
+using CSSPFileServices;
 using ReadGzFileServices;
 using Microsoft.AspNetCore.Http.Features;
 using LoggedInServices;
@@ -87,11 +87,11 @@ namespace CSSPWebAPIsLocal
             //LoadAllDBServices(services);
 
             services.AddScoped<IManageFileService, ManageFileService>();
-            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<ICSSPFileService, CSSPFileService>();
             services.AddScoped<IReadGzFileService, ReadGzFileService>();
             services.AddScoped<ICreateGzFileService, CreateGzFileService>();
             services.AddScoped<ITVItemLocalService, TVItemLocalService>();
-            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<ICSSPFileService, CSSPFileService>();
 
             //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 

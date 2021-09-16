@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ILabSheetA1MeasurementService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class LabSheetA1MeasurementService : ILabSheetA1MeasurementService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         private IEnums enums { get; }
         #endregion Properties
 
@@ -47,21 +48,19 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             string retStr = "";
             LabSheetA1Measurement labSheetA1Measurement = validationContext.ObjectInstance as LabSheetA1Measurement;
 
             if (string.IsNullOrWhiteSpace(labSheetA1Measurement.Site))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Site"), new[] { "Site" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Site"));
             }
 
             //Site has no StringLength Attribute
 
             if (labSheetA1Measurement.TVItemID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"), new[] { "TVItemID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"));
             }
 
             //MPN has no Range Attribute
@@ -83,26 +82,26 @@ namespace CSSPHelperServices
                 retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), (int?)labSheetA1Measurement.SampleType);
                 if (labSheetA1Measurement.SampleType == null || !string.IsNullOrWhiteSpace(retStr))
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"), new[] { "SampleType" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "SampleType"));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(labSheetA1Measurement.SiteComment))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "SiteComment"), new[] { "SiteComment" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "SiteComment"));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Measurement.SiteComment) && labSheetA1Measurement.SiteComment.Length > 100000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SiteComment", "100000"), new[] { "SiteComment" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SiteComment", "100000"));
             }
 
             if (!string.IsNullOrWhiteSpace(labSheetA1Measurement.SampleTypeText) && labSheetA1Measurement.SampleTypeText.Length > 100)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"), new[] { "SampleTypeText" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "SampleTypeText", "100"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

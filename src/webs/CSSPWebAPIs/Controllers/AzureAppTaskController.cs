@@ -38,7 +38,7 @@ namespace CSSPWebAPIs.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class AzureAppTaskController : ControllerBase, IAppTaskController
     {
         #region Variables
@@ -51,7 +51,7 @@ namespace CSSPWebAPIs.Controllers
         #endregion Properties
 
         #region Constructors
-        public AzureAppTaskController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAzureAppTaskService AzureAppTaskModelService)
+        public AzureAppTaskController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAzureAppTaskService AzureAppTaskService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

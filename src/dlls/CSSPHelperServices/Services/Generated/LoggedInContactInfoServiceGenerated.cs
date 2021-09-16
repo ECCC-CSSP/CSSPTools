@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ILoggedInContactInfoService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class LoggedInContactInfoService : ILoggedInContactInfoService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,8 +46,6 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             LoggedInContactInfo loggedInContactInfo = validationContext.ObjectInstance as LoggedInContactInfo;
 
                 //CSSPError: Type not implemented [LoggedInContact] of type [Contact]
@@ -58,7 +57,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [List`1]
 
                 //CSSPError: Type not implemented [TVItemUserAuthorizationList] of type [TVItemUserAuthorization]
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

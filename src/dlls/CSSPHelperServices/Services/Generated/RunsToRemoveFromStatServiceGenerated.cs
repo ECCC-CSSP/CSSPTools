@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IRunsToRemoveFromStatService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class RunsToRemoveFromStatService : IRunsToRemoveFromStatService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,13 +46,11 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             RunsToRemoveFromStat runsToRemoveFromStat = validationContext.ObjectInstance as RunsToRemoveFromStat;
 
             //MWQMRunTVItemID has no Range Attribute
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

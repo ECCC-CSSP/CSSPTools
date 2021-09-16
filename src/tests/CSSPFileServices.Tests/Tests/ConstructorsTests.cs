@@ -10,7 +10,7 @@ using Xunit;
 using CSSPWebModels;
 using System.Collections.Generic;
 
-namespace FileServices.Tests
+namespace CSSPFileServices.Tests
 {
     public partial class FileServiceTests
     {
@@ -19,11 +19,11 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ManageFileService);
-            Assert.NotNull(FileService);
+            Assert.NotNull(CSSPFileService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLogService);

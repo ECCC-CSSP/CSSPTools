@@ -8,7 +8,6 @@ using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPLogServices;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
@@ -25,37 +24,21 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
-            CSSPLogService.FunctionLog(FunctionName);
-            
-            CSSPLogService.AppendLog($"AppTaskID: { postAppTaskModel.AppTask.AppTaskID} -- AppTaskCommand: { postAppTaskModel.AppTask.AppTaskCommand } -- TVItemID: { postAppTaskModel.AppTask.TVItemID }");
-
-            if (!await CheckLogin(FunctionName))
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+                errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
+                return await Task.FromResult(Unauthorized(errRes));
             }
 
             if (!await ValidateAzureAddOrModifyAppTaskModel(postAppTaskModel))
             {
-                CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             if (!await DoAddOrModifyAzureAppTask(postAppTaskModel))
             {
-                CSSPLogService.EndFunctionLog(FunctionName);
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(errRes));
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(postAppTaskModel));
         }

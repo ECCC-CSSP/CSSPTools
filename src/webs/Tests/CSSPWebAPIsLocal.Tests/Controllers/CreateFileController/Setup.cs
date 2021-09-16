@@ -6,7 +6,7 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using FileServices;
+using CSSPFileServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private IFileService FileService { get; set; }
+        private ICSSPFileService FileService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private string LocalUrl { get; set; }
         private string CSSPTempFilesPath { get; set; }
@@ -82,7 +82,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>(); 
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<IFileService, FileService>();
+            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
 
             Provider = Services.BuildServiceProvider();
@@ -102,7 +102,7 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
 
             contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
 
-            FileService = Provider.GetService<IFileService>();
+            FileService = Provider.GetService<ICSSPFileService>();
             Assert.NotNull(FileService);
 
             return await Task.FromResult(true);

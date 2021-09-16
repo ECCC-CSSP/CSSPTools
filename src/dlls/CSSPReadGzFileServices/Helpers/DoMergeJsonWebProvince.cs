@@ -9,12 +9,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebProvince(WebProvince WebProvince, WebProvince WebProvinceLocal)
+        private async Task<bool> DoMergeJsonWebProvince(WebProvince WebProvince, WebProvince WebProvinceLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebProvince WebProvince, WebProvince WebProvinceLocal)";
             CSSPLogService.FunctionLog(FunctionName);
@@ -100,6 +101,8 @@ namespace ReadGzFileServices
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
         }
     }
 }

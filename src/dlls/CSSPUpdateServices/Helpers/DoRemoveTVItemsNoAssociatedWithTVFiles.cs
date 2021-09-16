@@ -55,13 +55,13 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }", new[] { "" }));
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);

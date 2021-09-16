@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             fileItem = null;
             fileItem = GetFilledRandomFileItem("Name");
             FileItemService.Validate(new ValidationContext(fileItem));
-            Assert.True(FileItemService.ValidationResults.Count() > 0);
-            Assert.True(FileItemService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
+            Assert.True(FileItemService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
 
 
             fileItem = null;
             fileItem = GetFilledRandomFileItem("");
             fileItem.Name = GetRandomString("", 256);
             FileItemService.Validate(new ValidationContext(fileItem));
-            Assert.True(FileItemService.ValidationResults.Count() > 0);
-            Assert.True(FileItemService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Name", "1", "255"))).Any());
+            Assert.True(FileItemService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Name", "1", "255"))).Any());
 
             fileItem = null;
             fileItem = GetFilledRandomFileItem("");
             fileItem.Name = GetRandomString("", 256);
             FileItemService.Validate(new ValidationContext(fileItem));
-            Assert.True(FileItemService.ValidationResults.Count() > 0);
-            Assert.True(FileItemService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Name", "1", "255"))).Any());
+            Assert.True(FileItemService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Name", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -111,8 +111,8 @@ namespace CSSPHelperServices.Tests
             fileItem = GetFilledRandomFileItem("");
             fileItem.TVItemID = 0;
             FileItemService.Validate(new ValidationContext(fileItem));
-            Assert.True(FileItemService.ValidationResults.Count() > 0);
-            Assert.True(FileItemService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"))).Any());
+            Assert.True(FileItemService.errRes.ErrList.Count() > 0);
+            Assert.True(FileItemService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "TVItemID", "1"))).Any());
         }
         #endregion Tests Generated Properties
 

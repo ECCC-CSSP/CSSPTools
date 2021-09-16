@@ -20,11 +20,6 @@ namespace GenerateCSSPHelperServices
                     continue;
                 }
 
-                if (prop.Name == "ValidationResults")
-                {
-                    continue;
-                }
-
                 CSSPProp csspProp = new CSSPProp();
                 if (!GenerateCodeBase.FillCSSPProp(prop, csspProp, dllTypeInfoModels.Type))
                 {
@@ -40,8 +35,6 @@ namespace GenerateCSSPHelperServices
 
             sb.AppendLine(@"        public bool Validate(ValidationContext validationContext)");
             sb.AppendLine(@"        {");
-            sb.AppendLine($@"            ValidationResults = new List<ValidationResult>();");
-            sb.AppendLine(@"");
             if (EnumExist)
             {
                 sb.AppendLine(@"            string retStr = """";");
@@ -52,11 +45,6 @@ namespace GenerateCSSPHelperServices
             foreach (PropertyInfo prop in dllTypeInfoModels.Type.GetProperties())
             {
                 if (prop.GetGetMethod().IsVirtual)
-                {
-                    continue;
-                }
-
-                if (prop.Name == "ValidationResults")
                 {
                     continue;
                 }
@@ -81,7 +69,7 @@ namespace GenerateCSSPHelperServices
                 if (!await CreateValidation_EnumType(prop, csspProp, dllTypeInfoModels.Type.Name, TypeNameLower, sb)) return await Task.FromResult(false);
             }
 
-            sb.AppendLine(@"            return ValidationResults.Count == 0 ? true : false;");
+            sb.AppendLine(@"            return errRes.ErrList.Count == 0 ? true : false;");
             sb.AppendLine(@"        }");
 
             return await Task.FromResult(true);

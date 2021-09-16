@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
             subsectorMWQMSampleYear.SubsectorTVItemID = 0;
             SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Count() > 0);
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"))).Any());
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Count() > 0);
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "SubsectorTVItemID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -102,15 +102,15 @@ namespace CSSPHelperServices.Tests
             subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
             subsectorMWQMSampleYear.EarliestDate = new DateTime();
             SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Count() > 0);
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"))).Any());
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Count() > 0);
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "EarliestDate"))).Any());
 
             subsectorMWQMSampleYear = null;
             subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
             subsectorMWQMSampleYear.EarliestDate = new DateTime(1979, 1, 1);
             SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Count() > 0);
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"))).Any());
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Count() > 0);
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EarliestDate", "1980"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -124,15 +124,15 @@ namespace CSSPHelperServices.Tests
             subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
             subsectorMWQMSampleYear.LatestDate = new DateTime();
             SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Count() > 0);
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"))).Any());
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Count() > 0);
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LatestDate"))).Any());
 
             subsectorMWQMSampleYear = null;
             subsectorMWQMSampleYear = GetFilledRandomSubsectorMWQMSampleYear("");
             subsectorMWQMSampleYear.LatestDate = new DateTime(1979, 1, 1);
             SubsectorMWQMSampleYearService.Validate(new ValidationContext(subsectorMWQMSampleYear));
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Count() > 0);
-            Assert.True(SubsectorMWQMSampleYearService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"))).Any());
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Count() > 0);
+            Assert.True(SubsectorMWQMSampleYearService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LatestDate", "1980"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             contactOK = GetFilledRandomContactOK("");
             contactOK.ContactID = 0;
             ContactOKService.Validate(new ValidationContext(contactOK));
-            Assert.True(ContactOKService.ValidationResults.Count() > 0);
-            Assert.True(ContactOKService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
+            Assert.True(ContactOKService.errRes.ErrList.Count() > 0);
+            Assert.True(ContactOKService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -96,8 +96,8 @@ namespace CSSPHelperServices.Tests
             contactOK = GetFilledRandomContactOK("");
             contactOK.ContactTVItemID = 0;
             ContactOKService.Validate(new ValidationContext(contactOK));
-            Assert.True(ContactOKService.ValidationResults.Count() > 0);
-            Assert.True(ContactOKService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
+            Assert.True(ContactOKService.errRes.ErrList.Count() > 0);
+            Assert.True(ContactOKService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContactTVItemID", "1"))).Any());
         }
         #endregion Tests Generated Properties
 

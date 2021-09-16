@@ -82,15 +82,15 @@ namespace CSSPHelperServices.Tests
             elementLayer = GetFilledRandomElementLayer("");
             elementLayer.Layer = 0;
             ElementLayerService.Validate(new ValidationContext(elementLayer));
-            Assert.True(ElementLayerService.ValidationResults.Count() > 0);
-            Assert.True(ElementLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"))).Any());
+            Assert.True(ElementLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"))).Any());
 
             elementLayer = null;
             elementLayer = GetFilledRandomElementLayer("");
             elementLayer.Layer = 1001;
             ElementLayerService.Validate(new ValidationContext(elementLayer));
-            Assert.True(ElementLayerService.ValidationResults.Count() > 0);
-            Assert.True(ElementLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"))).Any());
+            Assert.True(ElementLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "1000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -103,15 +103,15 @@ namespace CSSPHelperServices.Tests
             elementLayer = GetFilledRandomElementLayer("");
             elementLayer.ZMin = -2.0D;
             ElementLayerService.Validate(new ValidationContext(elementLayer));
-            Assert.True(ElementLayerService.ValidationResults.Count() > 0);
-            Assert.True(ElementLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"))).Any());
+            Assert.True(ElementLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"))).Any());
 
             elementLayer = null;
             elementLayer = GetFilledRandomElementLayer("");
             elementLayer.ZMin = 0.0D;
             ElementLayerService.Validate(new ValidationContext(elementLayer));
-            Assert.True(ElementLayerService.ValidationResults.Count() > 0);
-            Assert.True(ElementLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"))).Any());
+            Assert.True(ElementLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMin", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -124,15 +124,15 @@ namespace CSSPHelperServices.Tests
             elementLayer = GetFilledRandomElementLayer("");
             elementLayer.ZMax = -2.0D;
             ElementLayerService.Validate(new ValidationContext(elementLayer));
-            Assert.True(ElementLayerService.ValidationResults.Count() > 0);
-            Assert.True(ElementLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"))).Any());
+            Assert.True(ElementLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"))).Any());
 
             elementLayer = null;
             elementLayer = GetFilledRandomElementLayer("");
             elementLayer.ZMax = 0.0D;
             ElementLayerService.Validate(new ValidationContext(elementLayer));
-            Assert.True(ElementLayerService.ValidationResults.Count() > 0);
-            Assert.True(ElementLayerService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"))).Any());
+            Assert.True(ElementLayerService.errRes.ErrList.Count() > 0);
+            Assert.True(ElementLayerService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZMax", "-1", "-1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

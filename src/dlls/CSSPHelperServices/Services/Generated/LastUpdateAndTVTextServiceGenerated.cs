@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ILastUpdateAndTVTextService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class LastUpdateAndTVTextService : ILastUpdateAndTVTextService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,45 +46,43 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             LastUpdateAndTVText lastUpdateAndTVText = validationContext.ObjectInstance as LastUpdateAndTVText;
 
             if (lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndTVTextDate_UTC"), new[] { "LastUpdateAndTVTextDate_UTC" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateAndTVTextDate_UTC"));
             }
             else
             {
                 if (lastUpdateAndTVText.LastUpdateAndTVTextDate_UTC.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndTVTextDate_UTC", "1980"), new[] { "LastUpdateAndTVTextDate_UTC" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateAndTVTextDate_UTC", "1980"));
                 }
             }
 
             if (lastUpdateAndTVText.LastUpdateDate_Local.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_Local"), new[] { "LastUpdateDate_Local" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "LastUpdateDate_Local"));
             }
             else
             {
                 if (lastUpdateAndTVText.LastUpdateDate_Local.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_Local", "1980"), new[] { "LastUpdateDate_Local" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "LastUpdateDate_Local", "1980"));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(lastUpdateAndTVText.TVText))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"), new[] { "TVText" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVText"));
             }
 
             if (!string.IsNullOrWhiteSpace(lastUpdateAndTVText.TVText) && (lastUpdateAndTVText.TVText.Length < 1 || lastUpdateAndTVText.TVText.Length > 200))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "200"), new[] { "TVText" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVText", "1", "200"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

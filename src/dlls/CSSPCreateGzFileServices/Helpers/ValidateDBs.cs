@@ -24,30 +24,30 @@ namespace CreateGzFileServices
         {
             if (db == null && dbLocal == null)
             {
-                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db || dbLocal"), new[] { "" }));
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db || dbLocal"));
             }
 
             if (dbLocal != null)
             {
                 if (string.IsNullOrWhiteSpace(config.CSSPJSONPathLocal))
                 {
-                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPJSONPathLocal"), new[] { "" }));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPJSONPathLocal"));
                 }
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(config.AzureStoreCSSPJSONPath))
                 {
-                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreCSSPJSONPath"), new[] { "" }));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreCSSPJSONPath"));
                 }
 
                 if (string.IsNullOrWhiteSpace(config.AzureStore))
                 {
-                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStore"), new[] { "" }));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStore"));
                 }
             }
 
-            if (CSSPLogService.ValidationResultList.Count > 0)
+            if (CSSPLogService.ErrRes.ErrList.Count > 0)
             {
                 CSSPLogService.EndFunctionLog(FunctionName);
                 await CSSPLogService.Save();

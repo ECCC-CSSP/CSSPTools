@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPHelperServices\CSSPHelperServices.csproj" />
+    <ProjectReference Include="..\CSSPLogServices\CSSPLogServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

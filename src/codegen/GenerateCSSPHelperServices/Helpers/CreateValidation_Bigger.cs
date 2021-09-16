@@ -13,7 +13,7 @@ namespace GenerateCSSPHelperServices
             {
                 sb.AppendLine($@"            if ({ TypeNameLower }.{ csspProp.OtherField } > { TypeNameLower }.{ csspProp.PropName })");
                 sb.AppendLine(@"            {");
-                sb.AppendLine($@"                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, ""{ csspProp.PropName }"", ""{ TypeName }{ csspProp.OtherField }""), new[] {{ ""{ csspProp.PropName }"" }}));");
+                sb.AppendLine($@"                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, ""{ csspProp.PropName }"", ""{ TypeName }{ csspProp.OtherField }""));");
                 sb.AppendLine(@"            }");
                 sb.AppendLine(@"");
             }

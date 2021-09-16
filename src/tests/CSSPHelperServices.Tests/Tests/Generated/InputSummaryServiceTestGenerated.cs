@@ -81,16 +81,16 @@ namespace CSSPHelperServices.Tests
             inputSummary = null;
             inputSummary = GetFilledRandomInputSummary("Summary");
             InputSummaryService.Validate(new ValidationContext(inputSummary));
-            Assert.True(InputSummaryService.ValidationResults.Count() > 0);
-            Assert.True(InputSummaryService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"))).Any());
+            Assert.True(InputSummaryService.errRes.ErrList.Count() > 0);
+            Assert.True(InputSummaryService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Summary"))).Any());
 
 
             inputSummary = null;
             inputSummary = GetFilledRandomInputSummary("");
             inputSummary.Summary = GetRandomString("", 1000001);
             InputSummaryService.Validate(new ValidationContext(inputSummary));
-            Assert.True(InputSummaryService.ValidationResults.Count() > 0);
-            Assert.True(InputSummaryService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"))).Any());
+            Assert.True(InputSummaryService.errRes.ErrList.Count() > 0);
+            Assert.True(InputSummaryService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Summary", "1000000"))).Any());
         }
         #endregion Tests Generated Properties
 

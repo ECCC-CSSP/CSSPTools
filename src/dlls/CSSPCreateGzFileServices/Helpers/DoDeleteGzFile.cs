@@ -30,14 +30,14 @@ namespace CreateGzFileServices
                 Response response = await blobClient.DeleteAsync();
                 if (response.Status != 202)
                 {
-                    CSSPLogService.AppendError(new System.ComponentModel.DataAnnotations.ValidationResult(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDelete_FromAzure, FileName), new[] { "" }));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDelete_FromAzure, FileName));
                     CSSPLogService.EndFunctionLog(FunctionName);
                     return await Task.FromResult(false);
                 }
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError(new System.ComponentModel.DataAnnotations.ValidationResult(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDelete_FromAzureException_, FileName, ex.Message), new[] { "" }));
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDelete_FromAzureException_, FileName, ex.Message));
                 CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }

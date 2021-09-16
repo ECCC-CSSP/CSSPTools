@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CSSPManageServices.Models;
 
 namespace ManageServices
 {
@@ -25,6 +26,8 @@ namespace ManageServices
         Task<ActionResult<int>> ManageFileGetNextIndexToUse();
         Task<ActionResult<ManageFile>> ManageFileGetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName);
         Task<ActionResult<ManageFile>> ManageFileGetWithManageFileID(int ManageFileID);
+        Task<bool> FillConfigModel(CSSPManageServiceConfigModel config);
+
     }
     public partial class ManageFileService : ControllerBase, IManageFileService
     {
@@ -35,6 +38,7 @@ namespace ManageServices
         private CSSPDBManageContext dbManage { get; set; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private CSSPManageServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors

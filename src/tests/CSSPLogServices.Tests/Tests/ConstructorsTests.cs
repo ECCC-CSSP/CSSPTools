@@ -11,7 +11,7 @@ namespace CSSPLogServices.Tests
         //[InlineData("fr-CA")]
         public async Task Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPLogServiceSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);

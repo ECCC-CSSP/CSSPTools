@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IPolSourceObsInfoEnumTextAndIDService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class PolSourceObsInfoEnumTextAndIDService : IPolSourceObsInfoEnumTextAndIDService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,26 +46,24 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             PolSourceObsInfoEnumTextAndID polSourceObsInfoEnumTextAndID = validationContext.ObjectInstance as PolSourceObsInfoEnumTextAndID;
 
             if (string.IsNullOrWhiteSpace(polSourceObsInfoEnumTextAndID.Text))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "Text"), new[] { "Text" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Text"));
             }
 
             if (!string.IsNullOrWhiteSpace(polSourceObsInfoEnumTextAndID.Text) && polSourceObsInfoEnumTextAndID.Text.Length > 1000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"), new[] { "Text" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Text", "1000"));
             }
 
             if (polSourceObsInfoEnumTextAndID.ID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

@@ -22,11 +22,11 @@ namespace CSSPLogServices
 {
     public partial class CSSPLogService : ControllerBase, ICSSPLogService
     {
-        public void AppendError(ValidationResult validationResult)
+        public void AppendError(string Err)
         {
-            ValidationResultList.Add(validationResult);
+            ErrRes.ErrList.Add(Err);
 
-            string errorText = $"{CSSPCultureServicesRes.ERRORCap}: {validationResult.ErrorMessage}";
+            string errorText = $"{CSSPCultureServicesRes.ERRORCap}: { Err }";
 
             Console.WriteLine($"\r{errorText}");
 

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace CSSPAAA.Tests
 {
-    public partial class CreateGzFileServiceTests
+    public partial class CreateAAATests
     {
         #region Variables
         #endregion Variables

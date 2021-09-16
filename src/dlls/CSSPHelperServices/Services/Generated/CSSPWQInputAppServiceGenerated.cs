@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ICSSPWQInputAppService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class CSSPWQInputAppService : ICSSPWQInputAppService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,63 +46,61 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             CSSPWQInputApp csspWQInputApp = validationContext.ObjectInstance as CSSPWQInputApp;
 
             if (string.IsNullOrWhiteSpace(csspWQInputApp.AccessCode))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AccessCode"), new[] { "AccessCode" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AccessCode"));
             }
 
             if (!string.IsNullOrWhiteSpace(csspWQInputApp.AccessCode) && (csspWQInputApp.AccessCode.Length < 1 || csspWQInputApp.AccessCode.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "AccessCode", "1", "100"), new[] { "AccessCode" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "AccessCode", "1", "100"));
             }
 
             if (string.IsNullOrWhiteSpace(csspWQInputApp.ActiveYear))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ActiveYear"), new[] { "ActiveYear" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ActiveYear"));
             }
 
             if (!string.IsNullOrWhiteSpace(csspWQInputApp.ActiveYear) && (csspWQInputApp.ActiveYear.Length < 4 || csspWQInputApp.ActiveYear.Length > 4))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ActiveYear", "4", "4"), new[] { "ActiveYear" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ActiveYear", "4", "4"));
             }
 
             if (csspWQInputApp.DailyDuplicatePrecisionCriteria < 0 || csspWQInputApp.DailyDuplicatePrecisionCriteria > 100)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"), new[] { "DailyDuplicatePrecisionCriteria" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "DailyDuplicatePrecisionCriteria", "0", "100"));
             }
 
             if (csspWQInputApp.IntertechDuplicatePrecisionCriteria < 0 || csspWQInputApp.IntertechDuplicatePrecisionCriteria > 100)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"), new[] { "IntertechDuplicatePrecisionCriteria" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "IntertechDuplicatePrecisionCriteria", "0", "100"));
             }
 
             if (string.IsNullOrWhiteSpace(csspWQInputApp.ApprovalCode))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalCode"), new[] { "ApprovalCode" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalCode"));
             }
 
             if (!string.IsNullOrWhiteSpace(csspWQInputApp.ApprovalCode) && (csspWQInputApp.ApprovalCode.Length < 1 || csspWQInputApp.ApprovalCode.Length > 100))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ApprovalCode", "1", "100"), new[] { "ApprovalCode" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ApprovalCode", "1", "100"));
             }
 
             if (csspWQInputApp.ApprovalDate.Year == 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDate"), new[] { "ApprovalDate" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ApprovalDate"));
             }
             else
             {
                 if (csspWQInputApp.ApprovalDate.Year < 1980)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "ApprovalDate", "1980"), new[] { "ApprovalDate" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "ApprovalDate", "1980"));
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

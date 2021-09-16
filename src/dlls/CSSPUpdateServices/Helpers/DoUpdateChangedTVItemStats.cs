@@ -89,13 +89,13 @@ namespace CSSPUpdateServices
 
             if (fiJSONLatest == null)
             {
-                CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindAnyFileUnder_, di.FullName) }", new[] { "" }));
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindAnyFileUnder_, di.FullName) }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             DateTime LastWriteTimeUtc = fiJSONLatest.LastWriteTimeUtc;
@@ -374,13 +374,13 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError(new ValidationResult($"{String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }", new[] { "" }));
+                CSSPLogService.AppendError($"{String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);

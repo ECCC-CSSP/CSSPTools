@@ -10,7 +10,7 @@ using Xunit;
 using CSSPWebModels;
 using System.Collections.Generic;
 
-namespace FileServices.Tests
+namespace CSSPFileServices.Tests
 {
     public partial class FileServiceTests
     {

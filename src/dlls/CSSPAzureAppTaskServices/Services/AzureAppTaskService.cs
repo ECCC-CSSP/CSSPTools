@@ -8,7 +8,8 @@ using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPLogServices;
+using CSSPHelperModels;
+using CSSPLogServices.Models;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,6 @@ namespace CSSPAzureAppTaskServices
         Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID);
         Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask();
         Task<bool> FillConfigModel(CSSPAzureAppTaskServiceConfigModel config);
-
     }
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
@@ -40,19 +40,18 @@ namespace CSSPAzureAppTaskServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private ICSSPLogService CSSPLogService { get; }
         private IEnums enums { get; }
         private CSSPAzureAppTaskServiceConfigModel config { get; set; }
+        private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
         public AzureAppTaskService(ICSSPCultureService CSSPCultureService, IEnums enums,
-            ILoggedInService LoggedInService, ICSSPLogService CSSPLogService, CSSPDBContext db)
+            ILoggedInService LoggedInService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
-            this.CSSPLogService = CSSPLogService;
             this.enums = enums;
             this.db = db;
         }

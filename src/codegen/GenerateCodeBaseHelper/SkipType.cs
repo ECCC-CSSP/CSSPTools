@@ -39,6 +39,7 @@ namespace GenerateCodeBaseHelper
                 || type.Name.StartsWith("Persisted")
                 || type.Name.StartsWith("Device")
                 || type.Name.StartsWith("CSSPFile")
+                || type.Name.StartsWith("ErrRes")
                 //|| type.Name.StartsWith("Web")
                 )
             {

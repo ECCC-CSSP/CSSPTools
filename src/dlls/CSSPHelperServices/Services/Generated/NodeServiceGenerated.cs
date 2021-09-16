@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface INodeService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class NodeService : INodeService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,38 +46,36 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             Node node = validationContext.ObjectInstance as Node;
 
             if (node.ID < 1 || node.ID > 1000000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"), new[] { "ID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ID", "1", "1000000"));
             }
 
             if (node.X < -180 || node.X > 180)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"), new[] { "X" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "X", "-180", "180"));
             }
 
             if (node.Y < -90 || node.Y > 90)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"), new[] { "Y" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Y", "-90", "90"));
             }
 
             if (node.Z < -100000 || node.Z > 100000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"), new[] { "Z" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Z", "-100000", "100000"));
             }
 
             if (node.Code < 0 || node.Code > 20)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"), new[] { "Code" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Code", "0", "20"));
             }
 
             if (node.Value < -1 || node.Value > -1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"), new[] { "Value" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"));
             }
 
                 //CSSPError: Type not implemented [ElementList] of type [List`1]
@@ -85,7 +84,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [ConnectNodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [ConnectNodeList] of type [Node]
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

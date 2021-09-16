@@ -15,6 +15,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using LoggedInServices;
+using Microsoft.Extensions.Configuration;
+using CSSPLogServices.Models;
+using CSSPHelperModels;
 
 namespace CSSPDBServices
 {
@@ -28,17 +32,34 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
+        private CSSPDBContext db { get; }
+        private IConfiguration Configuration { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IEnums enums { get; }
+        private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
+        public TVItemUserAuthorizationDBService(ICSSPCultureService CSSPCultureService, IEnums enums,
+           ILoggedInService LoggedInService,
+           CSSPDBContext db)
+        {
+            this.Configuration = Configuration;
+            this.CSSPCultureService = CSSPCultureService;
+            this.LoggedInService = LoggedInService;
+            this.enums = enums;
+            this.db = db;
+        }
         #endregion Constructors
 
         #region Functions public 
         public async Task<ActionResult<List<TVItemUserAuthorization>>> GetTVItemUserAuthorizationWithContactTVItemID(int ContactTVItemID)
         {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
+                return await Task.FromResult(Unauthorized(errRes));
             }
 
             List<TVItemUserAuthorization> tvItemUserAuthorizationList = (from c in db.TVItemUserAuthorizations.AsNoTracking()

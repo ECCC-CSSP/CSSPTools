@@ -24,7 +24,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await TVItemLocalServiceSetup(culture, false));
 
             Assert.NotNull(db);
             Assert.NotNull(dbLocal);
@@ -46,7 +46,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Area_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             await CreateCSSPDBLocal();
 
@@ -77,7 +77,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Country_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 5;
@@ -107,7 +107,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Province_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 7;
@@ -137,7 +137,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Root_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -167,7 +167,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Sector_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 633;
@@ -197,7 +197,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Subsector_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 635;
@@ -227,7 +227,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_Infrastructure_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 28689;
@@ -257,7 +257,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_File_Under_MWQMSite_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             //int TVItemID = -1;
             //int ParentTVItemID = 7429;
@@ -288,7 +288,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Address_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -323,7 +323,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Contact_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -357,7 +357,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Country_Add_Modify_Delete_Good_Test2(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -391,7 +391,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Email_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -425,7 +425,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Tel_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -459,7 +459,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Area_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 7;
@@ -495,7 +495,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Classification_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 635;
@@ -525,7 +525,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_ClimateSite_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 7;
@@ -557,7 +557,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Country_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 1;
@@ -593,7 +593,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_HydrometricSite_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 7;
@@ -625,7 +625,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Infrastructure_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 27764;
@@ -655,7 +655,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_MikeBoundaryConditionMesh_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 28475;
@@ -685,7 +685,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_MikeBoundaryConditionWebTide_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 28475;
@@ -715,7 +715,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_MikeScenario_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 27764;
@@ -751,7 +751,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_MikeSource_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 28475;
@@ -781,7 +781,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_MWQMRun_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 635;
@@ -811,7 +811,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_MWQMSite_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 635;
@@ -841,7 +841,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_PolSourceSite_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 635;
@@ -871,7 +871,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Province_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 5;
@@ -907,7 +907,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_RainExceedance_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 5;
@@ -937,7 +937,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Sector_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 629;
@@ -973,7 +973,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task TVItemLocalService_Subsector_Add_Modify_Delete_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await TVItemLocalServiceSetup(culture, true));
 
             int TVItemID = -1;
             int ParentTVItemID = 633;

@@ -82,15 +82,15 @@ namespace CSSPHelperServices.Tests
             latLng = GetFilledRandomLatLng("");
             latLng.Lat = -181.0D;
             LatLngService.Validate(new ValidationContext(latLng));
-            Assert.True(LatLngService.ValidationResults.Count() > 0);
-            Assert.True(LatLngService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
+            Assert.True(LatLngService.errRes.ErrList.Count() > 0);
+            Assert.True(LatLngService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
 
             latLng = null;
             latLng = GetFilledRandomLatLng("");
             latLng.Lat = 181.0D;
             LatLngService.Validate(new ValidationContext(latLng));
-            Assert.True(LatLngService.ValidationResults.Count() > 0);
-            Assert.True(LatLngService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
+            Assert.True(LatLngService.errRes.ErrList.Count() > 0);
+            Assert.True(LatLngService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -103,15 +103,15 @@ namespace CSSPHelperServices.Tests
             latLng = GetFilledRandomLatLng("");
             latLng.Lng = -91.0D;
             LatLngService.Validate(new ValidationContext(latLng));
-            Assert.True(LatLngService.ValidationResults.Count() > 0);
-            Assert.True(LatLngService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
+            Assert.True(LatLngService.errRes.ErrList.Count() > 0);
+            Assert.True(LatLngService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
 
             latLng = null;
             latLng = GetFilledRandomLatLng("");
             latLng.Lng = 91.0D;
             LatLngService.Validate(new ValidationContext(latLng));
-            Assert.True(LatLngService.ValidationResults.Count() > 0);
-            Assert.True(LatLngService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
+            Assert.True(LatLngService.errRes.ErrList.Count() > 0);
+            Assert.True(LatLngService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
         }
         #endregion Tests Generated Properties
 

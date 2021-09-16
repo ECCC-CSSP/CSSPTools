@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             dataPathOfTide = null;
             dataPathOfTide = GetFilledRandomDataPathOfTide("Text");
             DataPathOfTideService.Validate(new ValidationContext(dataPathOfTide));
-            Assert.True(DataPathOfTideService.ValidationResults.Count() > 0);
-            Assert.True(DataPathOfTideService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
+            Assert.True(DataPathOfTideService.errRes.ErrList.Count() > 0);
+            Assert.True(DataPathOfTideService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Text"))).Any());
 
 
             dataPathOfTide = null;
             dataPathOfTide = GetFilledRandomDataPathOfTide("");
             dataPathOfTide.Text = GetRandomString("", 201);
             DataPathOfTideService.Validate(new ValidationContext(dataPathOfTide));
-            Assert.True(DataPathOfTideService.ValidationResults.Count() > 0);
-            Assert.True(DataPathOfTideService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"))).Any());
+            Assert.True(DataPathOfTideService.errRes.ErrList.Count() > 0);
+            Assert.True(DataPathOfTideService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"))).Any());
 
             dataPathOfTide = null;
             dataPathOfTide = GetFilledRandomDataPathOfTide("");
             dataPathOfTide.Text = GetRandomString("", 201);
             DataPathOfTideService.Validate(new ValidationContext(dataPathOfTide));
-            Assert.True(DataPathOfTideService.ValidationResults.Count() > 0);
-            Assert.True(DataPathOfTideService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"))).Any());
+            Assert.True(DataPathOfTideService.errRes.ErrList.Count() > 0);
+            Assert.True(DataPathOfTideService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Text", "1", "200"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -111,8 +111,8 @@ namespace CSSPHelperServices.Tests
             dataPathOfTide = GetFilledRandomDataPathOfTide("");
             dataPathOfTide.WebTideDataSet = (WebTideDataSetEnum)1000000;
             DataPathOfTideService.Validate(new ValidationContext(dataPathOfTide));
-            Assert.True(DataPathOfTideService.ValidationResults.Count() > 0);
-            Assert.True(DataPathOfTideService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"))).Any());
+            Assert.True(DataPathOfTideService.errRes.ErrList.Count() > 0);
+            Assert.True(DataPathOfTideService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "WebTideDataSet"))).Any());
 
 
             // -----------------------------------
@@ -126,8 +126,8 @@ namespace CSSPHelperServices.Tests
             dataPathOfTide = GetFilledRandomDataPathOfTide("");
             dataPathOfTide.WebTideDataSetText = GetRandomString("", 101);
             DataPathOfTideService.Validate(new ValidationContext(dataPathOfTide));
-            Assert.True(DataPathOfTideService.ValidationResults.Count() > 0);
-            Assert.True(DataPathOfTideService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebTideDataSetText", "100"))).Any());
+            Assert.True(DataPathOfTideService.errRes.ErrList.Count() > 0);
+            Assert.True(DataPathOfTideService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "WebTideDataSetText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

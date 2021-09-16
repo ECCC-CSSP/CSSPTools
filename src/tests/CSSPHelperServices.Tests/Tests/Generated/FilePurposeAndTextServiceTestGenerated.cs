@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             filePurposeAndText = GetFilledRandomFilePurposeAndText("");
             filePurposeAndText.FilePurpose = (FilePurposeEnum)1000000;
             FilePurposeAndTextService.Validate(new ValidationContext(filePurposeAndText));
-            Assert.True(FilePurposeAndTextService.ValidationResults.Count() > 0);
-            Assert.True(FilePurposeAndTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"))).Any());
+            Assert.True(FilePurposeAndTextService.errRes.ErrList.Count() > 0);
+            Assert.True(FilePurposeAndTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FilePurpose"))).Any());
 
 
             // -----------------------------------
@@ -97,8 +97,8 @@ namespace CSSPHelperServices.Tests
             filePurposeAndText = GetFilledRandomFilePurposeAndText("");
             filePurposeAndText.FilePurposeText = GetRandomString("", 101);
             FilePurposeAndTextService.Validate(new ValidationContext(filePurposeAndText));
-            Assert.True(FilePurposeAndTextService.ValidationResults.Count() > 0);
-            Assert.True(FilePurposeAndTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"))).Any());
+            Assert.True(FilePurposeAndTextService.errRes.ErrList.Count() > 0);
+            Assert.True(FilePurposeAndTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "FilePurposeText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("FirstName");
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"))).Any());
 
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.FirstName = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"))).Any());
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.FirstName = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "100"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -111,8 +111,8 @@ namespace CSSPHelperServices.Tests
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.Initial = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -125,23 +125,23 @@ namespace CSSPHelperServices.Tests
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("LastName");
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"))).Any());
 
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.LastName = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"))).Any());
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.LastName = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -154,23 +154,23 @@ namespace CSSPHelperServices.Tests
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("LoginEmail");
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
 
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.LoginEmail = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.LoginEmail = GetRandomString("", 101);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -183,23 +183,23 @@ namespace CSSPHelperServices.Tests
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("Password");
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Password"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Password"))).Any());
 
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.Password = GetRandomString("", 51);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.Password = GetRandomString("", 51);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -212,23 +212,23 @@ namespace CSSPHelperServices.Tests
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("ConfirmPassword");
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ConfirmPassword"))).Any());
 
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.ConfirmPassword = GetRandomString("", 51);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"))).Any());
 
             registerModel = null;
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.ConfirmPassword = GetRandomString("", 51);
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "ConfirmPassword", "5", "50"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -241,8 +241,8 @@ namespace CSSPHelperServices.Tests
             registerModel = GetFilledRandomRegisterModel("");
             registerModel.ContactTitle = (ContactTitleEnum)1000000;
             RegisterModelService.Validate(new ValidationContext(registerModel));
-            Assert.True(RegisterModelService.ValidationResults.Count() > 0);
-            Assert.True(RegisterModelService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ContactTitle"))).Any());
+            Assert.True(RegisterModelService.errRes.ErrList.Count() > 0);
+            Assert.True(RegisterModelService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ContactTitle"))).Any());
 
         }
         #endregion Tests Generated Properties

@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.ContourValue = -1.0D;
             ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
-            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"))).Any());
+            Assert.True(ContourPolygonService.errRes.ErrList.Count() > 0);
+            Assert.True(ContourPolygonService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "ContourValue", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -96,15 +96,15 @@ namespace CSSPHelperServices.Tests
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Layer = 0;
             ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
-            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            Assert.True(ContourPolygonService.errRes.ErrList.Count() > 0);
+            Assert.True(ContourPolygonService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Layer = 101;
             ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
-            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
+            Assert.True(ContourPolygonService.errRes.ErrList.Count() > 0);
+            Assert.True(ContourPolygonService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Layer", "1", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -117,15 +117,15 @@ namespace CSSPHelperServices.Tests
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Depth_m = 0.0D;
             ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
-            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
+            Assert.True(ContourPolygonService.errRes.ErrList.Count() > 0);
+            Assert.True(ContourPolygonService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
 
             contourPolygon = null;
             contourPolygon = GetFilledRandomContourPolygon("");
             contourPolygon.Depth_m = 10001.0D;
             ContourPolygonService.Validate(new ValidationContext(contourPolygon));
-            Assert.True(ContourPolygonService.ValidationResults.Count() > 0);
-            Assert.True(ContourPolygonService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
+            Assert.True(ContourPolygonService.errRes.ErrList.Count() > 0);
+            Assert.True(ContourPolygonService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Depth_m", "1", "10000"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

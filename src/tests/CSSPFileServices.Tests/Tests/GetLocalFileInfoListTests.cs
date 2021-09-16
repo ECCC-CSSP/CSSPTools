@@ -10,8 +10,10 @@ using Xunit;
 using CSSPWebModels;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CSSPLogServices.Models;
+using CSSPHelperModels;
 
-namespace FileServices.Tests
+namespace CSSPFileServices.Tests
 {
     public partial class FileServiceTests
     {
@@ -20,13 +22,13 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task GetLocalFileInfoList_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 1;
 
-            var actionRes = await FileService.GetLocalFileInfoList(ParentTVItemID);
+            var actionRes = await CSSPFileService.GetLocalFileInfoList(ParentTVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             List<LocalFileInfo> localFileInfoList = ((List<LocalFileInfo>)((OkObjectResult)actionRes.Result).Value);
@@ -40,7 +42,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task GetLocalFileInfoList_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -48,10 +50,10 @@ namespace FileServices.Tests
 
             LoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await FileService.GetLocalFileInfoList(ParentTVItemID);
+            var actionRes = await CSSPFileService.GetLocalFileInfoList(ParentTVItemID);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
-            var ValidationResultList = (List<ValidationResult>)((UnauthorizedObjectResult)actionRes.Result).Value;
-            Assert.NotNull(ValidationResultList);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -60,16 +62,16 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task GetLocalFileInfoList_ParentTVItemIDDoesNotExist_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             int ParentTVItemID = 111111111;
 
-            var actionRes = await FileService.GetLocalFileInfoList(ParentTVItemID);
+            var actionRes = await CSSPFileService.GetLocalFileInfoList(ParentTVItemID);
             Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
-            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes.Result).Value;
-            Assert.NotNull(ValidationResultList);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             Assert.NotNull(db);
             Assert.NotNull(dbLocal);
@@ -47,7 +47,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_Add_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await AppTaskLocalServiceSetup(culture, true));
 
             await CreateCSSPDBLocal();
 
@@ -72,7 +72,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_Modify_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await AppTaskLocalServiceSetup(culture, true));
 
             await CreateCSSPDBLocal();
 
@@ -119,7 +119,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_Add_AlreayExist_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await AppTaskLocalServiceSetup(culture, true));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -141,7 +141,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_Modify_CouldNotFind_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await AppTaskLocalServiceSetup(culture, true));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -170,7 +170,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_DeleteAppTaskModel_AppTask_NotFound_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, true));
+            Assert.True(await AppTaskLocalServiceSetup(culture, true));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -193,7 +193,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_DBCommand_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -206,7 +206,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_TVItemID_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -219,7 +219,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_TVItemID2_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -232,7 +232,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskCommand_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -245,7 +245,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskStatus_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -258,7 +258,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_PercentCompleted_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -271,7 +271,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_Language_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -284,7 +284,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_StartDateTime_UTC_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -297,7 +297,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_EndDateTime_UTC_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -310,7 +310,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_CountNot2_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -323,7 +323,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_AppTaskLanguageID_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -336,7 +336,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_AppTaskID_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -350,7 +350,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_DBCommand_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -363,7 +363,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_Language_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -376,7 +376,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_StatusText_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -389,7 +389,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_ErrorText_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -402,7 +402,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_AppTaskLanguage_TranslationStatus_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -415,7 +415,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_DeleteAppTaskModel_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             int AppTaskID = 0;
 
@@ -426,7 +426,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_AddOrModifyLocal_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -439,7 +439,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_DeleteAppTaskModel_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             int AppTaskID = 1000;
 
@@ -452,7 +452,7 @@ namespace CSSPDBLocalServices.Tests
         //[InlineData("fr-CA")]
         public async Task AppTaskLocalService_GetAllAppTaskModel_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture, false));
+            Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
             LoggedInService.LoggedInContactInfo.LoggedInContact = null;
 

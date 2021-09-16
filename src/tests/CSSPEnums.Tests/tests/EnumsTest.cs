@@ -41,7 +41,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(enums);
 
@@ -49,7 +49,7 @@ namespace CSSPEnums.Tests
         #endregion Testing Methods 
 
         #region Functions private
-        private async Task<bool> Setup(string culture)
+        private async Task<bool> EnumsSetup(string culture)
         {
             Services = new ServiceCollection();
             Services.AddSingleton<IEnums, Enums>();

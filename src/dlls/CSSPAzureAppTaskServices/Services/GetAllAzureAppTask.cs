@@ -8,7 +8,6 @@ using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPLogServices;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +24,11 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask()
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
-
-            if (!await CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
+                return await Task.FromResult(Unauthorized(errRes));
+            }
 
             List<PostAppTaskModel> appTaskModelList = new List<PostAppTaskModel>();
 

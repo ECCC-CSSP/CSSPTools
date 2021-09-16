@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IElementService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class ElementService : IElementService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,49 +46,47 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             Element element = validationContext.ObjectInstance as Element;
 
             if (element.ID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"), new[] { "ID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "ID", "1"));
             }
 
             if (element.Type < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"), new[] { "Type" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "Type", "1"));
             }
 
             if (element.NumbOfNodes < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"), new[] { "NumbOfNodes" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "NumbOfNodes", "1"));
             }
 
             if (element.Value < -1 || element.Value > -1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"), new[] { "Value" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Value", "-1", "-1"));
             }
 
             if (element.XNode0 < -1 || element.XNode0 > -1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"), new[] { "XNode0" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "XNode0", "-1", "-1"));
             }
 
             if (element.YNode0 < -1 || element.YNode0 > -1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"), new[] { "YNode0" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "YNode0", "-1", "-1"));
             }
 
             if (element.ZNode0 < -1 || element.ZNode0 > -1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"), new[] { "ZNode0" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "ZNode0", "-1", "-1"));
             }
 
                 //CSSPError: Type not implemented [NodeList] of type [List`1]
 
                 //CSSPError: Type not implemented [NodeList] of type [Node]
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

@@ -18,7 +18,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_for_PolSourceObsInfoEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoEnum), null, null);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);

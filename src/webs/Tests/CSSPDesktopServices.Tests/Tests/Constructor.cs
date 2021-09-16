@@ -3,7 +3,7 @@ using CSSPDBModels;
 using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPSQLiteServices;
-using FileServices;
+using CSSPFileServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +63,7 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
-            Services.AddSingleton<IFileService, FileService>();
+            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 

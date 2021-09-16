@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
             polSourceObsInfoChild.PolSourceObsInfo = (PolSourceObsInfoEnum)1000000;
             PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"))).Any());
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfo"))).Any());
 
 
             // -----------------------------------
@@ -97,8 +97,8 @@ namespace CSSPHelperServices.Tests
             polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
             polSourceObsInfoChild.PolSourceObsInfoChildStart = (PolSourceObsInfoEnum)1000000;
             PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"))).Any());
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "PolSourceObsInfoChildStart"))).Any());
 
 
             // -----------------------------------
@@ -112,8 +112,8 @@ namespace CSSPHelperServices.Tests
             polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
             polSourceObsInfoChild.PolSourceObsInfoText = GetRandomString("", 101);
             PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"))).Any());
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoText", "100"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -126,8 +126,8 @@ namespace CSSPHelperServices.Tests
             polSourceObsInfoChild = GetFilledRandomPolSourceObsInfoChild("");
             polSourceObsInfoChild.PolSourceObsInfoChildStartText = GetRandomString("", 101);
             PolSourceObsInfoChildService.Validate(new ValidationContext(polSourceObsInfoChild));
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Count() > 0);
-            Assert.True(PolSourceObsInfoChildService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"))).Any());
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Count() > 0);
+            Assert.True(PolSourceObsInfoChildService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PolSourceObsInfoChildStartText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

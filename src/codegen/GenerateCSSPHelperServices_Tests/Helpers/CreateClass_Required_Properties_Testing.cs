@@ -8,7 +8,7 @@ namespace GenerateCSSPHelperServices_Tests
     {
         private async Task<bool> CreateClass_Required_Properties_Testing(CSSPProp csspProp, string TypeName, string TypeNameLower, StringBuilder sb)
         {
-            if (csspProp.IsVirtual || csspProp.IsKey || csspProp.PropName == "ValidationResults")
+            if (csspProp.IsVirtual || csspProp.IsKey)
             {
                 return await Task.FromResult(true);
             }
@@ -32,8 +32,8 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }("""");");
                             sb.AppendLine($@"            { TypeNameLower }.{ csspProp.PropName } = new DateTime();");
                             sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.errRes.ErrList.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
                         }
                     }
                     break;
@@ -45,8 +45,8 @@ namespace GenerateCSSPHelperServices_Tests
                             sb.AppendLine($@"            { TypeNameLower } = null;");
                             sb.AppendLine($@"            { TypeNameLower } = GetFilledRandom{ TypeName }(""{ csspProp.PropName }"");");
                             sb.AppendLine($@"            { TypeName }Service.Validate(new ValidationContext({ TypeNameLower }));");
-                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Count() > 0);");
-                            sb.AppendLine($@"            Assert.True({ TypeName }Service.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.errRes.ErrList.Count() > 0);");
+                            sb.AppendLine($@"            Assert.True({ TypeName }Service.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, ""{ csspProp.PropName }""))).Any());");
                             sb.AppendLine(@"");
                         }
                     }

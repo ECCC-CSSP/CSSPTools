@@ -14,14 +14,7 @@ namespace CSSPSQLiteServices
     {
         private async Task<bool> DoCreateSQLiteCSSPDBManage()
         {
-            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            if (string.IsNullOrWhiteSpace(CSSPDBManage))
-            {
-                Error = string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InAppSettingsJSON, "CSSPDBManage");
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+            FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
 
             if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBManage })) return await Task.FromResult(false);
 

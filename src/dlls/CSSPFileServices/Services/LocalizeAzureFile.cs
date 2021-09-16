@@ -22,16 +22,16 @@ using System.ComponentModel.DataAnnotations;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 
-namespace FileServices
+namespace CSSPFileServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPFileService : ControllerBase, ICSSPFileService
     {
         public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID, string FileName) - ParentTVItemID: { ParentTVItemID }  FileName: { FileName }";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             ShareFileClient shareFileClient;
             ShareFileProperties shareFileProperties;

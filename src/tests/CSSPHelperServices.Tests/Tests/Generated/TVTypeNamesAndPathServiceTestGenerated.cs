@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             tvTypeNamesAndPath = null;
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("TVTypeName");
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeName"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVTypeName"))).Any());
 
 
             tvTypeNamesAndPath = null;
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
             tvTypeNamesAndPath.TVTypeName = GetRandomString("", 256);
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"))).Any());
 
             tvTypeNamesAndPath = null;
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
             tvTypeNamesAndPath.TVTypeName = GetRandomString("", 256);
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVTypeName", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -111,8 +111,8 @@ namespace CSSPHelperServices.Tests
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
             tvTypeNamesAndPath.Index = 0;
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Index", "1"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Index", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -125,23 +125,23 @@ namespace CSSPHelperServices.Tests
             tvTypeNamesAndPath = null;
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("TVPath");
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
 
 
             tvTypeNamesAndPath = null;
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
             tvTypeNamesAndPath.TVPath = GetRandomString("", 256);
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
 
             tvTypeNamesAndPath = null;
             tvTypeNamesAndPath = GetFilledRandomTVTypeNamesAndPath("");
             tvTypeNamesAndPath.TVPath = GetRandomString("", 256);
             TVTypeNamesAndPathService.Validate(new ValidationContext(tvTypeNamesAndPath));
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Count() > 0);
-            Assert.True(TVTypeNamesAndPathService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Count() > 0);
+            Assert.True(TVTypeNamesAndPathService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -30,7 +30,7 @@ namespace LoggedInServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoggedInService_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await LoggedInServiceSetup(culture));
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoginEmail);
@@ -44,7 +44,7 @@ namespace LoggedInServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoggedInService_SetLoggedInContactInfo_With_LoginEmail_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await LoggedInServiceSetup(culture));
 
             await LoggedInService.SetLoggedInContactInfo(LoginEmail);
             Assert.Equal(LoginEmail, LoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
@@ -65,7 +65,7 @@ namespace LoggedInServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoggedInService_SetLoggedInContactInfo_With_LoginEmail3_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await LoggedInServiceSetup(culture));
 
             await LoggedInService.SetLoggedInContactInfo(LoginEmail3);
             Assert.Null(LoggedInService.LoggedInContactInfo.LoggedInContact);
@@ -77,7 +77,7 @@ namespace LoggedInServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoggedInService_SetLoggedInLocalContactInf_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await LoggedInServiceSetup(culture));
 
             await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
@@ -89,7 +89,7 @@ namespace LoggedInServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoggedInService_Scramble_and_Descramble_With_Empty_String_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await LoggedInServiceSetup(culture));
 
             string retStr = LoggedInService.Scramble("");
             Assert.Equal("", retStr);
@@ -102,7 +102,7 @@ namespace LoggedInServices.Tests
         //[InlineData("fr-CA")]
         public async Task LoggedInService_Scramble_and_Descramble_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await LoggedInServiceSetup(culture));
 
             Random random = new Random();
 

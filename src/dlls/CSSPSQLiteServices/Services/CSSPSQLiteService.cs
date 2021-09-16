@@ -11,6 +11,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using ManageServices;
+using CSSPSQLiteServices.Models;
 
 namespace CSSPSQLiteServices
 {
@@ -23,6 +24,7 @@ namespace CSSPSQLiteServices
 
         Task<bool> CSSPDBManageIsEmpty();
         Task<bool> CSSPDBLocalIsEmpty();
+        Task<bool> FillConfigModel(CSSPSQLiteServiceConfigModel config);
     }
 
     public partial class CSSPSQLiteService : ICSSPSQLiteService
@@ -38,6 +40,7 @@ namespace CSSPSQLiteServices
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private CSSPSQLiteServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors

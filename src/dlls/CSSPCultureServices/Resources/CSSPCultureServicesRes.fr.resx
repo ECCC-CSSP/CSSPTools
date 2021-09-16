@@ -924,4 +924,7 @@
   <data name="ThisComputerNameIs" xml:space="preserve">
     <value>Cette ordinateur est </value>
   </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Non authorisé</value>
+  </data>
 </root>

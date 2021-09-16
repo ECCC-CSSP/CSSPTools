@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private void DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
+        private async Task<bool> DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
@@ -59,6 +60,8 @@ namespace ReadGzFileServices
             }
 
             CSSPLogService.FunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
         }
     }
 }

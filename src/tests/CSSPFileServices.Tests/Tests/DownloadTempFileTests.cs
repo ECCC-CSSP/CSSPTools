@@ -10,8 +10,10 @@ using Xunit;
 using System.Collections.Generic;
 using CSSPWebModels;
 using System.ComponentModel.DataAnnotations;
+using CSSPLogServices.Models;
+using CSSPHelperModels;
 
-namespace FileServices.Tests
+namespace CSSPFileServices.Tests
 {
     //[Collection("Sequential")]
     public partial class FileServiceTests
@@ -21,7 +23,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task DownloadTempFile_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -41,7 +43,7 @@ namespace FileServices.Tests
 
             File.WriteAllText(fi.FullName, "bonjour");
             
-            var actionRes = await FileService.DownloadTempFile(fi.Name);
+            var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
             Assert.NotNull(((FileStreamResult)actionRes).FileStream);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
@@ -51,7 +53,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task DownloadTempFile_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -61,10 +63,10 @@ namespace FileServices.Tests
 
             LoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await FileService.DownloadTempFile(fi.Name);
+            var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
-            var ValidationResultList = (List<ValidationResult>)((UnauthorizedObjectResult)actionRes).Value;
-            Assert.NotNull(ValidationResultList);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -73,16 +75,16 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task DownloadTempFile_FileDoesNotExist_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
             string FileName = "doesnotexist.css";
 
-            var actionRes = await FileService.DownloadTempFile(FileName);
+            var actionRes = await CSSPFileService.DownloadTempFile(FileName);
             Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
-            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes).Value;
-            Assert.NotNull(ValidationResultList);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

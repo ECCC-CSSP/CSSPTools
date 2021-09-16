@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ILabSheetAndA1SheetService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class LabSheetAndA1SheetService : ILabSheetAndA1SheetService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,8 +46,6 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             LabSheetAndA1Sheet labSheetAndA1Sheet = validationContext.ObjectInstance as LabSheetAndA1Sheet;
 
                 //CSSPError: Type not implemented [LabSheet] of type [LabSheet]
@@ -55,7 +54,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [LabSheetA1Sheet] of type [LabSheetA1Sheet]
 
                 //CSSPError: Type not implemented [LabSheetA1Sheet] of type [LabSheetA1Sheet]
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

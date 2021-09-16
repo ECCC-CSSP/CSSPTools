@@ -20,16 +20,16 @@ using ManageServices;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 
-namespace FileServices
+namespace CSSPFileServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPFileService : ControllerBase, ICSSPFileService
     {
         public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID) - ParentTVItemID: { ParentTVItemID }";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             List<LocalFileInfo> LocalFileList = new List<LocalFileInfo>();
 

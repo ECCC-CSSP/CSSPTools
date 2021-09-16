@@ -12,8 +12,10 @@ using CSSPWebModels;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using ManageServices;
+using CSSPLogServices.Models;
+using CSSPHelperModels;
 
-namespace FileServices.Tests
+namespace CSSPFileServices.Tests
 {
     //[Collection("Sequential")]
     public partial class FileServiceTests
@@ -23,7 +25,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateTempCSV_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -47,7 +49,7 @@ namespace FileServices.Tests
             tableConvertToCSVModel.CSVString = "a,b,c";
             tableConvertToCSVModel.TableFileName = fi.Name;
 
-            var actionRes = await FileService.CreateTempCSV(tableConvertToCSVModel);
+            var actionRes = await CSSPFileService.CreateTempCSV(tableConvertToCSVModel);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
 
@@ -73,7 +75,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateTempCSV_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -99,10 +101,10 @@ namespace FileServices.Tests
             tableConvertToCSVModel.CSVString = "a,b,c";
             tableConvertToCSVModel.TableFileName = fi.Name;
 
-            var actionRes = await FileService.CreateTempCSV(tableConvertToCSVModel);
+            var actionRes = await CSSPFileService.CreateTempCSV(tableConvertToCSVModel);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
-            var ValidationResultList = (List<ValidationResult>)((UnauthorizedObjectResult)actionRes.Result).Value;
-            Assert.NotEmpty(ValidationResultList);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -111,7 +113,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateTempCSV_PathDoesNotExist_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -137,10 +139,10 @@ namespace FileServices.Tests
 
             config.CSSPTempFilesPath = config.CSSPTempFilesPath.Replace("cssptempfiles", "notexist");
 
-            var actionRes = await FileService.CreateTempCSV(tableConvertToCSVModel);
+            var actionRes = await CSSPFileService.CreateTempCSV(tableConvertToCSVModel);
             Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
-            var ValidationResultList = (List<ValidationResult>)((BadRequestObjectResult)actionRes.Result).Value;
-            Assert.NotEmpty(ValidationResultList);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

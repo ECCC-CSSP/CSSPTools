@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CSSPLogServices.Models;
 using System.Reflection;
+using CSSPHelperModels;
 
 namespace CSSPLogServices
 {
@@ -26,9 +27,9 @@ namespace CSSPLogServices
         string CSSPCommandName { get; set; }
         StringBuilder sbError { get; set; }
         StringBuilder sbLog { get; set; }
-        List<ValidationResult> ValidationResultList { get; set; }
+        ErrRes ErrRes { get; set; }
 
-        void AppendError(ValidationResult validationResult);
+        void AppendError(string Err);
         void AppendLog(string logText);
         Task<bool> CheckComputerName(string FunctionName);
         Task<bool> CheckLogin(string FunctionName);
@@ -51,7 +52,7 @@ namespace CSSPLogServices
         public string CSSPCommandName { get; set; } = "Unknown";
         public StringBuilder sbError { get; set; } = new StringBuilder();
         public StringBuilder sbLog { get; set; } = new StringBuilder();
-        public List<ValidationResult> ValidationResultList { get; set; } = new List<ValidationResult>();
+        public ErrRes ErrRes { get; set; } = new ErrRes();
 
         private CSSPDBManageContext dbManage { get; }
         private ILoggedInService LoggedInService { get; }

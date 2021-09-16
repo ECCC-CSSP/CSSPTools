@@ -15,6 +15,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using LoggedInServices;
+using Microsoft.Extensions.Configuration;
+using CSSPLogServices.Models;
+using CSSPHelperModels;
 
 namespace CSSPDBServices
 {
@@ -26,12 +30,31 @@ namespace CSSPDBServices
     public partial class TVItemDBService : ControllerBase, ITVItemDBService
     {
         #region Variables
+        private CSSPDBContext db { get; }
+        private IConfiguration Configuration { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
+        private ILoggedInService LoggedInService { get; }
+        private IEnums enums { get; }
+        private List<ValidationResult> ValidationResultList { get; set; }
         #endregion Variables
 
         #region Properties
+        private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
+        public TVItemDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
+           ILoggedInService LoggedInService,
+           CSSPDBContext db)
+        {
+            this.Configuration = Configuration;
+            this.CSSPCultureService = CSSPCultureService;
+            this.LoggedInService = LoggedInService;
+            this.enums = enums;
+            this.db = db;
+
+            ValidationResultList = new List<ValidationResult>();
+        }
         #endregion Constructors
 
         #region Functions public 
@@ -39,9 +62,10 @@ namespace CSSPDBServices
         {
             DateTime StartDate = new DateTime(Year, Month, Day);
 
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
+                return await Task.FromResult(Unauthorized(errRes));
             }
 
             List<TVItem> tvItemList = await (from c in db.TVItems.AsNoTracking()
@@ -52,9 +76,10 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<TVItem>> GetTVItemRoot()
         {
-            if (LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
+                errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
+                return await Task.FromResult(Unauthorized(errRes));
             }
 
             TVItem tvItem = await (from c in db.TVItems.AsNoTracking()
@@ -63,7 +88,8 @@ namespace CSSPDBServices
 
             if (tvItem == null)
             {
-                return await Task.FromResult(BadRequest(CSSPCultureServicesRes.CouldNotFindRoot));
+                errRes.ErrList.Add(CSSPCultureServicesRes.CouldNotFindRoot);
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await Task.FromResult(Ok(tvItem));

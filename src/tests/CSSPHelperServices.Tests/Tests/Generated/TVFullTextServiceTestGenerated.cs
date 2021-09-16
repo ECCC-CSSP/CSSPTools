@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("TVPath");
             TVFullTextService.Validate(new ValidationContext(tvFullText));
-            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
-            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
+            Assert.True(TVFullTextService.errRes.ErrList.Count() > 0);
+            Assert.True(TVFullTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"))).Any());
 
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.TVPath = GetRandomString("", 256);
             TVFullTextService.Validate(new ValidationContext(tvFullText));
-            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
-            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+            Assert.True(TVFullTextService.errRes.ErrList.Count() > 0);
+            Assert.True(TVFullTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.TVPath = GetRandomString("", 256);
             TVFullTextService.Validate(new ValidationContext(tvFullText));
-            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
-            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
+            Assert.True(TVFullTextService.errRes.ErrList.Count() > 0);
+            Assert.True(TVFullTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "TVPath", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -111,23 +111,23 @@ namespace CSSPHelperServices.Tests
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("FullText");
             TVFullTextService.Validate(new ValidationContext(tvFullText));
-            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
-            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"))).Any());
+            Assert.True(TVFullTextService.errRes.ErrList.Count() > 0);
+            Assert.True(TVFullTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FullText"))).Any());
 
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.FullText = GetRandomString("", 256);
             TVFullTextService.Validate(new ValidationContext(tvFullText));
-            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
-            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
+            Assert.True(TVFullTextService.errRes.ErrList.Count() > 0);
+            Assert.True(TVFullTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
 
             tvFullText = null;
             tvFullText = GetFilledRandomTVFullText("");
             tvFullText.FullText = GetRandomString("", 256);
             TVFullTextService.Validate(new ValidationContext(tvFullText));
-            Assert.True(TVFullTextService.ValidationResults.Count() > 0);
-            Assert.True(TVFullTextService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
+            Assert.True(TVFullTextService.errRes.ErrList.Count() > 0);
+            Assert.True(TVFullTextService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FullText", "1", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

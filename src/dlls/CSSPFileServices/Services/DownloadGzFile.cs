@@ -22,16 +22,16 @@ using System.ComponentModel.DataAnnotations;
 using Azure.Storage.Blobs;
 using Azure;
 
-namespace FileServices
+namespace CSSPFileServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPFileService : ControllerBase, ICSSPFileService
     {
         public async Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTypeEnum webType, int TVItemID) - webtype: { webType } TVItemID: { TVItemID }";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 

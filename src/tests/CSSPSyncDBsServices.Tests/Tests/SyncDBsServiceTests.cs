@@ -25,7 +25,7 @@ namespace CSSPSyncDBsServices.Tests
         //[InlineData("fr-CA")]
         public async Task SyncDBsService_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPSyncDBsServiceSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);

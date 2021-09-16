@@ -81,16 +81,16 @@ namespace CSSPHelperServices.Tests
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("Name");
             AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
-            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
+            Assert.True(AppTaskParameterService.errRes.ErrList.Count() > 0);
+            Assert.True(AppTaskParameterService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Name"))).Any());
 
 
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("");
             appTaskParameter.Name = GetRandomString("", 256);
             AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
-            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"))).Any());
+            Assert.True(AppTaskParameterService.errRes.ErrList.Count() > 0);
+            Assert.True(AppTaskParameterService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Name", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -102,16 +102,16 @@ namespace CSSPHelperServices.Tests
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("Value");
             AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
-            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Value"))).Any());
+            Assert.True(AppTaskParameterService.errRes.ErrList.Count() > 0);
+            Assert.True(AppTaskParameterService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Value"))).Any());
 
 
             appTaskParameter = null;
             appTaskParameter = GetFilledRandomAppTaskParameter("");
             appTaskParameter.Value = GetRandomString("", 256);
             AppTaskParameterService.Validate(new ValidationContext(appTaskParameter));
-            Assert.True(AppTaskParameterService.ValidationResults.Count() > 0);
-            Assert.True(AppTaskParameterService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"))).Any());
+            Assert.True(AppTaskParameterService.errRes.ErrList.Count() > 0);
+            Assert.True(AppTaskParameterService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Value", "255"))).Any());
         }
         #endregion Tests Generated Properties
 

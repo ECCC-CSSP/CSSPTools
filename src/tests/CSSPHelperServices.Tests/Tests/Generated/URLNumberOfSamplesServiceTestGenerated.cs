@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             uRLNumberOfSamples = null;
             uRLNumberOfSamples = GetFilledRandomURLNumberOfSamples("url");
             URLNumberOfSamplesService.Validate(new ValidationContext(uRLNumberOfSamples));
-            Assert.True(URLNumberOfSamplesService.ValidationResults.Count() > 0);
-            Assert.True(URLNumberOfSamplesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "url"))).Any());
+            Assert.True(URLNumberOfSamplesService.errRes.ErrList.Count() > 0);
+            Assert.True(URLNumberOfSamplesService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "url"))).Any());
 
 
             uRLNumberOfSamples = null;
             uRLNumberOfSamples = GetFilledRandomURLNumberOfSamples("");
             uRLNumberOfSamples.url = GetRandomString("", 256);
             URLNumberOfSamplesService.Validate(new ValidationContext(uRLNumberOfSamples));
-            Assert.True(URLNumberOfSamplesService.ValidationResults.Count() > 0);
-            Assert.True(URLNumberOfSamplesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"))).Any());
+            Assert.True(URLNumberOfSamplesService.errRes.ErrList.Count() > 0);
+            Assert.True(URLNumberOfSamplesService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"))).Any());
 
             uRLNumberOfSamples = null;
             uRLNumberOfSamples = GetFilledRandomURLNumberOfSamples("");
             uRLNumberOfSamples.url = GetRandomString("", 256);
             URLNumberOfSamplesService.Validate(new ValidationContext(uRLNumberOfSamples));
-            Assert.True(URLNumberOfSamplesService.ValidationResults.Count() > 0);
-            Assert.True(URLNumberOfSamplesService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"))).Any());
+            Assert.True(URLNumberOfSamplesService.errRes.ErrList.Count() > 0);
+            Assert.True(URLNumberOfSamplesService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "url", "1", "255"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

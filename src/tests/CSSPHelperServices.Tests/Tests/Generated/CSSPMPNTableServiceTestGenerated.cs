@@ -82,15 +82,15 @@ namespace CSSPHelperServices.Tests
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.Tube10 = -1;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"))).Any());
 
             csspMPNTable = null;
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.Tube10 = 6;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube10", "0", "5"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -103,15 +103,15 @@ namespace CSSPHelperServices.Tests
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.Tube1_0 = -1;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"))).Any());
 
             csspMPNTable = null;
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.Tube1_0 = 6;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube1_0", "0", "5"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -124,15 +124,15 @@ namespace CSSPHelperServices.Tests
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.Tube0_1 = -1;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"))).Any());
 
             csspMPNTable = null;
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.Tube0_1 = 6;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tube0_1", "0", "5"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -145,15 +145,15 @@ namespace CSSPHelperServices.Tests
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.MPN = -1;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"))).Any());
 
             csspMPNTable = null;
             csspMPNTable = GetFilledRandomCSSPMPNTable("");
             csspMPNTable.MPN = 100000001;
             CSSPMPNTableService.Validate(new ValidationContext(csspMPNTable));
-            Assert.True(CSSPMPNTableService.ValidationResults.Count() > 0);
-            Assert.True(CSSPMPNTableService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"))).Any());
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Count() > 0);
+            Assert.True(CSSPMPNTableService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN", "0", "100000000"))).Any());
         }
         #endregion Tests Generated Properties
 

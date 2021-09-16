@@ -25,8 +25,8 @@ namespace CreateGzFileServices
 
             if (TVItemProvince == null || TVItemProvince.TVType != TVTypeEnum.Province)
             {
-                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
-                    "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString()), new[] { "" }));
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
+                    "TVItem", ProvinceTVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString()));
                 CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }
@@ -51,7 +51,7 @@ namespace CreateGzFileServices
             catch (Exception ex)
             {
                 string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                CSSPLogService.AppendError(new ValidationResult($"{ ex.Message } { inner }", new[] { "" }));
+                CSSPLogService.AppendError($"{ ex.Message } { inner }");
                 CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
             }

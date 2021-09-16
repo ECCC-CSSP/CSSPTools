@@ -19,7 +19,7 @@ namespace CSSPUpdateServices
 
             //    await CSSPLogService.StoreInCommandLog(CSSPAppNameEnum.CSSPUpdate, CSSPCommandNameEnum.UploadAllJsonFilesToAzure);
 
-            //    return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+            //    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             //}
 

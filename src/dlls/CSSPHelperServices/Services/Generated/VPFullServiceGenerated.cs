@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IVPFullService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class VPFullService : IVPFullService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,8 +46,6 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             VPFull vpFull = validationContext.ObjectInstance as VPFull;
 
                 //CSSPError: Type not implemented [VPScenario] of type [VPScenario]
@@ -58,7 +57,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [VPResultList] of type [List`1]
 
                 //CSSPError: Type not implemented [VPResultList] of type [VPResult]
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

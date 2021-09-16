@@ -5,8 +5,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>27667b6d-6208-4074-be00-1041ba61f0c0</UserSecretsId>
-
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,6 +40,10 @@
     <None Update="appsettings_FilesManagementServicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

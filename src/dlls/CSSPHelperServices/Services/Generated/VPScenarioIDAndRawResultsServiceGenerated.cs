@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface IVPScenarioIDAndRawResultsService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class VPScenarioIDAndRawResultsService : IVPScenarioIDAndRawResultsService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,26 +46,24 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             VPScenarioIDAndRawResults vpScenarioIDAndRawResults = validationContext.ObjectInstance as VPScenarioIDAndRawResults;
 
             if (vpScenarioIDAndRawResults.VPScenarioID < 1)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"), new[] { "VPScenarioID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"));
             }
 
             if (string.IsNullOrWhiteSpace(vpScenarioIDAndRawResults.RawResults))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"), new[] { "RawResults" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"));
             }
 
             if (!string.IsNullOrWhiteSpace(vpScenarioIDAndRawResults.RawResults) && vpScenarioIDAndRawResults.RawResults.Length > 1000000)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RawResults", "1000000"), new[] { "RawResults" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RawResults", "1000000"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

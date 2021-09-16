@@ -22,7 +22,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ActionDBTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ActionDBTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -62,7 +62,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AddContactTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AddContactTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -99,7 +99,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_EntityQueryTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(EntityQueryTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -133,7 +133,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PolSourceObsInfoTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceObsInfoTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -173,7 +173,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AddressTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AddressTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -210,7 +210,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AreaSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AreaSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -244,7 +244,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AerationTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AerationTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -278,7 +278,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AlarmSystemTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AlarmSystemTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -321,7 +321,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AnalysisCalculationTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AnalysisCalculationTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -358,7 +358,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AnalysisReportExportCommandEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AnalysisReportExportCommandEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -392,7 +392,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AnalyzeMethodEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AnalyzeMethodEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -456,7 +456,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AppTaskCommandEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AppTaskCommandEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -631,7 +631,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AppTaskStatusEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AppTaskStatusEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -671,7 +671,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_AscDescEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(AscDescEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -705,7 +705,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_DBCommandEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(DBCommandEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -745,7 +745,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_BeaufortScaleEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(BeaufortScaleEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -812,7 +812,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_BoxModelResultTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(BoxModelResultTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -855,7 +855,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CanOverflowTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(CanOverflowTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -892,7 +892,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ClassificationTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ClassificationTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -935,7 +935,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CollectionSystemTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(CollectionSystemTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -996,7 +996,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ContactTitleEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ContactTitleEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1051,7 +1051,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ContentSizeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ContentSizeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1094,7 +1094,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CountrySubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(CountrySubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1247,7 +1247,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CSSPWQInputSheetTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputSheetTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1284,7 +1284,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_CSSPWQInputTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(CSSPWQInputTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1318,7 +1318,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_DailyOrHourlyDataEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(DailyOrHourlyDataEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1352,7 +1352,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_DisinfectionTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(DisinfectionTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1401,7 +1401,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_DrogueTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(DrogueTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1435,7 +1435,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_EmailTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(EmailTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1475,7 +1475,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ExcelExportShowDataTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ExcelExportShowDataTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1527,7 +1527,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_FacilityTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(FacilityTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1561,7 +1561,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_FilePurposeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(FilePurposeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1631,7 +1631,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_FilesSortPropEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(FilesSortPropEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1674,7 +1674,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_FileStatusEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(FileStatusEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1717,7 +1717,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_FileTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(FileTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1811,7 +1811,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_InfrastructureTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(InfrastructureTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1854,7 +1854,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_KMZActionEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(KMZActionEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -1906,7 +1906,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_LaboratoryEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(LaboratoryEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2024,7 +2024,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_LabSheetStatusEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(LabSheetStatusEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2064,7 +2064,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_LabSheetTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(LabSheetTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2101,7 +2101,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_LanguageEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(LanguageEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2141,7 +2141,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_LogCommandEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(LogCommandEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2178,7 +2178,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MapInfoDrawTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MapInfoDrawTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2215,7 +2215,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MapSizeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2258,7 +2258,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MikeBoundaryConditionLevelOrVelocityEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MikeBoundaryConditionLevelOrVelocityEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2292,7 +2292,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MikeScenarioSpecialResultKMLTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MikeScenarioSpecialResultKMLTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2335,7 +2335,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MikeScenarioSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MikeScenarioSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2378,7 +2378,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MonthEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MonthEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2442,7 +2442,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MWQMRunSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MWQMRunSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2476,7 +2476,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MWQMSiteLatestClassificationEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MWQMSiteLatestClassificationEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2522,7 +2522,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MWQMSiteSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MWQMSiteSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2556,7 +2556,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_MunicipalitySubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(MunicipalitySubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2596,7 +2596,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PolSourceInactiveReasonEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceInactiveReasonEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2633,7 +2633,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PolSourceIssueRiskEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceIssueRiskEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2670,7 +2670,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PolSourceSiteSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PolSourceSiteSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2704,7 +2704,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PositionEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PositionEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2744,7 +2744,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PreliminaryTreatmentTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PreliminaryTreatmentTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2784,7 +2784,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PrimaryTreatmentTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PrimaryTreatmentTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2827,7 +2827,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_PropertyTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(PropertyTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2873,7 +2873,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ProvinceSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ProvinceSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2919,7 +2919,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportConditionEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportConditionEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -2971,7 +2971,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportFieldTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportFieldTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3137,7 +3137,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportFileTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportFileTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3177,7 +3177,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportFormatingDateEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingDateEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3244,7 +3244,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportFormatingNumberEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportFormatingNumberEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3314,7 +3314,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportGenerateObjectsKeywordEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportGenerateObjectsKeywordEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3408,7 +3408,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportSortingEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportSortingEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3442,7 +3442,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportTreeNodeSubTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeSubTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3482,7 +3482,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ReportTreeNodeTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ReportTreeNodeTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3747,7 +3747,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_RootSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(RootSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3784,7 +3784,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_RunningOnEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(RunningOnEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3818,7 +3818,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SameDayNextDayEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SameDayNextDayEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3852,7 +3852,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SampleMatrixEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SampleMatrixEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3901,7 +3901,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SampleStatusEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SampleStatusEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -3944,7 +3944,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SampleTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SampleTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4011,7 +4011,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SamplingPlanTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SamplingPlanTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4045,7 +4045,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ScenarioStatusEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ScenarioStatusEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4100,7 +4100,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SearchTagEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SearchTagEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4236,7 +4236,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SeasonEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SeasonEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4276,7 +4276,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SecondaryTreatmentTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SecondaryTreatmentTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4346,7 +4346,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SectorSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SectorSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4383,7 +4383,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ShellSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ShellSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4444,7 +4444,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SiteTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SiteTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4481,7 +4481,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SortOrderAngularEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SortOrderAngularEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4542,7 +4542,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SpecialTableTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SpecialTableTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4594,7 +4594,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_StorageDataTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(StorageDataTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4631,7 +4631,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_StreetTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4689,7 +4689,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_SubsectorSubComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(SubsectorSubComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4738,7 +4738,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TelTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TelTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4784,7 +4784,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TertiaryTreatmentTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TertiaryTreatmentTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4833,7 +4833,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TideDataTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TideDataTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4867,7 +4867,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TideTextEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TideTextEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4922,7 +4922,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TopComponentEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TopComponentEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4956,7 +4956,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TranslationStatusEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TranslationStatusEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -4993,7 +4993,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TreatmentTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TreatmentTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5120,7 +5120,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TVAuthEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TVAuthEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5166,7 +5166,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_TVTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(TVTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5452,7 +5452,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_ValveTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(ValveTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5489,7 +5489,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_WebChartAndTableTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(WebChartAndTableTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5541,7 +5541,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_WebTypeEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(WebTypeEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5677,7 +5677,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task GetResValueForTypeAndID_ForEnum_WebTideDataSetEnum_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.GetResValueForTypeAndID(typeof(WebTideDataSetEnum), -100);
             Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
@@ -5742,7 +5742,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_EnumTypeListOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<int?> intList = new List<int?>() { (int)PolSourceObsInfoEnum.AgriculturalSourceCrop, (int)PolSourceObsInfoEnum.AgricultureSourcePasture };
             Assert.Equal((int)PolSourceObsInfoEnum.AgriculturalSourceCrop, intList[0]);
@@ -5763,7 +5763,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ActionDBTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ActionDBTypeEnum), null);
             Assert.Equal("", retStr);
@@ -5797,7 +5797,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AddContactTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AddContactTypeEnum), null);
             Assert.Equal("", retStr);
@@ -5830,7 +5830,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_EntityQueryTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(EntityQueryTypeEnum), null);
             Assert.Equal("", retStr);
@@ -5862,7 +5862,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceObsInfoTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoTypeEnum), null);
             Assert.Equal("", retStr);
@@ -5896,7 +5896,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AddressTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), null);
             Assert.Equal("", retStr);
@@ -5929,7 +5929,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AreaSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AreaSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -5961,7 +5961,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AerationTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AerationTypeEnum), null);
             Assert.Equal("", retStr);
@@ -5993,7 +5993,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AlarmSystemTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AlarmSystemTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6028,7 +6028,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AnalysisCalculationTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AnalysisCalculationTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6061,7 +6061,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AnalysisReportExportCommandOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AnalysisReportExportCommandEnum), null);
             Assert.Equal("", retStr);
@@ -6093,7 +6093,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AnalyzeMethodOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AnalyzeMethodEnum), null);
             Assert.Equal("", retStr);
@@ -6135,7 +6135,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AppTaskCommandOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), null);
             Assert.Equal("", retStr);
@@ -6214,7 +6214,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AppTaskStatusOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AppTaskStatusEnum), null);
             Assert.Equal("", retStr);
@@ -6248,7 +6248,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AscDescOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(AscDescEnum), null);
             Assert.Equal("", retStr);
@@ -6280,7 +6280,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DBCommandOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), null);
             Assert.Equal("", retStr);
@@ -6314,7 +6314,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_BeaufortScaleOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(BeaufortScaleEnum), null);
             Assert.Equal("", retStr);
@@ -6357,7 +6357,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_BoxModelResultTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(BoxModelResultTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6392,7 +6392,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CanOverflowTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(CanOverflowTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6425,7 +6425,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ClassificationTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ClassificationTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6460,7 +6460,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CollectionSystemTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(CollectionSystemTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6501,7 +6501,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ContactTitleOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ContactTitleEnum), null);
             Assert.Equal("", retStr);
@@ -6540,7 +6540,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ContentSizeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ContentSizeEnum), null);
             Assert.Equal("", retStr);
@@ -6575,7 +6575,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CountrySubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(CountrySubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -6688,7 +6688,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CSSPWQInputSheetTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(CSSPWQInputSheetTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6721,7 +6721,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CSSPWQInputTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(CSSPWQInputTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6753,7 +6753,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DailyOrHourlyDataOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(DailyOrHourlyDataEnum), null);
             Assert.Equal("", retStr);
@@ -6785,7 +6785,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DisinfectionTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(DisinfectionTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6822,7 +6822,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DrogueTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(DrogueTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6854,7 +6854,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_EmailTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6888,7 +6888,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ExcelExportShowDataTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ExcelExportShowDataTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6926,7 +6926,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FacilityTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(FacilityTypeEnum), null);
             Assert.Equal("", retStr);
@@ -6958,7 +6958,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FilePurposeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(FilePurposeEnum), null);
             Assert.Equal("", retStr);
@@ -7002,7 +7002,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FilesSortPropOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(FilesSortPropEnum), null);
             Assert.Equal("", retStr);
@@ -7037,7 +7037,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FileStatusOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(FileStatusEnum), null);
             Assert.Equal("", retStr);
@@ -7072,7 +7072,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FileTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(FileTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7124,7 +7124,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_InfrastructureTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(InfrastructureTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7159,7 +7159,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_KMZActionOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(KMZActionEnum), null);
             Assert.Equal("", retStr);
@@ -7197,7 +7197,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LaboratoryOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(LaboratoryEnum), null);
             Assert.Equal("", retStr);
@@ -7257,7 +7257,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LabSheetStatusOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(LabSheetStatusEnum), null);
             Assert.Equal("", retStr);
@@ -7291,7 +7291,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LabSheetTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(LabSheetTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7324,7 +7324,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LanguageOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(LanguageEnum), null);
             Assert.Equal("", retStr);
@@ -7358,7 +7358,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LogCommandOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(LogCommandEnum), null);
             Assert.Equal("", retStr);
@@ -7391,7 +7391,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MapInfoDrawTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7424,7 +7424,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MapSizeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MapSizeEnum), null);
             Assert.Equal("", retStr);
@@ -7459,7 +7459,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MikeBoundaryConditionLevelOrVelocityOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MikeBoundaryConditionLevelOrVelocityEnum), null);
             Assert.Equal("", retStr);
@@ -7491,7 +7491,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MikeScenarioSpecialResultKMLTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MikeScenarioSpecialResultKMLTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7526,7 +7526,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MikeScenarioSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MikeScenarioSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -7561,7 +7561,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MonthOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MonthEnum), null);
             Assert.Equal("", retStr);
@@ -7603,7 +7603,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MWQMRunSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MWQMRunSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -7635,7 +7635,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MWQMSiteLatestClassificationOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MWQMSiteLatestClassificationEnum), null);
             Assert.Equal("", retStr);
@@ -7671,7 +7671,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MWQMSiteSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MWQMSiteSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -7703,7 +7703,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MunicipalitySubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(MunicipalitySubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -7737,7 +7737,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceInactiveReasonOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PolSourceInactiveReasonEnum), null);
             Assert.Equal("", retStr);
@@ -7770,7 +7770,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceIssueRiskOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PolSourceIssueRiskEnum), null);
             Assert.Equal("", retStr);
@@ -7803,7 +7803,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceSiteSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PolSourceSiteSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -7835,7 +7835,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PositionOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PositionEnum), null);
             Assert.Equal("", retStr);
@@ -7869,7 +7869,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PreliminaryTreatmentTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PreliminaryTreatmentTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7903,7 +7903,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PrimaryTreatmentTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PrimaryTreatmentTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7938,7 +7938,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PropertyTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PropertyTypeEnum), null);
             Assert.Equal("", retStr);
@@ -7974,7 +7974,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ProvinceSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ProvinceSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -8010,7 +8010,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportConditionOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportConditionEnum), null);
             Assert.Equal("", retStr);
@@ -8048,7 +8048,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFieldTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportFieldTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8124,7 +8124,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFileTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportFileTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8158,7 +8158,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFormatingDateOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportFormatingDateEnum), null);
             Assert.Equal("", retStr);
@@ -8201,7 +8201,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFormatingNumberOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportFormatingNumberEnum), null);
             Assert.Equal("", retStr);
@@ -8245,7 +8245,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportGenerateObjectsKeywordOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportGenerateObjectsKeywordEnum), null);
             Assert.Equal("", retStr);
@@ -8297,7 +8297,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportSortingOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportSortingEnum), null);
             Assert.Equal("", retStr);
@@ -8329,7 +8329,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportTreeNodeSubTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportTreeNodeSubTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8363,7 +8363,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportTreeNodeTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ReportTreeNodeTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8472,7 +8472,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_RootSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(RootSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -8505,7 +8505,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_RunningOnOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(RunningOnEnum), null);
             Assert.Equal("", retStr);
@@ -8537,7 +8537,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SameDayNextDayOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SameDayNextDayEnum), null);
             Assert.Equal("", retStr);
@@ -8569,7 +8569,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SampleMatrixOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SampleMatrixEnum), null);
             Assert.Equal("", retStr);
@@ -8606,7 +8606,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SampleStatusOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SampleStatusEnum), null);
             Assert.Equal("", retStr);
@@ -8641,7 +8641,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SampleTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SampleTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8684,7 +8684,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SamplingPlanTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SamplingPlanTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8716,7 +8716,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ScenarioStatusOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ScenarioStatusEnum), null);
             Assert.Equal("", retStr);
@@ -8755,7 +8755,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SearchTagOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SearchTagEnum), null);
             Assert.Equal("", retStr);
@@ -8821,7 +8821,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SeasonOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SeasonEnum), null);
             Assert.Equal("", retStr);
@@ -8855,7 +8855,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SecondaryTreatmentTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SecondaryTreatmentTypeEnum), null);
             Assert.Equal("", retStr);
@@ -8899,7 +8899,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SectorSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SectorSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -8932,7 +8932,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ShellSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ShellSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -8973,7 +8973,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SiteTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SiteTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9006,7 +9006,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SortOrderAngularOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SortOrderAngularEnum), null);
             Assert.Equal("", retStr);
@@ -9047,7 +9047,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SpecialTableTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SpecialTableTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9085,7 +9085,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_StorageDataTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(StorageDataTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9118,7 +9118,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_StreetTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9158,7 +9158,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SubsectorSubComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(SubsectorSubComponentEnum), null);
             Assert.Equal("", retStr);
@@ -9195,7 +9195,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TelTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TelTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9231,7 +9231,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TertiaryTreatmentTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TertiaryTreatmentTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9268,7 +9268,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TideDataTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TideDataTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9300,7 +9300,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TideTextOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TideTextEnum), null);
             Assert.Equal("", retStr);
@@ -9339,7 +9339,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TopComponentOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TopComponentEnum), null);
             Assert.Equal("", retStr);
@@ -9371,7 +9371,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TranslationStatusOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), null);
             Assert.Equal("", retStr);
@@ -9404,7 +9404,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TreatmentTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TreatmentTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9467,7 +9467,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TVAuthOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TVAuthEnum), null);
             Assert.Equal("", retStr);
@@ -9503,7 +9503,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TVTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9619,7 +9619,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ValveTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(ValveTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9652,7 +9652,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_WebChartAndTableTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(WebChartAndTableTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9690,7 +9690,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_WebTypeOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(WebTypeEnum), null);
             Assert.Equal("", retStr);
@@ -9756,7 +9756,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_WebTideDataSetOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(WebTideDataSetEnum), null);
             Assert.Equal("", retStr);
@@ -9797,7 +9797,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceObsInfoOK_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             string retStr = enums.EnumTypeOK(typeof(PolSourceObsInfoEnum), null);
             Assert.Equal("", retStr);
@@ -11430,7 +11430,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ActionDBTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ActionDBTypeEnum)))
@@ -11456,7 +11456,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AddContactTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AddContactTypeEnum)))
@@ -11482,7 +11482,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_EntityQueryTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(EntityQueryTypeEnum)))
@@ -11508,7 +11508,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceObsInfoTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoTypeEnum)))
@@ -11534,7 +11534,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AddressTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AddressTypeEnum)))
@@ -11560,7 +11560,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AreaSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AreaSubComponentEnum)))
@@ -11586,7 +11586,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AerationTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AerationTypeEnum)))
@@ -11612,7 +11612,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AlarmSystemTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AlarmSystemTypeEnum)))
@@ -11638,7 +11638,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AnalysisCalculationTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AnalysisCalculationTypeEnum)))
@@ -11664,7 +11664,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AnalysisReportExportCommandEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AnalysisReportExportCommandEnum)))
@@ -11690,7 +11690,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AnalyzeMethodEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AnalyzeMethodEnum)))
@@ -11716,7 +11716,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AppTaskCommandEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AppTaskCommandEnum)))
@@ -11742,7 +11742,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AppTaskStatusEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AppTaskStatusEnum)))
@@ -11768,7 +11768,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_AscDescEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(AscDescEnum)))
@@ -11794,7 +11794,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DBCommandEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(DBCommandEnum)))
@@ -11820,7 +11820,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_BeaufortScaleEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(BeaufortScaleEnum)))
@@ -11846,7 +11846,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_BoxModelResultTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(BoxModelResultTypeEnum)))
@@ -11872,7 +11872,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CanOverflowTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(CanOverflowTypeEnum)))
@@ -11898,7 +11898,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ClassificationTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ClassificationTypeEnum)))
@@ -11924,7 +11924,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CollectionSystemTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(CollectionSystemTypeEnum)))
@@ -11950,7 +11950,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ContactTitleEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ContactTitleEnum)))
@@ -11976,7 +11976,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ContentSizeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ContentSizeEnum)))
@@ -12002,7 +12002,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CountrySubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(CountrySubComponentEnum)))
@@ -12080,7 +12080,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CSSPWQInputSheetTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(CSSPWQInputSheetTypeEnum)))
@@ -12106,7 +12106,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_CSSPWQInputTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(CSSPWQInputTypeEnum)))
@@ -12132,7 +12132,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DailyOrHourlyDataEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(DailyOrHourlyDataEnum)))
@@ -12158,7 +12158,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DisinfectionTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(DisinfectionTypeEnum)))
@@ -12184,7 +12184,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_DrogueTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(DrogueTypeEnum)))
@@ -12210,7 +12210,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_EmailTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(EmailTypeEnum)))
@@ -12236,7 +12236,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ExcelExportShowDataTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ExcelExportShowDataTypeEnum)))
@@ -12262,7 +12262,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FacilityTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(FacilityTypeEnum)))
@@ -12288,7 +12288,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FilePurposeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(FilePurposeEnum)))
@@ -12314,7 +12314,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FilesSortPropEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(FilesSortPropEnum)))
@@ -12340,7 +12340,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FileStatusEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(FileStatusEnum)))
@@ -12366,7 +12366,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_FileTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(FileTypeEnum)))
@@ -12392,7 +12392,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_InfrastructureTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(InfrastructureTypeEnum)))
@@ -12418,7 +12418,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_KMZActionEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(KMZActionEnum)))
@@ -12444,7 +12444,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LaboratoryEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(LaboratoryEnum)))
@@ -12470,7 +12470,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LabSheetStatusEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(LabSheetStatusEnum)))
@@ -12496,7 +12496,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LabSheetTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(LabSheetTypeEnum)))
@@ -12522,7 +12522,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LanguageEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(LanguageEnum)))
@@ -12548,7 +12548,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_LogCommandEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(LogCommandEnum)))
@@ -12574,7 +12574,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MapInfoDrawTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MapInfoDrawTypeEnum)))
@@ -12600,7 +12600,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MapSizeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
@@ -12626,7 +12626,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MikeBoundaryConditionLevelOrVelocityEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MikeBoundaryConditionLevelOrVelocityEnum)))
@@ -12652,7 +12652,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MikeScenarioSpecialResultKMLTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MikeScenarioSpecialResultKMLTypeEnum)))
@@ -12678,7 +12678,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MikeScenarioSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MikeScenarioSubComponentEnum)))
@@ -12704,7 +12704,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MonthEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MonthEnum)))
@@ -12730,7 +12730,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MWQMRunSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MWQMRunSubComponentEnum)))
@@ -12756,7 +12756,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MWQMSiteLatestClassificationEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MWQMSiteLatestClassificationEnum)))
@@ -12782,7 +12782,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MWQMSiteSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MWQMSiteSubComponentEnum)))
@@ -12808,7 +12808,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_MunicipalitySubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(MunicipalitySubComponentEnum)))
@@ -12834,7 +12834,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceInactiveReasonEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PolSourceInactiveReasonEnum)))
@@ -12860,7 +12860,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceIssueRiskEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PolSourceIssueRiskEnum)))
@@ -12886,7 +12886,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceSiteSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PolSourceSiteSubComponentEnum)))
@@ -12912,7 +12912,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PositionEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PositionEnum)))
@@ -12938,7 +12938,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PreliminaryTreatmentTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PreliminaryTreatmentTypeEnum)))
@@ -12964,7 +12964,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PrimaryTreatmentTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PrimaryTreatmentTypeEnum)))
@@ -12990,7 +12990,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PropertyTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PropertyTypeEnum)))
@@ -13016,7 +13016,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ProvinceSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ProvinceSubComponentEnum)))
@@ -13042,7 +13042,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportConditionEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportConditionEnum)))
@@ -13068,7 +13068,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFieldTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportFieldTypeEnum)))
@@ -13094,7 +13094,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFileTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportFileTypeEnum)))
@@ -13120,7 +13120,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFormatingDateEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportFormatingDateEnum)))
@@ -13146,7 +13146,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportFormatingNumberEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportFormatingNumberEnum)))
@@ -13172,7 +13172,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportGenerateObjectsKeywordEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportGenerateObjectsKeywordEnum)))
@@ -13198,7 +13198,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportSortingEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportSortingEnum)))
@@ -13224,7 +13224,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportTreeNodeSubTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportTreeNodeSubTypeEnum)))
@@ -13250,7 +13250,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ReportTreeNodeTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ReportTreeNodeTypeEnum)))
@@ -13276,7 +13276,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_RootSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(RootSubComponentEnum)))
@@ -13302,7 +13302,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_RunningOnEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(RunningOnEnum)))
@@ -13328,7 +13328,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SameDayNextDayEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SameDayNextDayEnum)))
@@ -13354,7 +13354,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SampleMatrixEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SampleMatrixEnum)))
@@ -13380,7 +13380,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SampleStatusEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SampleStatusEnum)))
@@ -13406,7 +13406,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SampleTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SampleTypeEnum)))
@@ -13432,7 +13432,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SamplingPlanTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SamplingPlanTypeEnum)))
@@ -13458,7 +13458,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ScenarioStatusEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ScenarioStatusEnum)))
@@ -13484,7 +13484,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SearchTagEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SearchTagEnum)))
@@ -13510,7 +13510,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SeasonEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SeasonEnum)))
@@ -13536,7 +13536,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SecondaryTreatmentTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SecondaryTreatmentTypeEnum)))
@@ -13562,7 +13562,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SectorSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SectorSubComponentEnum)))
@@ -13588,7 +13588,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ShellSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ShellSubComponentEnum)))
@@ -13614,7 +13614,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SiteTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SiteTypeEnum)))
@@ -13640,7 +13640,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SortOrderAngularEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SortOrderAngularEnum)))
@@ -13666,7 +13666,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SpecialTableTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SpecialTableTypeEnum)))
@@ -13692,7 +13692,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_StorageDataTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(StorageDataTypeEnum)))
@@ -13718,7 +13718,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_StreetTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(StreetTypeEnum)))
@@ -13744,7 +13744,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_SubsectorSubComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(SubsectorSubComponentEnum)))
@@ -13770,7 +13770,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TelTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TelTypeEnum)))
@@ -13796,7 +13796,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TertiaryTreatmentTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TertiaryTreatmentTypeEnum)))
@@ -13822,7 +13822,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TideDataTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TideDataTypeEnum)))
@@ -13848,7 +13848,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TideTextEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TideTextEnum)))
@@ -13874,7 +13874,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TopComponentEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TopComponentEnum)))
@@ -13900,7 +13900,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TranslationStatusEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TranslationStatusEnum)))
@@ -13926,7 +13926,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TreatmentTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TreatmentTypeEnum)))
@@ -13952,7 +13952,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TVAuthEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TVAuthEnum)))
@@ -13978,7 +13978,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_TVTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(TVTypeEnum)))
@@ -14004,7 +14004,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_ValveTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(ValveTypeEnum)))
@@ -14030,7 +14030,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_WebChartAndTableTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(WebChartAndTableTypeEnum)))
@@ -14056,7 +14056,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_WebTypeEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(WebTypeEnum)))
@@ -14082,7 +14082,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_WebTideDataSetEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(WebTideDataSetEnum)))
@@ -14108,7 +14108,7 @@ namespace CSSPEnums.Tests
         [InlineData("fr-CA")]
         public async Task Enums_PolSourceObsInfoEnumTextOrdered_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await EnumsSetup(culture));
 
             List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
             foreach (int i in Enum.GetValues(typeof(PolSourceObsInfoEnum)))

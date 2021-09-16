@@ -22,17 +22,13 @@ namespace CSSPAzureAppTaskServices
     {
         private async Task<bool> DoDeleteAzureAppTask(int appTaskID)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel postAppTaskModel)";
-
-            CSSPLogService.FunctionLog(FunctionName);
-
             AppTask appTask = (from c in db.AppTasks
                                where c.AppTaskID == appTaskID
                                select c).FirstOrDefault();
 
             if (appTask == null)
             {
-                CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()), new[] { "" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()));
                 return false;
             }
             else
@@ -45,15 +41,13 @@ namespace CSSPAzureAppTaskServices
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message), new[] { "AppTask" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message));
                     return false;
                 }
 
             }
 
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            if (CSSPLogService.ValidationResultList.Count > 0) return await Task.FromResult(false);
+            if (errRes.ErrList.Count > 0) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

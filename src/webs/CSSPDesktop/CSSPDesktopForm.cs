@@ -6,7 +6,7 @@ using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPHelperModels;
 using CSSPSQLiteServices;
-using FileServices;
+using CSSPFileServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
@@ -464,7 +464,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
-            Services.AddSingleton<IFileService, FileService>();
+            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
             /* ---------------------------------------------------------------------------------

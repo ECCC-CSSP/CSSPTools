@@ -24,8 +24,9 @@ namespace CSSPHelperServices
 {
     public interface ISamplingPlanAndFilesLabSheetCountService
     {
+        ErrRes errRes { get; set; }
+
         bool Validate(ValidationContext validationContext);
-        List<ValidationResult> ValidationResults { get; set; }
     }
     public partial class SamplingPlanAndFilesLabSheetCountService : ISamplingPlanAndFilesLabSheetCountService
     {
@@ -33,7 +34,7 @@ namespace CSSPHelperServices
         #endregion Variables
 
         #region Properties
-        public List<ValidationResult> ValidationResults { get; set; }
+        public ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
@@ -45,18 +46,16 @@ namespace CSSPHelperServices
         #region Functions public
         public bool Validate(ValidationContext validationContext)
         {
-            ValidationResults = new List<ValidationResult>();
-
             SamplingPlanAndFilesLabSheetCount samplingPlanAndFilesLabSheetCount = validationContext.ObjectInstance as SamplingPlanAndFilesLabSheetCount;
 
             if (samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount < 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"), new[] { "LabSheetHistoryCount" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"));
             }
 
             if (samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount < 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"), new[] { "LabSheetTransferredCount" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"));
             }
 
                 //CSSPError: Type not implemented [SamplingPlan] of type [SamplingPlan]
@@ -65,7 +64,7 @@ namespace CSSPHelperServices
                 //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
 
                 //CSSPError: Type not implemented [TVFileSamplingPlanFileTXT] of type [TVFile]
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? true : false;
         }
         #endregion Functions public
     }

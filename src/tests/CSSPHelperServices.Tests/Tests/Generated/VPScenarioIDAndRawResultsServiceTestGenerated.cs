@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("");
             vpScenarioIDAndRawResults.VPScenarioID = 0;
             VPScenarioIDAndRawResultsService.Validate(new ValidationContext(vpScenarioIDAndRawResults));
-            Assert.True(VPScenarioIDAndRawResultsService.ValidationResults.Count() > 0);
-            Assert.True(VPScenarioIDAndRawResultsService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"))).Any());
+            Assert.True(VPScenarioIDAndRawResultsService.errRes.ErrList.Count() > 0);
+            Assert.True(VPScenarioIDAndRawResultsService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "VPScenarioID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -95,16 +95,16 @@ namespace CSSPHelperServices.Tests
             vpScenarioIDAndRawResults = null;
             vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("RawResults");
             VPScenarioIDAndRawResultsService.Validate(new ValidationContext(vpScenarioIDAndRawResults));
-            Assert.True(VPScenarioIDAndRawResultsService.ValidationResults.Count() > 0);
-            Assert.True(VPScenarioIDAndRawResultsService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"))).Any());
+            Assert.True(VPScenarioIDAndRawResultsService.errRes.ErrList.Count() > 0);
+            Assert.True(VPScenarioIDAndRawResultsService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "RawResults"))).Any());
 
 
             vpScenarioIDAndRawResults = null;
             vpScenarioIDAndRawResults = GetFilledRandomVPScenarioIDAndRawResults("");
             vpScenarioIDAndRawResults.RawResults = GetRandomString("", 1000001);
             VPScenarioIDAndRawResultsService.Validate(new ValidationContext(vpScenarioIDAndRawResults));
-            Assert.True(VPScenarioIDAndRawResultsService.ValidationResults.Count() > 0);
-            Assert.True(VPScenarioIDAndRawResultsService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RawResults", "1000000"))).Any());
+            Assert.True(VPScenarioIDAndRawResultsService.errRes.ErrList.Count() > 0);
+            Assert.True(VPScenarioIDAndRawResultsService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "RawResults", "1000000"))).Any());
         }
         #endregion Tests Generated Properties
 

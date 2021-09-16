@@ -6,31 +6,19 @@ using Xunit;
 using CSSPWebModels;
 using CSSPCultureServices.Resources;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using CSSPLogServices.Models;
+using CSSPHelperModels;
 
 namespace ReadGzFileServices.Tests
 {
     public partial class ReadGzFileServiceTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        // see Helpers.cs
-        #endregion Constructors
-
-        #region Tests 
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebNNNNN_Unauthorized_Error_Test(string culture)
         {
-            Assert.True(await Setup(culture));
-
-            LoggedInService.LoggedInContactInfo = null;
-
             List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
             {
                 WebTypeEnum.WebAllAddresses,
@@ -69,16 +57,17 @@ namespace ReadGzFileServices.Tests
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
+                Assert.True(await ReadGzFileServiceSetup(culture));
+
+                LoggedInService.LoggedInContactInfo = null;
+
                 WebTypeEnum webType = webTypeToTry;
 
-                var actionWeb = await ReadGzFileService.ReadJSON<WebArea>(webType);
+                var actionWeb = await ReadGzFileService.ReadJSON<WebAllAddresses /* type not important */>(webType);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
-                Assert.Equal(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), ((UnauthorizedObjectResult)actionWeb.Result).Value);
+                ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
+                Assert.NotEmpty(errRes.ErrList);
             }
         }
-        #endregion Tests 
-
-        #region Functions private
-        #endregion Functions private
     }
 }

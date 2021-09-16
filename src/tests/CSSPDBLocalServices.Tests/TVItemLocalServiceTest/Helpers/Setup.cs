@@ -114,7 +114,7 @@
 //            Services.AddSingleton<ILoggedInService, LoggedInService>();
 //            Services.AddSingleton<IEnums, Enums>();
 //            Services.AddSingleton<IManageFileService, ManageFileService>();
-//            Services.AddSingleton<IFileService, FileService>();
+//            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
 //            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 //            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 //            Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();

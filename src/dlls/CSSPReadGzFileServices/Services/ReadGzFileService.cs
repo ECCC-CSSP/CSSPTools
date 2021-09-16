@@ -7,7 +7,7 @@ using CSSPEnums;
 using CSSPLogServices;
 using CSSPReadGzFileServices.Models;
 using CSSPWebModels;
-using FileServices;
+using CSSPFileServices;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
@@ -36,22 +36,15 @@ namespace ReadGzFileServices
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private IFileService FileService { get; }
+        private ICSSPFileService FileService { get; }
         private IManageFileService ManageFileService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private CSSPReadGzFileServiceConfigModel config { get; set; }
-
-        //private string AzureStore { get; set; }
-        //private string AzureStoreCSSPJSONPath { get; set; }
-        //private string CSSPJSONPath { get; set; }
-        //private string CSSPJSONPathLocal { get; set; }
-        //private string CSSPAzureUrl { get; set; }
-        //private string CSSPFilesPath { get; set; }
         #endregion Properties
 
         #region Constructors
         public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IEnums enums, IFileService FileService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService, CSSPDBManageContext dbManage)
+            IEnums enums, ICSSPFileService FileService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService, CSSPDBManageContext dbManage)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
@@ -61,13 +54,6 @@ namespace ReadGzFileServices
             this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
             this.dbManage = dbManage;
-
-            //AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            //AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
-            //CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
-            //CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
-            //CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            //CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
         }
         #endregion Constructors
 

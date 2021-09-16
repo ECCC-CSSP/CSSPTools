@@ -44,13 +44,13 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }", new[] { "" }));
+                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
 
                         CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                         await CSSPLogService.Save();
 
-                        return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                        return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                     }
                 }
 
@@ -96,13 +96,13 @@ namespace CSSPUpdateServices
                         }
                         catch (Exception ex)
                         {
-                            CSSPLogService.AppendError(new ValidationResult($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }", new[] { "" }));
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
 
                             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                             await CSSPLogService.Save();
 
-                            return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                            return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                         }
                     }
                 }

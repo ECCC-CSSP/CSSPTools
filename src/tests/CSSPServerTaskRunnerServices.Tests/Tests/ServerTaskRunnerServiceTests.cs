@@ -25,7 +25,7 @@ namespace CSSPServerTaskRunnerServices.Tests
         //[InlineData("fr-CA")]
         public async Task ServerTaskRunnerService_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPServerTaskRunnerServiceSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);

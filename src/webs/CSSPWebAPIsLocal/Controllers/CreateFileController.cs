@@ -16,7 +16,7 @@ using CSSPWebModels;
 using LoggedInServices;
 using CSSPDBLocalServices;
 using System.IO;
-using FileServices;
+using CSSPFileServices;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 using System;
@@ -40,12 +40,12 @@ namespace CSSPWebAPIsLocal.Controllers
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IFileService FileService { get; }
+        private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
         public CreateFileController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            IFileService FileService)
+            ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;

@@ -35,7 +35,7 @@ namespace CSSPCultureServices.Tests
         [InlineData("fr-CA")]
         public async Task SetCulture_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCultureServiceSetup(culture));
 
              
             CSSPCultureService.SetCulture(culture);
@@ -52,7 +52,7 @@ namespace CSSPCultureServices.Tests
         [InlineData("fr-FR")]
         public async Task SetCulture_Unsuported_Culture_Should_Default_To_en_CA_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCultureServiceSetup(culture));
 
             CSSPCultureService.SetCulture(culture);
 
@@ -65,7 +65,7 @@ namespace CSSPCultureServices.Tests
         #endregion Tests Functions public
 
         #region Functions private
-        private async Task<bool> Setup(string culture)
+        private async Task<bool> CSSPCultureServiceSetup(string culture)
         {
             ServiceCollection Services = new ServiceCollection();
 

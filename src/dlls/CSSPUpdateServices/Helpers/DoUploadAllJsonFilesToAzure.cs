@@ -17,13 +17,13 @@ namespace CSSPUpdateServices
             var actionRes = await CreateGzFileService.CreateAllGzFiles();
             if (((ObjectResult)actionRes.Result).StatusCode != 200)
             {
-                CSSPLogService.AppendError(new ValidationResult($"{ CSSPCultureUpdateRes.ErrorWhileCreateAllGzFiles  }", new[] { "" }));
+                CSSPLogService.AppendError($"{ CSSPCultureUpdateRes.ErrorWhileCreateAllGzFiles  }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
                 await CSSPLogService.Save();
 
-                return await Task.FromResult(BadRequest(CSSPLogService.ValidationResultList));
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);

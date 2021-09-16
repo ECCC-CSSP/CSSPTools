@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             mapObj = GetFilledRandomMapObj("");
             mapObj.MapInfoID = 0;
             MapObjService.Validate(new ValidationContext(mapObj));
-            Assert.True(MapObjService.ValidationResults.Count() > 0);
-            Assert.True(MapObjService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "MapInfoID", "1"))).Any());
+            Assert.True(MapObjService.errRes.ErrList.Count() > 0);
+            Assert.True(MapObjService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "MapInfoID", "1"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -96,8 +96,8 @@ namespace CSSPHelperServices.Tests
             mapObj = GetFilledRandomMapObj("");
             mapObj.MapInfoDrawType = (MapInfoDrawTypeEnum)1000000;
             MapObjService.Validate(new ValidationContext(mapObj));
-            Assert.True(MapObjService.ValidationResults.Count() > 0);
-            Assert.True(MapObjService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"))).Any());
+            Assert.True(MapObjService.errRes.ErrList.Count() > 0);
+            Assert.True(MapObjService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"))).Any());
 
 
             // -----------------------------------
@@ -111,8 +111,8 @@ namespace CSSPHelperServices.Tests
             mapObj = GetFilledRandomMapObj("");
             mapObj.MapInfoDrawTypeText = GetRandomString("", 101);
             MapObjService.Validate(new ValidationContext(mapObj));
-            Assert.True(MapObjService.ValidationResults.Count() > 0);
-            Assert.True(MapObjService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MapInfoDrawTypeText", "100"))).Any());
+            Assert.True(MapObjService.errRes.ErrList.Count() > 0);
+            Assert.True(MapObjService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "MapInfoDrawTypeText", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

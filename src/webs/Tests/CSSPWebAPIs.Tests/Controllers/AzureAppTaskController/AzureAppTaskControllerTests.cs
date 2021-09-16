@@ -22,32 +22,20 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using CSSPHelperModels;
 using CSSPWebModels;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using CSSPLogServices.Models;
 
 namespace CSSPWebAPIs.AppTaskModelController.Tests
 {
-    [Collection("Sequential")]
     public partial class CSSPWebAPIsAppTaskControllerTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        //public CSSPWebAPIsAuthControllerTests()
-        //{
-        // See setup
-        //}
-        #endregion Constructors
-
-        #region Functions public
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task AppTaskModelController_Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await AzureAppTaskSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(contact);
@@ -56,12 +44,9 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AppTaskModelController_All_Good_Test(string culture)
+        public async Task AppTaskModelController_Get_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
-
-            CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(CSSPAzureUrl);
+            Assert.True(await AzureAppTaskSetup(culture));
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -73,8 +58,27 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
                 Assert.Equal(200, (int)response.StatusCode);
                 string jsonStr = await response.Content.ReadAsStringAsync();
                 List<PostAppTaskModel> appTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
+                Assert.Empty(appTaskModelList);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskModelController_Post_Add_Good_Test(string culture)
+        {
+            Assert.True(await AzureAppTaskSetup(culture));
 
-                int AppTaskModelCount = appTaskModelList.Count;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
+                Assert.Equal(200, (int)response.StatusCode);
+                string jsonStr = await response.Content.ReadAsStringAsync();
+                List<PostAppTaskModel> postAppTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
+                Assert.Empty(postAppTaskModelList);
 
                 PostAppTaskModel appTaskModel = FillAppTaskModel();
 
@@ -83,72 +87,115 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
                 response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask", contentData).Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 jsonStr = await response.Content.ReadAsStringAsync();
-                PostAppTaskModel appTaskModelRet = JsonSerializer.Deserialize<PostAppTaskModel>(jsonStr);
-                Assert.NotNull(appTaskModelRet);
+                PostAppTaskModel postAppTaskModel = JsonSerializer.Deserialize<PostAppTaskModel>(jsonStr);
+                Assert.NotNull(postAppTaskModel);
+                Assert.True(postAppTaskModel.AppTask.AppTaskID > 0);
+                Assert.NotEmpty(postAppTaskModel.AppTaskLanguageList);
 
                 response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 jsonStr = await response.Content.ReadAsStringAsync();
-                appTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
-                Assert.NotNull(appTaskModelList);
-                Assert.Equal(AppTaskModelCount + 1, appTaskModelList.Count);
+                postAppTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
+                Assert.NotEmpty(postAppTaskModelList);
+                Assert.True(postAppTaskModelList[0].AppTask.AppTaskID > 0);
+                Assert.NotEmpty(postAppTaskModelList[0].AppTaskLanguageList);
+            }
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskModelController_Post_Modify_Good_Test(string culture)
+        {
+            Assert.True(await AzureAppTaskSetup(culture));
 
-                response = httpClient.DeleteAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask/{ appTaskModelRet.AppTask.AppTaskID }").Result;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
+                Assert.Equal(200, (int)response.StatusCode);
+                string jsonStr = await response.Content.ReadAsStringAsync();
+                List<PostAppTaskModel> postAppTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
+                Assert.Empty(postAppTaskModelList);
+
+                PostAppTaskModel appTaskModel = FillAppTaskModel();
+
+                string stringData = JsonSerializer.Serialize(appTaskModel);
+                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask", contentData).Result;
                 Assert.Equal(200, (int)response.StatusCode);
                 jsonStr = await response.Content.ReadAsStringAsync();
-                bool boolRet = JsonSerializer.Deserialize<bool>(jsonStr);
-                Assert.True(boolRet);
+                PostAppTaskModel postAppTaskModel = JsonSerializer.Deserialize<PostAppTaskModel>(jsonStr);
+                Assert.NotNull(postAppTaskModel);
+                Assert.True(postAppTaskModel.AppTask.AppTaskID > 0);
+                Assert.NotEmpty(postAppTaskModel.AppTaskLanguageList);
+
+                appTaskModel = FillAppTaskModel();
+
+                appTaskModel.AppTask.TVItemID = 23;
+
+                stringData = JsonSerializer.Serialize(appTaskModel);
+                contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
+                response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask", contentData).Result;
+                Assert.Equal(200, (int)response.StatusCode);
+                jsonStr = await response.Content.ReadAsStringAsync();
+                postAppTaskModel = JsonSerializer.Deserialize<PostAppTaskModel>(jsonStr);
+                Assert.NotNull(postAppTaskModel);
+                Assert.True(postAppTaskModel.AppTask.AppTaskID > 0);
+                Assert.NotEmpty(postAppTaskModel.AppTaskLanguageList);
+
+                response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
+                Assert.Equal(200, (int)response.StatusCode);
+                jsonStr = await response.Content.ReadAsStringAsync();
+                postAppTaskModelList = JsonSerializer.Deserialize<List<PostAppTaskModel>>(jsonStr);
+                Assert.NotEmpty(postAppTaskModelList);
+                Assert.True(postAppTaskModelList[0].AppTask.AppTaskID > 0);
+                Assert.NotEmpty(postAppTaskModelList[0].AppTaskLanguageList);
             }
         }
-        #endregion Functions public
-
-        #region Functions private
-        private PostAppTaskModel FillAppTaskModel()
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskModelController_Unauthorized_NoTokenSent_Error_Test(string culture)
         {
-            PostAppTaskModel appTaskModel = new PostAppTaskModel();
+            Assert.True(await AzureAppTaskSetup(culture));
 
-            AppTask appTask = new AppTask()
+            using (HttpClient httpClient = new HttpClient())
             {
-                AppTaskID = 0,
-                DBCommand = DBCommandEnum.Created,
-                TVItemID = 1,
-                TVItemID2 = 1,
-                AppTaskCommand = AppTaskCommandEnum.SyncDBs,
-                AppTaskStatus = AppTaskStatusEnum.Created,
-                PercentCompleted = 10,
-                Parameters = "parameters",
-                Language = LanguageEnum.en,
-                StartDateTime_UTC = DateTime.UtcNow,
-                EndDateTime_UTC = null,
-                EstimatedLength_second = null,
-                RemainingTime_second = null,
-                LastUpdateDate_UTC = DateTime.UtcNow,
-                LastUpdateContactTVItemID = contact.ContactTVItemID,
-            };
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+                //httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
 
-            appTaskModel.AppTask = appTask;
-
-            foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
-            {
-                AppTaskLanguage appTaskLanguage = new AppTaskLanguage()
-                {
-                    AppTaskLanguageID = 0,
-                    DBCommand = DBCommandEnum.Created,
-                    AppTaskID = 0,
-                    ErrorText = "",
-                    Language = lang,
-                    StatusText = "This is the status text",
-                    TranslationStatus = TranslationStatusEnum.Translated,
-                    LastUpdateDate_UTC = DateTime.UtcNow,
-                    LastUpdateContactTVItemID = contact.ContactTVItemID,
-                };
-
-                appTaskModel.AppTaskLanguageList.Add(appTaskLanguage);
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
+                Assert.Equal(401, (int)response.StatusCode);
+                string jsonStr = await response.Content.ReadAsStringAsync();
+                ErrRes errRes = JsonSerializer.Deserialize<ErrRes>(jsonStr);
+                Assert.NotNull(errRes);
+                Assert.NotEmpty(errRes.ErrList);
             }
-
-            return appTaskModel;
         }
-        #endregion Functions private
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AppTaskModelController_Unauthorized_BadTokenSent_Test(string culture)
+        {
+            Assert.True(await AzureAppTaskSetup(culture));
 
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "BadToken");
+
+                HttpResponseMessage response = httpClient.GetAsync($"{ CSSPAzureUrl }api/en-CA/AzureAppTask").Result;
+                Assert.Equal(401, (int)response.StatusCode);
+                string jsonStr = await response.Content.ReadAsStringAsync();
+                ErrRes errRes = JsonSerializer.Deserialize<ErrRes>(jsonStr);
+                Assert.NotNull(errRes);
+                Assert.NotEmpty(errRes.ErrList);
+            }
+        }
     }
 }

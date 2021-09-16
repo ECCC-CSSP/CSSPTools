@@ -10,7 +10,7 @@ using Xunit;
 using System.Collections.Generic;
 using CSSPWebModels;
 
-namespace FileServices.Tests
+namespace CSSPFileServices.Tests
 {
     //[Collection("Sequential")]
     public partial class FileServiceTests
@@ -20,7 +20,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateTempPNG_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -32,7 +32,7 @@ namespace FileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateTempPNG_Unauthorized_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 

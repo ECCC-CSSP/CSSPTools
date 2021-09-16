@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             calDecay = GetFilledRandomCalDecay("");
             calDecay.Decay = -1.0D;
             CalDecayService.Validate(new ValidationContext(calDecay));
-            Assert.True(CalDecayService.ValidationResults.Count() > 0);
-            Assert.True(CalDecayService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"))).Any());
+            Assert.True(CalDecayService.errRes.ErrList.Count() > 0);
+            Assert.True(CalDecayService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "Decay", "0"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -81,16 +81,16 @@ namespace CSSPHelperServices.Tests
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("VariableName");
             VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
-            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"))).Any());
+            Assert.True(VarNameAndValueService.errRes.ErrList.Count() > 0);
+            Assert.True(VarNameAndValueService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableName"))).Any());
 
 
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("");
             varNameAndValue.VariableName = GetRandomString("", 201);
             VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
-            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "200"))).Any());
+            Assert.True(VarNameAndValueService.errRes.ErrList.Count() > 0);
+            Assert.True(VarNameAndValueService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableName", "200"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -102,16 +102,16 @@ namespace CSSPHelperServices.Tests
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("VariableValue");
             VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
-            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"))).Any());
+            Assert.True(VarNameAndValueService.errRes.ErrList.Count() > 0);
+            Assert.True(VarNameAndValueService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "VariableValue"))).Any());
 
 
             varNameAndValue = null;
             varNameAndValue = GetFilledRandomVarNameAndValue("");
             varNameAndValue.VariableValue = GetRandomString("", 301);
             VarNameAndValueService.Validate(new ValidationContext(varNameAndValue));
-            Assert.True(VarNameAndValueService.ValidationResults.Count() > 0);
-            Assert.True(VarNameAndValueService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"))).Any());
+            Assert.True(VarNameAndValueService.errRes.ErrList.Count() > 0);
+            Assert.True(VarNameAndValueService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "VariableValue", "300"))).Any());
         }
         #endregion Tests Generated Properties
 

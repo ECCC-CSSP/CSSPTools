@@ -20,16 +20,16 @@ using ManageServices;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 
-namespace FileServices
+namespace CSSPFileServices
 {
-    public partial class FileService : ControllerBase, IFileService
+    public partial class CSSPFileService : ControllerBase, ICSSPFileService
     {
         public async Task<ActionResult> DownloadTempFile(string FileName)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(string FileName) - FileName: { FileName }";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ValidationResultList));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             FileInfo fi = new FileInfo($"{config.CSSPTempFilesPath}\\{FileName}");
 

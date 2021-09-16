@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             tvItemInfrastructureTypeTVItemLink = GetFilledRandomTVItemInfrastructureTypeTVItemLink("");
             tvItemInfrastructureTypeTVItemLink.InfrastructureType = (InfrastructureTypeEnum)1000000;
             TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink));
-            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Count() > 0);
-            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"))).Any());
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.errRes.ErrList.Count() > 0);
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "InfrastructureType"))).Any());
 
 
             // -----------------------------------
@@ -103,8 +103,8 @@ namespace CSSPHelperServices.Tests
             tvItemInfrastructureTypeTVItemLink = GetFilledRandomTVItemInfrastructureTypeTVItemLink("");
             tvItemInfrastructureTypeTVItemLink.InfrastructureTypeText = GetRandomString("", 101);
             TVItemInfrastructureTypeTVItemLinkService.Validate(new ValidationContext(tvItemInfrastructureTypeTVItemLink));
-            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Count() > 0);
-            Assert.True(TVItemInfrastructureTypeTVItemLinkService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"))).Any());
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.errRes.ErrList.Count() > 0);
+            Assert.True(TVItemInfrastructureTypeTVItemLinkService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "InfrastructureTypeText", "100"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

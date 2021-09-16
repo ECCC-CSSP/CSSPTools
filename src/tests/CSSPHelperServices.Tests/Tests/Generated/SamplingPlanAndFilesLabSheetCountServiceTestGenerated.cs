@@ -82,8 +82,8 @@ namespace CSSPHelperServices.Tests
             samplingPlanAndFilesLabSheetCount = GetFilledRandomSamplingPlanAndFilesLabSheetCount("");
             samplingPlanAndFilesLabSheetCount.LabSheetHistoryCount = -1;
             SamplingPlanAndFilesLabSheetCountService.Validate(new ValidationContext(samplingPlanAndFilesLabSheetCount));
-            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Count() > 0);
-            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"))).Any());
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.errRes.ErrList.Count() > 0);
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetHistoryCount", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -96,8 +96,8 @@ namespace CSSPHelperServices.Tests
             samplingPlanAndFilesLabSheetCount = GetFilledRandomSamplingPlanAndFilesLabSheetCount("");
             samplingPlanAndFilesLabSheetCount.LabSheetTransferredCount = -1;
             SamplingPlanAndFilesLabSheetCountService.Validate(new ValidationContext(samplingPlanAndFilesLabSheetCount));
-            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Count() > 0);
-            Assert.True(SamplingPlanAndFilesLabSheetCountService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"))).Any());
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.errRes.ErrList.Count() > 0);
+            Assert.True(SamplingPlanAndFilesLabSheetCountService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MinValueIs_, "LabSheetTransferredCount", "0"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable

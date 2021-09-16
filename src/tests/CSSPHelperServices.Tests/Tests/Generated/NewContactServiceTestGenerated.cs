@@ -82,23 +82,23 @@ namespace CSSPHelperServices.Tests
             newContact = null;
             newContact = GetFilledRandomNewContact("LoginEmail");
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"))).Any());
 
 
             newContact = null;
             newContact = GetFilledRandomNewContact("");
             newContact.LoginEmail = GetRandomString("", 201);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "1", "200"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "1", "200"))).Any());
 
             newContact = null;
             newContact = GetFilledRandomNewContact("");
             newContact.LoginEmail = GetRandomString("", 201);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "1", "200"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "1", "200"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -111,23 +111,23 @@ namespace CSSPHelperServices.Tests
             newContact = null;
             newContact = GetFilledRandomNewContact("FirstName");
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "FirstName"))).Any());
 
 
             newContact = null;
             newContact = GetFilledRandomNewContact("");
             newContact.FirstName = GetRandomString("", 201);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "200"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "200"))).Any());
 
             newContact = null;
             newContact = GetFilledRandomNewContact("");
             newContact.FirstName = GetRandomString("", 201);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "200"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "FirstName", "1", "200"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -140,23 +140,23 @@ namespace CSSPHelperServices.Tests
             newContact = null;
             newContact = GetFilledRandomNewContact("LastName");
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "LastName"))).Any());
 
 
             newContact = null;
             newContact = GetFilledRandomNewContact("");
             newContact.LastName = GetRandomString("", 201);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "200"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "200"))).Any());
 
             newContact = null;
             newContact = GetFilledRandomNewContact("");
             newContact.LastName = GetRandomString("", 201);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "200"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LastName", "1", "200"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -169,8 +169,8 @@ namespace CSSPHelperServices.Tests
             newContact = GetFilledRandomNewContact("");
             newContact.Initial = GetRandomString("", 51);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Initial", "50"))).Any());
 
             // -----------------------------------
             // Is Nullable
@@ -183,8 +183,8 @@ namespace CSSPHelperServices.Tests
             newContact = GetFilledRandomNewContact("");
             newContact.ContactTitle = (ContactTitleEnum)1000000;
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ContactTitle"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "ContactTitle"))).Any());
 
 
             // -----------------------------------
@@ -198,8 +198,8 @@ namespace CSSPHelperServices.Tests
             newContact = GetFilledRandomNewContact("");
             newContact.ContactTitleText = GetRandomString("", 101);
             NewContactService.Validate(new ValidationContext(newContact));
-            Assert.True(NewContactService.ValidationResults.Count() > 0);
-            Assert.True(NewContactService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ContactTitleText", "100"))).Any());
+            Assert.True(NewContactService.errRes.ErrList.Count() > 0);
+            Assert.True(NewContactService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ContactTitleText", "100"))).Any());
         }
         #endregion Tests Generated Properties
 

@@ -21,7 +21,7 @@ namespace CSSPWebAPIs.Controllers
 
     [Route("api/{culture}/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public partial class TVItemUserAuthorizationController : ControllerBase, ITVItemUserAuthorizationController
     {
         #region Variables

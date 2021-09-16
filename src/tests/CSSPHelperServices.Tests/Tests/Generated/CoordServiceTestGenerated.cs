@@ -82,15 +82,15 @@ namespace CSSPHelperServices.Tests
             coord = GetFilledRandomCoord("");
             coord.Lat = -181.0D;
             CoordService.Validate(new ValidationContext(coord));
-            Assert.True(CoordService.ValidationResults.Count() > 0);
-            Assert.True(CoordService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
+            Assert.True(CoordService.errRes.ErrList.Count() > 0);
+            Assert.True(CoordService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
 
             coord = null;
             coord = GetFilledRandomCoord("");
             coord.Lat = 181.0D;
             CoordService.Validate(new ValidationContext(coord));
-            Assert.True(CoordService.ValidationResults.Count() > 0);
-            Assert.True(CoordService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
+            Assert.True(CoordService.errRes.ErrList.Count() > 0);
+            Assert.True(CoordService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-180", "180"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -103,15 +103,15 @@ namespace CSSPHelperServices.Tests
             coord = GetFilledRandomCoord("");
             coord.Lng = -91.0D;
             CoordService.Validate(new ValidationContext(coord));
-            Assert.True(CoordService.ValidationResults.Count() > 0);
-            Assert.True(CoordService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
+            Assert.True(CoordService.errRes.ErrList.Count() > 0);
+            Assert.True(CoordService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
 
             coord = null;
             coord = GetFilledRandomCoord("");
             coord.Lng = 91.0D;
             CoordService.Validate(new ValidationContext(coord));
-            Assert.True(CoordService.ValidationResults.Count() > 0);
-            Assert.True(CoordService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
+            Assert.True(CoordService.errRes.ErrList.Count() > 0);
+            Assert.True(CoordService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-90", "90"))).Any());
 
             // -----------------------------------
             // Is NOT Nullable
@@ -124,15 +124,15 @@ namespace CSSPHelperServices.Tests
             coord = GetFilledRandomCoord("");
             coord.Ordinal = -1;
             CoordService.Validate(new ValidationContext(coord));
-            Assert.True(CoordService.ValidationResults.Count() > 0);
-            Assert.True(CoordService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"))).Any());
+            Assert.True(CoordService.errRes.ErrList.Count() > 0);
+            Assert.True(CoordService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"))).Any());
 
             coord = null;
             coord = GetFilledRandomCoord("");
             coord.Ordinal = 10001;
             CoordService.Validate(new ValidationContext(coord));
-            Assert.True(CoordService.ValidationResults.Count() > 0);
-            Assert.True(CoordService.ValidationResults.Where(c => c.ErrorMessage.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"))).Any());
+            Assert.True(CoordService.errRes.ErrList.Count() > 0);
+            Assert.True(CoordService.errRes.ErrList.Where(c => c.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Ordinal", "0", "10000"))).Any());
         }
         #endregion Tests Generated Properties
 

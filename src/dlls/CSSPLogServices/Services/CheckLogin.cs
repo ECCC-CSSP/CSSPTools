@@ -25,7 +25,7 @@ namespace CSSPLogServices
         {
             if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
-                AppendError(new ValidationResult(CSSPCultureServicesRes.YouDoNotHaveAuthorization, new[] { "" }));
+                AppendError(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 EndFunctionLog(FunctionName);
                 await Save();
 
