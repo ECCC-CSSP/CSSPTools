@@ -933,4 +933,7 @@
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>
+  <data name="CouldNotFindParameter_InConfigFilesOfService_" xml:space="preserve">
+    <value>Could not find parameter [{0}] in config files of service [{1}]</value>
+  </data>
 </root>

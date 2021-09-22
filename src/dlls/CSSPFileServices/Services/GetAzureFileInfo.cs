@@ -37,7 +37,7 @@ namespace CSSPFileServices
             ShareFileProperties shareFileProperties;
             try
             {
-                ShareClient shareClient = new ShareClient(config.AzureStore, config.AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient shareDirectoryClient = shareClient.GetDirectoryClient($"{ParentTVItemID}");
                 shareFileClient = shareDirectoryClient.GetFileClient(FileName);
                 shareFileProperties = shareFileClient.GetProperties();

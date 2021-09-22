@@ -14,7 +14,7 @@ namespace CSSPSQLiteServices
     {
         private async Task<bool> DoCreateSQLiteCSSPDBManage()
         {
-            FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
 
             if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBManage })) return await Task.FromResult(false);
 

@@ -1,17 +1,12 @@
-using CSSPEnums;
-using CSSPDBModels;
+using CSSPHelperModels;
+using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
-using System.Collections.Generic;
-using CSSPWebModels;
-using System.ComponentModel.DataAnnotations;
-using CSSPLogServices.Models;
-using CSSPHelperModels;
 
 namespace CSSPFileServices.Tests
 {
@@ -23,22 +18,28 @@ namespace CSSPFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task DownloadOtherFile_Good_Test(string culture)
         {
-            List<string> otherFileList = new List<string>()
+            List<string> fileList = new List<string>()
             {
-                "CssFamilyMaterial.css", "IconFamilyMaterial.css", "GoogleMap.js", "flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
+                "CssFamilyMaterial.css",
+                "IconFamilyMaterial.css",
+                "GoogleMap.js",
+                "flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
             };
 
-            foreach (string fileName in otherFileList)
+            foreach (string fileName in fileList)
             {
                 Assert.True(await CSSPFileServiceSetup(culture));
 
+                FileInfo fi = new FileInfo(Configuration["CSSPOtherFilesPath"] + $"{ fileName }");
+                Assert.True(fi.Exists);
+
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-                var actionRes = await CSSPFileService.DownloadOtherFile(fileName);
-                Assert.NotNull(((FileStreamResult)actionRes).FileStream);
-            }
+                var actionRes = await CSSPFileService.DownloadOtherFile("CssFamilyMaterial.css");
+                Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
 
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+                Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+            }
         }
         [Theory]
         [InlineData("en-CA")]
@@ -53,6 +54,9 @@ namespace CSSPFileServices.Tests
             foreach (string fileName in otherFileList)
             {
                 Assert.True(await CSSPFileServiceSetup(culture));
+
+                FileInfo fi = new FileInfo(Configuration["CSSPOtherFilesPath"] + $"{ fileName }");
+                Assert.True(fi.Exists);
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 

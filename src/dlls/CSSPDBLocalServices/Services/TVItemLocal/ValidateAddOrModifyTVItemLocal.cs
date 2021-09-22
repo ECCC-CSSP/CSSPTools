@@ -12,17 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        private bool ValidatePostTVItemModel(PostTVItemModel postTVItemModel, bool forAdd)
+        private async Task<bool> ValidatePostTVItemModel(PostTVItemModel postTVItemModel, bool forAdd)
         {
-            ValidationResults = new List<ValidationResult>();
-
-            if (ValidateTVType(postTVItemModel))
+            if (await ValidateTVType(postTVItemModel))
             {
 
                 ValidateTVItem(postTVItemModel.TVItem, forAdd);
@@ -34,7 +33,7 @@ namespace CSSPDBLocalServices
                 //}
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

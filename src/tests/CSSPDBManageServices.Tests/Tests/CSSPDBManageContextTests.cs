@@ -16,16 +16,6 @@ namespace ManageServices.Tests
 {
     public partial class ManageServicesTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -42,9 +32,5 @@ namespace ManageServices.Tests
             Assert.NotNull(dbManage.TVItemUserAuthorizations);
             Assert.NotNull(dbManage.TVTypeUserAuthorizations);
         }
-        #endregion Tests
-
-        #region private
-        #endregion private
     }
 }

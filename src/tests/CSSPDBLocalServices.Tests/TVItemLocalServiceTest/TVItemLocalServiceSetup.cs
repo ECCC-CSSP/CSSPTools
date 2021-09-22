@@ -20,9 +20,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPLogServices;
+using System.Linq;
 
 namespace CSSPDBLocalServices.Tests
 {
+    [Collection("Sequential")]
     public partial class TVItemLocalServiceTest
     {
         #region Properties
@@ -30,26 +33,20 @@ namespace CSSPDBLocalServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
         private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private ICSSPFileService FileService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
         private IAppTaskLocalService AppTaskLocalService { get; set; }
+        private IMapInfoLocalService MapInfoLocalService { get; set; }
         private ITVItemLocalService TVItemLocalService { get; set; }
-        private string CSSPDB { get; set; }
-        private string CSSPDBLocal { get; set; }
-        private string CSSPDBManage { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        private FileInfo fiCSSPDBLocal { get; set; }
-        private FileInfo fiCSSPDBManage { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string CSSPJSONPath { get; set; }
-        private string CSSPJSONPathLocal { get; set; }
-        private string CSSPAzureUrl { get; set; }
 
         #endregion Properties
 
@@ -60,22 +57,6 @@ namespace CSSPDBLocalServices.Tests
         }
         #endregion Constructors
 
-        private async Task CreateCSSPDBLocal()
-        {
-            if (fiCSSPDBLocal.Exists)
-            {
-                try
-                {
-                    fiCSSPDBLocal.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
-            }
-
-            await CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
-        }
         private async Task<bool> TVItemLocalServiceSetup(string culture, bool ClearLocalDB)
         {
             Configuration = new ConfigurationBuilder()
@@ -88,27 +69,43 @@ namespace CSSPDBLocalServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
+            Assert.NotNull(Configuration["APISecret"]);
+            Assert.NotNull(Configuration["AzureCSSPDB"]);
+            Assert.NotNull(Configuration["AzureStore"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["CSSPLocalUrl"]);
+            Assert.NotNull(Configuration["CSSPDB"]);
+            Assert.NotNull(Configuration["CSSPDBLocal"]);
+            Assert.NotNull(Configuration["CSSPDBManage"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup_uncompress"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup"]);
+            Assert.NotNull(Configuration["CSSPDesktopPath"]);
+            Assert.NotNull(Configuration["CSSPDatabasesPath"]);
+            Assert.NotNull(Configuration["CSSPWebAPIsPath"]);
+            Assert.NotNull(Configuration["CSSPJSONPath"]);
+            Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
+            Assert.NotNull(Configuration["CSSPFilesPath"]);
+            Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
+            Assert.NotNull(Configuration["ComputerName"]);
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
             Services.AddSingleton<IAppTaskLocalService, AppTaskLocalService>();
+            Services.AddSingleton<IMapInfoLocalService, MapInfoLocalService>();
             Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            Assert.NotNull(AzureStoreCSSPJSONPath);
-
-            CSSPJSONPath = Configuration.GetValue<string>("CSSPJSONPath");
-            Assert.NotNull(CSSPJSONPath);
-
-            CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
-            Assert.NotNull(CSSPJSONPathLocal);
-
-            DirectoryInfo di = new DirectoryInfo($"{ CSSPJSONPathLocal }");
+            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPJSONPathLocal"] }");
             Assert.True(di.Exists);
 
             try
@@ -125,12 +122,10 @@ namespace CSSPDBLocalServices.Tests
             * CSSPDBContext
             * ---------------------------------------------------------------------------------      
             */
-            CSSPDB = Configuration.GetValue<string>("CSSPDB");
-            Assert.NotNull(CSSPDB);
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(CSSPDB);
+                options.UseSqlServer(Configuration["CSSPDB"]);
             });
 
             /* ---------------------------------------------------------------------------------
@@ -138,25 +133,48 @@ namespace CSSPDBLocalServices.Tests
             * ---------------------------------------------------------------------------------      
             */
 
-            CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(CSSPDBLocal);
+            FileInfo fiCSSPDBLocal = new FileInfo(Configuration["CSSPDBLocal"].Replace("_test", ""));
+            Assert.True(fiCSSPDBLocal.Exists);
 
-            fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            FileInfo fiCSSPDBLocalTest = new FileInfo(Configuration["CSSPDBLocal"]);
+            if (!fiCSSPDBLocalTest.Exists)
+            {
+                try
+                {
+                    File.Copy(fiCSSPDBLocal.FullName, fiCSSPDBLocalTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not copy {fiCSSPDBLocal.FullName} to {fiCSSPDBLocalTest.FullName}. Ex: {ex.Message}");
+                }
+            }
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
             });
 
+
             /* ---------------------------------------------------------------------------------
             * CSSPDBManageContext
             * ---------------------------------------------------------------------------------      
             */
 
-            CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(CSSPDBManage);
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
+            Assert.True(fiCSSPDBManage.Exists);
 
-            fiCSSPDBManage = new FileInfo(CSSPDBManage);
+            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
+            if (!fiCSSPDBManageTest.Exists)
+            {
+                try
+                {
+                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
+                }
+            }
 
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
@@ -176,6 +194,15 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
 
+            CSSPLogService = Provider.GetService<ICSSPLogService>();
+            Assert.NotNull(CSSPLogService);
+
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
+            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
+            Assert.NotNull(CSSPSQLiteService);
+
             FileService = Provider.GetService<ICSSPFileService>();
             Assert.NotNull(FileService);
 
@@ -191,11 +218,11 @@ namespace CSSPDBLocalServices.Tests
             AppTaskLocalService = Provider.GetService<IAppTaskLocalService>();
             Assert.NotNull(AppTaskLocalService);
 
+            MapInfoLocalService = Provider.GetService<IMapInfoLocalService>();
+            Assert.NotNull(MapInfoLocalService);
+
             TVItemLocalService = Provider.GetService<ITVItemLocalService>();
             Assert.NotNull(TVItemLocalService);
-
-            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
-            Assert.NotNull(CSSPSQLiteService);
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);
@@ -205,6 +232,45 @@ namespace CSSPDBLocalServices.Tests
 
             dbManage = Provider.GetService<CSSPDBManageContext>();
             Assert.NotNull(dbManage);
+
+            List<TVItem> tvItemToDeleteList = (from c in dbLocal.TVItems
+                                                 select c).ToList();
+
+            try
+            {
+                dbLocal.TVItems.RemoveRange(tvItemToDeleteList);
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all TVItems from {fiCSSPDBLocalTest.FullName}. Ex: { ex.Message }");
+            }
+
+            List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
+                                                       select c).ToList();
+
+            try
+            {
+                dbManage.CommandLogs.RemoveRange(commandLogToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
+            }
+
+            List<ManageFile> manageFileToDeleteList = (from c in dbManage.ManageFiles
+                                                       select c).ToList();
+
+            try
+            {
+                dbManage.ManageFiles.RemoveRange(manageFileToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all ManageFiles from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
+            }
 
             return await Task.FromResult(true);
         }

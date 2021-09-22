@@ -29,19 +29,19 @@ namespace CreateGzFileServices
 
             if (dbLocal != null)
             {
-                if (string.IsNullOrWhiteSpace(config.CSSPJSONPathLocal))
+                if (string.IsNullOrWhiteSpace(Configuration["CSSPJSONPathLocal"]))
                 {
                     CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPJSONPathLocal"));
                 }
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(config.AzureStoreCSSPJSONPath))
+                if (string.IsNullOrWhiteSpace(Configuration["AzureStoreCSSPJSONPath"]))
                 {
                     CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreCSSPJSONPath"));
                 }
 
-                if (string.IsNullOrWhiteSpace(config.AzureStore))
+                if (string.IsNullOrWhiteSpace(Configuration["AzureStore"]))
                 {
                     CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStore"));
                 }

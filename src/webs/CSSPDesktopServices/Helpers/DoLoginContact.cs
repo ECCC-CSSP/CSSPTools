@@ -49,7 +49,7 @@ namespace CSSPDesktopServices.Services
                     // trying to login
                     string stringData = JsonSerializer.Serialize(loginModel);
                     var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/{ culture }/auth/token", contentData).Result;
+                    HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/auth/token", contentData).Result;
                     if ((int)response.StatusCode != 200)
                     {
                         if ((int)response.StatusCode == 400)

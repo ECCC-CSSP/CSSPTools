@@ -17,7 +17,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPLogServices.Models;
 using CSSPHelperModels;
 
 namespace CSSPDBServices
@@ -36,23 +35,42 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
+        private ILoggedInService LoggedInService { get; }
+        private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public AppTaskDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
-           ILoggedInService LoggedInService,
-           CSSPDBContext db)
+        public AppTaskDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
+            if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
+            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
+
+            //if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup_uncompress"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup_uncompress", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPWebAPIsPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPWebAPIsPath", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["CSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["CSSPDBLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBLocal", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "CSSPDBServices") }");
+            //if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CSSPDBServices") }");
+
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.LoggedInService = LoggedInService;
             this.db = db;
         }
         #endregion Constructors
@@ -67,8 +85,8 @@ namespace CSSPDBServices
             }
 
             AppTask appTask = (from c in db.AppTasks.AsNoTracking()
-                    where c.AppTaskID == AppTaskID
-                    select c).FirstOrDefault();
+                               where c.AppTaskID == AppTaskID
+                               select c).FirstOrDefault();
 
             if (appTask == null)
             {
@@ -98,8 +116,8 @@ namespace CSSPDBServices
             }
 
             AppTask appTask = (from c in db.AppTasks
-                    where c.AppTaskID == AppTaskID
-                    select c).FirstOrDefault();
+                               where c.AppTaskID == AppTaskID
+                               select c).FirstOrDefault();
 
             if (appTask == null)
             {
@@ -128,7 +146,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            if (!Validate(new ValidationContext(appTask), ActionDBTypeEnum.Create))
+            if (!await Validate(new ValidationContext(appTask), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(errRes));
             }
@@ -154,7 +172,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            if (!Validate(new ValidationContext(appTask), ActionDBTypeEnum.Update))
+            if (!await Validate(new ValidationContext(appTask), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(errRes));
             }
@@ -175,7 +193,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private async Task<bool> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             AppTask appTask = validationContext.ObjectInstance as AppTask;
@@ -382,7 +400,7 @@ namespace CSSPDBServices
                 }
             }
 
-            return errRes.ErrList.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
         #endregion Functions private
     }

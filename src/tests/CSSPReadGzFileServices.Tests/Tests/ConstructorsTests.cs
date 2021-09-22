@@ -1,13 +1,5 @@
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
-using CSSPWebModels;
 
 namespace ReadGzFileServices.Tests
 {
@@ -20,6 +12,7 @@ namespace ReadGzFileServices.Tests
         {
             Assert.True(await ReadGzFileServiceSetup(culture));
 
+            Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
@@ -27,9 +20,6 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(ManageFileService);
             Assert.NotNull(ReadGzFileService);
             Assert.NotNull(CSSPFileService);
-            Assert.NotNull(configReadGzfile);
-            Assert.NotNull(configLogService);
-            Assert.NotNull(configFileService);
         }
     }
 }

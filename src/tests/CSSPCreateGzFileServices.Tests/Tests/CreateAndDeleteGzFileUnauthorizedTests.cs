@@ -54,7 +54,7 @@ namespace CreateGzFileServices.Tests
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
-                Assert.True(await Setup(culture));
+                Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -87,7 +87,7 @@ namespace CreateGzFileServices.Tests
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
-                Assert.True(await Setup(culture));
+                Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 

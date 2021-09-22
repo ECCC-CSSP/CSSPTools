@@ -23,7 +23,6 @@ using System.Security.Claims;
 using System.Text;
 using CSSPHelperModels;
 using CSSPHelperServices;
-using CSSPLogServices.Models;
 
 namespace CSSPDBServices
 {
@@ -40,13 +39,13 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         private ILoginModelService LoginModelService { get; }
         private IRegisterModelService RegisterModelService { get; }
-        private ICSSPCultureService CSSPCultureService { get; }
         private ILoggedInService LoggedInService { get; }
-        private IEnums enums { get; }
+        private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
@@ -58,12 +57,12 @@ namespace CSSPDBServices
            ILoggedInService LoggedInService,
            CSSPDBContext db)
         {
-            this.LoginModelService = LoginModelService;
-            this.RegisterModelService = RegisterModelService;
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.LoginModelService = LoginModelService;
+            this.RegisterModelService = RegisterModelService;
+            this.LoggedInService = LoggedInService;
             this.db = db;
         }
         #endregion Constructors

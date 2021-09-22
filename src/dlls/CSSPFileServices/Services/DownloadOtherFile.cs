@@ -31,24 +31,17 @@ namespace CSSPFileServices
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            FileInfo fi = new FileInfo($"{config.CSSPOtherFilesPath}\\{FileName}");
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPOtherFilesPath"] }\\{FileName}");
 
             if (!fi.Exists)
             {
                 return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotFindFile_, fi.FullName));
             }
 
-            FileStream fileStream = fi.OpenRead();
-
-            if (fileStream == null)
-            {
-                return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotOpenFile_ForStreaming, fi.FullName));
-            }
-
             CSSPLogService.EndFunctionLog(FunctionName);
             await CSSPLogService.Save();
 
-            return File(fileStream, "application/octet-stream");
+            return PhysicalFile(fi.FullName, "application/octet-stream");
         }
     }
 }

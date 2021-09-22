@@ -3,17 +3,16 @@
  *
  */
 
-using CSSPAzureAppTaskServices.Models;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPHelperModels;
-using CSSPLogServices.Models;
 using CSSPWebModels;
 using LoggedInServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,7 +27,6 @@ namespace CSSPAzureAppTaskServices
         Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel);
         Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID);
         Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask();
-        Task<bool> FillConfigModel(CSSPAzureAppTaskServiceConfigModel config);
     }
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
@@ -38,21 +36,25 @@ namespace CSSPAzureAppTaskServices
         #region Properties
         private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
-        private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private CSSPAzureAppTaskServiceConfigModel config { get; set; }
+        private ILoggedInService LoggedInService { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public AzureAppTaskService(ICSSPCultureService CSSPCultureService, IEnums enums,
-            ILoggedInService LoggedInService, CSSPDBContext db)
+        public AzureAppTaskService(IConfiguration Configuration, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
+            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
+
+            if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "AzureAppTaskService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "AzureAppTaskService") }");
+
             this.Configuration = Configuration;
-            this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.LoggedInService = LoggedInService;
             this.db = db;
         }
         #endregion Constructors

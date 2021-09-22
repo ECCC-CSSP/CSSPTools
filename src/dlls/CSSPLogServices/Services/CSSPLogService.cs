@@ -3,8 +3,7 @@
  * 
  */
 using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using CSSPEnums;
+using CSSPHelperModels;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +11,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using CSSPLogServices.Models;
-using System.Reflection;
-using CSSPHelperModels;
 
 namespace CSSPLogServices
 {
@@ -37,7 +30,6 @@ namespace CSSPLogServices
         Task<ActionResult> EndFunctionReturnBadRequest(string FunctionName, string ErrorText);
         Task<ActionResult> EndFunctionReturnOkTrue(string FunctionName);
         Task<ActionResult> EndFunctionReturnUnauthorized(string FunctionName, string ErrorText);
-        bool FillConfigModel(CSSPLogServiceConfigModel config);
         void FunctionLog(string FullFunctionName);
         string GetFunctionName(string FullFunctionName);
         Task<ActionResult> Save();
@@ -57,17 +49,22 @@ namespace CSSPLogServices
         private CSSPDBManageContext dbManage { get; }
         private ILoggedInService LoggedInService { get; }
         private IConfiguration Configuration { get; }
-        private string ComputerName { get; set; } = "Unknown";
         private int FunctionCount { get; set; } = 0;
-        private CSSPLogServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors
         public CSSPLogService(IConfiguration Configuration, ILoggedInService LoggedInService, CSSPDBManageContext dbManage) : base()
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService ") }");
+            if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
+
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
+            if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CSSPLogService") }");
+
+            this.Configuration = Configuration;
             this.LoggedInService = LoggedInService;
             this.dbManage = dbManage;
-            this.Configuration = Configuration;
         }
         #endregion Constructors
 

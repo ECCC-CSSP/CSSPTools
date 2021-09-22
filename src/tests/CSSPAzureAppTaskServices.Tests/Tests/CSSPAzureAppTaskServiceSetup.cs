@@ -3,7 +3,6 @@
  *  
  */
 
-using CSSPAzureAppTaskServices.Models;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
@@ -36,10 +35,9 @@ namespace CSSPAzureAppTaskServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private IAzureAppTaskService AzureAppTaskService { get; set; }
-        private CSSPAzureAppTaskServiceConfigModel config { get; set; }
         private CSSPDBContext dbTempAzureTest { get; set; }
-        private string LoginEmail { get; set; }
-        private string Password { get; set; }
+        //private string LoginEmail { get; set; }
+        //private string Password { get; set; }
         private LoginModel loginModel { get; set; }
         private Contact contact { get; set; }
         #endregion Properties
@@ -53,8 +51,6 @@ namespace CSSPAzureAppTaskServices.Tests
 
         private async Task<bool> CSSPAzureAppTaskServiceSetup(string culture)
         {
-            config = new CSSPAzureAppTaskServiceConfigModel();
-
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspAzureAppTaskservicestests.json")
@@ -67,26 +63,14 @@ namespace CSSPAzureAppTaskServices.Tests
 
             // --------- Reading Configuration Variables
             // -----------------------------------------
-            config.APISecret = Configuration.GetValue<string>("APISecret");
-            Assert.NotNull(config.APISecret);
-
-            config.AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-            Assert.NotNull(config.AzureCSSPDB);
-            config.AzureCSSPDB = config.AzureCSSPDB.Replace("Initial Catalog=CSSPTemporaryDB;", "Initial Catalog=CSSPTemporaryDBTest;");
-            Assert.Contains("CSSPTemporaryDBTest", config.AzureCSSPDB);
-
-            config.AzureStore = Configuration.GetValue<string>("AzureStore");
-            Assert.NotNull(config.AzureStore);
-
-            config.CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(config.CSSPAzureUrl);
-            Assert.Contains("localhost:", config.CSSPAzureUrl);
-
-            LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.NotNull(LoginEmail);
-
-            Password = Configuration.GetValue<string>("Password");
-            Assert.NotNull(Password);
+            //Assert.NotNull(Configuration["APISecret"]);
+            Assert.NotNull(Configuration["AzureCSSPDB"]);
+            Assert.Contains("CSSPTemporaryDBTest", Configuration["AzureCSSPDB"]);
+            //Assert.NotNull(Configuration["AzureStore"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.Contains("localhost:", Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["LoginEmail"]);
+            Assert.NotNull(Configuration["Password"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
@@ -101,7 +85,7 @@ namespace CSSPAzureAppTaskServices.Tests
 
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(config.AzureCSSPDB);
+                options.UseSqlServer(Configuration["AzureCSSPDB"]);
             });
 
             Provider = Services.BuildServiceProvider();
@@ -115,21 +99,18 @@ namespace CSSPAzureAppTaskServices.Tests
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
 
-            await LoggedInService.SetLoggedInContactInfo(LoginEmail);
+            await LoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail"]);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            config.AzureStore = LoggedInService.Descramble(config.AzureStore);
+            //config.AzureStore = LoggedInService.Descramble(config.AzureStore);
 
             AzureAppTaskService = Provider.GetService<IAzureAppTaskService>();
             Assert.NotNull(AzureAppTaskService);
 
-            var res = await AzureAppTaskService.FillConfigModel(config);
-            Assert.True(res);
-
             loginModel = new LoginModel()
             {
-                LoginEmail = LoginEmail,
-                Password = Password
+                LoginEmail = Configuration["LoginEmail"],
+                Password = Configuration["Password"]
             };
 
             using (HttpClient httpClient = new HttpClient())
@@ -139,7 +120,7 @@ namespace CSSPAzureAppTaskServices.Tests
 
                 string stringData = JsonSerializer.Serialize(loginModel);
                 var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ config.CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
+                HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPAzureUrl"] }api/en-CA/auth/token", contentData).Result;
                 Assert.True((int)response.StatusCode == 200);
 
                 contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);

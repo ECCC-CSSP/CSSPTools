@@ -21,12 +21,12 @@ namespace CSSPDesktopServices.Services
 
             List<string> CSSPOtherFileList = new List<string>()
             {
-                $"{ CSSPOtherFilesPath }CssFamilyMaterial.css",
-                $"{ CSSPOtherFilesPath }flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
-                $"{ CSSPOtherFilesPath }GoogleMap.js",
-                $"{ CSSPOtherFilesPath }IconFamilyMaterial.css",
-                $"{ CSSPOtherFilesPath }HelpDocEN.rtf",
-                $"{ CSSPOtherFilesPath }HelpDocFR.rtf"
+                $"{ Configuration["CSSPOtherFilesPath"] }CssFamilyMaterial.css",
+                $"{ Configuration["CSSPOtherFilesPath"] }flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
+                $"{ Configuration["CSSPOtherFilesPath"] }GoogleMap.js",
+                $"{ Configuration["CSSPOtherFilesPath"] }IconFamilyMaterial.css",
+                $"{ Configuration["CSSPOtherFilesPath"] }HelpDocEN.rtf",
+                $"{ Configuration["CSSPOtherFilesPath"] }HelpDocFR.rtf"
             };
 
             foreach (string CSSPOtherFile in CSSPOtherFileList)

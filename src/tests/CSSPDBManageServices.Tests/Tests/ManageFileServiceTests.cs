@@ -1,4 +1,5 @@
 using CSSPCultureServices.Resources;
+using CSSPHelperModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace ManageServices.Tests
 {
-    [Collection("Sequential")]
+
     public partial class ManageServicesTests
     {
         #region Variables
@@ -18,13 +19,6 @@ namespace ManageServices.Tests
         Random random = new Random();
         #endregion Variables
 
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -121,23 +115,25 @@ namespace ManageServices.Tests
             Assert.True(manageFileGetManageFileList2.Count() == 0);
 
         }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ManageFileService_GetWithAzureStorageAndAzureFileName_BadRequest_Test(string culture)
-        {
-            Assert.True(await CSSPDBManageServiceSetup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        ////[InlineData("fr-CA")]
+        //public async Task ManageFileService_GetWithAzureStorageAndAzureFileName_BadRequest_Test(string culture)
+        //{
+        //    Assert.True(await CSSPDBManageServiceSetup(culture));
 
-            string AzureStorage = "WillNotFind";
-            string AzureFileName = "WillNotFind";
+        //    string AzureStorage = "WillNotFind";
+        //    string AzureFileName = "WillNotFind";
 
-            string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }");
+        //    string error = string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }");
 
-            var actionManageFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStorage, AzureFileName);
-            Assert.NotEqual(200, ((ObjectResult)actionManageFile.Result).StatusCode);
-            Assert.Equal(400, ((BadRequestObjectResult)actionManageFile.Result).StatusCode);
-            Assert.Equal(error, ((BadRequestObjectResult)actionManageFile.Result).Value);
-        }
+        //    var actionManageFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(AzureStorage, AzureFileName);
+        //    Assert.NotEqual(200, ((ObjectResult)actionManageFile.Result).StatusCode);
+        //    Assert.Equal(400, ((BadRequestObjectResult)actionManageFile.Result).StatusCode);
+        //    ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+        //    Assert.NotNull(errRes);
+        //    Assert.NotEmpty(errRes.ErrList);
+        //}
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -198,7 +194,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileDelete(ManageFileID);
             Assert.NotEqual(200, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.Equal(400, ((BadRequestObjectResult)actionManageFile.Result).StatusCode);
-            Assert.Equal(error, ((BadRequestObjectResult)actionManageFile.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -214,7 +212,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.NotEqual(200, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.Equal(400, ((BadRequestObjectResult)actionManageFile.Result).StatusCode);
-            Assert.Equal(error, ((BadRequestObjectResult)actionManageFile.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -238,9 +238,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -264,9 +264,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -290,9 +290,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -316,9 +316,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -342,9 +342,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -368,9 +368,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -407,9 +407,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -446,9 +446,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -472,13 +472,9 @@ namespace ManageServices.Tests
             var actionManageFile = await ManageFileService.ManageFileAddOrModify(manageFile);
             Assert.Equal(400, ((ObjectResult)actionManageFile.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionManageFile.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionManageFile.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionManageFile.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
-        #endregion Tests
-
-        #region Functions private
-        #endregion Functions private
     }
 }

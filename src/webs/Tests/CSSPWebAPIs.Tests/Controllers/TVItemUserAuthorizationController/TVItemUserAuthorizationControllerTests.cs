@@ -21,7 +21,6 @@ using System.Net.Http.Headers;
 using System.Net;
 using System.Collections.Generic;
 using System.Text.Json;
-using CSSPLogServices.Models;
 using CSSPHelperModels;
 
 namespace CSSPWebAPIs.TVItemUserAuthorizationManualController.Tests

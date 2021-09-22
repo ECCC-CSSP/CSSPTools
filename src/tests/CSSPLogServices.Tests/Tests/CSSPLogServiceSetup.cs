@@ -2,22 +2,20 @@
  * Manually edited
  * 
  */
+using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPEnums;
 using LoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using System.Linq;
-using CSSPLogServices.Models;
 
 namespace CSSPLogServices.Tests
 {
@@ -35,7 +33,7 @@ namespace CSSPLogServices.Tests
         private ILoggedInService LoggedInService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        private CSSPLogServiceConfigModel config { get; set; }
+        private string appsettings { get; set; } = "appsettings_cssplogservicestests.json";
         #endregion Properties
 
         #region Constructors
@@ -45,43 +43,54 @@ namespace CSSPLogServices.Tests
         #endregion Tests Generated CRUD
 
         #region Functions private
-        private async Task<bool> CSSPLogServiceSetup(string culture)
+        private async Task<bool> CSSPLogServiceSetup(string culture, int ErrNumber = 0)
         {
-            config = new CSSPLogServiceConfigModel();
+            if (ErrNumber == 1)
+            {
+                appsettings = "appsettings_cssplogservicestests_err1.json";
+            }
+
+            if (ErrNumber == 2)
+            {
+                appsettings = "appsettings_cssplogservicestests_err2.json";
+            }
 
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_cssplogservicestests.json")
-               //.AddUserSecrets("9991f472-24ee-41c9-971f-2d92278f2970")
+               .AddJsonFile(appsettings)
                .Build();
 
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            /* ---------------------------------------------------------------------------------
-             * Creating an empty CSSPDBManage SQLite test database
-             * ---------------------------------------------------------------------------------      
-             */
-            config.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(config.CSSPDBManage);
+            FileInfo fiCSSPDBManageTest = new FileInfo("C:\\CSSPDesktop\\cssplocaldatabases\\CSSPDBManage.db");
 
-            config.CSSPDBManageTest = config.CSSPDBManage.Replace(".db", "_test.db");
-
-            config.ComputerName = Configuration.GetValue<string>("ComputerName");
-            Assert.NotNull(config.ComputerName);
-
-            FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
-            Assert.True(fiCSSPDBManage.Exists);
-
-            FileInfo fiCSSPDBManageTest = new FileInfo(config.CSSPDBManageTest);
-            try
+            if (ErrNumber != 2)
             {
-                File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName, true);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
+
+                /* ---------------------------------------------------------------------------------
+                 * Creating an empty CSSPDBManage SQLite test database
+                 * ---------------------------------------------------------------------------------      
+                 */
+                Assert.NotNull(Configuration["CSSPDBManage"]);
+
+                string CSSPDBManageTest = Configuration["CSSPDBManage"].Replace(".db", "_test.db");
+
+                Assert.NotNull(Configuration["ComputerName"]);
+
+                FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+                Assert.True(fiCSSPDBManage.Exists);
+
+                fiCSSPDBManageTest = new FileInfo(CSSPDBManageTest);
+                try
+                {
+                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName, true);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
+                }
             }
 
             /* ---------------------------------------------------------------------------------
@@ -107,35 +116,52 @@ namespace CSSPLogServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
-
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
-
-            CSSPLogService = Provider.GetService<ICSSPLogService>();
-            Assert.NotNull(CSSPLogService);
-
-            CSSPLogService.CSSPAppName = "CSSPLogService_AppName";
-            CSSPLogService.CSSPCommandName = "CSSPLogService_CommandName";
-
-            CSSPLogService.FillConfigModel(config);
-
-            dbManage = Provider.GetService<CSSPDBManageContext>();
-            Assert.NotNull(dbManage);
-
-            List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
-                                                       select c).ToList();
-
-            try
+            if (ErrNumber != 2)
             {
-                dbManage.RemoveRange(commandLogToDeleteList);
-                dbManage.SaveChanges();
+                CSSPLogService = Provider.GetService<ICSSPLogService>();
+                Assert.NotNull(CSSPLogService);
+
+                LoggedInService = Provider.GetService<ILoggedInService>();
+                Assert.NotNull(LoggedInService);
+
+                await LoggedInService.SetLoggedInLocalContactInfo();
+                Assert.NotNull(LoggedInService.LoggedInContactInfo);
+                Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
             }
-            catch (Exception ex)
+            else
             {
-                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
+                try
+                {
+                    CSSPLogService = Provider.GetService<ICSSPLogService>();
+                    Assert.NotNull(CSSPLogService);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "LoggedInService"), ex.Message);
+                }
+            }          
+
+            if (ErrNumber != 2)
+            {
+                CSSPLogService.CSSPAppName = "CSSPLogService_AppName";
+                CSSPLogService.CSSPCommandName = "CSSPLogService_CommandName";
+
+                dbManage = Provider.GetService<CSSPDBManageContext>();
+                Assert.NotNull(dbManage);
+
+                List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
+                                                           select c).ToList();
+
+                try
+                {
+                    dbManage.RemoveRange(commandLogToDeleteList);
+                    dbManage.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
+                }
+
             }
 
             return await Task.FromResult(true);

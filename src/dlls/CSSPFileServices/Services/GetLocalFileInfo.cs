@@ -31,7 +31,7 @@ namespace CSSPFileServices
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            FileInfo fi = new FileInfo($"{config.CSSPFilesPath}{ParentTVItemID}\\{FileName}");
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
 
             if (!fi.Exists)
             {

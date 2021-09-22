@@ -14,7 +14,7 @@ namespace CSSPSQLiteServices
     {
         private async Task<bool> DoCreateSQLiteCSSPDBLocal()
         {
-            FileInfo fiCSSPDBLocal = new FileInfo(config.CSSPDBLocal);
+            FileInfo fiCSSPDBLocal = new FileInfo(Configuration["CSSPDBLocal"]);
 
             if (!await CheckAndCreateMissingDirectoriesAndFiles(new List<FileInfo>() { fiCSSPDBLocal })) return await Task.FromResult(false);
 

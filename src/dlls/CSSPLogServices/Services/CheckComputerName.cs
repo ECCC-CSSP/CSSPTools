@@ -23,9 +23,9 @@ namespace CSSPLogServices
     {
         public async Task<bool> CheckComputerName(string FunctionName)
         {
-            if (Environment.MachineName.ToString().ToLower() != config.ComputerName)
+            if (Environment.MachineName.ToString().ToLower() != Configuration["ComputerName"])
             {
-                AppendError($"{ CSSPCultureServicesRes.ThisAppCanOnlyBeRunOnComputerName } { config.ComputerName }. { CSSPCultureServicesRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }");
+                AppendError($"{ CSSPCultureServicesRes.ThisAppCanOnlyBeRunOnComputerName } { Configuration["ComputerName"] }. { CSSPCultureServicesRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }");
                 EndFunctionLog(FunctionName);
                 await Save();
 

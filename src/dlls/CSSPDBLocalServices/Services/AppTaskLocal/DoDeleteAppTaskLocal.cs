@@ -12,16 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
     {
-        private bool DoDeleteAppTaskLocal(int appTaskID)
+        private async Task<bool> DoDeleteAppTaskLocal(int appTaskID)
         {
-            ValidationResults = new List<ValidationResult>();
-
             // Removing AppTaskLanguage items before removing AppTask item
             List<AppTaskLanguage> appTaskLanguageListToDelete = (from c in dbLocal.AppTaskLanguages
                                                              where c.AppTaskID == appTaskID
@@ -34,7 +33,7 @@ namespace CSSPDBLocalServices
             }
             catch (Exception ex)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguageList", ex.Message), new[] { "" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguageList", ex.Message));
                 return false;
             }
 
@@ -45,7 +44,7 @@ namespace CSSPDBLocalServices
 
             if (appTaskToDelete == null)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()), new[] { "" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()));
                 return false;
             }
 
@@ -56,11 +55,11 @@ namespace CSSPDBLocalServices
             }
             catch (Exception ex)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message), new[] { "" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message));
                 return false;
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

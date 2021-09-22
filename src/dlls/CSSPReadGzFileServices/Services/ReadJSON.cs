@@ -41,7 +41,7 @@ namespace ReadGzFileServices
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-            FileInfo fiGZ = new FileInfo(config.CSSPJSONPath + string.Format(fileName, TVItemID));
+            FileInfo fiGZ = new FileInfo(Configuration["CSSPJSONPath"] + string.Format(fileName, TVItemID));
 
             if (fiGZ.Exists)
             {
@@ -52,11 +52,8 @@ namespace ReadGzFileServices
             {
                 ManageFile manageFile = null;
 
-                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPJSONPath, fiGZ.Name);
-                if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
-                {
-                    manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
-                }
+                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPJSONPath"], fiGZ.Name);
+                manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                 if (manageFile != null && manageFile.LoadedOnce)
                 {
@@ -73,7 +70,7 @@ namespace ReadGzFileServices
 
                 if (HasInternetConnection)
                 {
-                    BlobClient blobClient = new BlobClient(config.AzureStore, config.AzureStoreCSSPJSONPath, fileName);
+                    BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], fileName);
                     BlobProperties blobProperties = null;
 
                     try
@@ -88,7 +85,7 @@ namespace ReadGzFileServices
                             using (HttpClient httpClient = new HttpClient())
                             {
                                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoggedInService.LoggedInContactInfo.LoggedInContact.Token);
-                                var response = httpClient.GetAsync($"{ config.CSSPAzureUrl }api/en-CA/CreateGzFile/{ (int)webType }/{ TVItemID }");
+                                var response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/en-CA/CreateGzFile/{ (int)webType }/{ TVItemID }");
 
                                 if ((int)response.Result.StatusCode != 200)
                                 {
@@ -131,11 +128,8 @@ namespace ReadGzFileServices
                     {
                         ManageFile manageFile = null;
 
-                        var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPJSONPath, fiGZ.Name);
-                        if (((ObjectResult)actionCSSPFile.Result).StatusCode == 200)
-                        {
-                            manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
-                        }
+                        var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPJSONPath"], fiGZ.Name);
+                        manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                         if (manageFile == null)
                         {
@@ -190,7 +184,7 @@ namespace ReadGzFileServices
                 {
                     using (StreamReader sr = new StreamReader(gzStream))
                     {
-                        FileInfo fiGZLocal = new FileInfo($"{ config.CSSPJSONPathLocal }{ fiGZ.Name }");
+                        FileInfo fiGZLocal = new FileInfo($"{ Configuration["CSSPJSONPathLocal"] }{ fiGZ.Name }");
 
                         T FromAzureStore = JsonSerializer.Deserialize<T>(sr.ReadToEnd());
                         T FromLocal = JsonSerializer.Deserialize<T>("{}");

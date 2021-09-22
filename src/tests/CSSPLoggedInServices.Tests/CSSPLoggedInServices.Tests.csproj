@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings_cssploggedinservicestests_err1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings_cssploggedinservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

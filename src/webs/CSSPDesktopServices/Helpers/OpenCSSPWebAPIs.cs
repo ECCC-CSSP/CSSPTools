@@ -13,10 +13,10 @@ namespace CSSPDesktopServices.Services
     {
         private bool OpenCSSPWebAPIsLocal()
         {
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ CSSPWebAPIsLocalPath }CSSPWebAPIsLocal.exe")));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ Configuration["CSSPWebAPIsLocalPath"] }CSSPWebAPIsLocal.exe")));
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = $"{ CSSPWebAPIsLocalPath }CSSPWebAPIsLocal.exe";
+            processStartInfo.FileName = $"{ Configuration["CSSPWebAPIsLocalPath"] }CSSPWebAPIsLocal.exe";
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;
             processStartInfo.CreateNoWindow = true;

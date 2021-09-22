@@ -33,7 +33,7 @@ namespace CSSPFileServices
 
             List<LocalFileInfo> LocalFileList = new List<LocalFileInfo>();
 
-            DirectoryInfo di = new DirectoryInfo($"{config.CSSPFilesPath}{ParentTVItemID}\\");
+            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\");
 
             if (!di.Exists)
             {

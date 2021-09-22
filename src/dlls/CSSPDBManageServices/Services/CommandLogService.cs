@@ -15,6 +15,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using CSSPHelperModels;
 
 namespace ManageServices
 {
@@ -27,7 +29,6 @@ namespace ManageServices
         Task<ActionResult<List<CommandLog>>> CommandLogGetLastMonthList();
         Task<ActionResult<List<CommandLog>>> CommandLogGetBetweenDatesList(DateTime StartDate, DateTime EndDate);
         Task<ActionResult<CommandLog>> CommandLogGetWithCommandLogID(int CommandLogID);
-
     }
     public partial class CommandLogService : ControllerBase, ICommandLogService
     {
@@ -35,13 +36,23 @@ namespace ManageServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBManageContext dbManage { get; set; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
+        private IConfiguration Configuration { get; }
+        private ICSSPCultureService CSSPCultureService { get; }
+        private CSSPDBManageContext dbManage { get; }
+        private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public CommandLogService(ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
+        public CommandLogService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService ") }");
+            if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
+
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
+
+            this.Configuration = Configuration;
+            this.CSSPCultureService = CSSPCultureService;
             this.dbManage = dbManage;
         }
         #endregion Constructors
@@ -54,10 +65,9 @@ namespace ManageServices
                 return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "commandLog")));
             }
 
-            ValidationResults = CommandLogValidateAddOrModify(new ValidationContext(commandLog));
-            if (ValidationResults.Count() > 0)
+            if (!await CommandLogValidateAddOrModify(new ValidationContext(commandLog)))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await DoCommandLogAddOrModify(commandLog);
@@ -70,7 +80,8 @@ namespace ManageServices
 
             if (commandLog == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString())));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString()));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             try
@@ -80,7 +91,8 @@ namespace ManageServices
             }
             catch (DbUpdateException ex)
             {
-                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                errRes.ErrList.Add(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await Task.FromResult(Ok(true));
@@ -93,7 +105,8 @@ namespace ManageServices
 
             if (commandLog == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString())));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", CommandLogID.ToString()));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await Task.FromResult(Ok(commandLog));
@@ -154,7 +167,8 @@ namespace ManageServices
 
                 if (commandLogAddOrModify == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", commandLog.CommandLogID.ToString())));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "CommandLog", "CommandLogID", commandLog.CommandLogID.ToString()));
+                    return await Task.FromResult(BadRequest(errRes));
                 }
 
                 commandLogAddOrModify.AppName = commandLog.AppName;
@@ -170,38 +184,39 @@ namespace ManageServices
             }
             catch (DbUpdateException ex)
             {
-                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                errRes.ErrList.Add(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await Task.FromResult(Ok(commandLogAddOrModify));
         }
-        private IEnumerable<ValidationResult> CommandLogValidateAddOrModify(ValidationContext validationContext)
+        private async Task<bool> CommandLogValidateAddOrModify(ValidationContext validationContext)
         {
             CommandLog commandLog = validationContext.ObjectInstance as CommandLog;
 
             // doing AppName
             if (string.IsNullOrWhiteSpace(commandLog.AppName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppName"), new[] { "AppName" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppName"));
             }
             else
             {
                 if (commandLog.AppName.Length > 200)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AppName", "200"), new[] { "AppName" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AppName", "200"));
                 }
             }
 
             // doing CommandName
             if (string.IsNullOrWhiteSpace(commandLog.CommandName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "CommandName"), new[] { "CommandName" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "CommandName"));
             }
             else
             {
                 if (commandLog.CommandName.Length > 200)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "CommandName", "200"), new[] { "CommandName" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "CommandName", "200"));
                 }
             }
 
@@ -210,7 +225,7 @@ namespace ManageServices
             {
                 if (commandLog.Error.Length > 10000000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Error", "10000000"), new[] { "Error" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Error", "10000000"));
                 }
             }
 
@@ -219,16 +234,16 @@ namespace ManageServices
             {
                 if (commandLog.Log.Length > 10000000)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Log", "10000000"), new[] { "Log" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Log", "10000000"));
                 }
             }
 
             if (commandLog.DateTimeUTC.Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTimeUTC", "1980"), new[] { "DateTimeUTC" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "DateTimeUTC", "1980"));
             }
 
-            // no need to verify if it already exist in the db as we should always add the command log nomatter what
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
 
         }
         #endregion Functions private

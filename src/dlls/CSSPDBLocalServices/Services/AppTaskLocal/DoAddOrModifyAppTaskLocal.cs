@@ -12,16 +12,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
     {
-        private bool DoAddOrModifyAppTask(PostAppTaskModel postAppTaskModel)
+        private async Task<bool> DoAddOrModifyAppTask(PostAppTaskModel postAppTaskModel)
         {
-            ValidationResults = new List<ValidationResult>();
-
             if (postAppTaskModel.AppTask.AppTaskID == 0)
             {
                 AppTask appTask = (from c in dbLocal.AppTasks
@@ -32,7 +31,7 @@ namespace CSSPDBLocalServices
 
                 if (appTask != null)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"), new[] { "" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"));
                     return false;
                 }
 
@@ -50,7 +49,7 @@ namespace CSSPDBLocalServices
                 }
                 catch (Exception ex)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message), new[] { "" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message));
                     return false;
                 }
 
@@ -71,7 +70,7 @@ namespace CSSPDBLocalServices
                         }
                         catch (Exception ex)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguage", ex.Message), new[] { "" }));
+                            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguage", ex.Message));
                             return false;
                         }
                     }
@@ -91,7 +90,7 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message), new[] { "AppTaskLanguage" }));
+                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message));
                         return false;
                     }
                 }
@@ -104,7 +103,7 @@ namespace CSSPDBLocalServices
 
                 if (appTask == null)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", postAppTaskModel.AppTask.AppTaskID.ToString()), new[] { "" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", postAppTaskModel.AppTask.AppTaskID.ToString()));
                     return false;
                 }
 
@@ -116,7 +115,7 @@ namespace CSSPDBLocalServices
                 }
                 catch (Exception ex)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message), new[] { "AppTask" }));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message));
                     return false;
                 }
 
@@ -130,7 +129,7 @@ namespace CSSPDBLocalServices
 
                     if (appTaskLanguage == null)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", postAppTaskModel.AppTaskLanguageList[langID].AppTaskLanguageID.ToString()), new[] { "" }));
+                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", postAppTaskModel.AppTaskLanguageList[langID].AppTaskLanguageID.ToString()));
                         return false;
                     }
 
@@ -142,14 +141,14 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message), new[] { "AppTaskLanguage" }));
+                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message));
                         return false;
                     }
 
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

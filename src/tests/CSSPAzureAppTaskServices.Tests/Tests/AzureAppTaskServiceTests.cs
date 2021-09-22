@@ -33,7 +33,6 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.NotNull(AzureAppTaskService);
-            Assert.NotNull(config);
             Assert.NotNull(dbTempAzureTest);
 
         }

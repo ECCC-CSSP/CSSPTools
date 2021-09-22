@@ -927,4 +927,7 @@
   <data name="Unauthorized" xml:space="preserve">
     <value>Non authorisé</value>
   </data>
+  <data name="CouldNotFindParameter_InConfigFilesOfService_" xml:space="preserve">
+    <value>Dans l'impossibiliité de trouver le paramètre  [{0}] dans les filières de configuration pour le service [{1}]</value>
+  </data>
 </root>

@@ -24,7 +24,6 @@ namespace CSSPSQLiteServices
 
         Task<bool> CSSPDBManageIsEmpty();
         Task<bool> CSSPDBLocalIsEmpty();
-        Task<bool> FillConfigModel(CSSPSQLiteServiceConfigModel config);
     }
 
     public partial class CSSPSQLiteService : ICSSPSQLiteService
@@ -40,16 +39,21 @@ namespace CSSPSQLiteServices
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
         private IEnumerable<ValidationResult> ValidationResults { get; set; }
-        private CSSPSQLiteServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors
-        public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            CSSPDBLocalContext dbLocal, CSSPDBManageContext dbManage)
+        public CSSPSQLiteService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBLocalContext dbLocal, CSSPDBManageContext dbManage)
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
+            if (dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbLocal") }");
+            if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
+
+            if (string.IsNullOrEmpty(Configuration["CSSPDBLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBLocal", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CreateGzFileService") }");
+
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
             this.dbLocal = dbLocal;
             this.dbManage = dbManage;
         }

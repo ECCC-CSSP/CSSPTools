@@ -21,7 +21,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllAddresses_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -31,7 +31,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -41,7 +41,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -56,7 +56,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllContacts_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -66,7 +66,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -76,7 +76,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -91,7 +91,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllCountries_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -101,7 +101,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -111,7 +111,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -126,7 +126,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllEmails_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -136,7 +136,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -146,7 +146,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -161,7 +161,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllHelpDocs_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -171,7 +171,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -181,7 +181,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -196,7 +196,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllMunicipalities_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -206,7 +206,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -216,7 +216,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -231,7 +231,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -241,7 +241,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -251,7 +251,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -266,7 +266,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllPolSourceGroupings_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -276,7 +276,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -286,7 +286,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -301,7 +301,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -311,7 +311,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -321,7 +321,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -336,7 +336,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllProvinces_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -346,7 +346,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -356,7 +356,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -371,7 +371,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllReportTypes_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -381,7 +381,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -391,7 +391,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -406,7 +406,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllTels_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -416,7 +416,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -426,7 +426,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -441,7 +441,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllTideLocations_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -451,7 +451,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -461,7 +461,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -476,7 +476,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAreaGzFile_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -486,7 +486,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -496,7 +496,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -511,7 +511,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebClimateSites_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -521,7 +521,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -531,7 +531,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
             
@@ -546,7 +546,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebCountry_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -556,7 +556,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -566,7 +566,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -581,7 +581,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebDrogueRuns_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -591,7 +591,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -601,7 +601,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -616,7 +616,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebHydrometricSites_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -626,7 +626,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -636,7 +636,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -651,7 +651,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebLabSheets_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -661,7 +661,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -671,7 +671,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -686,7 +686,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMikeScenarios_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -696,7 +696,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -706,7 +706,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -721,7 +721,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMunicipality_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -731,7 +731,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -741,7 +741,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -756,7 +756,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMWQMRuns_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -766,7 +766,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -776,7 +776,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -791,7 +791,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMWQMSamples1980_2020_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -801,7 +801,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -811,7 +811,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -826,7 +826,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMWQMSamples2021_2060_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -836,7 +836,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -846,7 +846,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -861,7 +861,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMWQMSites_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -871,7 +871,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -881,7 +881,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -896,7 +896,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebPolSourceSites_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -906,7 +906,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -916,7 +916,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -931,7 +931,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebProvince_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -941,7 +941,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -951,7 +951,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -966,7 +966,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebRoot_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -976,7 +976,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -986,7 +986,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1001,7 +1001,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllSearch_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1011,7 +1011,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1021,7 +1021,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1036,7 +1036,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebSector_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1046,7 +1046,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1056,7 +1056,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1071,7 +1071,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebSubsector_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1081,7 +1081,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1091,7 +1091,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1106,7 +1106,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebTideSites_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1116,7 +1116,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1126,7 +1126,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1141,7 +1141,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1151,7 +1151,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1161,7 +1161,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1176,7 +1176,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMonitoringOtherStatsProvince_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1186,7 +1186,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1196,7 +1196,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1211,7 +1211,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1221,7 +1221,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1231,7 +1231,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1246,7 +1246,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebMonitoringOtherStatsCountry_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1256,7 +1256,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -1266,7 +1266,7 @@ namespace CreateGzFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 

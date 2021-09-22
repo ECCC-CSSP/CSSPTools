@@ -15,7 +15,6 @@ namespace CSSPSQLiteServices.Tests
             Assert.True(await CSSPSQLiteServiceSetup(culture));
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(CSSPSQLiteService);
-            Assert.NotNull(config);
         }
     }
 }

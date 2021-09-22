@@ -79,7 +79,7 @@ namespace ReadGzFileServices
             }
 
             // checking if files are localized
-            DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ WebCountry.TVItemModel.TVItem.TVItemID }\\");
+            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ WebCountry.TVItemModel.TVItem.TVItemID }\\");
 
             if (di.Exists)
             {

@@ -24,7 +24,6 @@ using CSSPHelperModels;
 using CSSPWebModels;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using CSSPLogServices.Models;
 
 namespace CSSPWebAPIs.AppTaskModelController.Tests
 {

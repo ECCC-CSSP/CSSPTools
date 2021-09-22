@@ -13,13 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        private bool ValidateAddOrModifyMapInfoLocal(PostMapInfoModel postMapInfoModel)
+        private async Task<bool> ValidateAddOrModifyMapInfoLocal(PostMapInfoModel postMapInfoModel)
         {
             string retStr = "";
             TVItem ParentTVItem = new TVItem();
@@ -76,13 +77,13 @@ namespace CSSPDBLocalServices
             // --------------------------------------------------------
             if (postMapInfoModel.TVItem.TVItemID == 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.TVItem.TVItemID"), new[] { "TVItemID" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.TVItem.TVItemID"));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)postMapInfoModel.TVItem.TVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.TVItem.TVType"), new[] { "TVType" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.TVItem.TVType"));
             }
 
             // --------------------------------------------------------
@@ -92,13 +93,13 @@ namespace CSSPDBLocalServices
             // --------------------------------------------------------
             if (postMapInfoModel.ParentTVItem.TVItemID == 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.ParentTVItem.TVItemID"), new[] { "TVItemID" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.ParentTVItem.TVItemID"));
             }
 
             retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)postMapInfoModel.ParentTVItem.TVType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.ParentTVItem.TVType"), new[] { "TVType" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.ParentTVItem.TVType"));
             }
 
             // --------------------------------------------------------
@@ -107,17 +108,17 @@ namespace CSSPDBLocalServices
             retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)postMapInfoModel.MapInfo.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfo.DBCommand"), new[] { "DBCommand" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfo.DBCommand"));
             }
 
             if (postMapInfoModel.MapInfo.TVItemID == 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfo.TVItemID"), new[] { "TVItemID" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfo.TVItemID"));
             }
 
             if (!AllowableTVTypes.Contains(postMapInfoModel.MapInfo.TVType))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVType", AllowableTVTypesStr), new[] { "TVType" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVType", AllowableTVTypesStr));
             }
 
             // LatMin, LatMax, LngMin, LngMax should all be recalculated
@@ -125,13 +126,13 @@ namespace CSSPDBLocalServices
             retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), (int?)postMapInfoModel.MapInfo.MapInfoDrawType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"), new[] { "MapInfoDrawType" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"));
             }
 
             // MapInfo.TVType should not have Infrastructure it should have WWTP, LS, LineOverflow, SeeOtherWWTP
             if (postMapInfoModel.MapInfo.TVType == TVTypeEnum.Infrastructure)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldNotBeOfType_, "MapInfo.TVType", TVTypeEnum.Infrastructure.ToString()), new[] { "TVType" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldNotBeOfType_, "MapInfo.TVType", TVTypeEnum.Infrastructure.ToString()));
             }
 
             // --------------------------------------------------------
@@ -139,7 +140,7 @@ namespace CSSPDBLocalServices
             // --------------------------------------------------------
             if (postMapInfoModel.MapInfoPointList.Count == 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.MapInfoPointList"), new[] { "MapInfoPointList" }));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.MapInfoPointList"));
             }
 
             // Does every MapInfoPoint item has all the right info
@@ -147,26 +148,26 @@ namespace CSSPDBLocalServices
             {
                 if (mapInfoPoint.MapInfoID == 0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.MapInfoPoint.MapInfoID"), new[] { "MapInfoID" }));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "postMapInfoModel.MapInfoPoint.MapInfoID"));
                 }
 
                 if (mapInfoPoint.Ordinal > 100000)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ShouldBeBelow_, "postMapInfoModel.MapInfoPoint.Ordinal", 10000), new[] { "Ordinal" }));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeBelow_, "postMapInfoModel.MapInfoPoint.Ordinal", 10000));
                 }
 
                 if (mapInfoPoint.Lat < -90.0 || mapInfoPoint.Lng > 90.0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "postMapInfoModel.MapInfoPoint.Lat", "-90.0", "90.0"), new[] { "Lat" }));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "postMapInfoModel.MapInfoPoint.Lat", "-90.0", "90.0"));
                 }
 
                 if (mapInfoPoint.Lat < -180.0 || mapInfoPoint.Lng > 180.0)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "postMapInfoModel.MapInfoPoint.Lng", "-180.0", "180.0"), new[] { "Lat" }));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "postMapInfoModel.MapInfoPoint.Lng", "-180.0", "180.0"));
                 }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

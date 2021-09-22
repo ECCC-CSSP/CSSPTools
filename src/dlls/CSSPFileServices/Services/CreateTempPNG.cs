@@ -37,7 +37,7 @@ namespace CSSPFileServices
 
                 if (file.Length > 0)
                 {
-                    FileInfo fi = new FileInfo($"{config.CSSPTempFilesPath}{file.FileName}");
+                    FileInfo fi = new FileInfo($"{ Configuration["CSSPTempFilesPath"] }{file.FileName}");
 
                     CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Creating } { fi.FullName }");
 

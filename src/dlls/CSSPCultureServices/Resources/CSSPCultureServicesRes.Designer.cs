@@ -925,6 +925,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find parameter [{0}] in config files of service [{1}].
+        /// </summary>
+        public static string CouldNotFindParameter_InConfigFilesOfService_ {
+            get {
+                return ResourceManager.GetString("CouldNotFindParameter_InConfigFilesOfService_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find Root.
         /// </summary>
         public static string CouldNotFindRoot {

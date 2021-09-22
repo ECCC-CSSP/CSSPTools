@@ -17,7 +17,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPLogServices.Models;
 using CSSPHelperModels;
 
 namespace CSSPDBServices
@@ -32,23 +31,21 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
+        private ILoggedInService LoggedInService { get; }
+        private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationDBService(ICSSPCultureService CSSPCultureService, IEnums enums,
-           ILoggedInService LoggedInService,
-           CSSPDBContext db)
+        public TVTypeUserAuthorizationDBService(ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.LoggedInService = LoggedInService;
             this.db = db;
         }
         #endregion Constructors

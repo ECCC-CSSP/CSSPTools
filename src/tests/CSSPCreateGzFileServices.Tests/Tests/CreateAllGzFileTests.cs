@@ -21,7 +21,7 @@ namespace CreateGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task CreateAllGzFile_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
 
             // commented out because it takes a long time to excecute
             // remove comment if you want to manually test it

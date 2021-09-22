@@ -33,13 +33,13 @@ namespace CSSPFileServices
       
             try
             {
-                FileInfo fi = new FileInfo($"{config.CSSPTempFilesPath}\\{tableConvertToCSVModel.TableFileName}");
+                FileInfo fi = new FileInfo($"{ Configuration["CSSPTempFilesPath"] }\\{tableConvertToCSVModel.TableFileName}");
 
                 CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.Creating } { fi.FullName }");
 
                 System.IO.File.WriteAllText(fi.FullName, tableConvertToCSVModel.CSVString);
 
-                fi = new FileInfo($"{config.CSSPTempFilesPath}\\{tableConvertToCSVModel.TableFileName}");
+                fi = new FileInfo($"{ Configuration["CSSPTempFilesPath"] }\\{tableConvertToCSVModel.TableFileName}");
 
                 if (!fi.Exists)
                 {

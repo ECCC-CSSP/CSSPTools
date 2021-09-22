@@ -1,17 +1,10 @@
-using CSSPEnums;
-using CSSPDBModels;
+using CSSPHelperModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
-using CSSPWebModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using CSSPLogServices.Models;
-using CSSPHelperModels;
 
 namespace CSSPFileServices.Tests
 {
@@ -32,11 +25,11 @@ namespace CSSPFileServices.Tests
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
 
-            FileInfo fi = new FileInfo($"{ config.CSSPFilesPath }{ParentTVItemID}\\{FileName}");
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
             Assert.True(fi.Exists);
 
             var actionRes2 = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
-            Assert.NotNull(((FileStreamResult)actionRes2).FileStream);
+            Assert.NotNull(((PhysicalFileResult)actionRes2).FileName);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -55,7 +48,7 @@ namespace CSSPFileServices.Tests
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
 
-            FileInfo fi = new FileInfo($"{ config.CSSPFilesPath }{ParentTVItemID}\\{FileName}");
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
             Assert.True(fi.Exists);
 
             LoggedInService.LoggedInContactInfo = null;
@@ -82,7 +75,7 @@ namespace CSSPFileServices.Tests
             int ParentTVItemID = 1;
             string FileName = "NotExist.png";
 
-            FileInfo fi = new FileInfo($"{ config.CSSPFilesPath }{ParentTVItemID}\\{FileName}");
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
             Assert.False(fi.Exists);
 
             var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);

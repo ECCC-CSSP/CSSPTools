@@ -58,14 +58,14 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebArea.TVItemModelSectorList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Sectors), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Sectors));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebArea.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebArea.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebArea.TVItemModelParentList;
@@ -151,14 +151,14 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebCountry.TVItemModelProvinceList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Provinces), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Provinces));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebCountry.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebCountry.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebCountry.TVItemModelParentList;
@@ -607,14 +607,14 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebMunicipality.MunicipalityContactModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.MunicipalityContacts), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.MunicipalityContacts));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebMunicipality.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                         gzObjectList.tvItemParentList = ReadGzFileService.webAppLoaded.WebMunicipality.TVItemModelParentList;
@@ -704,14 +704,14 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebProvince.TVItemModelAreaList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Areas), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Areas));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebProvince.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebProvince.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebCountry == null)
@@ -751,14 +751,14 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebRoot.TVItemModelCountryList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebRoot.TVItemModelCountryList[0].TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Areas), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebRoot.TVItemModelCountryList[0].TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Areas));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebRoot.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebRoot.TVFileModelList[0].TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebRoot.TVFileModelList[0].TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                     }
@@ -772,14 +772,14 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebSector.TVItemModelSubsectorList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Subsectors), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Subsectors));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebSector.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebSector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebArea == null)
@@ -799,20 +799,20 @@ namespace CSSPDBLocalServices
 
                         if (ReadGzFileService.webAppLoaded.WebSubsector.TVItemModelClassificationList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Classifications), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Classifications));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebSubsector.MWQMAnalysisReportParameterList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.MWQMAnalysisReportParameters), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.MWQMAnalysisReportParameters));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebSubsector.TVFileModelList.Count > 0)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files), new[] { "" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
+                                ReadGzFileService.webAppLoaded.WebSubsector.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
                         }
 
                         if (ReadGzFileService.webAppLoaded.WebSector == null)

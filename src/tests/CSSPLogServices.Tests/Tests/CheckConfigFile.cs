@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Xunit;
+using System.Linq;
 
 namespace CSSPLogServices.Tests
 {
@@ -8,12 +9,9 @@ namespace CSSPLogServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task FillConfigModel_Good_Test(string culture)
+        public async Task BadConfigFile_Error_Test(string culture)
         {
-            Assert.True(await CSSPLogServiceSetup(culture));
-
-            Assert.True(CSSPLogService.FillConfigModel(config));
-
+            Assert.True(await CSSPLogServiceSetup(culture, 2));
         }
     }
 }

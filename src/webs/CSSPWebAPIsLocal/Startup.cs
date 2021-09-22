@@ -23,6 +23,7 @@ using CSSPDBLocalServices;
 using CreateGzFileServices;
 using CSSPWebAPIsLocal.Controllers;
 using ManageServices;
+using CSSPLogServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -82,6 +83,7 @@ namespace CSSPWebAPIsLocal
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
+            services.AddScoped<ICSSPLogService, CSSPLogService>();
             services.AddScoped<ILoggedInService, LoggedInService>();
 
             //LoadAllDBServices(services);

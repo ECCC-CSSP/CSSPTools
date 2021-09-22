@@ -5,8 +5,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>72313fae-b8db-4dd1-9623-d4cba2b7bb26</UserSecretsId>
-
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings_cssplogservicestests_err2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings_cssplogservicestests_err1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings_cssplogservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

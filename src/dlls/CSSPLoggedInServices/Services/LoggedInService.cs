@@ -1,7 +1,9 @@
-﻿using CSSPCultureServices.Services;
+﻿using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPHelperModels;
 using ManageServices;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +16,14 @@ namespace LoggedInServices
         // properties
         LoggedInContactInfo LoggedInContactInfo { get; set; }
 
-
         // functions
         string Descramble(string Text);
         string Scramble(string Text);
         Task<bool> SetLoggedInContactInfo(string LoginEmail);
         Task<bool> SetLoggedInLocalContactInfo();
+
     }
-    public class LoggedInService : ILoggedInService
+    public partial class LoggedInService : ILoggedInService
     {
         #region Variables
         #endregion Variables
@@ -29,7 +31,7 @@ namespace LoggedInServices
         #region Properties
         public LoggedInContactInfo LoggedInContactInfo { get; set; }
 
-        private ICSSPCultureService CSSPCultureService { get; }
+        private IConfiguration Configuration { get; }
         private CSSPDBContext db { get; }
         private CSSPDBManageContext dbManage { get; }
         private List<int> skip { get; set; } = new List<int>()
@@ -48,12 +50,19 @@ namespace LoggedInServices
         #endregion Properties
 
         #region Constructors
-        public LoggedInService(ICSSPCultureService CSSPCultureService, CSSPDBContext db = null, CSSPDBManageContext dbManage = null)
+        public LoggedInService(IConfiguration Configuration, CSSPDBContext db = null, CSSPDBManageContext dbManage = null)
         {
-            this.CSSPCultureService = CSSPCultureService;
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (db == null && dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db && dbManage") }");
+
+            if (string.IsNullOrEmpty(Configuration["CSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "LoggedInService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "LoggedInService") }");
+
+            this.Configuration = Configuration;
             this.db = db;
             this.dbManage = dbManage;
-            this.LoggedInContactInfo = new LoggedInContactInfo();
+            
+            LoggedInContactInfo = new LoggedInContactInfo();
         }
         #endregion Constructors
 

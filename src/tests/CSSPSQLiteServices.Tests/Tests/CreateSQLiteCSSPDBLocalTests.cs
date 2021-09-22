@@ -17,7 +17,7 @@ namespace CSSPSQLiteServices.Tests
             bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBLocal();
             Assert.True(retBool);
 
-            FileInfo fi = new FileInfo(config.CSSPDBLocal);
+            FileInfo fi = new FileInfo(Configuration["CSSPDBLocal"]);
             Assert.True(fi.Exists);
         }
     }

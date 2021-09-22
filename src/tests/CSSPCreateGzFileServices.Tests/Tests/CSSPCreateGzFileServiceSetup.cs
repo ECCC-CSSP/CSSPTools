@@ -1,10 +1,6 @@
-using CSSPCreateGzFileServices.Models;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPDBServices;
 using CSSPEnums;
-using CSSPHelperModels;
-using CSSPHelperServices;
 using CSSPLogServices;
 using LoggedInServices;
 using ManageServices;
@@ -14,14 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using System.Linq;
-using CSSPLogServices.Models;
 
 namespace CreateGzFileServices.Tests
 {
@@ -37,11 +28,10 @@ namespace CreateGzFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private ICSSPLogService CSSPLogService { get; set; }
-        private CSSPCreateGzFileServiceConfigModel config { get; set; }
-        private CSSPLogServiceConfigModel config2 { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
 
@@ -49,11 +39,8 @@ namespace CreateGzFileServices.Tests
         #endregion Constructors
 
         #region Functions private
-        private async Task<bool> Setup(string culture)
+        private async Task<bool> CSSPCreateGzFileServiceSetup(string culture)
         {
-            config = new CSSPCreateGzFileServiceConfigModel();
-            config2 = new CSSPLogServiceConfigModel();
-
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspcreategzfileservicestests.json")
@@ -64,67 +51,27 @@ namespace CreateGzFileServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            // --------- Reading Configuration Variables
-            // -----------------------------------------
-            config.APISecret = Configuration.GetValue<string>("APISecret");
-            Assert.NotNull(config.APISecret);
-
-            config.azure_csspjson_backup = Configuration.GetValue<string>("azure_csspjson_backup");
-            Assert.NotNull(config.azure_csspjson_backup);
-            config.azure_csspjson_backup = config.azure_csspjson_backup.Replace("azure_csspjson_backup\\", "azure_csspjson_backup_test\\");
-            Assert.Contains("_test", config.azure_csspjson_backup);
-
-            config.azure_csspjson_backup_uncompress = Configuration.GetValue<string>("azure_csspjson_backup_uncompress");
-            Assert.NotNull(config.azure_csspjson_backup_uncompress);
-            config.azure_csspjson_backup_uncompress = config.azure_csspjson_backup_uncompress.Replace("azure_csspjson_backup_uncompress\\", "azure_csspjson_backup_uncompress_test\\");
-            Assert.Contains("_test", config.azure_csspjson_backup_uncompress);
-
-            config.AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-            Assert.NotNull(config.AzureCSSPDB);
-
-            config.AzureStore = Configuration.GetValue<string>("AzureStore");
-            Assert.NotNull(config.AzureStore);
-
-            config.AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
-            Assert.NotNull(config.AzureStoreCSSPFilesPath);
-            config.AzureStoreCSSPFilesPath = config.AzureStoreCSSPFilesPath + "test";
-            Assert.EndsWith("test", config.AzureStoreCSSPFilesPath);
-
-            config.AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            Assert.NotNull(config.AzureStoreCSSPJSONPath);
-            config.AzureStoreCSSPJSONPath = config.AzureStoreCSSPJSONPath + "test";
-            Assert.EndsWith("test", config.AzureStoreCSSPJSONPath);
-
-            config.AzureStoreCSSPWebAPIsPath = Configuration.GetValue<string>("AzureStoreCSSPWebAPIsPath");
-            Assert.NotNull(config.AzureStoreCSSPWebAPIsPath);
-            config.AzureStoreCSSPWebAPIsPath = config.AzureStoreCSSPWebAPIsPath + "test";
-            Assert.EndsWith("test", config.AzureStoreCSSPWebAPIsPath);
-
-            config.ComputerName = Configuration.GetValue<string>("ComputerName");
-            Assert.NotNull(config.ComputerName);
-
-            config.CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-            Assert.NotNull(config.CSSPAzureUrl);
-            Assert.Contains("csspwebapis.", config.CSSPAzureUrl);
-
-            config.CSSPDB = Configuration.GetValue<string>("CSSPDB");
-            Assert.NotNull(config.CSSPDB);
-
-            config.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(config.CSSPDBManage);
-            Assert.DoesNotContain("_test", config.CSSPDBManage);
-
-            config.CSSPJSONPathLocal = Configuration.GetValue<string>("CSSPJSONPathLocal");
-            Assert.NotNull(config.CSSPJSONPathLocal);
-
-
-            // config2
-            config2.ComputerName = Configuration.GetValue<string>("ComputerName");
-            Assert.NotNull(config2.ComputerName);
-
-            config2.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(config2.CSSPDBManage);
-            Assert.DoesNotContain("_test", config2.CSSPDBManage);
+            Assert.NotNull(Configuration["APISecret"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup"]);
+            Assert.Contains("_test", Configuration["azure_csspjson_backup"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup_uncompress"]);
+            Assert.Contains("_test", Configuration["azure_csspjson_backup_uncompress"]);
+            Assert.NotNull(Configuration["AzureCSSPDB"]);
+            Assert.NotNull(Configuration["AzureStore"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.EndsWith("test", Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.EndsWith("test", Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
+            Assert.EndsWith("test", Configuration["AzureStoreCSSPWebAPIsPath"]);
+            Assert.NotNull(Configuration["ComputerName"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["CSSPDB"]);
+            Assert.NotNull(Configuration["CSSPDBLocal"]);
+            Assert.NotNull(Configuration["CSSPDBManage"]);
+            Assert.Contains("_test", Configuration["CSSPDBManage"]);
+            Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
@@ -132,13 +79,10 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 
-            string CSSPDBManageTest = config.CSSPDBManage.Replace(".db", "_test.db");
-            Assert.Contains("_test", CSSPDBManageTest);
-
-            FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
             Assert.True(fiCSSPDBManage.Exists);
 
-            FileInfo fiCSSPDBManageTest = new FileInfo(CSSPDBManageTest);
+            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
             if (!fiCSSPDBManageTest.Exists)
             {
                 try
@@ -166,7 +110,7 @@ namespace CreateGzFileServices.Tests
              */
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(config.CSSPDB);
+                options.UseSqlServer(Configuration["CSSPDB"]);
             });
 
             Provider = Services.BuildServiceProvider();
@@ -177,11 +121,11 @@ namespace CreateGzFileServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
+
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
-
-            var res2 = CSSPLogService.FillConfigModel(config2);
-            Assert.True(res2);
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
@@ -189,13 +133,8 @@ namespace CreateGzFileServices.Tests
             await LoggedInService.SetLoggedInLocalContactInfo();
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
 
-            config.AzureStore = LoggedInService.Descramble(config.AzureStore);
-
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);
-
-            var res = await CreateGzFileService.FillConfigModel(config);
-            Assert.True(res);
 
             dbManage = Provider.GetService<CSSPDBManageContext>();
             Assert.NotNull(dbManage);

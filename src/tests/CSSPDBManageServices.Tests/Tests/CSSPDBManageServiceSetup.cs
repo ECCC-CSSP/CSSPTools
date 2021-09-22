@@ -1,7 +1,4 @@
 using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPManageServices.Models;
-using CSSPSQLiteServices;
 using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +12,7 @@ using Xunit;
 
 namespace ManageServices.Tests
 {
+    [Collection("Sequential")]
     public partial class ManageServicesTests
     {
         #region Variables
@@ -27,7 +25,6 @@ namespace ManageServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICommandLogService CommandLogService { get; set; }
         private IManageFileService ManageFileService { get; set; }
-        private CSSPManageServiceConfigModel config { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
 
@@ -43,32 +40,25 @@ namespace ManageServices.Tests
         #region Functions private
         private async Task<bool> CSSPDBManageServiceSetup(string culture)
         {
-            config = new CSSPManageServiceConfigModel();
-
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings_csspdbmanageservicestests.json")
-                .AddUserSecrets("27667b6d-6208-4074-be00-1041ba61f0c0")
                 .Build();
 
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICommandLogService, CommandLogService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
 
-            config.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(config.CSSPDBManage);
+            Assert.NotNull(Configuration["CSSPDBManage"]);
 
-            config.CSSPDBManageTest = config.CSSPDBManage.Replace(".db", "_test.db");
-
-            FileInfo fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
-
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
             Assert.True(fiCSSPDBManage.Exists);
 
-            FileInfo fiCSSPDBManageTest = new FileInfo(config.CSSPDBManageTest);
+            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
             if (!fiCSSPDBManageTest.Exists)
             {
                 try
@@ -85,7 +75,6 @@ namespace ManageServices.Tests
              * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
-
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBManageTest.FullName }");
@@ -101,8 +90,6 @@ namespace ManageServices.Tests
 
             ManageFileService = Provider.GetService<IManageFileService>();
             Assert.NotNull(ManageFileService);
-
-            await ManageFileService.FillConfigModel(config);
 
             CommandLogService = Provider.GetService<ICommandLogService>();
             Assert.NotNull(CommandLogService);
@@ -133,7 +120,7 @@ namespace ManageServices.Tests
             }
             catch (Exception ex)
             {
-                Assert.True(false, $"Could not delete all ManageFiles from {fiCSSPDBManageTest.FullName}");
+                Assert.True(false, $"Could not delete all ManageFiles from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
             }
 
             return await Task.FromResult(true);

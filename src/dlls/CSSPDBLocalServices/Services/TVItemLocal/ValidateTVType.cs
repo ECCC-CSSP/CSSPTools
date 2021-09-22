@@ -12,13 +12,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        private bool ValidateTVType(PostTVItemModel postTVItemModel)
+        private async Task<bool> ValidateTVType(PostTVItemModel postTVItemModel)
         {
             switch (postTVItemModel.TVItem.TVType)
             {
@@ -26,7 +27,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -34,7 +35,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Province)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -42,7 +43,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -50,7 +51,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Province)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -58,7 +59,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -66,7 +67,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -74,7 +75,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -97,7 +98,7 @@ namespace CSSPDBLocalServices
                             default:
                                 if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                                 {
-                                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                                 }
                                 break;
                         }
@@ -107,7 +108,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Province)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -115,7 +116,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Municipality)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -123,7 +124,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.MikeScenario)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -131,7 +132,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.MikeScenario)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -139,7 +140,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Municipality)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -147,7 +148,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.MikeScenario)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -155,7 +156,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Province)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -163,7 +164,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Subsector)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -171,7 +172,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Subsector)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -179,7 +180,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Subsector)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -187,7 +188,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Country)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -195,7 +196,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Country)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -203,7 +204,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -211,7 +212,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Area)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -219,7 +220,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Sector)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -227,7 +228,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Root)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
@@ -235,18 +236,18 @@ namespace CSSPDBLocalServices
                     {
                         if (postTVItemModel.TVItemParent.TVType != TVTypeEnum.Province)
                         {
-                            ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType), new[] { "TVType" }));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemUnder_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType, postTVItemModel.TVItemParent.TVType));
                         }
                     }
                     break;
                 default:
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.Adding_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType), new[] { "TVType" }));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.Adding_TVItemIsNotAllowed, postTVItemModel.TVItem.TVType));
                     }
                     break;
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

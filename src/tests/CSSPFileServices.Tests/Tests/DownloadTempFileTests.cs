@@ -1,17 +1,10 @@
-using CSSPEnums;
-using CSSPDBModels;
+using CSSPHelperModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
-using System.Collections.Generic;
-using CSSPWebModels;
-using System.ComponentModel.DataAnnotations;
-using CSSPLogServices.Models;
-using CSSPHelperModels;
 
 namespace CSSPFileServices.Tests
 {
@@ -27,7 +20,7 @@ namespace CSSPFileServices.Tests
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-            FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\ThisFileShoulBeUnique743Testing.txt");
+            FileInfo fi = new FileInfo($@"{ Configuration["CSSPTempFilesPath"] }\\ThisFileShoulBeUnique743Testing.txt");
 
             if (fi.Exists)
             {
@@ -44,7 +37,7 @@ namespace CSSPFileServices.Tests
             File.WriteAllText(fi.FullName, "bonjour");
             
             var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
-            Assert.NotNull(((FileStreamResult)actionRes).FileStream);
+            Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -57,7 +50,7 @@ namespace CSSPFileServices.Tests
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-            FileInfo fi = new FileInfo($@"{ config.CSSPTempFilesPath }\\ThisFileShoulBeUnique743Testing.txt");
+            FileInfo fi = new FileInfo($@"{ Configuration["CSSPTempFilesPath"] }\\ThisFileShoulBeUnique743Testing.txt");
 
             File.WriteAllText(fi.FullName, "bonjour");
 

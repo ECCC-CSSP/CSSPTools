@@ -3,7 +3,6 @@
  *
  */
 
-using CSSPAzureAppTaskServices.Models;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;

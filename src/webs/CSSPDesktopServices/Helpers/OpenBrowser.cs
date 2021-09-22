@@ -19,10 +19,10 @@ namespace CSSPDesktopServices.Services
             //    culture = "en-CA";
             //}
 
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ CSSPLocalUrl }/")));
+            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ Configuration["CSSPLocalUrl"] }/")));
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = $"{ CSSPLocalUrl }";
+            processStartInfo.FileName = $"{ Configuration["CSSPLocalUrl"] }";
             //processStartInfo.FileName = $"{ CSSPLocalUrl }{ culture }/";
             processStartInfo.Arguments = "";
             processStartInfo.UseShellExecute = true;

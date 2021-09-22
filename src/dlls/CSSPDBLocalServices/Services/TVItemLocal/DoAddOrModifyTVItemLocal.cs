@@ -6,27 +6,27 @@
 using CSSPCultureServices.Resources;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPHelperModels;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        private bool DoAddOrModifyTVItem(PostTVItemModel postTVItemModel)
+        private async Task<bool> DoAddOrModifyTVItem(PostTVItemModel postTVItemModel)
         {
-            ValidationResults = new List<ValidationResult>();
-
             GzObjectList gzObjectList = FillPostLists(postTVItemModel);
 
-            if (ValidationResults.Count() > 0)
+            if (CSSPLogService.ErrRes.ErrList.Count() > 0)
             {
-                return false;
+                return await Task.FromResult(false);
             }
 
             if (postTVItemModel.TVItem.TVType == TVTypeEnum.File)
@@ -37,8 +37,8 @@ namespace CSSPDBLocalServices
                      && c.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText
                      select c).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText), new[] { "TVText" }));
-                    return false;
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText));
+                    return await Task.FromResult(false);
                 }
 
                 // already exist TVTextFR
@@ -47,8 +47,8 @@ namespace CSSPDBLocalServices
                      && c.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText
                      select c).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText), new[] { "TVText" }));
-                    return false;
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText));
+                    return await Task.FromResult(false);
                 }
             }
             else
@@ -59,8 +59,8 @@ namespace CSSPDBLocalServices
                      && c.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText
                      select c).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText), new[] { "TVText" }));
-                    return false;
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText));
+                    return await Task.FromResult(false);
                 }
 
                 // already exist TVTextFR
@@ -69,8 +69,8 @@ namespace CSSPDBLocalServices
                      && c.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText
                      select c).Any())
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText), new[] { "TVText" }));
-                    return false;
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText));
+                    return await Task.FromResult(false);
                 }
             }
 
@@ -89,8 +89,8 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message), new[] { "TVItem" }));
-                        return false;
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
+                        return await Task.FromResult(false);
                     }
 
                     foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
@@ -108,8 +108,8 @@ namespace CSSPDBLocalServices
                             }
                             catch (Exception ex)
                             {
-                                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message), new[] { "TVItem" }));
-                                return false;
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message));
+                                return await Task.FromResult(false);
                             }
                         }
                     }
@@ -159,8 +159,8 @@ namespace CSSPDBLocalServices
                 }
                 catch (Exception ex)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message), new[] { "TVItem" }));
-                    return false;
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
+                    return await Task.FromResult(false);
                 }
 
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
@@ -189,8 +189,8 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message), new[] { "TVItemLanguage" }));
-                        return false;
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message));
+                        return await Task.FromResult(false);
                     }
                 }
             }
@@ -258,8 +258,8 @@ namespace CSSPDBLocalServices
                 }
                 catch (Exception ex)
                 {
-                    ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message), new[] { "TVItem" }));
-                    return false;
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
+                    return await Task.FromResult(false);
                 }
 
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
@@ -321,8 +321,8 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message), new[] { "TVItemLanguage" }));
-                        return false;
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message));
+                        return await Task.FromResult(false);
                     }
 
                 }
@@ -330,10 +330,15 @@ namespace CSSPDBLocalServices
 
             foreach (ToRecreate toRecreate in ToRecreateList)
             {
-                CreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
+                var actionRes = await CreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
+                if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+                {
+                    ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                    CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
+                }
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

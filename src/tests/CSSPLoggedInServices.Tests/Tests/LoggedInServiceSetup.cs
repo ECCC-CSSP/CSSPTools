@@ -1,3 +1,4 @@
+using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using ManageServices;
@@ -22,15 +23,6 @@ namespace LoggedInServices.Tests
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
-        private string LoginEmail { get; set; }
-        private string FirstName1 { get; set; }
-        private string Initial1 { get; set; }
-        private string LastName1 { get; set; }
-        private string LoginEmail2 { get; set; }
-        private string FirstName2 { get; set; }
-        private string LastName2 { get; set; }
-        private string LoginEmail3 { get; set; }
-        private string CSSPDBManageFileName { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -43,11 +35,18 @@ namespace LoggedInServices.Tests
         #endregion Tests
 
         #region Functions private
-        private async Task<bool> LoggedInServiceSetup(string culture)
+        private async Task<bool> LoggedInServiceSetup(string culture, int ErrNumber = 0)
         {
+            string appsettings = "appsettings_cssploggedinservicestests.json";
+
+            if (ErrNumber == 2)
+            {
+                appsettings = "appsettings_cssploggedinservicestests_err1.json";
+            }
+
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings_cssploggedinservicestests.json")
+                .AddJsonFile(appsettings)
                 .AddUserSecrets("88fc6657-c426-4796-95bb-ca3d0daf2ff0")
                 .Build();
 
@@ -57,32 +56,52 @@ namespace LoggedInServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
 
-            /* ---------------------------------------------------------------------------------
-             * using TestDB
-             * ---------------------------------------------------------------------------------      
-             */
-            string TestDB = Configuration.GetValue<string>("TestDB");
-            Assert.NotNull(TestDB);
-
-            Services.AddDbContext<CSSPDBContext>(options =>
+            if (ErrNumber != 2)
             {
-                options.UseSqlServer(TestDB);
-            });
+                Assert.NotNull(Configuration["CSSPDB"]);
+            }
 
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBManageContext
-             * ---------------------------------------------------------------------------------      
-             */
-            CSSPDBManageFileName = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(CSSPDBManageFileName);
+            Assert.NotNull(Configuration["CSSPDBManage"]);
 
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManageFileName);
-            Assert.True(fiCSSPDBManage.Exists);
-
-            Services.AddDbContext<CSSPDBManageContext>(options =>
+            if (ErrNumber != 1)
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
-            });
+                if (ErrNumber == 2)
+                {
+                    /* ---------------------------------------------------------------------------------
+                     * using CSSPDB
+                     * ---------------------------------------------------------------------------------      
+                     */
+                    Services.AddDbContext<CSSPDBContext>(options =>
+                    {
+                        options.UseSqlServer("Server=.\\sqlexpress;Database=CSSPDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+                    });
+                }
+                else
+                {
+                    /* ---------------------------------------------------------------------------------
+                     * using CSSPDB
+                     * ---------------------------------------------------------------------------------      
+                     */
+                    Services.AddDbContext<CSSPDBContext>(options =>
+                    {
+                        options.UseSqlServer(Configuration["CSSPDB"]);
+                    });
+                }
+
+                /* ---------------------------------------------------------------------------------
+                 * CSSPDBManageContext
+                 * ---------------------------------------------------------------------------------      
+                 */
+
+                FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+                Assert.True(fiCSSPDBManage.Exists);
+
+                Services.AddDbContext<CSSPDBManageContext>(options =>
+                {
+                    options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+                });
+            }
+            
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -92,23 +111,41 @@ namespace LoggedInServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            if (ErrNumber == 1)
+            {
+                try
+                {
+                    LoggedInService = Provider.GetService<ILoggedInService>();
+                    Assert.NotNull(LoggedInService);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db && dbManage"), ex.Message);
+                }
+            }
+            else if (ErrNumber == 2)
+            {
+                try
+                {
+                    LoggedInService = Provider.GetService<ILoggedInService>();
+                    Assert.NotNull(LoggedInService);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "LoggedInService"), ex.Message);
+                }
+            }
+            else
+            {
+                    LoggedInService = Provider.GetService<ILoggedInService>();
+                    Assert.NotNull(LoggedInService);
+            }
 
-            LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.NotEmpty(LoginEmail);
-
-            FirstName1 = Configuration.GetValue<string>("FirstName1");
-            Assert.NotEmpty(FirstName1);
-
-            Initial1 = Configuration.GetValue<string>("Initial1");
-            Assert.NotEmpty(Initial1);
-
-            LastName1 = Configuration.GetValue<string>("LastName1");
-            Assert.NotEmpty(LastName1);
-
-            LoginEmail3 = Configuration.GetValue<string>("LoginEmail3");
-            Assert.NotEmpty(LoginEmail3);
+            Assert.NotEmpty(Configuration["LoginEmail"]);
+            Assert.NotEmpty(Configuration["FirstName1"]);
+            Assert.NotEmpty(Configuration["Initial1"]);
+            Assert.NotEmpty(Configuration["LastName1"]);
+            Assert.NotEmpty(Configuration["LoginEmail3"]);
 
             return await Task.FromResult(true);
         }

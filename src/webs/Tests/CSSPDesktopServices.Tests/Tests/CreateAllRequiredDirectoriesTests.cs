@@ -31,7 +31,7 @@ namespace CSSPDesktopServices.Tests
         //[InlineData("fr-CA")]
         public async Task CSSPDesktopService_CreateAllRequiredDirectories_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPDesktopServiceSetup(culture));
 
             bool retBool = await CSSPDesktopService.CreateAllRequiredDirectories();
             Assert.True(retBool);

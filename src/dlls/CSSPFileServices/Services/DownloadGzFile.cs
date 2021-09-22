@@ -37,20 +37,22 @@ namespace CSSPFileServices
 
             try
             {
-                BlobClient blobClient = new BlobClient(config.AzureStore, config.AzureStoreCSSPJSONPath, FileName);
+                BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], FileName);
 
-                Response response = blobClient.DownloadTo($"{ config.CSSPJSONPath }{ FileName }");
+                Response response = blobClient.DownloadTo($"{ Configuration["CSSPJSONPath"] }{ FileName }");
                 if (response.Status == 206)
                 {
                     ManageFile manageFile = null;
 
-                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPJSONPath, FileName);
-                    if (((ObjectResult)actionCSSPFile.Result).StatusCode == 400)
+                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPJSONPath"], FileName);
+                    manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
+
+                    if (manageFile == null)
                     {
                         manageFile = new ManageFile()
                         {
                             ManageFileID = 0,
-                            AzureStorage = config.AzureStoreCSSPJSONPath,
+                            AzureStorage = Configuration["AzureStoreCSSPJSONPath"],
                             AzureFileName = FileName,
                             AzureETag = response.Headers.ETag.ToString(),
                             AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
@@ -73,31 +75,22 @@ namespace CSSPFileServices
                     }
                     else
                     {
-                        if (((OkObjectResult)actionCSSPFile.Result).StatusCode == 200)
+                        manageFile.AzureETag = response.Headers.ETag.ToString();
+                        manageFile.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
+                        manageFile.LoadedOnce = true;
+
+                        var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
+                        if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                         {
-                            manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
-
-                            manageFile.AzureETag = response.Headers.ETag.ToString();
-                            manageFile.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
-                            manageFile.LoadedOnce = true;
-
-                            var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
-                            if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
-                            {
-                                manageFile = (ManageFile)((OkObjectResult)actionCSSPFilePut.Result).Value;
-                            }
-                            else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
-                            {
-                                return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
-                            }
-                            else
-                            {
-                                return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFilePut.Result).Value.ToString());
-                            }
+                            manageFile = (ManageFile)((OkObjectResult)actionCSSPFilePut.Result).Value;
+                        }
+                        else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
+                        {
+                            return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                         }
                         else
                         {
-                            return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFile.Result).Value.ToString());
+                            return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFilePut.Result).Value.ToString());
                         }
                     }
 

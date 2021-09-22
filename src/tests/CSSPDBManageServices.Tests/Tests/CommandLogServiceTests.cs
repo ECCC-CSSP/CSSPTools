@@ -1,5 +1,6 @@
 using CSSPCultureServices.Resources;
 using CSSPEnums;
+using CSSPHelperModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,16 +14,6 @@ namespace ManageServices.Tests
 {
     public partial class ManageServicesTests
     {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        #endregion Properties
-
-        #region Constructors
-        #endregion Constructors
-
-        #region Tests      
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -164,7 +155,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogDelete(CommandLogID);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            Assert.Equal(error, ((BadRequestObjectResult)actionCommandLog.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -179,7 +172,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogGetWithCommandLogID(CommandLogID);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            Assert.Equal(error, ((BadRequestObjectResult)actionCommandLog.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -208,9 +203,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionCommandLog.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -239,9 +234,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionCommandLog.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -270,9 +265,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionCommandLog.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -301,9 +296,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionCommandLog.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -332,9 +327,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionCommandLog.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -361,9 +356,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLog);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionCommandLog.Result).Value;
-            List<ValidationResult> vrList = ((IEnumerable<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(error)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -404,11 +399,9 @@ namespace ManageServices.Tests
             var actionCommandLog = await CommandLogService.CommandLogAddOrModify(commandLogNew);
             Assert.Equal(400, ((ObjectResult)actionCommandLog.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionCommandLog.Result).Value);
-            Assert.Equal(error, ((BadRequestObjectResult)actionCommandLog.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCommandLog.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
-        #endregion Tests
-
-        #region Functions private
-        #endregion Functions private
     }
 }

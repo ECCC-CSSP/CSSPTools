@@ -2,15 +2,9 @@
  * Manually edited
  * 
  */
-using Azure;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -24,7 +18,7 @@ namespace CreateGzFileServices
         {
             CSSPLogService.FunctionLog($"{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }<T>(T webJson, string fileName) -- fileName: { fileName }");
 
-            FileInfo fi = new FileInfo($"{ config.CSSPJSONPathLocal }{ fileName }");
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPJSONPathLocal"] }{ fileName }");
 
             if (fi.Exists)
             {

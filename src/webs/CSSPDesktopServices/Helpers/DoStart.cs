@@ -16,9 +16,9 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ExecutingBackgroundApps));
 
-            Directory.SetCurrentDirectory(CSSPWebAPIsLocalPath);
+            Directory.SetCurrentDirectory(Configuration["CSSPWebAPIsLocalPath"]);
 
-            List<ManageFile> manageFilesList = (from c in dbManage.ManageFiles
+            List <ManageFile> manageFilesList = (from c in dbManage.ManageFiles
                                                 select c).ToList();
 
             foreach(ManageFile manageFile in manageFilesList)

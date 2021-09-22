@@ -81,7 +81,7 @@ namespace ReadGzFileServices
             // checking if files are localized
             if (true)
             {
-                DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ WebMunicipality.TVItemModel.TVItem.TVItemID }\\");
+                DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ WebMunicipality.TVItemModel.TVItem.TVItemID }\\");
 
                 if (di.Exists)
                 {
@@ -106,7 +106,7 @@ namespace ReadGzFileServices
             // checking if files are localized
             foreach (InfrastructureModel infrastructureModel in WebMunicipality.InfrastructureModelList)
             {
-                DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ infrastructureModel.TVItemModel.TVItem.TVItemID }\\");
+                DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ infrastructureModel.TVItemModel.TVItem.TVItemID }\\");
 
                 if (di.Exists)
                 {

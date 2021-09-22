@@ -13,19 +13,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        private bool DoAddOrModifyMapInfoLocal(PostMapInfoModel postMapInfoModel)
+        private async Task<bool> DoAddOrModifyMapInfoLocal(PostMapInfoModel postMapInfoModel)
         {
-            ValidationResults = new List<ValidationResult>();
-
             //GzObjectList gzObjectList = FillPostLists(postMapInfoModel);
 
-            if (ValidationResults.Count() > 0)
+            if (CSSPLogService.ErrRes.ErrList.Count() > 0)
             {
                 return false;
             }
@@ -280,7 +279,7 @@ namespace CSSPDBLocalServices
             //    CreateGzFileLocalService.CreateGzFileLocal(toRecreate.WebType, toRecreate.TVItemID, toRecreate.WebTypeYear);
             //}
 
-            return ValidationResults.Count == 0 ? true : false;
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

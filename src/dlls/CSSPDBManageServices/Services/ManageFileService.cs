@@ -14,7 +14,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using CSSPManageServices.Models;
+using Microsoft.Extensions.Configuration;
+using CSSPHelperModels;
 
 namespace ManageServices
 {
@@ -26,8 +27,6 @@ namespace ManageServices
         Task<ActionResult<int>> ManageFileGetNextIndexToUse();
         Task<ActionResult<ManageFile>> ManageFileGetWithAzureStorageAndAzureFileName(string AzureStorage, string AzureFileName);
         Task<ActionResult<ManageFile>> ManageFileGetWithManageFileID(int ManageFileID);
-        Task<bool> FillConfigModel(CSSPManageServiceConfigModel config);
-
     }
     public partial class ManageFileService : ControllerBase, IManageFileService
     {
@@ -35,15 +34,22 @@ namespace ManageServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBManageContext dbManage { get; set; }
+        private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private IEnumerable<ValidationResult> ValidationResults { get; set; }
-        private CSSPManageServiceConfigModel config { get; set; }
+        private CSSPDBManageContext dbManage { get; set; }
+        private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public ManageFileService(ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
+        public ManageFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService ") }");
+            if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
+
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
+
+            this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.dbManage = dbManage;
         }
@@ -54,13 +60,13 @@ namespace ManageServices
         {
             if (manageFile == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "manageFile")));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "manageFile"));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
-            ValidationResults = ManageFileValidateAddOrModify(new ValidationContext(manageFile));
-            if (ValidationResults.Count() > 0)
+            if (!await ManageFileValidateAddOrModify(new ValidationContext(manageFile)))
             {
-                return await Task.FromResult(BadRequest(ValidationResults));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await DoManageFileAddOrModify(manageFile);
@@ -73,7 +79,8 @@ namespace ManageServices
 
             if (manageFile == null)
             {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", ManagementFileID.ToString())));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", ManagementFileID.ToString()));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             try
@@ -83,7 +90,8 @@ namespace ManageServices
             }
             catch (DbUpdateException ex)
             {
-                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                errRes.ErrList.Add(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await Task.FromResult(Ok(true));
@@ -110,10 +118,11 @@ namespace ManageServices
                                         where c.ManageFileID == ManageFileID
                                         select c).FirstOrDefault();
 
-            if (manageFile == null)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", ManageFileID.ToString())));
-            }
+            //if (manageFile == null)
+            //{
+            //    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", ManageFileID.ToString()));
+            //    return await Task.FromResult(BadRequest(errRes));
+            //}
 
             return await Task.FromResult(Ok(manageFile));
         }
@@ -124,10 +133,12 @@ namespace ManageServices
                                         && c.AzureFileName == AzureFileName
                                         select c).FirstOrDefault();
 
-            if (manageFile == null)
-            {
-                return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }")));
-            }
+            //if (manageFile == null)
+            //{
+            //    return await Task.FromResult(Ok(manageFile));
+            //    //errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "AzureStorage,AzureFileName", $"{ AzureStorage }, { AzureFileName }"));
+            //    //return await Task.FromResult(BadRequest(errRes));
+            //}
 
             return await Task.FromResult(Ok(manageFile));
         }
@@ -159,7 +170,8 @@ namespace ManageServices
 
                 if (manageFileAddOrModify == null)
                 {
-                    return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", manageFile.ManageFileID.ToString())));
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", manageFile.ManageFileID.ToString()));
+                    return await Task.FromResult(BadRequest(errRes));
                 }
 
                 manageFileAddOrModify.AzureCreationTimeUTC = manageFile.AzureCreationTimeUTC;
@@ -175,57 +187,58 @@ namespace ManageServices
             }
             catch (DbUpdateException ex)
             {
-                return await Task.FromResult(BadRequest(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : "")));
+                errRes.ErrList.Add(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+                return await Task.FromResult(BadRequest(errRes));
             }
 
             return await Task.FromResult(Ok(manageFileAddOrModify));
         }
-        private IEnumerable<ValidationResult> ManageFileValidateAddOrModify(ValidationContext validationContext)
+        private async Task<bool> ManageFileValidateAddOrModify(ValidationContext validationContext)
         {
             ManageFile manageFile = validationContext.ObjectInstance as ManageFile;
 
             // doing AzureStorage
             if (string.IsNullOrWhiteSpace(manageFile.AzureStorage))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage"), new[] { "AzureStorage" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage"));
             }
             else
             {
                 if (manageFile.AzureStorage.Length > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100"), new[] { "AzureStorage" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100"));
                 }
             }
 
             // doing AzureFileName
             if (string.IsNullOrWhiteSpace(manageFile.AzureFileName))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName"), new[] { "AzureFileName" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName"));
             }
             else
             {
                 if (manageFile.AzureFileName.Length > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200"), new[] { "AzureFileName" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200"));
                 }
             }
 
             // doing AzureETag
             if (string.IsNullOrWhiteSpace(manageFile.AzureETag))
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag"), new[] { "AzureETag" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag"));
             }
             else
             {
                 if (manageFile.AzureETag.Length > 100)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"), new[] { "AzureETag" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"));
                 }
             }
 
             if (manageFile.AzureCreationTimeUTC.Year < 1980)
             {
-                yield return new ValidationResult(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"), new[] { "AzureCreationTimeUTC" });
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"));
             }
 
             if (manageFile.ManageFileID == 0) // adding new
@@ -238,7 +251,7 @@ namespace ManageServices
 
                 if (manageFileAlreadyExist != null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExists, "ManageFile"), new[] { "" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "ManageFile"));
                 }
             }
             else
@@ -251,11 +264,12 @@ namespace ManageServices
 
                 if (manageFileExist != null)
                 {
-                    yield return new ValidationResult(string.Format(CSSPCultureServicesRes._AlreadyExistsWithDifferent_, "ManageFile", "ManageFileID"), new[] { "" });
+                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExistsWithDifferent_, "ManageFile", "ManageFileID"));
                 }
 
             }
 
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
         #endregion Functions private
 

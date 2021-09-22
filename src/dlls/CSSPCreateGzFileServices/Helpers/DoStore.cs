@@ -29,7 +29,7 @@ namespace CreateGzFileServices
             bool ShouldSendToAzure = false;
             bool FileExistInAzure = true;
 
-            BlobClient blobClient = new BlobClient(config.AzureStore, config.AzureStoreCSSPJSONPath, fileName);
+            BlobClient blobClient = new BlobClient(Configuration["AzureStore"], Configuration["AzureStoreCSSPJSONPath"], fileName);
             BlobProperties blobProperties = null;
 
             try
@@ -49,9 +49,9 @@ namespace CreateGzFileServices
                 FileExistInAzure = false;
             }
 
-            FileInfo fi = new FileInfo($@"{config.azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json")}");
-            FileInfo fi2 = new FileInfo($@"{config.azure_csspjson_backup_uncompress}{fileName.Replace("gz", "json2")}");
-            FileInfo fiComp = new FileInfo($@"{config.azure_csspjson_backup}\{fileName}");
+            FileInfo fi = new FileInfo($@"{Configuration["azure_csspjson_backup_uncompress"]}{fileName.Replace("gz", "json")}");
+            FileInfo fi2 = new FileInfo($@"{Configuration["azure_csspjson_backup_uncompress"]}{fileName.Replace("gz", "json2")}");
+            FileInfo fiComp = new FileInfo($@"{Configuration["azure_csspjson_backup"]}\{fileName}");
 
             if (fi.Exists)
             {

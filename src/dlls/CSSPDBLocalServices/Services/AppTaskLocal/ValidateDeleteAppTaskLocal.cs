@@ -12,22 +12,21 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
     {
-        private bool ValidateDeleteAppTaskLocal(int appTaskID)
+        private async Task<bool> ValidateDeleteAppTaskLocal(int appTaskID)
         {
-            ValidationResults = new List<ValidationResult>();
-
             if (appTaskID == 0)
             {
-                ValidationResults.Add(new ValidationResult(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"), new[] { "AppTaskID" }));
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
             }
 
-            return ValidationResults.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) :  await Task.FromResult(false);
         }
     }
 }

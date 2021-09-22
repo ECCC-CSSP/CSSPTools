@@ -18,7 +18,6 @@ namespace CSSPLogServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLogService);
             Assert.NotNull(dbManage);
-            Assert.NotNull(config);
             Assert.Equal("CSSPLogService_AppName", CSSPLogService.CSSPAppName);
             Assert.Equal("CSSPLogService_CommandName", CSSPLogService.CSSPCommandName);
             Assert.Equal("", CSSPLogService.sbError.ToString());

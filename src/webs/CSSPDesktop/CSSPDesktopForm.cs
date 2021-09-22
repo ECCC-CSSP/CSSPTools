@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CSSPLogServices;
 
 namespace CSSPDesktop
 {
@@ -380,7 +381,7 @@ namespace CSSPDesktop
         }
         private async Task<bool> StartTheAppWithLanguage()
         {
-            await SettingUpAllTextForLanguage();
+            SettingUpAllTextForLanguage();
 
             if (!await CSSPDesktopService.CheckIfLoginIsRequired()) return await Task.FromResult(false);
 
@@ -447,8 +448,6 @@ namespace CSSPDesktop
         }
         private async Task<bool> Setup()
         {
-            string _CouldNotBeFoundInConfigurationFile_ = "{0} could not be found in the configuration file {1}";
-
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                 .AddJsonFile("appsettings_csspdesktop.json")
@@ -458,9 +457,34 @@ namespace CSSPDesktop
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+
+            if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPWebAPIsPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPWebAPIsPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPWebAPIsLocalPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPWebAPIsLocalPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDBLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBLocal", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDesktopPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDesktopPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPFilesPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPLocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPLocalUrl", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPOtherFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPOtherFilesPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPTempFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPTempFilesPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPWebAPIsPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPWebAPIsPath", "CSSPDesktopForm") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPWebAPIsLocalPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPWebAPIsLocalPath", "CSSPDesktopForm") }");
+
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
@@ -468,33 +492,10 @@ namespace CSSPDesktop
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
 
             /* ---------------------------------------------------------------------------------
-             * using TestDB
-             * ---------------------------------------------------------------------------------      
-             */
-            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
-            if (string.IsNullOrWhiteSpace(CSSPDB))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDB", "appsettings_csspdesktop.json") + "\r\n");
-                return await Task.FromResult(false);
-            }
-
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(CSSPDB);
-            });
-
-            /* ---------------------------------------------------------------------------------
              * using CSSPDBLocal
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            if (string.IsNullOrWhiteSpace(CSSPDBLocal))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBLocal", "appsettings_csspdesktop.json") + "\r\n");
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBLocal = new FileInfo(CSSPDBLocal);
+            FileInfo fiCSSPDBLocal = new FileInfo(Configuration["CSSPDBLocal"]);
 
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
@@ -506,14 +507,7 @@ namespace CSSPDesktop
              * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            if (string.IsNullOrWhiteSpace(CSSPDBManage))
-            {
-                richTextBoxStatus.AppendText(string.Format(_CouldNotBeFoundInConfigurationFile_, "CSSPDBManage", "appsettings_csspdesktop.json") + "\r\n");
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
 
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
@@ -556,8 +550,6 @@ namespace CSSPDesktop
 
             CSSPDesktopService.IsEnglish = IsEnglish;
 
-            if (!await CSSPDesktopService.ReadConfiguration()) return await Task.FromResult(false);
-
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             if (CSSPSQLiteService == null)
             {
@@ -567,7 +559,7 @@ namespace CSSPDesktop
             if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
 
             // create CSSPDBManage if it does not exist
-            FileInfo fi = new FileInfo(CSSPDesktopService.CSSPDBManage);
+            FileInfo fi = new FileInfo(Configuration["CSSPDBManage"]);
             if (!fi.Exists)
             {
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db") + "\r\n");
@@ -575,10 +567,10 @@ namespace CSSPDesktop
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Created_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db" + "\r\n"));
             }
 
-            await SettingUpAllTextForLanguage();
+            SettingUpAllTextForLanguage();
 
             // create CSSPDBLocal if it does not exist
-            fi = new FileInfo(CSSPDesktopService.CSSPDBLocal);
+            fi = new FileInfo(Configuration["CSSPDBLocal"]);
             if (!fi.Exists)
             {
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBLocal.db") + "\r\n");
@@ -606,7 +598,7 @@ namespace CSSPDesktop
 
             return await Task.FromResult(true);
         }
-        private async Task SettingUpAllTextForLanguage()
+        private void SettingUpAllTextForLanguage()
         {
             CSSPDesktopService.IsEnglish = IsEnglish;
 
@@ -764,7 +756,7 @@ namespace CSSPDesktop
                         panelTop.Visible = false;
                         panelLoginEmail.Visible = false;
                         string fileToOpen = IsEnglish ? "HelpDocEN.rtf" : "HelpDocFR.rtf";
-                        richTextBoxHelp.LoadFile($"{ CSSPDesktopService.CSSPOtherFilesPath }{ fileToOpen }");
+                        richTextBoxHelp.LoadFile($"{ Configuration["CSSPOtherFilesPath"] }{ fileToOpen }");
                         panelHelp.Visible = true;
 
                         butHideHelpPanel.Focus();

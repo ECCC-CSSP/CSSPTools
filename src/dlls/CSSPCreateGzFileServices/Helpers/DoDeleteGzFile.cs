@@ -25,7 +25,7 @@ namespace CreateGzFileServices
 
             try
             {
-                BlobClient blobClient = new BlobClient(config.AzureStore, config.AzureStoreCSSPJSONPath, FileName);
+                BlobClient blobClient = new BlobClient(Configuration["AzureStore"], Configuration["AzureStoreCSSPJSONPath"], FileName);
 
                 Response response = await blobClient.DeleteAsync();
                 if (response.Status != 202)

@@ -17,7 +17,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPLogServices.Models;
 using CSSPHelperModels;
 
 namespace CSSPDBServices
@@ -30,12 +29,11 @@ namespace CSSPDBServices
     public partial class TVItemDBService : ControllerBase, ITVItemDBService
     {
         #region Variables
-        private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
-        private List<ValidationResult> ValidationResultList { get; set; }
+        private ILoggedInService LoggedInService { get; }
+        private CSSPDBContext db { get; }
         #endregion Variables
 
         #region Properties
@@ -43,17 +41,13 @@ namespace CSSPDBServices
         #endregion Properties
 
         #region Constructors
-        public TVItemDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
-           ILoggedInService LoggedInService,
-           CSSPDBContext db)
+        public TVItemDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.LoggedInService = LoggedInService;
             this.enums = enums;
             this.db = db;
-
-            ValidationResultList = new List<ValidationResult>();
         }
         #endregion Constructors
 

@@ -27,7 +27,6 @@ namespace CSSPSQLiteServices.Tests
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
         private FileInfo fiCSSPDBManage { get; set; }
-        private CSSPSQLiteServiceConfigModel config { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -36,8 +35,6 @@ namespace CSSPSQLiteServices.Tests
         #region Functions public
         private async Task<bool> CSSPSQLiteServiceSetup(string culture)
         {
-            config = new CSSPSQLiteServiceConfigModel();
-
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspsqliteservicestests.json")
@@ -50,23 +47,16 @@ namespace CSSPSQLiteServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
-            config.CSSPDBLocal = Configuration.GetValue<string>("CSSPDBLocal");
-            Assert.NotNull(config.CSSPDBLocal);
-
-            config.CSSPDBLocal = config.CSSPDBLocal.Replace(".db", "_test.db");
-            Assert.Contains("_test", config.CSSPDBLocal);
-
-            fiCSSPDBLocal = new FileInfo(config.CSSPDBLocal);
-
-            if (fiCSSPDBLocal.Exists)
+            FileInfo fi = new FileInfo(Configuration["CSSPDBLocal"]);
+            if (fi.Exists)
             {
                 try
                 {
-                    fiCSSPDBLocal.Delete();
+                    fi.Delete();
                 }
                 catch (Exception ex)
                 {
-                    Assert.True(false, $"Could not delete {fiCSSPDBLocal.FullName}. Ex: {ex.Message}");
+                    Assert.True(false, ex.Message);
                 }
             }
 
@@ -76,26 +66,19 @@ namespace CSSPSQLiteServices.Tests
              */
             Services.AddDbContext<CSSPDBLocalContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
             });
 
-            config.CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(config.CSSPDBManage);
-
-            config.CSSPDBManage = config.CSSPDBManage.Replace(".db", "_test.db");
-            Assert.Contains("_test", config.CSSPDBManage);
-
-            fiCSSPDBManage = new FileInfo(config.CSSPDBManage);
-            
-            if (fiCSSPDBManage.Exists)
+            fi = new FileInfo(Configuration["CSSPDBManage"]);
+            if (fi.Exists)
             {
                 try
                 {
-                    fiCSSPDBManage.Delete();
+                    fi.Delete();
                 }
                 catch (Exception ex)
                 {
-                    Assert.True(false, $"Could not delete {fiCSSPDBManage.FullName}. Ex: {ex.Message}");
+                    Assert.True(false, ex.Message);
                 }
             }
 
@@ -105,7 +88,7 @@ namespace CSSPSQLiteServices.Tests
              */
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
             });
 
             Provider = Services.BuildServiceProvider();
@@ -118,8 +101,6 @@ namespace CSSPSQLiteServices.Tests
 
             CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
             Assert.NotNull(CSSPSQLiteService);
-
-            await CSSPSQLiteService.FillConfigModel(config);
 
             return await Task.FromResult(true);
         }

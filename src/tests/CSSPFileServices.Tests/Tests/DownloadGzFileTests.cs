@@ -1,17 +1,13 @@
 using CSSPEnums;
-using CSSPDBModels;
+using CSSPHelperModels;
+using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using System.Collections.Generic;
-using CSSPCultureServices.Resources;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using CSSPLogServices.Models;
-using CSSPHelperModels;
 
 namespace CSSPFileServices.Tests
 {
@@ -602,6 +598,7 @@ namespace CSSPFileServices.Tests
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebRoot;
 
             var actionRes = await CSSPFileService.DownloadGzFile(webType);
@@ -693,7 +690,7 @@ namespace CSSPFileServices.Tests
                 Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             }
         }
-        [Theory]
+        [Theory(Skip = "Will need to rewrite this one")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task DownloadGzFile_AzureStore_Error_Test(string culture)
@@ -704,9 +701,7 @@ namespace CSSPFileServices.Tests
 
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
-            config.AzureStore = "NotWorking" + config.AzureStore;
-
-            await CSSPFileService.FillConfigModel(config);
+            //config.AzureStore = "NotWorking" + config.AzureStore;
 
             var actionRes = await CSSPFileService.DownloadGzFile(webType);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
@@ -716,7 +711,7 @@ namespace CSSPFileServices.Tests
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-        [Theory]
+        [Theory(Skip = "Will need to rewrite this one")]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task DownloadGzFile_AzureStoreCSSPJSONPath_Error_Test(string culture)
@@ -727,9 +722,7 @@ namespace CSSPFileServices.Tests
 
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
-            config.AzureStoreCSSPJSONPath = "notworking" + config.AzureStoreCSSPJSONPath;
-
-            await CSSPFileService.FillConfigModel(config);
+            //config.AzureStoreCSSPJSONPath = "notworking" + config.AzureStoreCSSPJSONPath;
 
             var actionRes = await CSSPFileService.DownloadGzFile(webType);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);

@@ -59,7 +59,7 @@ namespace ReadGzFileServices
             // checking if files are localized
             foreach (MikeScenarioModel mikeScenarioModel in WebMikeScenarios.MikeScenarioModelList)
             {
-                DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ mikeScenarioModel.TVItemModel.TVItem.TVItemID }\\");
+                DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ mikeScenarioModel.TVItemModel.TVItem.TVItemID }\\");
 
                 if (di.Exists)
                 {

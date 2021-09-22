@@ -17,7 +17,6 @@ using Xunit;
 
 namespace CSSPDBLocalServices.Tests
 {
-    [Collection("Sequential")]
     public partial class AppTaskLocalServiceTest
     {
         [Theory]
@@ -27,19 +26,24 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
-            Assert.NotNull(db);
-            Assert.NotNull(dbLocal);
-            Assert.NotNull(dbManage);
+            Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(LoggedInService);
+            Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPLogService);
+            Assert.NotNull(enums);
+            Assert.NotNull(CSSPSQLiteService);
             Assert.NotNull(FileService);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(CreateGzFileService);
             Assert.NotNull(ReadGzFileService);
             Assert.NotNull(AppTaskLocalService);
+            Assert.NotNull(MapInfoLocalService);
             Assert.NotNull(TVItemLocalService);
-            Assert.NotNull(CSSPSQLiteService);
+            Assert.NotNull(db);
+            Assert.NotNull(dbLocal);
+            Assert.NotNull(dbManage);
 
         }
         [Theory]
@@ -48,8 +52,6 @@ namespace CSSPDBLocalServices.Tests
         public async Task AppTaskLocalService_AddOrModifyLocal_Add_Good_Test(string culture)
         {
             Assert.True(await AppTaskLocalServiceSetup(culture, true));
-
-            await CreateCSSPDBLocal();
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
@@ -73,8 +75,6 @@ namespace CSSPDBLocalServices.Tests
         public async Task AppTaskLocalService_AddOrModifyLocal_Modify_Good_Test(string culture)
         {
             Assert.True(await AppTaskLocalServiceSetup(culture, true));
-
-            await CreateCSSPDBLocal();
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 

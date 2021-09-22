@@ -1,13 +1,7 @@
 using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
+using CSSPWebModels;
 using System.Threading.Tasks;
 using Xunit;
-using CSSPWebModels;
 
 namespace ReadGzFileServices.Tests
 {

@@ -17,7 +17,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoggedInServices;
 using Microsoft.Extensions.Configuration;
-using CSSPLogServices.Models;
 using CSSPHelperModels;
 
 namespace CSSPDBServices
@@ -36,23 +35,21 @@ namespace CSSPDBServices
         #endregion Variables
 
         #region Properties
-        private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
         private IEnums enums { get; }
+        private ILoggedInService LoggedInService { get; }
+        private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public AppTaskLanguageDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
-           ILoggedInService LoggedInService,
-           CSSPDBContext db)
+        public AppTaskLanguageDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.LoggedInService = LoggedInService;
             this.db = db;
         }
         #endregion Constructors
@@ -67,8 +64,8 @@ namespace CSSPDBServices
             }
 
             AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages.AsNoTracking()
-                    where c.AppTaskLanguageID == AppTaskLanguageID
-                    select c).FirstOrDefault();
+                                               where c.AppTaskLanguageID == AppTaskLanguageID
+                                               select c).FirstOrDefault();
 
             if (appTaskLanguage == null)
             {
@@ -98,8 +95,8 @@ namespace CSSPDBServices
             }
 
             AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
-                    where c.AppTaskLanguageID == AppTaskLanguageID
-                    select c).FirstOrDefault();
+                                               where c.AppTaskLanguageID == AppTaskLanguageID
+                                               select c).FirstOrDefault();
 
             if (appTaskLanguage == null)
             {
@@ -128,7 +125,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            if (!Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Create))
+            if (!await Validate (new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Create))
             {
                 return await Task.FromResult(BadRequest(errRes));
             }
@@ -154,7 +151,7 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            if (!Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Update))
+            if (!await Validate(new ValidationContext(appTaskLanguage), ActionDBTypeEnum.Update))
             {
                 return await Task.FromResult(BadRequest(errRes));
             }
@@ -175,7 +172,7 @@ namespace CSSPDBServices
         #endregion Functions public
 
         #region Functions private
-        private bool Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
+        private async Task<bool> Validate(ValidationContext validationContext, ActionDBTypeEnum actionDBType)
         {
             string retStr = "";
             AppTaskLanguage appTaskLanguage = validationContext.ObjectInstance as AppTaskLanguage;
@@ -260,7 +257,7 @@ namespace CSSPDBServices
                 }
             }
 
-            return errRes.ErrList.Count == 0 ? true : false;
+            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
         #endregion Functions private
     }

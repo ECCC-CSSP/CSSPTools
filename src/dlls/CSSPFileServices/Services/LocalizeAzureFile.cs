@@ -37,7 +37,7 @@ namespace CSSPFileServices
             ShareFileProperties shareFileProperties;
             try
             {
-                ShareClient shareClient = new ShareClient(config.AzureStore, config.AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient shareDirectoryClient = shareClient.GetDirectoryClient($"{ParentTVItemID}");
                 shareFileClient = shareDirectoryClient.GetFileClient(FileName);
                 shareFileProperties = shareFileClient.GetProperties();
@@ -49,16 +49,15 @@ namespace CSSPFileServices
                 return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.ErrorWhileTryingToGetAzureFileInfoFor_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText));
             }
 
-            FileInfo fiDownload = new FileInfo($"{config.CSSPFilesPath}{ParentTVItemID}\\{FileName}");
+            FileInfo fiDownload = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
             bool ShouldDownload = false;
 
             if (fiDownload.Exists)
             {
-                var manageFileExist = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
-                if (((ObjectResult)manageFileExist.Result).StatusCode == 200)
+                var manageFileExist = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
+                ManageFile manageFile = (ManageFile)((OkObjectResult)manageFileExist.Result).Value;
+                if (manageFile != null)
                 {
-                    ManageFile manageFile = (ManageFile)((OkObjectResult)manageFileExist.Result).Value;
-
                     if (!manageFile.LoadedOnce)
                     {
                         manageFile.LoadedOnce = true;
@@ -137,13 +136,15 @@ namespace CSSPFileServices
                     return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotLocalizeAzureFile_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText));
                 }
 
-                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(config.AzureStoreCSSPFilesPath, $"{ParentTVItemID}\\{FileName}");
-                if (((ObjectResult)actionCSSPFile.Result).StatusCode == 400)
+                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
+                ManageFile manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
+
+                if (manageFile == null)
                 {
-                    ManageFile manageFile = new ManageFile()
+                    manageFile = new ManageFile()
                     {
                         ManageFileID = 0,
-                        AzureStorage = config.AzureStoreCSSPFilesPath,
+                        AzureStorage = Configuration["AzureStoreCSSPFilesPath"],
                         AzureFileName = $"{ParentTVItemID}\\{FileName}",
                         AzureETag = shareFileProperties.ETag.ToString().Replace("\"", ""),
                         AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
@@ -166,31 +167,22 @@ namespace CSSPFileServices
                 }
                 else
                 {
-                    if (((OkObjectResult)actionCSSPFile.Result).StatusCode == 200)
+                    manageFile.AzureETag = shareFileProperties.ETag.ToString().Replace("\"", "");
+                    manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
+                    manageFile.LoadedOnce = true;
+
+                    var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
+                    if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                     {
-                        ManageFile manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
-
-                        manageFile.AzureETag = shareFileProperties.ETag.ToString().Replace("\"", "");
-                        manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
-                        manageFile.LoadedOnce = true;
-
-                        var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
-                        if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
-                        {
-                            // information got uploaded to CSSPDBManage.db Table ManageFiles properly
-                        }
-                        else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
-                        {
-                            return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
-                        }
-                        else
-                        {
-                            return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFilePut.Result).Value.ToString());
-                        }
+                        // information got uploaded to CSSPDBManage.db Table ManageFiles properly
+                    }
+                    else if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 401)
+                    {
+                        return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                     }
                     else
                     {
-                        return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFile.Result).Value.ToString());
+                        return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, ((BadRequestObjectResult)actionCSSPFilePut.Result).Value.ToString());
                     }
                 }
 

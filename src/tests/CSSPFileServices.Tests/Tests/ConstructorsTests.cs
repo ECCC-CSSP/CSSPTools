@@ -21,6 +21,7 @@ namespace CSSPFileServices.Tests
         {
             Assert.True(await CSSPFileServiceSetup(culture));
 
+            Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(CSSPFileService);
@@ -28,7 +29,18 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLogService);
             Assert.NotNull(dbManage);
-            Assert.NotNull(config);
+
+            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPath"]);
+            Assert.True(di.Exists);
+
+            di = new DirectoryInfo(Configuration["CSSPFilesPath"]);
+            Assert.True(di.Exists);
+
+            di = new DirectoryInfo(Configuration["CSSPTempFilesPath"]);
+            Assert.True(di.Exists);
+
+            di = new DirectoryInfo(Configuration["CSSPOtherFilesPath"]);
+            Assert.True(di.Exists);
         }
     }
 }

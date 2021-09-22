@@ -48,8 +48,6 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await TVItemLocalServiceSetup(culture, true));
 
-            await CreateCSSPDBLocal();
-
             int TVItemID = -1;
             int ParentTVItemID = 629;
             string TVTextEN = "New File 1";

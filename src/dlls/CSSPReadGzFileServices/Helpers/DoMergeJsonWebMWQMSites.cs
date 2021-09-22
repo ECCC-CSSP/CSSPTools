@@ -61,7 +61,7 @@ namespace ReadGzFileServices
             foreach (MWQMSiteModel mwqmSiteModel in WebMWQMSites.MWQMSiteModelList)
             {
                 // checking if files are localized
-                DirectoryInfo di = new DirectoryInfo($"{ config.CSSPFilesPath }{ mwqmSiteModel.TVItemModel.TVItem.TVItemID }\\");
+                DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ mwqmSiteModel.TVItemModel.TVItem.TVItemID }\\");
 
                 if (di.Exists)
                 {
