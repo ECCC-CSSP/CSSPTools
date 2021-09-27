@@ -30,6 +30,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -47,6 +49,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -66,6 +70,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -83,6 +89,10 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -99,6 +109,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -118,6 +130,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -135,6 +149,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -154,6 +170,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -171,6 +189,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -190,6 +210,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -207,6 +229,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -226,6 +250,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -243,6 +269,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -263,6 +291,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -281,6 +311,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -302,6 +334,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -320,6 +354,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -340,6 +376,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -358,6 +396,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -378,6 +418,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -396,6 +438,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -416,6 +460,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -434,6 +480,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -454,6 +502,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -472,6 +522,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -492,6 +544,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -510,6 +564,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -530,6 +586,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -548,6 +606,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -568,6 +628,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -586,6 +648,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -606,6 +670,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -624,6 +690,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -644,6 +712,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory(Skip = "WebTideSite does not yet have items")]
@@ -662,6 +732,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -687,6 +759,8 @@ namespace CSSPFileServices.Tests
                 ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
                 Assert.NotEmpty(errRes.ErrList);
 
+                await CSSPLogService.Save();
+
                 Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             }
         }
@@ -709,6 +783,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory(Skip = "Will need to rewrite this one")]
@@ -730,6 +806,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -749,6 +827,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

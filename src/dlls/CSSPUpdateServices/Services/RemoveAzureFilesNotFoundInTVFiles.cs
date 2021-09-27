@@ -1,36 +1,47 @@
-﻿using Azure;
-using Azure.Storage.Files.Shares;
+﻿/*
+ * Manually edited
+ * 
+ */
+using CreateGzFileServices;
 using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Azure.Storage.Files.Shares;
+using Azure;
 
 namespace CSSPUpdateServices
 {
     public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<ActionResult<bool>> DoRemoveAzureFilesNotFoundInTVFiles()
+        public async Task<ActionResult<bool>> RemoveAzureFilesNotFoundInTVFiles()
         {
-            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            CSSPLogService.FunctionLog(FunctionName);
 
-            DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
+            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"]);
             if (!di.Exists)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                await CSSPLogService.Save();
-
+                
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
@@ -57,11 +68,9 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
 
-                    CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                    await CSSPLogService.Save();
+                    CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                    
 
                     return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                 }
@@ -71,7 +80,7 @@ namespace CSSPUpdateServices
             }
 
             List<int> ParentIDList = (from c in ParentAndFileNameList
-                                      //where c.ParentID == 1
+                                          //where c.ParentID == 1
                                       orderby c.ParentID
                                       select c.ParentID).Distinct().ToList();
 
@@ -80,7 +89,7 @@ namespace CSSPUpdateServices
             total = ParentIDList.Count;
             foreach (int ParentID in ParentIDList)
             {
-                ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient directory = shareClient.GetDirectoryClient(ParentID.ToString());
 
                 count += 1;
@@ -113,27 +122,21 @@ namespace CSSPUpdateServices
 
                             Response<bool> response = file.DeleteIfExists();
 
-                            string dirFile = $@"{ AzureStoreCSSPFilesPath }\{ ParentID }\{ fileInfo.Name }";
+                            string dirFile = $@"{ Configuration["AzureStoreCSSPFilesPath"] }\{ ParentID }\{ fileInfo.Name }";
                             if (response.Value)
                             {
-                                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletedAzureFile_, dirFile) }");
+                                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletedAzureFile_, dirFile) }");
                             }
                             else
                             {
-                                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingAzureFile_, dirFile) }");
-
-                                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                                await CSSPLogService.Save();
-
-                                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.CouldNotFindFileNotDeletedAzureFile_, dirFile) }");
                             }
                         }
                     }
                 }
             }
 
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(FunctionName);            
 
             return await Task.FromResult(Ok(true));
         }

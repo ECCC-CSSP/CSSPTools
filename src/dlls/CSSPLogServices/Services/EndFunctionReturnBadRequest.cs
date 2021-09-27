@@ -25,7 +25,6 @@ namespace CSSPLogServices
         {
             AppendError(ErrorText);
             EndFunctionLog(FunctionName);
-            await Save();
 
             return await Task.FromResult(BadRequest(ErrRes));
         }

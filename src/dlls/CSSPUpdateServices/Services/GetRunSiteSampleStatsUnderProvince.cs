@@ -17,22 +17,26 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> GetRunSiteSampleStatsUnderProvince(List<TVItem> TVItemList, List<TVItem> TVItemProvList, List<TVItemStat> TVItemStat2List)
         {
+            // NOTE: before running this function you should create both GzFiles
+            // WebTypeEnum.WebMonitoringRoutineStatsProvince and WebTypeEnum.WebMonitoringOtherStatsProvince
+            //
+
             CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             foreach (TVItem tvItem in TVItemProvList)
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
+                //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
+                //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
 
                 WebMonitoringRoutineStatsProvince webMonitoringRoutineStatsProvince;
                 WebMonitoringOtherStatsProvince webMonitoringOtherStatsProvince;
 
-                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringRoutineStatsProvince_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringRoutineStatsProvince_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringRoutineStatsProvince = JsonSerializer.Deserialize<WebMonitoringRoutineStatsProvince>(srLocal.ReadToEnd());
                 }
 
-                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringOtherStatsProvince_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringOtherStatsProvince_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringOtherStatsProvince = JsonSerializer.Deserialize<WebMonitoringOtherStatsProvince>(srLocal.ReadToEnd());
                 }

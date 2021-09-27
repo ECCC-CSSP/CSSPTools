@@ -35,7 +35,7 @@ namespace CSSPWebAPIs.VersionController.Tests
 
             using (HttpClient httpClient = new HttpClient())
             {
-                string url = $"{ config.CSSPAzureUrl }Version";
+                string url = $"{ Configuration["CSSPAzureUrl"] }Version";
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();

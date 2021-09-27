@@ -16,25 +16,28 @@ namespace CSSPUpdateServices
     {
         public async Task<ActionResult<bool>> GetRunSiteSampleStatsForCountry(List<TVItemStat> TVItemStat2List)
         {
+            // NOTE: before running this function you should create both GzFiles
+            // WebTypeEnum.WebMonitoringRoutineStatsCountry and WebTypeEnum.WebMonitoringOtherStatsCountry
+            //
             CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
             foreach (TVItem tvItem in (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.Country
                                        select c).ToList())
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
+                //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
 
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
+                //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
 
                 WebMonitoringRoutineStatsCountry webMonitoringRoutineStatsCountry;
                 WebMonitoringOtherStatsCountry webMonitoringOtherStatsCountry;
 
-                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringRoutineStatsCountry_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringRoutineStatsCountry_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringRoutineStatsCountry = JsonSerializer.Deserialize<WebMonitoringRoutineStatsCountry>(srLocal.ReadToEnd());
                 }
 
-                using (StreamReader srLocal = new StreamReader($@"{azure_csspjson_backup_uncompress}WebMonitoringOtherStatsCountry_{tvItem.TVItemID}.json"))
+                using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringOtherStatsCountry_{tvItem.TVItemID}.json"))
                 {
                     webMonitoringOtherStatsCountry = JsonSerializer.Deserialize<WebMonitoringOtherStatsCountry>(srLocal.ReadToEnd());
                 }

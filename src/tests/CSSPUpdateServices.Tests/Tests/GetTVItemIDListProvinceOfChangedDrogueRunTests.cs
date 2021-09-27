@@ -14,26 +14,34 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListProvinceOfChangedDrogueRun_HasDrogueRun_Good_Test(string culture)
+        public async Task GetTVItemIDListProvinceOfChangedDrogueRun_HasDrogueRun_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_DrogueRun().AddDays(-1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> ProvinceTVItemIDList = await CSSPUpdateService.GetTVItemIDListProvinceOfChangedDrogueRun(LastUpdateDate_UTC);
             Assert.True(ProvinceTVItemIDList.Count > 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListProvinceOfChangedDrogueRun_NoDrogueRun_Good_Test(string culture)
+        public async Task GetTVItemIDListProvinceOfChangedDrogueRun_NoDrogueRun_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_DrogueRun().AddDays(1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> ProvinceTVItemIDList = await CSSPUpdateService.GetTVItemIDListProvinceOfChangedDrogueRun(LastUpdateDate_UTC);
             Assert.True(ProvinceTVItemIDList.Count == 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
 
         #region private

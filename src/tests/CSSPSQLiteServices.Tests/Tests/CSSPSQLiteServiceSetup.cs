@@ -12,6 +12,7 @@ using Xunit;
 
 namespace CSSPSQLiteServices.Tests
 {
+    [Collection("Sequential")]
     public partial class CSSPSQLiteServiceTests
     {
         #region Variables

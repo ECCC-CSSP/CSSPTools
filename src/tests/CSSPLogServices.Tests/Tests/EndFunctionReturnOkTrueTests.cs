@@ -28,6 +28,8 @@ namespace CSSPLogServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes).Value);
             Assert.True((bool)((OkObjectResult)actionRes).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
     }

@@ -27,7 +27,6 @@ namespace CSSPLogServices
             {
                 AppendError($"{ CSSPCultureServicesRes.ThisAppCanOnlyBeRunOnComputerName } { Configuration["ComputerName"] }. { CSSPCultureServicesRes.ThisComputerNameIs } { Environment.MachineName.ToString().ToLower() }");
                 EndFunctionLog(FunctionName);
-                await Save();
 
                 return await Task.FromResult(false);
             }

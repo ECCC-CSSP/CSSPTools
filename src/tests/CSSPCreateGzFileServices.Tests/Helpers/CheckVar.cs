@@ -23,12 +23,6 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
-            List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                               where c.AppName == CSSPLogService.CSSPAppName
-                                               && c.CommandName == CSSPLogService.CSSPCommandName
-                                               select c).ToList();
-
-            Assert.True(commandLogList.Count == 1);
             WriteTimeSpan(webTypeEnum);
         }
     }

@@ -9,19 +9,19 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_Constructor_Good_Test(string culture)
+        public async Task Constructor_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
+
             Assert.NotNull(CSSPCultureService);
+            Assert.NotNull(enums);
+            Assert.NotNull(CSSPLogService);
             Assert.NotNull(LoggedInService);
             Assert.NotNull(LoggedInService.LoggedInContactInfo);
             Assert.NotNull(CreateGzFileService);
-            Assert.NotNull(AzureStore);
-            Assert.NotNull(AzureStoreCSSPFilesPath);
-            Assert.NotNull(AzureStoreCSSPJSONPath);
+            Assert.NotNull(CSSPUpdateService);
             Assert.NotNull(db);
             Assert.NotNull(dbManage);
-            Assert.NotNull(CSSPUpdateService);
         }
     }
 }

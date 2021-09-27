@@ -25,6 +25,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -45,6 +47,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -67,6 +71,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory(Skip = "Will need to rewrite this one")]
@@ -88,6 +94,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -107,6 +115,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -125,6 +135,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

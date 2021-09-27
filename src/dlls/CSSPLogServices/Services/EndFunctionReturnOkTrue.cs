@@ -24,7 +24,6 @@ namespace CSSPLogServices
         public async Task<ActionResult> EndFunctionReturnOkTrue(string FunctionName)
         {
             EndFunctionLog(FunctionName);
-            await Save();
 
             return await Task.FromResult(Ok(true));
         }

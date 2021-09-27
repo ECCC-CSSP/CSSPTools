@@ -15,26 +15,34 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListSubsectorOfChangedMWQMSite_HasMWQMSite_Good_Test(string culture)
+        public async Task GetTVItemIDListSubsectorOfChangedMWQMSite_HasMWQMSite_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_MWQMSite().AddDays(-1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListSubsectorOfChangedMWQMSite(LastUpdateDate_UTC);
             Assert.True(SubsectorTVItemIDList.Count > 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListSubsectorOfChangedMWQMSite_NoMWQMSite_Good_Test(string culture)
+        public async Task GetTVItemIDListSubsectorOfChangedMWQMSite_NoMWQMSite_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_MWQMSite().AddDays(1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListSubsectorOfChangedMWQMSite(LastUpdateDate_UTC);
             Assert.True(SubsectorTVItemIDList.Count == 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
 
         #region private

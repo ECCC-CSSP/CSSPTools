@@ -71,9 +71,6 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(Configuration["APISecret"]);
             Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["AzureStore"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPLocalUrl"]);
             Assert.NotNull(Configuration["CSSPDB"]);
@@ -83,7 +80,7 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(Configuration["azure_csspjson_backup"]);
             Assert.NotNull(Configuration["CSSPDesktopPath"]);
             Assert.NotNull(Configuration["CSSPDatabasesPath"]);
-            Assert.NotNull(Configuration["CSSPWebAPIsPath"]);
+            Assert.NotNull(Configuration["CSSPWebAPIsLocalPath"]);
             Assert.NotNull(Configuration["CSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
             Assert.NotNull(Configuration["CSSPFilesPath"]);

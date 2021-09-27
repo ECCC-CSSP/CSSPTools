@@ -22,7 +22,9 @@ namespace CreateGzFileServices
 
             await DoDeleteGzFile(webType, TVItemID);
 
-            return await CSSPLogService.EndFunctionReturnOkTrue(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(true));
         }
     }
 }

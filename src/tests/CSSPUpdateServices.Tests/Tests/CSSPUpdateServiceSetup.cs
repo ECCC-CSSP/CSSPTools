@@ -12,9 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using System.Linq;
 
 namespace UpdateServices.Tests
 {
@@ -28,16 +30,13 @@ namespace UpdateServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
-        private string AzureStore { get; set; }
-        private string AzureStoreCSSPFilesPath { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
+        public ICSSPUpdateService CSSPUpdateService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-
-
-        public ICSSPUpdateService CSSPUpdateService { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -47,7 +46,7 @@ namespace UpdateServices.Tests
         #endregion Tests Generated CRUD
 
         #region Functions private
-        private async Task<bool> Setup(string culture)
+        private async Task<bool> CSSPUpdateServiceSetup(string culture)
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -59,86 +58,64 @@ namespace UpdateServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            AzureStore = Configuration.GetValue<string>("AzureStore");
-            if (string.IsNullOrEmpty(AzureStore))
-            {
-                Console.WriteLine("Error: Could not find AzureStoreCSSPJSONPath withing UserSecret");
-                return await Task.FromResult(false);
-            }
-
-            AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
-            if (string.IsNullOrEmpty(AzureStoreCSSPFilesPath))
-            {
-                Console.WriteLine("Error: Could not find AzureStoreCSSPFilesPath withing UserSecret");
-                return await Task.FromResult(false);
-            }
-
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            if (string.IsNullOrEmpty(AzureStoreCSSPJSONPath))
-            {
-                Console.WriteLine("Error: Could not find AzureStoreCSSPJsonPath withing UserSecret");
-                return await Task.FromResult(false);
-            }
+            Assert.NotNull(Configuration["azure_csspjson_backup"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup_uncompress"]);
+            Assert.NotNull(Configuration["AzureStore"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["ComputerName"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["CSSPLocalUrl"]);
+            Assert.NotNull(Configuration["CSSPDatabasesPath"]);
+            Assert.NotNull(Configuration["CSSPDesktopPath"]);
+            Assert.Contains("localhost:", Configuration["CSSPLocalUrl"]);
+            Assert.NotNull(Configuration["CSSPDB"]);
+            Assert.NotNull(Configuration["CSSPDBManage"]);
+            Assert.Contains("_test", Configuration["CSSPDBManage"]);
+            Assert.NotNull(Configuration["CSSPFilesPath"]);
+            Assert.NotNull(Configuration["CSSPJSONPath"]);
+            Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
+            Assert.NotNull(Configuration["CSSPTempFilesPath"]);
+            Assert.NotNull(Configuration["LocalAppDataPath"]);
+            Assert.NotNull(Configuration["NationalBackupAppDataPath"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+            Services.AddSingleton<ILoggedInService, LoggedInService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
-            Services.AddSingleton<ITVItemDBService, TVItemDBService>();
             Services.AddSingleton<ICSSPUpdateService, CSSPUpdateService>();
 
             /* ---------------------------------------------------------------------------------
              * CSSPDBContext
              * ---------------------------------------------------------------------------------      
              */
-            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
-            Assert.NotNull(CSSPDB);
-
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(CSSPDB);
+                options.UseSqlServer(Configuration["CSSPDB"]);
             });
 
-            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(CSSPDBManage);
-
-            string CSSPDBManageTest = CSSPDBManage.Replace(".db", "_test.db");
-
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
-
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
             Assert.True(fiCSSPDBManage.Exists);
 
-            FileInfo fiCSSPDBManageTest = new FileInfo(CSSPDBManageTest);
-            if (fiCSSPDBManageTest.Exists)
+            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
+            if (!fiCSSPDBManageTest.Exists)
             {
                 try
                 {
-                    fiCSSPDBManageTest.Delete();
+                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
                 }
                 catch (Exception ex)
                 {
-                    Assert.True(false, $"Could not delete {fiCSSPDBManageTest.FullName}");
+                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
                 }
-            }
-
-            try
-            {
-                File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
             }
 
             /* ---------------------------------------------------------------------------------
              * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
-
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
                 options.UseSqlite($"Data Source={ fiCSSPDBManageTest.FullName }");
@@ -152,11 +129,11 @@ namespace UpdateServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            db = Provider.GetService<CSSPDBContext>();
-            Assert.NotNull(db);
+            enums = Provider.GetService<IEnums>();
+            Assert.NotNull(enums);
 
-            dbManage = Provider.GetService<CSSPDBManageContext>();
-            Assert.NotNull(dbManage);
+            CSSPLogService = Provider.GetService<ICSSPLogService>();
+            Assert.NotNull(CSSPLogService);
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             Assert.NotNull(LoggedInService);
@@ -168,10 +145,41 @@ namespace UpdateServices.Tests
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);
 
-            AzureStore = LoggedInService.Descramble(AzureStore);
-
             CSSPUpdateService = Provider.GetService<ICSSPUpdateService>();
             Assert.NotNull(CSSPUpdateService);
+
+            db = Provider.GetService<CSSPDBContext>();
+            Assert.NotNull(db);
+
+            dbManage = Provider.GetService<CSSPDBManageContext>();
+            Assert.NotNull(dbManage);
+
+            List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
+                                                       select c).ToList();
+
+            try
+            {
+                dbManage.CommandLogs.RemoveRange(commandLogToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
+            }
+
+            List<ManageFile> manageFileToDeleteList = (from c in dbManage.ManageFiles
+                                                       select c).ToList();
+
+            try
+            {
+                dbManage.ManageFiles.RemoveRange(manageFileToDeleteList);
+                dbManage.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, $"Could not delete all ManageFiles from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
+            }
+
 
             return await Task.FromResult(true);
         }

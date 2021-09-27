@@ -15,26 +15,34 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetUseOfSiteListSubsectorOfChangedUseOfSite_HasUseOfSite_Good_Test(string culture)
+        public async Task GetTVItemIDListAllOfChangedUseOfSite_HasUseOfSite_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_UseOfSite().AddDays(-1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSite(LastUpdateDate_UTC);
             Assert.True(SubsectorUseOfSiteIDList.Count > 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetUseOfSiteListSubsectorOfChangedUseOfSite_NoUseOfSite_Good_Test(string culture)
+        public async Task GetTVItemIDListAllOfChangedUseOfSite_NoUseOfSite_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_UseOfSite().AddDays(1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSite(LastUpdateDate_UTC);
             Assert.True(SubsectorUseOfSiteIDList.Count == 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
 
         #region private

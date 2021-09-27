@@ -15,26 +15,34 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListMunicipalityOfChangedMikeScenario_HasMunicipality_Good_Test(string culture)
+        public async Task GetTVItemIDListMunicipalityOfChangedMikeScenario_HasMunicipality_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_MikeScenario().AddDays(-1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListMunicipalityOfChangedMikeScenario(LastUpdateDate_UTC);
             Assert.True(TVItemIDList.Count > 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListMunicipalityOfChangedMikeScenario_NoMunicipality_Good_Test(string culture)
+        public async Task GetTVItemIDListMunicipalityOfChangedMikeScenario_NoMunicipality_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_MikeScenario().AddDays(1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListMunicipalityOfChangedMikeScenario(LastUpdateDate_UTC);
             Assert.True(TVItemIDList.Count == 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
 
         #region private

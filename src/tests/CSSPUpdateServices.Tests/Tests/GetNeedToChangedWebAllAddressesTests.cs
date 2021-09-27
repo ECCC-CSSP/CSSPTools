@@ -15,26 +15,32 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetNeedToChangedWebAllAddresses_HasAddress_Good_Test(string culture)
+        public async Task GetNeedToChangedWebAllAddresses_HasAddress_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Address().AddDays(-1);
 
-            bool exist = await CSSPUpdateService.GetNeedToChangedWebAllAddresses(LastUpdateDate_UTC);
-            Assert.True(exist);
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPUpdateService.GetNeedToChangedWebAllAddresses(LastUpdateDate_UTC));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetNeedToChangedWebAllAddresses_NoAddress_Good_Test(string culture)
+        public async Task GetNeedToChangedWebAllAddresses_NoAddress_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Address().AddDays(1);
 
-            bool exist = await CSSPUpdateService.GetNeedToChangedWebAllAddresses(LastUpdateDate_UTC);
-            Assert.False(exist);
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.False(await CSSPUpdateService.GetNeedToChangedWebAllAddresses(LastUpdateDate_UTC));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
 
         #region private

@@ -50,7 +50,6 @@ namespace CSSPFileServices
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(new LocalFileInfo() { FileName = FileName, Length = shareFileProperties.ContentLength }));
         }

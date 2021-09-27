@@ -42,7 +42,6 @@ namespace CSSPCultureServices.Services
             CSSPCultureModelsRes.Culture = new CultureInfo(culture);
             CSSPCulturePolSourcesRes.Culture = new CultureInfo(culture);
             CSSPCultureServicesRes.Culture = new CultureInfo(culture);
-            CSSPCultureUpdateRes.Culture = new CultureInfo(culture);
         }
     }
 }

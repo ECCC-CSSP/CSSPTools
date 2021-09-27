@@ -135,7 +135,9 @@ namespace CreateGzFileServices
                     return await Task.FromResult(BadRequest(string.Format(CSSPCultureServicesRes._NotImplementedYet, $"{ webType }")));
             }
 
-            return await CSSPLogService.EndFunctionReturnOkTrue(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(true));
         }
     }
 }

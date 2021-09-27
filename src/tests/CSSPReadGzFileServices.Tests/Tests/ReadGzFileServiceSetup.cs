@@ -56,12 +56,8 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(Configuration["APISecret"]);
             Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["AzureStore"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
-            Assert.EndsWith("test", Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
             Assert.EndsWith("test", Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
-            Assert.EndsWith("test", Configuration["AzureStoreCSSPWebAPIsPath"]);
             Assert.NotNull(Configuration["ComputerName"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);
@@ -76,7 +72,7 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
             Assert.NotNull(Configuration["CSSPTempFilesPath"]);
-            Assert.NotNull(Configuration["CSSPWebAPIsPath"]);
+            Assert.NotNull(Configuration["CSSPWebAPIsLocalPath"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

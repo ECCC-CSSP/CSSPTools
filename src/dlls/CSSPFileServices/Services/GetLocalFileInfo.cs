@@ -41,7 +41,6 @@ namespace CSSPFileServices
             LocalFileInfo localFileInfo = new LocalFileInfo() { ParentTVItemID = ParentTVItemID, FileName = fi.Name, Length = fi.Length / 1024 };
 
             CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(localFileInfo));
         }

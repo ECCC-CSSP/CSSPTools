@@ -1,9 +1,9 @@
 ﻿using CreateGzFileServices;
+using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using CSSPDBServices;
 using CSSPEnums;
-using CSSPHelperServices;
+using CSSPLogServices;
 using CSSPUpdateServices;
 using LoggedInServices;
 using ManageServices;
@@ -12,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CSSPUpdate
@@ -23,21 +22,17 @@ namespace CSSPUpdate
         #endregion Variables
 
         #region Properties
-
+        public ICSSPUpdateService CSSPUpdateService { get; set; }
 
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
+        private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
         private ILoggedInService LoggedInService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
-        private string AzureStore { get; set; }
-        private string AzureStoreCSSPFilesPath { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
         private CSSPDBContext db { get; set; }
-       
-        
-        public ICSSPUpdateService CSSPUpdateService { get; set; }
-
         #endregion Properties
 
         #region Constructors
@@ -59,51 +54,34 @@ namespace CSSPUpdate
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            AzureStore = Configuration.GetValue<string>("AzureStore");
-            if (string.IsNullOrEmpty(AzureStore))
-            {
-                Console.WriteLine("Error: Could not find AzureStoreCSSPJSONPath withing UserSecret");
-                return await Task.FromResult(false);
-            }
-
-            AzureStoreCSSPFilesPath = Configuration.GetValue<string>("AzureStoreCSSPFilesPath");
-            if (string.IsNullOrEmpty(AzureStoreCSSPFilesPath))
-            {
-                Console.WriteLine("Error: Could not find AzureStoreCSSPFilesPath withing UserSecret");
-                return await Task.FromResult(false);
-            }
-
-            AzureStoreCSSPJSONPath = Configuration.GetValue<string>("AzureStoreCSSPJSONPath");
-            if (string.IsNullOrEmpty(AzureStoreCSSPJSONPath))
-            {
-                Console.WriteLine("Error: Could not find AzureStoreCSSPJsonPath withing UserSecret");
-                return await Task.FromResult(false);
-            }
+            if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup_uncompress"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup_uncompress", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPFilesPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPLocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPLocalUrl", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["LocalAppDataPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "LocalAppDataPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["NationalBackupAppDataPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "NationalBackupAppDataPath", "CreateGzFileService") }");
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-            Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
-            Services.AddSingleton<ITVItemDBService, TVItemDBService>();
             Services.AddSingleton<ICSSPUpdateService, CSSPUpdateService>();
 
             /* ---------------------------------------------------------------------------------
            * CSSPDBContext
            * ---------------------------------------------------------------------------------      
            */
-            string CSSPDB = Configuration.GetValue<string>("CSSPDB");
-            if (string.IsNullOrWhiteSpace(CSSPDB))
-            {
-                Console.WriteLine("Error: Could not read CSSPDB");
-                return await Task.FromResult(false);
-            }
-
             Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(CSSPDB);
+                options.UseSqlServer(Configuration["CSSPDB"]);
             });
 
             /* ---------------------------------------------------------------------------------
@@ -111,17 +89,10 @@ namespace CSSPUpdate
              * ---------------------------------------------------------------------------------      
              */
 
-            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            if (string.IsNullOrWhiteSpace(CSSPDBManage))
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+            if (!fiCSSPDBManage.Exists)
             {
-                Console.WriteLine("Error: Could not read CSSPDBManage");
-                return await Task.FromResult(false);
-            }
-
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
-            if(!fiCSSPDBManage.Exists)
-            {
-                Console.WriteLine($"Error: file does not exist: { fiCSSPDBManage.FullName }");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes.FileNotFound_, fiCSSPDBManage.FullName) }");
                 return await Task.FromResult(false);
             }
 
@@ -133,47 +104,68 @@ namespace CSSPUpdate
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
             {
-                Console.WriteLine("Provider should not be null");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Provider") }");
                 return await Task.FromResult(false);
             }
 
             db = Provider.GetService<CSSPDBContext>();
             if (db == null)
             {
-                Console.WriteLine("Error: db should not be null");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
                 return await Task.FromResult(false);
             }
+
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            if (CSSPCultureService == null)
+            {
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
+                return await Task.FromResult(false);
+            }
+
+            enums = Provider.GetService<IEnums>();
+            if (enums == null)
+            {
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
+                return await Task.FromResult(false);
+            }
+
+            CSSPLogService = Provider.GetService<ICSSPLogService>();
+            if (CSSPLogService == null)
+            {
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService ") }");
+                return await Task.FromResult(false);
+            }
+
+            CSSPLogService.CSSPAppName = "CSSPUpdate";
+            CSSPLogService.CSSPCommandName = "Unknown";
 
             LoggedInService = Provider.GetService<ILoggedInService>();
             if (LoggedInService == null)
             {
-                Console.WriteLine("LoggedInService should not be null");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
                 return await Task.FromResult(false);
             }
 
             await LoggedInService.SetLoggedInLocalContactInfo();
             if (LoggedInService.LoggedInContactInfo == null)
             {
-                Console.WriteLine("LoggedInService.LoggedInContactInfo should not be null");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService.LoggedInContactInfo") }");
                 return await Task.FromResult(false);
             }
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             if (CreateGzFileService == null)
             {
-                Console.WriteLine("CreateGzFileService should not be null");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CreateGzFileService") }");
                 return await Task.FromResult(false);
             }
-
-            AzureStore = LoggedInService.Descramble(AzureStore);
 
             CSSPUpdateService = Provider.GetService<ICSSPUpdateService>();
             if (CSSPUpdateService == null)
             {
-                Console.WriteLine("CreateGzFileService should not be null");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPUpdateService") }");
                 return await Task.FromResult(false);
             }
-
 
             return await Task.FromResult(true);
         }

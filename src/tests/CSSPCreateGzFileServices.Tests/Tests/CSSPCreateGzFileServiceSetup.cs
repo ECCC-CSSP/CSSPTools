@@ -51,19 +51,13 @@ namespace CreateGzFileServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            Assert.NotNull(Configuration["APISecret"]);
             Assert.NotNull(Configuration["azure_csspjson_backup"]);
             Assert.Contains("_test", Configuration["azure_csspjson_backup"]);
             Assert.NotNull(Configuration["azure_csspjson_backup_uncompress"]);
             Assert.Contains("_test", Configuration["azure_csspjson_backup_uncompress"]);
-            Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["AzureStore"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
-            Assert.EndsWith("test", Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
             Assert.EndsWith("test", Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
-            Assert.EndsWith("test", Configuration["AzureStoreCSSPWebAPIsPath"]);
             Assert.NotNull(Configuration["ComputerName"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);

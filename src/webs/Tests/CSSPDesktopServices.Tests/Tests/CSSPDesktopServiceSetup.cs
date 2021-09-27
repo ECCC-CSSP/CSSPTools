@@ -70,7 +70,6 @@ namespace CSSPDesktopServices.Tests
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            //Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPDatabasesPath"]);
@@ -84,7 +83,6 @@ namespace CSSPDesktopServices.Tests
             Assert.NotNull(Configuration["CSSPLocalUrl"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
             Assert.NotNull(Configuration["CSSPTempFilesPath"]);
-            //Assert.NotNull(Configuration["CSSPWebAPIsPath"]);
             Assert.NotNull(Configuration["CSSPWebAPIsLocalPath"]);
 
             /* ---------------------------------------------------------------------------------

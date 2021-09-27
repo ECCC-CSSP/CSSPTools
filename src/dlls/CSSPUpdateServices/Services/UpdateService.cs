@@ -3,6 +3,7 @@
  * 
  */
 using CreateGzFileServices;
+using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
@@ -20,6 +21,7 @@ namespace CSSPUpdateServices
 {
     public interface ICSSPUpdateService
     {
+        Task<bool> RunCommand(string[] args);
         Task<ActionResult<bool>> ClearOldUnnecessaryStats();
         Task<ActionResult<bool>> RemoveAzureDirectoriesNotFoundInTVFiles();
         Task<ActionResult<bool>> RemoveAzureFilesNotFoundInTVFiles();
@@ -30,11 +32,11 @@ namespace CSSPUpdateServices
         Task<ActionResult<bool>> RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
         Task<ActionResult<bool>> RemoveTVItemsNoAssociatedWithTVFiles();
         Task<ActionResult<bool>> UpdateAllTVItemStats();
-        Task<ActionResult<bool>> UpdateChangedTVItemStats();
+        Task<ActionResult<bool>> UpdateChangedTVItemStats(DateTime UpdateFromDate);
         Task<ActionResult<bool>> UploadAllFilesToAzure();
         Task<ActionResult<bool>> UploadAllJsonFilesToAzure();
-        Task<ActionResult<bool>> UploadChangedFilesToAzure();
-        Task<ActionResult<bool>> UploadChangedJsonFilesToAzure();
+        Task<ActionResult<bool>> UploadChangedFilesToAzure(DateTime UpdateFromDate);
+        Task<ActionResult<bool>> UploadChangedJsonFilesToAzure(DateTime UpdateFromDate);
 
         Task<bool> GetNeedToChangedWebAllAddresses(DateTime LastWriteTimeUtc);
         Task<bool> GetNeedToChangedWebAllContacts(DateTime LastWriteTimeUtc);
@@ -91,109 +93,53 @@ namespace CSSPUpdateServices
         private IConfiguration Configuration { get; }
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; }
+        private IEnums enums { get; }
         private ILoggedInService LoggedInService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private ICreateGzFileService CreateGzFileService { get; set; }
-        private string AzureStore { get; set; }
-        private string AzureStoreCSSPFilesPath { get; set; }
-        private string AzureStoreCSSPJSONPath { get; set; }
-        private string CSSPAzureUrl { get; set; }
-        private string CSSPFilesPath { get; set; }
-        private string CSSPJSONPath { get; set; }
-        private string CSSPJSONPathLocal { get; set; }
-        private string LocalAppDataPath { get; set; }
-        private string NationalBackupAppDataPath { get; set; }
-        private string ComputerName { get; set; }
-        private string azure_csspjson_backup_uncompress { get; set; }
-        private string azure_csspjson_backup { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
+        private DateTime UpdateFromDate { get; set; }
+
         #endregion Properties
 
         #region Constructors
-        public CSSPUpdateService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
-            CSSPDBContext db, CSSPDBManageContext dbManage, ICSSPLogService CSSPLogService, ICreateGzFileService CreateGzFileService)
+        public CSSPUpdateService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, 
+            ICSSPLogService CSSPLogService, ICreateGzFileService CreateGzFileService, CSSPDBContext db, CSSPDBManageContext dbManage)
         {
+            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+            if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
+            if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
+            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
+            if (CreateGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CreateGzFileService") }");
+            if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
+            if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
+
+            if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup_uncompress"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup_uncompress", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPFilesPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPLocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPLocalUrl", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["LocalAppDataPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "LocalAppDataPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["NationalBackupAppDataPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "NationalBackupAppDataPath", "CreateGzFileService") }");
+
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
+            this.enums = enums;
             this.LoggedInService = LoggedInService;
-            this.db = db;
-            this.dbManage = dbManage;
             this.CSSPLogService = CSSPLogService;
             this.CreateGzFileService = CreateGzFileService;
-
-            if (!ReadConfiguration().GetAwaiter().GetResult())
-            {
-                return;
-            }
+            this.db = db;
+            this.dbManage = dbManage;
         }
         #endregion Constructors
 
-        #region Functions public
-        public async Task<ActionResult<bool>> ClearOldUnnecessaryStats()
-        {
-            return await DoClearOldUnnecessaryStats();
-        }
-        public async Task<ActionResult<bool>> RemoveAzureDirectoriesNotFoundInTVFiles()
-        {
-            return await DoRemoveAzureDirectoriesNotFoundInTVFiles();
-        }
-        public async Task<ActionResult<bool>> RemoveAzureFilesNotFoundInTVFiles()
-        {
-            return await DoRemoveAzureFilesNotFoundInTVFiles();
-        }
-        public async Task<ActionResult<bool>> RemoveLocalDirectoriesNotFoundInTVFiles()
-        {
-            return await DoRemoveLocalDirectoriesNotFoundInTVFiles();
-        }
-        public async Task<ActionResult<bool>> RemoveLocalFilesNotFoundInTVFiles()
-        {
-            return await DoRemoveLocalFilesNotFoundInTVFiles();
-        }
-        public async Task<ActionResult<bool>> RemoveNationalBackupDirectoriesNotFoundInTVFiles()
-        {
-            return await DoRemoveNationalBackupDirectoriesNotFoundInTVFiles();
-        }
-        public async Task<ActionResult<bool>> RemoveNationalBackupFilesNotFoundInTVFiles()
-        {
-            return await DoRemoveNationalBackupFilesNotFoundInTVFiles();
-        }
-        public async Task<ActionResult<bool>> RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile()
-        {
-            return await DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
-        }
-        public async Task<ActionResult<bool>> RemoveTVItemsNoAssociatedWithTVFiles()
-        {
-            return await DoRemoveTVItemsNoAssociatedWithTVFiles();
-        }
-        public async Task<ActionResult<bool>> UpdateAllTVItemStats()
-        {
-            return await DoUpdateAllTVItemStats();
-        }
-        public async Task<ActionResult<bool>> UpdateChangedTVItemStats()
-        {
-            return await DoUpdateChangedTVItemStats();
-        }
-        public async Task<ActionResult<bool>> UploadAllFilesToAzure()
-        {
-            return await DoUploadAllFilesToAzure();
-        }
-        public async Task<ActionResult<bool>> UploadAllJsonFilesToAzure()
-        {
-            return await DoUploadAllJsonFilesToAzure();
-        }
-        public async Task<ActionResult<bool>> UploadChangedFilesToAzure()
-        {
-            return await DoUploadChangedFilesToAzure();
-        }
-        public async Task<ActionResult<bool>> UploadChangedJsonFilesToAzure()
-        {
-            return await DoUploadChangedJsonFilesToAzure();
-        }
-
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
     }
 }

@@ -26,7 +26,9 @@ namespace CSSPLogServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            
+
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
     }

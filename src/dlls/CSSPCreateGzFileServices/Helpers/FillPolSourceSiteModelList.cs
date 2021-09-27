@@ -90,13 +90,16 @@ namespace CreateGzFileServices
 
                 polSourceSiteModel.PolSourceSite = PolSourceSiteList.Where(c => c.PolSourceSiteTVItemID == tvItem.TVItemID).FirstOrDefault();
 
-                foreach (PolSourceObservation PolSourceObservation in PolSourceObservationList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSite.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local))
+                if (polSourceSiteModel.PolSourceSite != null)
                 {
-                    PolSourceObservationModel polSourceObservationModel = new PolSourceObservationModel();
-                    polSourceObservationModel.PolSourceObservation = PolSourceObservation;
-                    polSourceObservationModel.PolSourceObservationIssueList = PolSourceObservationIssueList.Where(c => c.PolSourceObservationID == PolSourceObservation.PolSourceObservationID).ToList();
+                    foreach (PolSourceObservation PolSourceObservation in PolSourceObservationList.Where(c => c.PolSourceSiteID == polSourceSiteModel.PolSourceSite.PolSourceSiteID).OrderByDescending(c => c.ObservationDate_Local))
+                    {
+                        PolSourceObservationModel polSourceObservationModel = new PolSourceObservationModel();
+                        polSourceObservationModel.PolSourceObservation = PolSourceObservation;
+                        polSourceObservationModel.PolSourceObservationIssueList = PolSourceObservationIssueList.Where(c => c.PolSourceObservationID == PolSourceObservation.PolSourceObservationID).ToList();
 
-                    polSourceSiteModel.PolSourceObservationModelList.Add(polSourceObservationModel);
+                        polSourceSiteModel.PolSourceObservationModelList.Add(polSourceObservationModel);
+                    }
                 }
 
                 polSourceSiteModel.PolSourceSiteEffectList = PolSourceSiteEffectList.Where(c => c.PolSourceSiteOrInfrastructureTVItemID == tvItem.TVItemID).ToList();

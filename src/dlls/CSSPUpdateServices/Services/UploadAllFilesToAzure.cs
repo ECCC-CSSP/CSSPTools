@@ -1,29 +1,44 @@
-﻿using Azure;
-using Azure.Storage.Files.Shares;
-using Azure.Storage.Files.Shares.Models;
-using CSSPCultureServices.Resources;
+﻿/*
+ * Manually edited
+ * 
+ */
+using CreateGzFileServices;
+using CSSPCultureServices.Services;
+using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.IO;
+using Azure.Storage.Files.Shares;
+using CSSPCultureServices.Resources;
+using Azure;
+using Azure.Storage.Files.Shares.Models;
 
 namespace CSSPUpdateServices
 {
     public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<ActionResult<bool>> DoUploadAllFilesToAzure()
+        public async Task<ActionResult<bool>> UploadAllFilesToAzure()
         {
-            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             int CountFileTotal = 0;
             int CountFileUploaded = 0;
 
-            DirectoryInfo di = new DirectoryInfo(LocalAppDataPath);
+            DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"]);
 
             List<DirectoryInfo> diList = di.GetDirectories().ToList().Skip(0).Take(10000).ToList();
 
@@ -33,7 +48,7 @@ namespace CSSPUpdateServices
                 count += 1;
                 Console.WriteLine($"{ count } --- { d.FullName }");
 
-                ShareClient shareClient = new ShareClient(AzureStore, AzureStoreCSSPFilesPath);
+                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient directory = shareClient.GetDirectoryClient(d.Name);
 
                 if (!directory.Exists())
@@ -44,11 +59,10 @@ namespace CSSPUpdateServices
                     }
                     catch (Exception ex)
                     {
-                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
+                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotCreateDirectory_Error_, d.FullName, ex.Message) }");
 
                         CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                        await CSSPLogService.Save();
+                        
 
                         return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                     }
@@ -90,17 +104,16 @@ namespace CSSPUpdateServices
                                     file.Upload(stream);
 
                                     CountFileUploaded += 1;
-                                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
+                                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.UploadedCount_AndFile_, CountFileUploaded, fi.FullName) }");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotUploadFile_Error_, d.FullName, ex.Message) }");
 
                             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                            await CSSPLogService.Save();
+                            
 
                             return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                         }
@@ -108,7 +121,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(FunctionName);            
 
             return await Task.FromResult(Ok(true));
         }

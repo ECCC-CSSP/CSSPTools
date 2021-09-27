@@ -48,7 +48,6 @@ namespace CSSPFileServices
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
 
             return await Task.FromResult(Ok(LocalFileList));
         }

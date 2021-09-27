@@ -10,113 +10,23 @@ namespace CSSPUpdate
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
             Startup startup = new Startup();
 
-            if (!await startup.Setup()) return;
-
-            Console.WriteLine($"{CSSPCultureUpdateRes.RunningCSSPUpdate} ...");
-
-            List<string> AllowableCSSPCommandNameList = new List<string>()
+            if (!await startup.Setup())
             {
-                "ClearOldUnnecessaryStats",
-                "RemoveAzureDirectoriesNotFoundInTVFiles",
-                "RemoveAzureFilesNotFoundInTVFiles",
-                "RemoveLocalDirectoriesNotFoundInTVFiles",
-                "RemoveLocalFilesNotFoundInTVFiles",
-                "RemoveNationalBackupDirectoriesNotFoundInTVFiles",
-                "RemoveNationalBackupFilesNotFoundInTVFiles",
-                "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile",
-                "RemoveTVItemsNoAssociatedWithTVFiles",
-                "UpdateAllTVItemStats",
-                "UpdateChangedTVItemStats",
-                "UploadAllFilesToAzure",
-                "UploadAllJsonFilesToAzure",
-                "UploadChangedFilesToAzure",
-                "UploadChangedJsonFilesToAzure",
-            };
-
-            if (args.Count() != 1)
-            {
-                Console.WriteLine($"{CSSPCultureUpdateRes.AllowableCommandsAre}:");
-                foreach (string CSSPCommandName in AllowableCSSPCommandNameList)
-                {
-                    Console.WriteLine($"CSSPUpdate.exe {CSSPCommandName}");
-                }
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes.Error_, "CSSPUpdate - startup.Setup") }");
+                return await Task.FromResult(1);
             }
-            else
+
+            if (!await startup.CSSPUpdateService.RunCommand(args))
             {
-                string CSSPCommandName = "Unknown";
-
-                foreach (string CSSPCommandNameToFind in AllowableCSSPCommandNameList)
-                {
-                    if (args[0] == CSSPCommandNameToFind.ToString())
-                    {
-                        CSSPCommandName = CSSPCommandNameToFind;
-                        break;
-                    }
-                }
-                 
-                switch (CSSPCommandName)
-                {
-                    case "ClearOldUnnecessaryStats":
-                        await startup.CSSPUpdateService.ClearOldUnnecessaryStats();
-                        break;
-                    case "RemoveAzureDirectoriesNotFoundInTVFiles":
-                        await startup.CSSPUpdateService.RemoveAzureDirectoriesNotFoundInTVFiles();
-                        break;
-                    case "RemoveAzureFilesNotFoundInTVFiles":
-                        await startup.CSSPUpdateService.RemoveAzureFilesNotFoundInTVFiles();
-                        break;
-                    case "RemoveLocalDirectoriesNotFoundInTVFiles":
-                        await startup.CSSPUpdateService.RemoveLocalDirectoriesNotFoundInTVFiles();
-                        break;
-                    case "RemoveLocalFilesNotFoundInTVFiles":
-                        await startup.CSSPUpdateService.RemoveLocalFilesNotFoundInTVFiles();
-                        break;
-                    case "RemoveNationalBackupDirectoriesNotFoundInTVFiles":
-                        await startup.CSSPUpdateService.RemoveNationalBackupDirectoriesNotFoundInTVFiles();
-                        break;
-                    case "RemoveNationalBackupFilesNotFoundInTVFiles":
-                        await startup.CSSPUpdateService.RemoveNationalBackupFilesNotFoundInTVFiles();
-                        break;
-                    case "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile":
-                        await startup.CSSPUpdateService.RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile();
-                        break;
-                    case "RemoveTVItemsNoAssociatedWithTVFiles":
-                        await startup.CSSPUpdateService.RemoveTVItemsNoAssociatedWithTVFiles();
-                        break;
-                    case "UpdateAllTVItemStats":
-                        await startup.CSSPUpdateService.UpdateAllTVItemStats();
-                        break;
-                    case "UpdateChangedTVItemStats":
-                        await startup.CSSPUpdateService.UpdateChangedTVItemStats();
-                        break;
-                    case "UploadAllFilesToAzure":
-                        await startup.CSSPUpdateService.UploadAllFilesToAzure();
-                        break;
-                    case "UploadAllJsonFilesToAzure":
-                        await startup.CSSPUpdateService.UploadAllJsonFilesToAzure();
-                        break;
-                    case "UploadChangedFilesToAzure":
-                        await startup.CSSPUpdateService.UploadChangedFilesToAzure();
-                        break;
-                    case "UploadChangedJsonFilesToAzure":
-                        await startup.CSSPUpdateService.UploadChangedJsonFilesToAzure();
-                        break;
-                    default:
-                        {
-                            Console.WriteLine($"{CSSPCultureUpdateRes.AllowableCommandsAre}:");
-                            foreach (string CSSPCommandNameItem in AllowableCSSPCommandNameList)
-                            {
-                                Console.WriteLine($"CSSPUpdate.exe {CSSPCommandNameItem}");
-                            }
-                        }
-                        break;
-
-                }
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes.Error_, "CSSPUpdate - startup.CSSPUpdateService.RunCommand") }");
+                return await Task.FromResult(1);
             }
+
+            return await Task.FromResult(0);
         }
     }
 }

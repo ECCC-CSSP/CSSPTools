@@ -1,35 +1,44 @@
-﻿using Azure;
-using Azure.Storage.Files.Shares;
+﻿/*
+ * Manually edited
+ * 
+ */
+using CreateGzFileServices;
 using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSSPUpdateServices
 {
     public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<ActionResult<bool>> DoRemoveNationalBackupFilesNotFoundInTVFiles()
+        public async Task<ActionResult<bool>> RemoveNationalBackupFilesNotFoundInTVFiles()
         {
-            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            CSSPLogService.FunctionLog(FunctionName);
 
-            DirectoryInfo diNat = new DirectoryInfo(NationalBackupAppDataPath);
+            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            DirectoryInfo diNat = new DirectoryInfo(Configuration["NationalBackupAppDataPath"]);
             if (!diNat.Exists)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, diNat.FullName) }");
 
-                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                await CSSPLogService.Save();
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
@@ -57,11 +66,9 @@ namespace CSSPUpdateServices
                 TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvItem == null)
                 {
-                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
+                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
 
-                    CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                    await CSSPLogService.Save();
+                    CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                    
 
                     return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                 }
@@ -71,7 +78,7 @@ namespace CSSPUpdateServices
             }
 
             List<int> ParentIDList = (from c in ParentAndFileNameList
-                                      //where c.ParentID == 1
+                                          //where c.ParentID == 1
                                       orderby c.ParentID
                                       select c.ParentID).Distinct().ToList();
 
@@ -104,7 +111,7 @@ namespace CSSPUpdateServices
                     {
                         string DirNat = $@"{ParentID}\{fileInfoNat.Name}";
 
-                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DeletingNationalFile_, DirNat) }");
+                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingNationalFile_, DirNat) }");
 
                         try
                         {
@@ -112,11 +119,9 @@ namespace CSSPUpdateServices
                         }
                         catch (Exception ex)
                         {
-                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorDeletingNationalFile_Error_, DirNat, ex.Message) }");
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalFile_Error_, DirNat, ex.Message) }");
 
-                            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                            await CSSPLogService.Save();
+                            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                            
 
                             return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                         }
@@ -124,7 +129,7 @@ namespace CSSPUpdateServices
                 }
             }
 
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(FunctionName);            
 
             return await Task.FromResult(Ok(true));
         }

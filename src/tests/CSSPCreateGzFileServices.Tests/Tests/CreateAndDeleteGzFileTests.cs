@@ -29,6 +29,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllAddresses);
             CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -39,6 +41,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllAddresses);
             CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -48,6 +52,8 @@ namespace CreateGzFileServices.Tests
             SetVar(WebTypeEnum.WebAllAddresses);
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllAddresses);
             CheckVar(actionRes, WebTypeEnum.WebAllAddresses);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -64,6 +70,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllContacts);
             CheckVar(actionRes, WebTypeEnum.WebAllContacts);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -74,6 +82,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllContacts);
             CheckVar(actionRes, WebTypeEnum.WebAllContacts);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -84,6 +94,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllContacts);
             CheckVar(actionRes, WebTypeEnum.WebAllContacts);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -99,6 +111,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllCountries);
             CheckVar(actionRes, WebTypeEnum.WebAllCountries);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -109,6 +123,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllCountries);
             CheckVar(actionRes, WebTypeEnum.WebAllCountries);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -119,6 +135,7 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllCountries);
             CheckVar(actionRes, WebTypeEnum.WebAllCountries);
 
+            await CSSPLogService.Save();
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -134,6 +151,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllEmails);
             CheckVar(actionRes, WebTypeEnum.WebAllEmails);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -144,6 +163,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllEmails);
             CheckVar(actionRes, WebTypeEnum.WebAllEmails);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -154,6 +175,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllEmails);
             CheckVar(actionRes, WebTypeEnum.WebAllEmails);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -169,6 +192,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllHelpDocs);
             CheckVar(actionRes, WebTypeEnum.WebAllHelpDocs);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -179,6 +204,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllHelpDocs);
             CheckVar(actionRes, WebTypeEnum.WebAllHelpDocs);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -189,6 +216,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllHelpDocs);
             CheckVar(actionRes, WebTypeEnum.WebAllHelpDocs);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -204,6 +233,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMunicipalities);
             CheckVar(actionRes, WebTypeEnum.WebAllMunicipalities);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -214,6 +245,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllMunicipalities);
             CheckVar(actionRes, WebTypeEnum.WebAllMunicipalities);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -223,7 +256,9 @@ namespace CreateGzFileServices.Tests
             SetVar(WebTypeEnum.WebAllMunicipalities);
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMunicipalities);
             CheckVar(actionRes, WebTypeEnum.WebAllMunicipalities);
-        
+
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());      
         }
         [Theory]
@@ -239,6 +274,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs);
             CheckVar(actionRes, WebTypeEnum.WebAllMWQMLookupMPNs);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -249,6 +286,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllMWQMLookupMPNs);
             CheckVar(actionRes, WebTypeEnum.WebAllMWQMLookupMPNs);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -258,7 +297,9 @@ namespace CreateGzFileServices.Tests
             SetVar(WebTypeEnum.WebAllMWQMLookupMPNs);
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs);
             CheckVar(actionRes, WebTypeEnum.WebAllMWQMLookupMPNs);
-        
+
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -274,6 +315,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings);
             CheckVar(actionRes, WebTypeEnum.WebAllPolSourceGroupings);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -284,6 +327,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllPolSourceGroupings);
             CheckVar(actionRes, WebTypeEnum.WebAllPolSourceGroupings);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -294,6 +339,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings);
             CheckVar(actionRes, WebTypeEnum.WebAllPolSourceGroupings);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -309,6 +356,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms);
             CheckVar(actionRes, WebTypeEnum.WebAllPolSourceSiteEffectTerms);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -319,6 +368,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms);
             CheckVar(actionRes, WebTypeEnum.WebAllPolSourceSiteEffectTerms);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -329,6 +380,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms);
             CheckVar(actionRes, WebTypeEnum.WebAllPolSourceSiteEffectTerms);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -344,6 +397,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllProvinces);
             CheckVar(actionRes, WebTypeEnum.WebAllProvinces);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -354,6 +409,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllProvinces);
             CheckVar(actionRes, WebTypeEnum.WebAllProvinces);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -364,6 +421,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllProvinces);
             CheckVar(actionRes, WebTypeEnum.WebAllProvinces);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -379,6 +438,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllReportTypes);
             CheckVar(actionRes, WebTypeEnum.WebAllReportTypes);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -389,6 +450,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllReportTypes);
             CheckVar(actionRes, WebTypeEnum.WebAllReportTypes);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -399,6 +462,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllReportTypes);
             CheckVar(actionRes, WebTypeEnum.WebAllReportTypes);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -414,6 +479,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTels);
             CheckVar(actionRes, WebTypeEnum.WebAllTels);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -424,6 +491,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllTels);
             CheckVar(actionRes, WebTypeEnum.WebAllTels);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -433,7 +502,9 @@ namespace CreateGzFileServices.Tests
             SetVar(WebTypeEnum.WebAllTels);
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTels);
             CheckVar(actionRes, WebTypeEnum.WebAllTels);
-        
+
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -449,6 +520,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTideLocations);
             CheckVar(actionRes, WebTypeEnum.WebAllTideLocations);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -459,6 +532,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllTideLocations);
             CheckVar(actionRes, WebTypeEnum.WebAllTideLocations);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -468,6 +543,8 @@ namespace CreateGzFileServices.Tests
             SetVar(WebTypeEnum.WebAllTideLocations);
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTideLocations);
             CheckVar(actionRes, WebTypeEnum.WebAllTideLocations);
+
+            await CSSPLogService.Save();
             
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
@@ -484,6 +561,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebArea, 629);
             CheckVar(actionRes, WebTypeEnum.WebArea);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -494,6 +573,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebArea, 629);
             CheckVar(actionRes, WebTypeEnum.WebArea);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -504,6 +585,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebArea, 629);
             CheckVar(actionRes, WebTypeEnum.WebArea);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -519,6 +602,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebClimateSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebClimateSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -529,6 +614,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebClimateSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebClimateSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -539,6 +626,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebClimateSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebClimateSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -554,6 +643,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -564,6 +655,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -574,6 +667,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -589,6 +684,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebDrogueRuns, 7);
             CheckVar(actionRes, WebTypeEnum.WebDrogueRuns);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -599,6 +696,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebDrogueRuns, 7);
             CheckVar(actionRes, WebTypeEnum.WebDrogueRuns);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -609,6 +708,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebDrogueRuns, 7);
             CheckVar(actionRes, WebTypeEnum.WebDrogueRuns);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -624,6 +725,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebHydrometricSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebHydrometricSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -634,6 +737,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebHydrometricSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebHydrometricSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -644,6 +749,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebHydrometricSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebHydrometricSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -659,6 +766,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebLabSheets, 635);
             CheckVar(actionRes, WebTypeEnum.WebLabSheets);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -669,6 +778,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebLabSheets, 635);
             CheckVar(actionRes, WebTypeEnum.WebLabSheets);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -679,6 +790,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebLabSheets, 635);
             CheckVar(actionRes, WebTypeEnum.WebLabSheets);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -694,6 +807,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMikeScenarios, 27764);
             CheckVar(actionRes, WebTypeEnum.WebMikeScenarios);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -704,6 +819,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMikeScenarios, 27764);
             CheckVar(actionRes, WebTypeEnum.WebMikeScenarios);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -714,6 +831,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMikeScenarios, 27764);
             CheckVar(actionRes, WebTypeEnum.WebMikeScenarios);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -729,6 +848,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMunicipality, 27764);
             CheckVar(actionRes, WebTypeEnum.WebMunicipality);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -739,6 +860,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMunicipality, 27764);
             CheckVar(actionRes, WebTypeEnum.WebMunicipality);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -749,6 +872,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMunicipality, 27764);
             CheckVar(actionRes, WebTypeEnum.WebMunicipality);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -764,6 +889,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMRuns, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMRuns);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -774,6 +901,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMWQMRuns, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMRuns);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -784,6 +913,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMRuns, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMRuns);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -799,6 +930,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSamples1980_2020, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSamples1980_2020);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -809,6 +942,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMWQMSamples1980_2020, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSamples1980_2020);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -819,6 +954,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSamples1980_2020, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSamples1980_2020);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -834,6 +971,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSamples2021_2060, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSamples2021_2060);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -844,6 +983,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMWQMSamples2021_2060, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSamples2021_2060);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -854,6 +995,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSamples2021_2060, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSamples2021_2060);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -869,6 +1012,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSites, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -879,6 +1024,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMWQMSites, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -889,6 +1036,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSites, 635);
             CheckVar(actionRes, WebTypeEnum.WebMWQMSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -904,6 +1053,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebPolSourceSites, 635);
             CheckVar(actionRes, WebTypeEnum.WebPolSourceSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -914,6 +1065,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebPolSourceSites, 635);
             CheckVar(actionRes, WebTypeEnum.WebPolSourceSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -924,6 +1077,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebPolSourceSites, 635);
             CheckVar(actionRes, WebTypeEnum.WebPolSourceSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -939,6 +1094,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -949,6 +1106,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -959,6 +1118,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -974,6 +1135,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebRoot);
             CheckVar(actionRes, WebTypeEnum.WebRoot);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -984,6 +1147,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebRoot);
             CheckVar(actionRes, WebTypeEnum.WebRoot);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -994,6 +1159,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebRoot);
             CheckVar(actionRes, WebTypeEnum.WebRoot);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1009,6 +1176,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllSearch);
             CheckVar(actionRes, WebTypeEnum.WebAllSearch);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1019,6 +1188,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllSearch);
             CheckVar(actionRes, WebTypeEnum.WebAllSearch);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1029,6 +1200,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllSearch);
             CheckVar(actionRes, WebTypeEnum.WebAllSearch);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1044,6 +1217,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebSector, 633);
             CheckVar(actionRes, WebTypeEnum.WebSector);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1054,6 +1229,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebSector, 633);
             CheckVar(actionRes, WebTypeEnum.WebSector);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1064,6 +1241,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebSector, 633);
             CheckVar(actionRes, WebTypeEnum.WebSector);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1079,6 +1258,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebSubsector, 635);
             CheckVar(actionRes, WebTypeEnum.WebSubsector);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1089,6 +1270,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebSubsector, 635);
             CheckVar(actionRes, WebTypeEnum.WebSubsector);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1099,6 +1282,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebSubsector, 635);
             CheckVar(actionRes, WebTypeEnum.WebSubsector);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1114,6 +1299,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebTideSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebTideSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1124,6 +1311,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebTideSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebTideSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1134,6 +1323,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebTideSites, 7);
             CheckVar(actionRes, WebTypeEnum.WebTideSites);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1149,6 +1340,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringRoutineStatsProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1159,6 +1352,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringRoutineStatsProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1169,6 +1364,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringRoutineStatsProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1184,6 +1381,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringOtherStatsProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1194,6 +1393,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringOtherStatsProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1204,6 +1405,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, 7);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringOtherStatsProvince);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1219,6 +1422,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringRoutineStatsCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1229,6 +1434,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringRoutineStatsCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1239,6 +1446,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringRoutineStatsCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -1254,6 +1463,8 @@ namespace CreateGzFileServices.Tests
             var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringOtherStatsCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1264,6 +1475,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringOtherStatsCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -1274,6 +1487,8 @@ namespace CreateGzFileServices.Tests
             actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, 5);
             CheckVar(actionRes, WebTypeEnum.WebMonitoringOtherStatsCountry);
 
+            await CSSPLogService.Save();
+            
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
     }

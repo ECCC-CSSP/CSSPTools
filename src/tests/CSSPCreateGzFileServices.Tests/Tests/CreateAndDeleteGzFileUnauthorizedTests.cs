@@ -72,13 +72,7 @@ namespace CreateGzFileServices.Tests
                 var actionRes = await CreateGzFileService.CreateGzFile(webType, TVItemID);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
 
-                List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                                   where c.AppName == CSSPLogService.CSSPAppName
-                                                   && c.CommandName == CSSPLogService.CSSPCommandName
-                                                   select c).ToList();
-
-                Assert.True(commandLogList.Count == 1);
-                Assert.False(string.IsNullOrWhiteSpace(commandLogList[0].Error));
+                await CSSPLogService.Save();
 
                 Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 
@@ -105,13 +99,7 @@ namespace CreateGzFileServices.Tests
                 var actionRes = await CreateGzFileService.DeleteGzFile(webType, TVItemID);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
 
-                List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                                   where c.AppName == CSSPLogService.CSSPAppName
-                                                   && c.CommandName == CSSPLogService.CSSPCommandName
-                                                   select c).ToList();
-
-                Assert.True(commandLogList.Count == 1);
-                Assert.False(string.IsNullOrWhiteSpace(commandLogList[0].Error));
+                await CSSPLogService.Save();
 
                 Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
 

@@ -28,6 +28,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(localFileInfoList);
             Assert.True(localFileInfoList.Count > 0);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -48,6 +50,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -65,6 +69,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

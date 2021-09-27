@@ -32,6 +32,8 @@ namespace CSSPLogServices.Tests
             Assert.Equal("CSSPLogService_AppName", CSSPLogService.CSSPAppName);
             Assert.Equal("CSSPLogService_CommandName", CSSPLogService.CSSPCommandName);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
     }

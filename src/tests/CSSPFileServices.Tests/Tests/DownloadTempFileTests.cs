@@ -39,6 +39,8 @@ namespace CSSPFileServices.Tests
             var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
             Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -61,6 +63,8 @@ namespace CSSPFileServices.Tests
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -78,6 +82,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

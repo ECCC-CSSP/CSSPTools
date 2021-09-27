@@ -936,4 +936,148 @@
   <data name="CouldNotFindParameter_InConfigFilesOfService_" xml:space="preserve">
     <value>Could not find parameter [{0}] in config files of service [{1}]</value>
   </data>
+  <data name="AllowableCommandsAre" xml:space="preserve">
+    <value>Allowable command are</value>
+  </data>
+  <data name="CleaningCSSPDBOfOldTVItemStats" xml:space="preserve">
+    <value>Cleaning CSSPDB of old TVItemStats</value>
+  </data>
+  <data name="CollectingStatsFor_" xml:space="preserve">
+    <value>Collecting stats for {0}</value>
+  </data>
+  <data name="CollectingStatsUnder_" xml:space="preserve">
+    <value>Collecting stats under {0}</value>
+  </data>
+  <data name="CouldNotCreateDirectory_Error_" xml:space="preserve">
+    <value>Could not create directory {0}. Error: {1}</value>
+  </data>
+  <data name="CouldNotDeleteTVFileWithTVFileID_Error_" xml:space="preserve">
+    <value>Could not delete TVFile with TVFileID {0}. Error: {1}</value>
+  </data>
+  <data name="CouldNotDeleteTVItemWithTVItemID_Error_" xml:space="preserve">
+    <value>Could not delete TVItem with TVItemID {0}. Error: {1}</value>
+  </data>
+  <data name="CouldNotFindAnyFileUnder_" xml:space="preserve">
+    <value>Could not find any file under {0}</value>
+  </data>
+  <data name="CouldNotFindFileNotDeletedAzureFile_" xml:space="preserve">
+    <value>\tCould not find file... not deleted Azure file --&gt; {0}</value>
+  </data>
+  <data name="CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_" xml:space="preserve">
+    <value>Could not find tvItem for tvFile.TVFileTVItemID equal {0}</value>
+  </data>
+  <data name="CouldNotRemoveTVItemStatsFromCSSPDBError_" xml:space="preserve">
+    <value>Could not remove TVItemStats from CSSPDB. Ex: {0}</value>
+  </data>
+  <data name="CouldNotSaveAllRemovedTVItemsError_" xml:space="preserve">
+    <value>Could not save all removed TVItems. Error: {0}</value>
+  </data>
+  <data name="CouldNotUploadFile_Error_" xml:space="preserve">
+    <value>Could not upload file {0}. Error: {1}</value>
+  </data>
+  <data name="DeletedAzureDirectory_" xml:space="preserve">
+    <value>\tDeleted Azure directory --&gt; {0}</value>
+  </data>
+  <data name="DeletedAzureFile_" xml:space="preserve">
+    <value>\tDeleted Azure file --&gt; {0}</value>
+  </data>
+  <data name="DeletingAzureDirectory_" xml:space="preserve">
+    <value>Deleting Azure directory --&gt; {0}</value>
+  </data>
+  <data name="DeletingAzureFile_" xml:space="preserve">
+    <value>\tDeleting Azure file --&gt; {0}</value>
+  </data>
+  <data name="DeletingLocalDirectory_" xml:space="preserve">
+    <value>Deleting local directory {0}</value>
+  </data>
+  <data name="DeletingLocalFile_" xml:space="preserve">
+    <value>\tDeleting local file --&gt; {0}</value>
+  </data>
+  <data name="DeletingNationalDirectory_" xml:space="preserve">
+    <value>Deleting national directory {0}</value>
+  </data>
+  <data name="DeletingNationalFile_" xml:space="preserve">
+    <value>\tDeleting national file --&gt; {0}</value>
+  </data>
+  <data name="DeletingTVFileAndTVItem_" xml:space="preserve">
+    <value>Deleting TVFile and TVItem ---&gt; {0}</value>
+  </data>
+  <data name="DuplicateTVFileTVItemID" xml:space="preserve">
+    <value>Duplicate TVFileTVItemID --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingAzureDirectory_" xml:space="preserve">
+    <value>\tError deleting Azure directory --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingAzureFile_" xml:space="preserve">
+    <value>\tError deleting Azure file --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingLocalDirectory_Error_" xml:space="preserve">
+    <value>\tError deleting local directory --&gt; {0}. Error: {1}</value>
+  </data>
+  <data name="ErrorDeletingLocalFile_Error_" xml:space="preserve">
+    <value>\tError deleting local file --&gt; {0}. Error: {1}</value>
+  </data>
+  <data name="ErrorDeletingNationalDirectory_" xml:space="preserve">
+    <value>\tError deleting national directory --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingNationalFile_Error_" xml:space="preserve">
+    <value>\tError deleting national file --&gt; {0}. Error: {1}</value>
+  </data>
+  <data name="ErrorInClearOldUnnecessaryStatsFrom_" xml:space="preserve">
+    <value>Error in ClearOldUnnecessaryState from {0}</value>
+  </data>
+  <data name="ErrorWhileCreateAllGzFiles" xml:space="preserve">
+    <value>Error while CreateAllGzFiles</value>
+  </data>
+  <data name="ErrorWhileSavingAllTVItemStatsChanges_" xml:space="preserve">
+    <value>Error while saving all TVItemStats changes. Error: {0}</value>
+  </data>
+  <data name="LastWriteTimeUtc_" xml:space="preserve">
+    <value>Last write time UTC: {0}</value>
+  </data>
+  <data name="LocalAppDataPathDoesNotExist_" xml:space="preserve">
+    <value>LocalAppDataPath does not exist {0}</value>
+  </data>
+  <data name="NumberOfTVItemIDAffected_" xml:space="preserve">
+    <value>Number of TVItemID affected {0}</value>
+  </data>
+  <data name="ReadingConfiguration" xml:space="preserve">
+    <value>Reading configuration</value>
+  </data>
+  <data name="ReadingTVItemStatsForDeletingUnnecessaryStats" xml:space="preserve">
+    <value>Reading TVItemStats for deleting unnecessary stats</value>
+  </data>
+  <data name="Reading_" xml:space="preserve">
+    <value>Reading {0}</value>
+  </data>
+  <data name="RecalculatingTheTVItemStats" xml:space="preserve">
+    <value>Recalculating the TVItemStats</value>
+  </data>
+  <data name="removing" xml:space="preserve">
+    <value>removing</value>
+  </data>
+  <data name="RunningCSSPUpdate" xml:space="preserve">
+    <value>Running CSSPUpdate</value>
+  </data>
+  <data name="RunningOn" xml:space="preserve">
+    <value>Running on</value>
+  </data>
+  <data name="SavingInCSSPDBManageDatabase" xml:space="preserve">
+    <value>Saving in CSSPDBManage database</value>
+  </data>
+  <data name="StartingAzureDirectoryCleanup" xml:space="preserve">
+    <value>Starting Azure directory cleanup</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="unnecessaryStats" xml:space="preserve">
+    <value>unnecessary stats</value>
+  </data>
+  <data name="UploadedCount_AndFile_" xml:space="preserve">
+    <value>Uploaded count {0} --- file {1}</value>
+  </data>
+  <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
+    <value>{0} could not be found in the configuration file {1}</value>
+  </data>
 </root>

@@ -29,7 +29,9 @@ namespace CreateGzFileServices
 
             await DoCreateAllGzFiles();
 
-            return await CSSPLogService.EndFunctionReturnOkTrue(FunctionName);
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(true));
         }
     }
 }

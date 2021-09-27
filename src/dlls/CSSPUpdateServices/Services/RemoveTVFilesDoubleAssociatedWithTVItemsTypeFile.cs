@@ -1,23 +1,35 @@
-﻿using CSSPCultureServices.Resources;
+﻿/*
+ * Manually edited
+ * 
+ */
+using CreateGzFileServices;
+using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
+using LoggedInServices;
+using ManageServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using CSSPCultureServices.Resources;
 
 namespace CSSPUpdateServices
 {
     public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<ActionResult<bool>> DoRemoveTVFilesDoubleAssociatedWithTVItemsTypeFile()
+        public async Task<ActionResult<bool>> RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile()
         {
-            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             List<TVItem> TVItemList = (from c in db.TVItems
                                        where c.TVType == TVTypeEnum.File
@@ -34,7 +46,7 @@ namespace CSSPUpdateServices
                 {
                     string dupText = $@"{TVFileList[i].TVFileTVItemID} -- {TVFileList[i].ServerFileName} -- {TVFileList[i + 1].ServerFileName}";
 
-                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.DuplicateTVFileTVItemID, dupText) }");
+                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DuplicateTVFileTVItemID, dupText) }");
 
                     db.TVFiles.Remove(TVFileList[i + 1]);
                 }
@@ -46,16 +58,14 @@ namespace CSSPUpdateServices
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotSaveAllRemovedTVItemsError_, ex.Message) }");
 
-                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                await CSSPLogService.Save();
+                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(FunctionName);            
 
             return await Task.FromResult(Ok(true));
         }

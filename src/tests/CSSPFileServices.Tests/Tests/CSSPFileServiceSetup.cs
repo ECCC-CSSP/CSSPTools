@@ -141,7 +141,6 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPDatabasesPath"]);
             Assert.NotNull(Configuration["CSSPDB"]);
@@ -151,7 +150,7 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(Configuration["CSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
             Assert.NotNull(Configuration["CSSPTempFilesPath"]);
-            Assert.NotNull(Configuration["CSSPWebAPIsPath"]);
+            Assert.NotNull(Configuration["CSSPWebAPIsLocalPath"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

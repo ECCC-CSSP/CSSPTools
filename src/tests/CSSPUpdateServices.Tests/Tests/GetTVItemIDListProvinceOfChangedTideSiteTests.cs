@@ -15,26 +15,34 @@ namespace UpdateServices.Tests
         //[Theory]
         //[InlineData("en-CA")]
         ////[InlineData("fr-CA")]
-        //public async Task UpdateService_GetTVItemListProvinceOfChangedTideSite_HasTideSite_Good_Test(string culture)
+        //public async Task GetTVItemIDListProvinceOfChangedTideSite_HasTideSite_Good_Test(string culture)
         //{
         //    Assert.True(await Setup(culture));
 
         //    DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_TideSite().AddDays(-1);
 
+        //    Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
         //    List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListProvinceOfChangedTideSite(LastUpdateDate_UTC);
         //    Assert.True(TVItemIDList.Count > 0);
+
+        //    Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         //}
         //[Theory]
         //[InlineData("en-CA")]
         ////[InlineData("fr-CA")]
-        //public async Task UpdateService_GetTVItemListProvinceOfChangedTideSite_NoTideSite_Good_Test(string culture)
+        //public async Task GetTVItemIDListProvinceOfChangedTideSite_NoTideSite_Good_Test(string culture)
         //{
         //    Assert.True(await Setup(culture));
 
         //    DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_TideSite().AddDays(1);
 
+        //    Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
         //    List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListProvinceOfChangedTideSite(LastUpdateDate_UTC);
         //    Assert.True(TVItemIDList.Count == 0);
+
+        //    Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         //}
 
         #region private

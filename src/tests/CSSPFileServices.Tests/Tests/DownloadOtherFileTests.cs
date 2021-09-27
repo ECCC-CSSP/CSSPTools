@@ -30,13 +30,18 @@ namespace CSSPFileServices.Tests
             {
                 Assert.True(await CSSPFileServiceSetup(culture));
 
+                CSSPLogService.CSSPAppName = "FileServiceTests";
+                CSSPLogService.CSSPCommandName = "Testing_DownloadOtherFile";
+
                 FileInfo fi = new FileInfo(Configuration["CSSPOtherFilesPath"] + $"{ fileName }");
                 Assert.True(fi.Exists);
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-                var actionRes = await CSSPFileService.DownloadOtherFile("CssFamilyMaterial.css");
+                var actionRes = await CSSPFileService.DownloadOtherFile(fileName);
                 Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
+
+                await CSSPLogService.Save();
 
                 Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
             }
@@ -68,6 +73,8 @@ namespace CSSPFileServices.Tests
                 Assert.NotEmpty(errRes.ErrList);
             }
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -85,6 +92,8 @@ namespace CSSPFileServices.Tests
             Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            await CSSPLogService.Save();
 
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }

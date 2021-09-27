@@ -41,6 +41,8 @@ namespace CSSPLogServices.Tests
             Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
             Assert.Contains(Configuration["ComputerName"], CSSPLogService.sbError.ToString());
 
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
     }

@@ -39,7 +39,6 @@ namespace CSSPFileServices
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);
-            await CSSPLogService.Save();
 
             return PhysicalFile(fi.FullName, "application/octet-stream");
         }

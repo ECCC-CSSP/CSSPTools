@@ -27,7 +27,6 @@ namespace CSSPLogServices
             {
                 AppendError(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 EndFunctionLog(FunctionName);
-                await Save();
 
                 return await Task.FromResult(false);
             }

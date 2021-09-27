@@ -1,41 +1,41 @@
-﻿using CSSPDBModels;
-using CSSPDBServices;
+﻿/*
+ * Manually edited
+ * 
+ */
+using CreateGzFileServices;
+using CSSPCultureServices.Services;
+using CSSPDBModels;
 using CSSPEnums;
+using CSSPLogServices;
+using LoggedInServices;
+using ManageServices;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
-using System;
-using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using CSSPWebModels;
-using System.Text.Json;
-using System.IO;
-using CSSPCultureServices.Resources;
 using System.Reflection;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+using CSSPCultureServices.Resources;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace CSSPUpdateServices
 {
     public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
     {
-        public async Task<ActionResult<bool>> DoUpdateAllTVItemStats()
+        public async Task<ActionResult<bool>> UpdateChangedTVItemStats(DateTime UpdateFromDate)
         {
-            CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(DateTime UpdateFromDate) -- UpdateFromDate: { UpdateFromDate }";
+            CSSPLogService.FunctionLog(FunctionName);
 
-            var actionRes = await DoClearOldUnnecessaryStats();
-            if (((ObjectResult)actionRes.Result).StatusCode != 200)
-            {
-                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-                await CSSPLogService.Save();
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-            }
-
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItems") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "TVItems") } { DateTime.Now } ...");
             List<TVItem> TVItemList = (from c in db.TVItems
-                          select c).AsNoTracking().ToList();
+                                       select c).AsNoTracking().ToList();
 
             List<TVItem> TVItemForStatList = (from c in TVItemList
                                               where c.TVType == TVTypeEnum.Root
@@ -47,66 +47,118 @@ namespace CSSPUpdateServices
                                               || c.TVType == TVTypeEnum.Municipality
                                               select c).ToList();
 
-            List<TVItem> TVItemProvList = (from c in TVItemForStatList
-                                           where c.TVType == TVTypeEnum.Province
-                                           select c).ToList();
-
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemStats") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "TVItemStats") } { DateTime.Now } ...");
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                                select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVItemLinks") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "TVItemLinks") } { DateTime.Now } ...");
             List<TVItemLink> TVItemLinkList = (from c in db.TVItemLinks
                                                select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Infrastructures") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "Infrastructures") } { DateTime.Now } ...");
             List<Infrastructure> InfrastructureList = (from c in db.Infrastructures
                                                        select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "PolSourceSites") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "PolSourceSites") } { DateTime.Now } ...");
             List<PolSourceSite> PolSourceSiteList = (from c in db.PolSourceSites
                                                      select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "BoxModels") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "BoxModels") } { DateTime.Now } ...");
             List<BoxModel> BoxModelList = (from c in db.BoxModels
                                            select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "UseOfSites") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "UseOfSites") } { DateTime.Now } ...");
             List<UseOfSite> UseOfSiteList = (from c in db.UseOfSites
                                              select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "TVFiles") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "TVFiles") } { DateTime.Now } ...");
             List<TVFile> TVFileList = (from c in db.TVFiles
                                        select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "MWQMSamples") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "MWQMSamples") } { DateTime.Now } ...");
             List<MWQMSample> MWQMSampleList = (from c in db.MWQMSamples
                                                select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "Spills") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "Spills") } { DateTime.Now } ...");
             List<Spill> SpillList = (from c in db.Spills
                                      select c).AsNoTracking().ToList();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.Reading_, "VPScenarios") } { DateTime.Now }");
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "VPScenarios") } { DateTime.Now } ...");
             List<VPScenario> VPScenarioList = (from c in db.VPScenarios
                                                select c).AsNoTracking().ToList();
 
             List<TVItemStat> TVItemStat2List = new List<TVItemStat>();
 
-            await GetRunSiteSampleStatsForCountry(TVItemStat2List);
 
-            await GetRunSiteSampleStatsUnderProvince(TVItemList, TVItemProvList, TVItemStat2List);
+            List<TVItem> TVItemForChangedStatList = new List<TVItem>();
 
-            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureUpdateRes.NumberOfTVItemIDAffected_, TVItemForStatList.Count) } { DateTime.Now }");
-            CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.RecalculatingTheTVItemStats } { DateTime.Now }");
+            List<int> TVItemIDList = await GetTVItemIDListAllOfChangedMapInfo(UpdateFromDate);
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListAllOfChangedTVFile(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListAllOfChangedTVItem(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListAllOfChangedTVItemLink(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListAllOfChangedUseOfSite(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListCountryOfChangedEmailDistributionList(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListCountryOfChangedRainExceedance(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListMunicipalityOfChangedBoxModel(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListMunicipalityOfChangedInfrastructure(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListMunicipalityOfChangedMikeScenario(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListMunicipalityOfChangedVPScenario(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListProvinceOfChangedClimateSite(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListProvinceOfChangedDrogueRun(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListProvinceOfChangedHydrometricSite(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListProvinceOfChangedSamplingPlan(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListProvinceOfChangedTideSite(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedClassification(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedLabSheet(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedMWQMAnalysisReportParameter(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedMWQMRun(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedMWQMSample(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedMWQMSite(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedMWQMSubsector(UpdateFromDate)).Distinct().ToList();
+            TVItemIDList = TVItemIDList.Concat(await GetTVItemIDListSubsectorOfChangedPolSourceSite(UpdateFromDate)).Distinct().ToList();
+
+            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.NumberOfTVItemIDAffected_, TVItemIDList.Count) } { DateTime.Now } ...");
+
+            foreach (int TVItemID in TVItemIDList)
+            {
+                TVItem tvItem = (from c in TVItemForStatList
+                                 where c.TVItemID == TVItemID
+                                 select c).FirstOrDefault();
+
+                if (tvItem != null)
+                {
+                    if (!TVItemForChangedStatList.Where(c => c.TVItemID == tvItem.TVItemID).Any())
+                    {
+                        TVItemForChangedStatList.Add(tvItem);
+
+                        List<int> TVItemIDParentList = tvItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
+
+                        foreach (int TVItemIDParent in TVItemIDParentList)
+                        {
+                            if (!TVItemForChangedStatList.Where(c => c.TVItemID == TVItemIDParent).Any())
+                            {
+                                TVItem tvItemParent = TVItemForStatList.Where(c => c.TVItemID == TVItemIDParent).FirstOrDefault();
+
+                                if (tvItemParent != null)
+                                {
+                                    TVItemForChangedStatList.Add(tvItemParent);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.RecalculatingTheTVItemStats } { DateTime.Now } ...");
 
             int count = 0;
-            int total = TVItemForStatList.Count;
-            foreach (TVItem tvItem in TVItemForStatList.Take(5))
+            int total = TVItemForChangedStatList.Count;
+            for (int i = 0, countStat = TVItemForChangedStatList.Count; i < countStat; i++)
             {
                 count += 1;
 
-                List<TVTypeEnum> SubTVTypeList = GetSubTVTypeForTVItemStat(tvItem.TVType);
+                string ParentTVPath = TVItemForChangedStatList[i].TVPath + "p";
+                List<TVTypeEnum> SubTVTypeList = GetSubTVTypeForTVItemStat(TVItemForChangedStatList[i].TVType);
 
                 foreach (TVTypeEnum tvSubType in SubTVTypeList)
                 {
@@ -118,16 +170,16 @@ namespace CSSPUpdateServices
                         case TVTypeEnum.Area:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == tvSubType)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.BoxModel:
                             {
-                                if (tvItem.TVType == TVTypeEnum.Infrastructure)
+                                if (TVItemForChangedStatList[i].TVType == TVTypeEnum.Infrastructure)
                                 {
                                     ChildCount = (from b in BoxModelList
-                                                  where b.InfrastructureTVItemID == tvItem.TVItemID
+                                                  where b.InfrastructureTVItemID == TVItemForChangedStatList[i].TVItemID
                                                   select b).Count();
                                 }
                                 else
@@ -135,7 +187,7 @@ namespace CSSPUpdateServices
                                     ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Infrastructure)
                                                   from b in BoxModelList
                                                   where c.TVItemID == b.InfrastructureTVItemID
-                                                  && c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                                  && c.TVPath.StartsWith(ParentTVPath)
                                                   select b).Count();
                                 }
                             }
@@ -143,23 +195,23 @@ namespace CSSPUpdateServices
                         case TVTypeEnum.Country:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Country)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.File:
                             {
-                                int TVLevelFile = tvItem.TVLevel + 1;
+                                int TVLevelFile = TVItemForChangedStatList[i].TVLevel + 1;
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.File)
                                               where c.TVLevel == TVLevelFile
-                                              && c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              && c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.Infrastructure:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Infrastructure)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
@@ -168,49 +220,49 @@ namespace CSSPUpdateServices
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Infrastructure)
                                               from inf in InfrastructureList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.LiftStation)
                                               where c.TVItemID == inf.InfrastructureTVItemID
-                                              && c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              && c.TVPath.StartsWith(ParentTVPath)
                                               select inf).Count();
                             }
                             break;
                         case TVTypeEnum.MikeScenario:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.MikeScenario)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.MikeSource:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.MikeSource)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.Municipality:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Municipality)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.PolSourceSite:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.PolSourceSite)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.Province:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Province)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.Sector:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Sector)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               && c.TVType == TVTypeEnum.Sector
                                               select c).Count();
                             }
@@ -218,31 +270,31 @@ namespace CSSPUpdateServices
                         case TVTypeEnum.Subsector:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Subsector)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.TotalFile:
                             {
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.File)
-                                              where c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              where c.TVPath.StartsWith(ParentTVPath)
                                               select c).Count();
                             }
                             break;
                         case TVTypeEnum.VisualPlumesScenario:
                             {
-                                if (tvItem.TVType == TVTypeEnum.Infrastructure)
+                                if (TVItemForChangedStatList[i].TVType == TVTypeEnum.Infrastructure)
                                 {
                                     ChildCount = (from v in VPScenarioList
-                                                  where v.InfrastructureTVItemID == tvItem.TVItemID
+                                                  where v.InfrastructureTVItemID == TVItemForChangedStatList[i].TVItemID
                                                   select v).Count();
                                 }
                                 else
                                 {
-                                    ChildCount = (from c in TVItemList.Where(c => c.TVType == tvItem.TVType)
+                                    ChildCount = (from c in TVItemList.Where(c => c.TVType == TVItemForChangedStatList[i].TVType)
                                                   from v in VPScenarioList
                                                   where c.TVItemID == v.InfrastructureTVItemID
-                                                  && c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                                  && c.TVPath.StartsWith(ParentTVPath)
                                                   select v).Count();
                                 }
                             }
@@ -252,7 +304,7 @@ namespace CSSPUpdateServices
                                 ChildCount = (from c in TVItemList.Where(c => c.TVType == TVTypeEnum.Infrastructure)
                                               from inf in InfrastructureList.Where(c => c.InfrastructureType == InfrastructureTypeEnum.WWTP)
                                               where c.TVItemID == inf.InfrastructureTVItemID
-                                              && c.TVPath.StartsWith(tvItem.TVPath + "p")
+                                              && c.TVPath.StartsWith(ParentTVPath)
                                               select inf).Count();
                             }
                             break;
@@ -262,12 +314,13 @@ namespace CSSPUpdateServices
 
                     TVItemStat2List.Add(new TVItemStat()
                     {
-                        TVItemID = tvItem.TVItemID,
+                        TVItemID = TVItemForChangedStatList[i].TVItemID,
                         DBCommand = DBCommandEnum.Original,
                         TVType = tvSubType,
                         ChildCount = ChildCount,
                         LastUpdateDate_UTC = DateTime.Now,
-                        LastUpdateContactTVItemID = 2
+                        LastUpdateContactTVItemID = 2,
+
                     });
 
                     DateTime EndTime = DateTime.Now;
@@ -276,7 +329,7 @@ namespace CSSPUpdateServices
 
                     if (count % 1000 == 0)
                     {
-                        Console.WriteLine($"Done {count}/{total} {tvItem.TVType} - {tvSubType} in {ts.TotalSeconds} seconds count = {ChildCount} { DateTime.Now }");
+                        Console.WriteLine($"Done {count}/{total} {TVItemForChangedStatList[i].TVType} - {tvSubType} in {ts.TotalSeconds} seconds count = {ChildCount} ...");
                     }
                 }
             }
@@ -303,22 +356,21 @@ namespace CSSPUpdateServices
 
             try
             {
-                CSSPLogService.AppendLog($"{ CSSPCultureUpdateRes.SavingInCSSPDBManageDatabase }  { DateTime.Now }");
+                CSSPLogService.AppendLog($"{ CSSPCultureServicesRes.SavingInCSSPDBManageDatabase } { DateTime.Now } ...");
 
                 db.SaveChanges();
             }
             catch (Exception ex)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureUpdateRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) } { DateTime.Now }");
+                CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorWhileSavingAllTVItemStatsChanges_, ex.Message) }");
 
                 CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                await CSSPLogService.Save();
+                
 
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+            CSSPLogService.EndFunctionLog(FunctionName);            
 
             return await Task.FromResult(Ok(true));
         }

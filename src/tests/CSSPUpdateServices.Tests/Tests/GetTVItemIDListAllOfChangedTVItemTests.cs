@@ -15,26 +15,34 @@ namespace UpdateServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListSubsectorOfChangedTVItem_HasTVItem_Good_Test(string culture)
+        public async Task GetTVItemIDListAllOfChangedTVItem_HasTVItem_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_TVItem().AddDays(-1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedTVItem(LastUpdateDate_UTC);
             Assert.True(SubsectorTVItemIDList.Count > 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task UpdateService_GetTVItemListSubsectorOfChangedTVItem_NoTVItem_Good_Test(string culture)
+        public async Task GetTVItemIDListAllOfChangedTVItem_NoTVItem_Good_Test(string culture)
         {
-            Assert.True(await Setup(culture));
+            Assert.True(await CSSPUpdateServiceSetup(culture));
 
             DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_TVItem().AddDays(1);
 
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
             List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedTVItem(LastUpdateDate_UTC);
             Assert.True(SubsectorTVItemIDList.Count == 0);
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
         }
 
         #region private
