@@ -21,6 +21,10 @@ namespace CSSPUpdateServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             CSSPLogService.FunctionLog(FunctionName);
 
+            // should not be running this function on the original database CSSPDB
+            // remove the next line when you are sure
+            return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
             if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
