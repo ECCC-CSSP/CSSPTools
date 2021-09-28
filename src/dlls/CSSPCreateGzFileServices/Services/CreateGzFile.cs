@@ -5,6 +5,7 @@
 using CSSPCultureServices.Resources;
 using CSSPEnums;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace CreateGzFileServices
             if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
             if (!await ValidateDBs(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            Console.WriteLine($"Doing ... { webType } TVItemID: { TVItemID }");
 
             switch (webType)
             {
