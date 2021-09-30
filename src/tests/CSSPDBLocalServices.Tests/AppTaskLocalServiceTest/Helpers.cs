@@ -3,6 +3,7 @@
  *  
  */
 
+using CSSPHelperModels;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -30,17 +31,18 @@ namespace CSSPDBLocalServices.Tests
             var actionPostTVItemModelRes = await AppTaskLocalService.AddOrModifyLocal(appTaskModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-            List<ValidationResult> vrList = ((List<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(errorMessage)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         private async Task TestAddOrModifyUnauthorized(PostAppTaskModel appTaskModel, string errorMessage)
         {
             var actionPostTVItemModelRes = await AppTaskLocalService.AddOrModifyLocal(appTaskModel);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-            var validationResult = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.Equal(errorMessage, validationResult);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         private async Task<bool> TestDelete(int appTaskID)
         {
@@ -57,18 +59,18 @@ namespace CSSPDBLocalServices.Tests
             var actionPostTVItemModelRes = await AppTaskLocalService.DeleteLocal(AppTaskID);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-            var validationResultList = ((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-            List<ValidationResult> vrList = ((List<ValidationResult>)validationResultList).ToList();
-            Assert.True(vrList.Where(c => c.ErrorMessage.Contains(errorMessage)).Any());
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         private async Task TestDeleteUnauthorized(int AppTaskID, string errorMessage)
         {
             var actionPostTVItemModelRes = await AppTaskLocalService.DeleteLocal(AppTaskID);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-            var validationResultList = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            var validationResult = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.Equal(errorMessage, validationResult);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
         private async Task<List<PostAppTaskModel>> TestGetAll()
         {
@@ -85,9 +87,9 @@ namespace CSSPDBLocalServices.Tests
             var actionPostTVItemModelRes = await AppTaskLocalService.GetAllAppTaskLocal();
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-            var validationResultList = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            var validationResult = ((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.Equal(errorMessage, validationResult);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
         }
     }
 }

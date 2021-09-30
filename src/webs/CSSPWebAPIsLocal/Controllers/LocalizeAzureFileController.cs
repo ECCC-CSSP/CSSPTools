@@ -12,7 +12,7 @@ using CSSPEnums;
 using CSSPCultureServices.Resources;
 using System.Threading;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using CSSPWebModels;
 
 namespace CSSPWebAPIsLocal.Controllers
@@ -31,16 +31,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
-        public LocalizeAzureFileController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+        public LocalizeAzureFileController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
             ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.FileService = FileService;
         }
         #endregion Constructors
@@ -51,7 +51,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             FileName = FileName.Replace(".mmdf", ".mdf");
 

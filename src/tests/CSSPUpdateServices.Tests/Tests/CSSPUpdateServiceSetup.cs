@@ -3,10 +3,9 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
-using CSSPHelperServices;
 using CSSPLogServices;
 using CSSPUpdateServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +31,7 @@ namespace UpdateServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IEnums enums { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         public ICSSPUpdateService CSSPUpdateService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -83,7 +82,7 @@ namespace UpdateServices.Tests
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ICSSPUpdateService, CSSPUpdateService>();
 
@@ -135,12 +134,12 @@ namespace UpdateServices.Tests
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);

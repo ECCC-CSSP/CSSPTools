@@ -24,7 +24,7 @@ namespace CSSPDBLocalServices
             appTaskLanguage.DBCommand = postAppTaskLanguage.DBCommand;
             appTaskLanguage.ErrorText = postAppTaskLanguage.ErrorText;
             appTaskLanguage.Language = postAppTaskLanguage.Language;
-            appTaskLanguage.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+            appTaskLanguage.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
             appTaskLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
             appTaskLanguage.StatusText = postAppTaskLanguage.StatusText;
             appTaskLanguage.TranslationStatus = postAppTaskLanguage.TranslationStatus;

@@ -15,9 +15,10 @@ using System.Collections.Generic;
 using CSSPWebModels;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using CSSPLogServices;
+using CSSPScrambleServices;
 
 namespace CSSPFileServices
 {
@@ -43,19 +44,21 @@ namespace CSSPFileServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private IManageFileService ManageFileService { get; }
         #endregion Properties
 
         #region Constructors
-        public CSSPFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, 
-            ICSSPLogService CSSPLogService, IManageFileService ManageFileService) : base()
+        public CSSPFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
+           ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService) : base()
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
+            if (CSSPScrambleService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPScrambleService") }");
             if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
             if (ManageFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "ManageFileService") }");
 
@@ -76,7 +79,8 @@ namespace CSSPFileServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
+            this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
         }

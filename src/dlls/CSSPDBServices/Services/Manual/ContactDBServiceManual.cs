@@ -15,14 +15,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CSSPHelperModels;
-using CSSPHelperServices;
+using CSSPScrambleServices;
 
 namespace CSSPDBServices
 {
@@ -40,29 +40,25 @@ namespace CSSPDBServices
 
         #region Properties
         private IConfiguration Configuration { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoginModelService LoginModelService { get; }
-        private IRegisterModelService RegisterModelService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public ContactDBService(IConfiguration Configuration,
+        public ContactDBService(IConfiguration Configuration, ICSSPScrambleService CSSPScrambleService,
            ICSSPCultureService CSSPCultureService, IEnums enums,
-           ILoginModelService LoginModelService,
-           IRegisterModelService RegisterModelService,
-           ILoggedInService LoggedInService,
+           ICSSPServerLoggedInService CSSPServerLoggedInService,
            CSSPDBContext db)
         {
             this.Configuration = Configuration;
+            this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoginModelService = LoginModelService;
-            this.RegisterModelService = RegisterModelService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.db = db;
         }
         #endregion Constructors
@@ -70,7 +66,7 @@ namespace CSSPDBServices
         #region Functions public 
         public async Task<ActionResult<string>> AzureStore()
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -87,7 +83,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<string>> GoogleMapKey()
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -104,7 +100,27 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<Contact>> Login(LoginModel loginModel)
         {
-            if (!LoginModelService.Validate(new ValidationContext(loginModel)))
+            if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
+            {
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(loginModel.LoginEmail) && (loginModel.LoginEmail.Length < 5 || loginModel.LoginEmail.Length > 100))
+            {
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "LoginEmail", "5", "100"));
+            }
+
+            if (string.IsNullOrWhiteSpace(loginModel.Password))
+            {
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Password"));
+            }
+
+            if (!string.IsNullOrWhiteSpace(loginModel.Password) && (loginModel.Password.Length < 5 || loginModel.Password.Length > 50))
+            {
+                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._LengthShouldBeBetween_And_, "Password", "5", "50"));
+            }
+
+            if (errRes.ErrList.Count > 0)
             {
                 return await Task.FromResult(BadRequest(errRes));
             }
@@ -121,7 +137,7 @@ namespace CSSPDBServices
                     return await Task.FromResult(BadRequest(errRes));
                 }
 
-                if (loginModel.Password == LoggedInService.Descramble(contact.PasswordHash))
+                if (loginModel.Password == CSSPScrambleService.Descramble(contact.PasswordHash))
                 {
 
                     byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("APISecret"));

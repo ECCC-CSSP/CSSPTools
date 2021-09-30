@@ -65,7 +65,7 @@ namespace CSSPFileServices.Tests
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-                LoggedInService.LoggedInContactInfo = null;
+                CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
                 var actionRes = await CSSPFileService.DownloadOtherFile(fileName);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);

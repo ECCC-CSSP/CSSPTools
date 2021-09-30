@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using CSSPHelperModels;
 
@@ -34,18 +34,18 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public TVItemLanguageDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
+        public TVItemLanguageDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPServerLoggedInService CSSPServerLoggedInService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.db = db;
         }
         #endregion Constructors
@@ -55,7 +55,7 @@ namespace CSSPDBServices
         {
             DateTime StartDate = new DateTime(Year, Month, Day);
 
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));

@@ -7,7 +7,7 @@ using CSSPCultureServices.Services;
 using CSSPEnums;
 using CSSPWebModels;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -70,7 +70,7 @@ namespace ReadGzFileServices
 
                 if (HasInternetConnection)
                 {
-                    BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], fileName);
+                    BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], fileName);
                     BlobProperties blobProperties = null;
 
                     try
@@ -84,7 +84,7 @@ namespace ReadGzFileServices
                         {
                             using (HttpClient httpClient = new HttpClient())
                             {
-                                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", LoggedInService.LoggedInContactInfo.LoggedInContact.Token);
+                                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token);
                                 var response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/en-CA/CreateGzFile/{ (int)webType }/{ TVItemID }");
 
                                 if ((int)response.Result.StatusCode != 200)

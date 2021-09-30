@@ -1,6 +1,7 @@
 ﻿using CSSPCultureServices.Services;
 using CSSPEnums;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
+using CSSPScrambleServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,7 +21,8 @@ namespace UploadAllFilesToAzure
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         public string AzureStore { get; set; }
         public string AzureStoreCSSPFilesPath { get; set; }
         #endregion Properties
@@ -60,7 +62,8 @@ namespace UploadAllFilesToAzure
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)
@@ -69,9 +72,19 @@ namespace UploadAllFilesToAzure
                 return false;
             }
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            if (CSSPLocalLoggedInService == null)
+            {
+                Console.WriteLine("CSSPLocalLoggedInService should not be null");
+            }
 
-            AzureStore = LoggedInService.Descramble(AzureStore);
+                CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            if (CSSPScrambleService == null)
+            {
+                Console.WriteLine("CSSPScrambleService should not be null");
+            }
+
+            AzureStore = CSSPScrambleService.Descramble(AzureStore);
 
             return true;
         }

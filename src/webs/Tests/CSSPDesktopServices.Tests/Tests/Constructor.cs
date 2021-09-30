@@ -4,7 +4,7 @@ using CSSPDesktopServices.Services;
 using CSSPEnums;
 using CSSPSQLiteServices;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

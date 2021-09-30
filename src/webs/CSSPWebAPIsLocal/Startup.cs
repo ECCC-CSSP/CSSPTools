@@ -18,12 +18,14 @@ using System.Text;
 using CSSPFileServices;
 using ReadGzFileServices;
 using Microsoft.AspNetCore.Http.Features;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using CSSPDBLocalServices;
 using CreateGzFileServices;
 using CSSPWebAPIsLocal.Controllers;
 using ManageServices;
 using CSSPLogServices;
+using CSSPCultureServices.Resources;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIsLocal
 {
@@ -54,6 +56,15 @@ namespace CSSPWebAPIsLocal
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
 
+            if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDBLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBLocal", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "CreateGzFileService") }");
+            if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CreateGzFileService") }");
+
             /* ---------------------------------------------------------------------------------
              * CSSPDBLocalContext 
              * ---------------------------------------------------------------------------------      
@@ -83,8 +94,9 @@ namespace CSSPWebAPIsLocal
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
+            services.AddScoped<ICSSPScrambleService, CSSPScrambleService>();
             services.AddScoped<ICSSPLogService, CSSPLogService>();
-            services.AddScoped<ILoggedInService, LoggedInService>();
+            services.AddScoped<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 
             //LoadAllDBServices(services);
 
@@ -94,8 +106,6 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<ICreateGzFileService, CreateGzFileService>();
             services.AddScoped<ITVItemLocalService, TVItemLocalService>();
             services.AddScoped<ICSSPFileService, CSSPFileService>();
-
-            //services.AddScoped<IWebAppLoadedService, WebAppLoadedService>();
 
             services.AddSpaStaticFiles(configuration =>
             {

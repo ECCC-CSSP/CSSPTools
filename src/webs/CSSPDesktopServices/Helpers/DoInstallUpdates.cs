@@ -104,7 +104,7 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(true);
             }
 
-            BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
+            BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
             BlobProperties blobProperties = null;
 
             try
@@ -173,7 +173,7 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(true);
             }
 
-            BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
+            BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
             BlobProperties blobProperties = null;
 
             try

@@ -7,13 +7,14 @@ using CSSPEnums;
 using CSSPLogServices;
 using CSSPWebModels;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System;
 using CSSPCultureServices.Resources;
+using CSSPScrambleServices;
 
 namespace ReadGzFileServices
 {
@@ -34,22 +35,24 @@ namespace ReadGzFileServices
         private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private IEnums enums { get; }
         private ICSSPFileService FileService { get; }
         private IManageFileService ManageFileService { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, 
-            ICSSPFileService FileService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService, CSSPDBManageContext dbManage)
+        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
+            ICSSPFileService FileService, ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService, CSSPDBManageContext dbManage)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
             if (FileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "FileService") }");
+            if (CSSPScrambleService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPScrambleService") }");
             if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
             if (ManageFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "ManageFileService") }");
             if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
@@ -69,8 +72,9 @@ namespace ReadGzFileServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.FileService = FileService;
+            this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
             this.dbManage = dbManage;

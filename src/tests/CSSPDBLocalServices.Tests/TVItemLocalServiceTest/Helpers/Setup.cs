@@ -8,7 +8,7 @@
 //using CSSPDBModels;
 //using CSSPEnums;
 //using FileServices;
-//using LoggedInServices;
+//using CSSPLocalLoggedInServices;
 //using ManageServices;
 //using Microsoft.EntityFrameworkCore;
 //using Microsoft.Extensions.Configuration;
@@ -29,7 +29,7 @@
 //        private IServiceProvider Provider { get; set; }
 //        private IServiceCollection Services { get; set; }
 //        private ICSSPCultureService CSSPCultureService { get; set; }
-//        private ILoggedInService LoggedInService { get; set; }
+//        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
 //        private ITVItemLocalService PostTVItemModelService { get; set; }
 //        private IReadGzFileService ReadGzFileService { get; set; }
 //        private ICreateGzFileService CreateGzFileService { get; set; }
@@ -111,7 +111,7 @@
 //            });
 
 //            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-//            Services.AddSingleton<ILoggedInService, LoggedInService>();
+//            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 //            Services.AddSingleton<IEnums, Enums>();
 //            Services.AddSingleton<IManageFileService, ManageFileService>();
 //            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
@@ -127,10 +127,10 @@
 
 //            CSSPCultureService.SetCulture(culture);
 
-//            LoggedInService = Provider.GetService<ILoggedInService>();
-//            Assert.NotNull(LoggedInService);
+//            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+//            Assert.NotNull(CSSPLocalLoggedInService);
 
-//            Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
+//            Assert.True(await CSSPLocalLoggedInService.SetLoggedInLocalContactInfo());
 
 //            dbLocal = Provider.GetService<CSSPDBLocalContext>();
 //            Assert.NotNull(dbLocal);

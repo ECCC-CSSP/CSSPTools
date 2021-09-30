@@ -8,7 +8,7 @@ using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
 using CSSPHelperModels;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -34,7 +34,7 @@ namespace CSSPWebAPIs.AuthController.Tests
         private IServiceCollection Services { get; set; }
         private CSSPDBContext db { get; set; }
         private IContactDBService ContactDBService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ITVItemDBService TVItemDBService { get; set; }
         private Contact contact { get; set; }

@@ -12,7 +12,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using LoggedInServices;
 using System.ComponentModel.DataAnnotations;
 using CSSPLogServices;
 using System.Reflection;
@@ -23,7 +22,7 @@ namespace CSSPLogServices
     {
         public async Task<bool> CheckLogin(string FunctionName)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 AppendError(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 EndFunctionLog(FunctionName);

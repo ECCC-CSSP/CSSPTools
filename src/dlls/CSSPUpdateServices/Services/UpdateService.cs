@@ -8,7 +8,7 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPLogServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CSSPScrambleServices;
 
 namespace CSSPUpdateServices
 {
@@ -94,7 +95,8 @@ namespace CSSPUpdateServices
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -104,13 +106,14 @@ namespace CSSPUpdateServices
         #endregion Properties
 
         #region Constructors
-        public CSSPUpdateService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, 
-            ICSSPLogService CSSPLogService, ICreateGzFileService CreateGzFileService, CSSPDBContext db, CSSPDBManageContext dbManage)
+        public CSSPUpdateService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
+            ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, ICreateGzFileService CreateGzFileService, CSSPDBContext db, CSSPDBManageContext dbManage)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
+            if (CSSPScrambleService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPScrambleService") }");
             if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
             if (CreateGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CreateGzFileService") }");
             if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
@@ -133,7 +136,8 @@ namespace CSSPUpdateServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
+            this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;
             this.CreateGzFileService = CreateGzFileService;
             this.db = db;

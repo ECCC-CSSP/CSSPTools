@@ -28,7 +28,7 @@ namespace CSSPWebAPIs
                         configuration.AddUserSecrets("41c4156a-4b42-42e9-923a-e9c8360dba12");
                     });
                     webBuilder.UseStartup<Startup>();
-                    //webBuilder.UseUrls("http://localhost:4446", "http://localhost:4446");
+                    webBuilder.UseUrls("http://localhost:4448");
                 });
     }
 }

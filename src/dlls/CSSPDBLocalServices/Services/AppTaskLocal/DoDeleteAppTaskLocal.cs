@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices
             }
             catch (Exception ex)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguageList", ex.Message));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguageList", ex.Message));
                 return false;
             }
 
@@ -44,7 +44,7 @@ namespace CSSPDBLocalServices
 
             if (appTaskToDelete == null)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskID.ToString()));
                 return false;
             }
 
@@ -55,11 +55,11 @@ namespace CSSPDBLocalServices
             }
             catch (Exception ex)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTask", ex.Message));
                 return false;
             }
 
-            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

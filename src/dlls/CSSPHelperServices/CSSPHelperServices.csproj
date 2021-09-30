@@ -24,12 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
+    <Folder Include="Services\Generated\" />
+    <Folder Include="Services\Manual\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Generated\" />
-    <Folder Include="Services\Manual\" />
+    <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
+    <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
   </ItemGroup>
 
 </Project>

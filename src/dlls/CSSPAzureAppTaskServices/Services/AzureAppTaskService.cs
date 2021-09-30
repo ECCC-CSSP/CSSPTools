@@ -9,7 +9,7 @@ using CSSPDBModels;
 using CSSPEnums;
 using CSSPHelperModels;
 using CSSPWebModels;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -37,16 +37,16 @@ namespace CSSPAzureAppTaskServices
         private CSSPDBContext db { get; }
         private IConfiguration Configuration { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public AzureAppTaskService(IConfiguration Configuration, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
+        public AzureAppTaskService(IConfiguration Configuration, IEnums enums, ICSSPServerLoggedInService CSSPServerLoggedInService, CSSPDBContext db)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPServerLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPServerLoggedInService") }");
             if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
 
             if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "AzureAppTaskService") }");
@@ -54,7 +54,7 @@ namespace CSSPAzureAppTaskServices
 
             this.Configuration = Configuration;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.db = db;
         }
         #endregion Constructors

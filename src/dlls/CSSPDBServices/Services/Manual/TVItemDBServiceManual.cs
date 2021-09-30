@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using CSSPHelperModels;
 
@@ -32,7 +32,7 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private CSSPDBContext db { get; }
         #endregion Variables
 
@@ -41,11 +41,11 @@ namespace CSSPDBServices
         #endregion Properties
 
         #region Constructors
-        public TVItemDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
+        public TVItemDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPServerLoggedInService CSSPServerLoggedInService, CSSPDBContext db)
         {
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.enums = enums;
             this.db = db;
         }
@@ -56,7 +56,7 @@ namespace CSSPDBServices
         {
             DateTime StartDate = new DateTime(Year, Month, Day);
 
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -70,7 +70,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<TVItem>> GetTVItemRoot()
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));

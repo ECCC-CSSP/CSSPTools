@@ -16,8 +16,8 @@ namespace UpdateServices.Tests
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(enums);
             Assert.NotNull(CSSPLogService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CreateGzFileService);
             Assert.NotNull(CSSPUpdateService);
             Assert.NotNull(db);

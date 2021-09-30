@@ -58,7 +58,7 @@ namespace CSSPDBLocalServices
 
             //                try
             //                {
-            //                    dbLocal.TVItemLanguages.Add(webBaseToAdd.TVItemModel.TVItemLanguageList[(int)lang]);
+            //                    dbLocal.TVItemLanguages.Add(webBaseToAdd.TVItemModel.TVItemLanguageList[(int)lang - 1]);
             //                    dbLocal.SaveChanges();
             //                }
             //                catch (Exception ex)
@@ -124,7 +124,7 @@ namespace CSSPDBLocalServices
             //        LngMin = LngMin,
             //        LngMax = LngMax,
             //        LastUpdateDate_UTC = DateTime.UtcNow,
-            //        LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
+            //        LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
             //    };
 
             //    try
@@ -156,7 +156,7 @@ namespace CSSPDBLocalServices
             //            Lat = mapInfoPoint.Lat,
             //            Lng = mapInfoPoint.Lng,
             //            LastUpdateDate_UTC = DateTime.UtcNow,
-            //            LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
+            //            LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
             //        };
 
             //        dbLocal.MapInfoPoints.Add(mapInfoPointNew);
@@ -195,7 +195,7 @@ namespace CSSPDBLocalServices
             //        LngMin = LngMin,
             //        LngMax = LngMax,
             //        LastUpdateDate_UTC = DateTime.UtcNow,
-            //        LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
+            //        LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
             //    };
 
             //    if (mapInfo == null)
@@ -253,7 +253,7 @@ namespace CSSPDBLocalServices
             //            Lat = mapInfoPoint.Lat,
             //            Lng = mapInfoPoint.Lng,
             //            LastUpdateDate_UTC = DateTime.UtcNow,
-            //            LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
+            //            LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
             //        };
 
             //        dbLocal.MapInfoPoints.Add(mapInfoPointNew);

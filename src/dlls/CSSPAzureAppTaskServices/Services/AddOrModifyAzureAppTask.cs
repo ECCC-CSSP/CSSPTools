@@ -8,7 +8,7 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace CSSPAzureAppTaskServices
     {
         public async Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));

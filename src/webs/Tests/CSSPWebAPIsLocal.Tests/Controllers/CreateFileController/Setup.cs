@@ -7,7 +7,8 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLogServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIsLocal.CreateFileController.Tests
 {
@@ -29,7 +31,9 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICSSPFileService FileService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private string LocalUrl { get; set; }
@@ -80,8 +84,10 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IEnums, Enums>(); 
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
 
@@ -93,14 +99,14 @@ namespace CSSPWebAPIsLocal.CreateFileController.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
+            contact = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact;
 
             FileService = Provider.GetService<ICSSPFileService>();
             Assert.NotNull(FileService);

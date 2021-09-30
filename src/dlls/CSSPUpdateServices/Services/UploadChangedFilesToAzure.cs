@@ -7,7 +7,7 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPLogServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -48,7 +48,7 @@ namespace CSSPUpdateServices
                 count += 1;
                 Console.WriteLine($"{ count } --- { d.FullName }");
 
-                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient directory = shareClient.GetDirectoryClient(d.Name);
 
                 if (!directory.Exists())

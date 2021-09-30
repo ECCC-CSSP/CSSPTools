@@ -25,8 +25,8 @@ namespace CSSPFileServices.Tests
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(CSSPFileService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLogService);
             Assert.NotNull(dbManage);
 

@@ -13,7 +13,7 @@ using CSSPCultureServices.Resources;
 using ReadGzFileServices;
 using System.Threading;
 using CSSPWebModels;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using CSSPDBLocalServices;
 
 namespace CSSPWebAPIsLocal.Controllers
@@ -33,16 +33,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ITVItemLocalService TVItemService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVItemController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+        public TVItemController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
             ITVItemLocalService PostTVItemModelService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.TVItemService = PostTVItemModelService;
         }
         #endregion Constructors
@@ -52,7 +52,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<bool>> Delete(PostTVItemModel postTVItemModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await TVItemService.DeleteLocal(postTVItemModel);
         }
@@ -60,7 +60,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await TVItemService.AddOrModifyLocal(postTVItemModel);
         }

@@ -33,7 +33,6 @@
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
     <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
-    <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
     <ProjectReference Include="..\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
   </ItemGroup>
 

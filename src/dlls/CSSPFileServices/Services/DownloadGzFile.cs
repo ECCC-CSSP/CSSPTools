@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using CSSPWebModels;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
@@ -37,7 +37,7 @@ namespace CSSPFileServices
 
             try
             {
-                BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], FileName);
+                BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], FileName);
 
                 Response response = blobClient.DownloadTo($"{ Configuration["CSSPJSONPath"] }{ FileName }");
                 if (response.Status == 206)

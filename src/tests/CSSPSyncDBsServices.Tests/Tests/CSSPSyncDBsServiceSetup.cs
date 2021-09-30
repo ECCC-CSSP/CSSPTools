@@ -6,7 +6,7 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +25,7 @@ namespace CSSPSyncDBsServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ISyncDBsService SyncDBsService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
@@ -76,7 +76,7 @@ namespace CSSPSyncDBsServices.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ISyncDBsService, SyncDBsService>();
 
@@ -88,11 +88,11 @@ namespace CSSPSyncDBsServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
+            //string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+            Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);

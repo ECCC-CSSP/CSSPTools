@@ -43,7 +43,7 @@ namespace CSSPFileServices.Tests
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
 
-            LoggedInService.LoggedInContactInfo = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
             var actionRes = await CSSPFileService.GetLocalFileInfo(ParentTVItemID, FileName);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);

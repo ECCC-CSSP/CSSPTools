@@ -5,7 +5,7 @@ using CSSPEnums;
 using CSSPFileServices;
 using CSSPLogServices;
 using CSSPSQLiteServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPScrambleServices;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -29,6 +30,7 @@ namespace CSSPDesktopServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private ICSSPFileService CSSPFileService { get; set; }
@@ -57,8 +59,9 @@ namespace CSSPDesktopServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
@@ -112,6 +115,9 @@ namespace CSSPDesktopServices.Tests
 
             CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
+
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            Assert.NotNull(CSSPScrambleService);
 
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);

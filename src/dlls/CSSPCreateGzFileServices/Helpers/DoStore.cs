@@ -29,7 +29,7 @@ namespace CreateGzFileServices
             bool ShouldSendToAzure = false;
             bool FileExistInAzure = true;
 
-            BlobClient blobClient = new BlobClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], fileName);
+            BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], fileName);
             BlobProperties blobProperties = null;
 
             try

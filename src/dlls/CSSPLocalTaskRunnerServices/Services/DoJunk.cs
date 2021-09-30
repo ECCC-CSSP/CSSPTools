@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace CSSPLocalTaskRunnerServices
 {
-    public partial class LocalTaskRunnerService : ControllerBase, ILocalTaskRunnerService
+    public partial class LocalTaskRunnerService : ControllerBase, ICSSPLocalTaskRunnerService
     {
         private bool DoJunk()
         {

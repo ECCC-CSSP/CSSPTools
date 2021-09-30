@@ -84,7 +84,7 @@ namespace CSSPDBLocalServices.Tests
         //        TVPath = $"{ tvItemParent.TVPath}p{TVItemID}",
         //        TVType = tvType,
         //        LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItem.LastUpdateDate_UTC,
-        //        LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+        //        LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
         //    };
 
         //    CompareTVItems(webBaseFile.TVItemModel.TVItem, tvItemNew);
@@ -99,8 +99,8 @@ namespace CSSPDBLocalServices.Tests
         //             TVItemLanguageID = TVItemID,
         //             TranslationStatus = TranslationStatusEnum.Translated,
         //             TVText = tvTextEN,
-        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].LastUpdateDate_UTC,
-        //             LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
+        //             LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
         //        },
         //        new TVItemLanguage()
         //        {
@@ -110,8 +110,8 @@ namespace CSSPDBLocalServices.Tests
         //             TVItemLanguageID = TVItemID,
         //             TranslationStatus = TranslationStatusEnum.Translated,
         //             TVText = tvTextEN,
-        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en].LastUpdateDate_UTC,
-        //             LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
+        //             LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
         //        },
         //        new TVItemLanguage()
         //        {
@@ -121,8 +121,8 @@ namespace CSSPDBLocalServices.Tests
         //             TVItemLanguageID = TVItemID - 1,
         //             TranslationStatus = TranslationStatusEnum.Translated,
         //             TVText = tvTextFR,
-        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].LastUpdateDate_UTC,
-        //             LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].LastUpdateDate_UTC,
+        //             LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
         //        }
         //    };
 

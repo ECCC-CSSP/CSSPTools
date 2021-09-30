@@ -19,9 +19,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using CSSPHelperModels;
-using CSSPHelperServices;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +37,7 @@ namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests
         private IServiceCollection Services { get; set; }
         private CSSPDBContext dbTempAzureTest { get; set; }
         private IContactDBService ContactDBService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private Contact contact { get; set; }
         private string LoginEmail { get; set; }
@@ -82,9 +81,9 @@ namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
+            //Services.AddSingleton<ILoginModelService, LoginModelService>();
+            //Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
 
             Provider = Services.BuildServiceProvider();

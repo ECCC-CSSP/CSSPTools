@@ -7,7 +7,7 @@ using CSSPEnums;
 using CSSPHelperModels;
 using CSSPSQLiteServices;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CSSPLogServices;
+using CSSPScrambleServices;
 
 namespace CSSPDesktop
 {
@@ -36,7 +37,8 @@ namespace CSSPDesktop
         private ICSSPCultureService CSSPCultureService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -392,7 +394,7 @@ namespace CSSPDesktop
                     LoginModel loginModel = new LoginModel()
                     {
                         LoginEmail = CSSPDesktopService.contact.LoginEmail,
-                        Password = LoggedInService.Descramble(CSSPDesktopService.contact.PasswordHash),
+                        Password = CSSPScrambleService.Descramble(CSSPDesktopService.contact.PasswordHash),
                     };
 
                     if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
@@ -482,8 +484,9 @@ namespace CSSPDesktop
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
@@ -528,10 +531,10 @@ namespace CSSPDesktop
 
             CSSPCultureService.SetCulture("en-CA");
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            if (LoggedInService == null)
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            if (CSSPLocalLoggedInService == null)
             {
-                richTextBoxStatus.AppendText("LoggedInService should not be null\r\n");
+                richTextBoxStatus.AppendText("CSSPLocalLoggedInService should not be null\r\n");
                 return await Task.FromResult(false);
             }
 

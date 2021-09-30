@@ -6,7 +6,7 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +25,8 @@ namespace CSSPLocalTaskRunnerServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
-        private ILocalTaskRunnerService LocalTaskRunnerService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+        private ICSSPLocalTaskRunnerService LocalTaskRunnerService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -76,9 +76,9 @@ namespace CSSPLocalTaskRunnerServices.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILocalTaskRunnerService, LocalTaskRunnerService>();
+            Services.AddSingleton<ICSSPLocalTaskRunnerService, LocalTaskRunnerService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -88,16 +88,15 @@ namespace CSSPLocalTaskRunnerServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.True(await LoggedInService.SetLoggedInContactInfo(LoginEmail));
+            Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);
 
-            LocalTaskRunnerService = Provider.GetService<ILocalTaskRunnerService>();
+            LocalTaskRunnerService = Provider.GetService<ICSSPLocalTaskRunnerService>();
             Assert.NotNull(LocalTaskRunnerService);
 
             return await Task.FromResult(true);

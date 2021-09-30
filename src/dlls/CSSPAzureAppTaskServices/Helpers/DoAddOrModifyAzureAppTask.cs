@@ -40,7 +40,7 @@ namespace CSSPAzureAppTaskServices
                 appTask = postAppTaskModel.AppTask;
 
                 appTask.LastUpdateDate_UTC = DateTime.UtcNow;
-                appTask.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+                appTask.LastUpdateContactTVItemID = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
                 db.AppTasks.Add(appTask);
             }
@@ -69,7 +69,7 @@ namespace CSSPAzureAppTaskServices
                 appTask.EstimatedLength_second = postAppTaskModel.AppTask.EstimatedLength_second;
                 appTask.RemainingTime_second = postAppTaskModel.AppTask.RemainingTime_second;
                 appTask.LastUpdateDate_UTC = DateTime.UtcNow;
-                appTask.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+                appTask.LastUpdateContactTVItemID = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
             }
 
             try
@@ -129,7 +129,7 @@ namespace CSSPAzureAppTaskServices
                     appTaskLanguage.ErrorText = appTaskLanguageOfModel.ErrorText;
                     appTaskLanguage.TranslationStatus = TranslationStatusEnum.Translated;
                     appTaskLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
-                    appTaskLanguage.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+                    appTaskLanguage.LastUpdateContactTVItemID = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
                 }
 
                 try

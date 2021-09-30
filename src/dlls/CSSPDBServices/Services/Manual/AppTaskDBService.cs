@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using CSSPHelperModels;
 
@@ -38,18 +38,18 @@ namespace CSSPDBServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private CSSPDBContext db { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public AppTaskDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService, CSSPDBContext db)
+        public AppTaskDBService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPServerLoggedInService CSSPServerLoggedInService, CSSPDBContext db)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPServerLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPServerLoggedInService") }");
             if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
 
             //if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDBServices") }");
@@ -69,7 +69,7 @@ namespace CSSPDBServices
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.db = db;
         }
         #endregion Constructors
@@ -77,7 +77,7 @@ namespace CSSPDBServices
         #region Functions public 
         public async Task<ActionResult<AppTask>> GetAppTaskWithAppTaskID(int AppTaskID)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -96,7 +96,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<List<AppTask>>> GetAppTaskList(int skip = 0, int take = 100)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -108,7 +108,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -139,7 +139,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<AppTask>> Post(AppTask appTask)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));
@@ -165,7 +165,7 @@ namespace CSSPDBServices
         }
         public async Task<ActionResult<AppTask>> Put(AppTask appTask)
         {
-            if (LoggedInService.LoggedInContactInfo == null || LoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
                 errRes.ErrList.Add(CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                 return await Task.FromResult(Unauthorized(errRes));

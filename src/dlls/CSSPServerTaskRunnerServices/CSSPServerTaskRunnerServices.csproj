@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
+    <ProjectReference Include="..\CSSPServerLoggedInServices\CSSPServerLoggedInServices.csproj" />
     <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 

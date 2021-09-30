@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using CSSPWebModels;
 using System.Text.Json;
@@ -44,19 +44,18 @@ namespace CSSPDBLocalServices
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPLogService CSSPLogService { get; }
-        private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
 
         #region Constructors
-        public AppTaskLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ILoggedInService LoggedInService,
+        public AppTaskLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
            ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
             if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
             if (dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbLocal") }");
 
@@ -79,8 +78,9 @@ namespace CSSPDBLocalServices
 
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
             this.enums = enums;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
+            this.CSSPLogService = CSSPLogService;
             this.dbLocal = dbLocal;
         }
         #endregion Constructors

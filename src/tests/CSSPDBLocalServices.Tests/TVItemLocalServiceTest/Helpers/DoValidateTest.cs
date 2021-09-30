@@ -43,12 +43,12 @@ namespace CSSPDBLocalServices.Tests
                 //    break;
                 case "TVItemLanguageEN":
                     {
-                        ChangeTVItemLanguageVariableValue(postTVItemModel.TVItem, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en], variable);
+                        ChangeTVItemLanguageVariableValue(postTVItemModel.TVItem, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1], variable);
                     }
                     break;
                 case "TVItemLanguageFR":
                     {
-                        ChangeTVItemLanguageVariableValue(postTVItemModel.TVItem, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr], variable);
+                        ChangeTVItemLanguageVariableValue(postTVItemModel.TVItem, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1], variable);
                     }
                     break;
                 default:

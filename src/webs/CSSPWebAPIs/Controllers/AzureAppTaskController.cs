@@ -21,7 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using CSSPDBServices;
 using CSSPHelperModels;
 using CSSPWebModels;
@@ -45,16 +45,16 @@ namespace CSSPWebAPIs.Controllers
         #endregion Variables
 
         #region Properties
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IAzureAppTaskService AzureAppTaskService { get; }
         #endregion Properties
 
         #region Constructors
-        public AzureAppTaskController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, IAzureAppTaskService AzureAppTaskService)
+        public AzureAppTaskController(ICSSPCultureService CSSPCultureService, ICSSPServerLoggedInService CSSPServerLoggedInService, IAzureAppTaskService AzureAppTaskService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.AzureAppTaskService = AzureAppTaskService;
         }
         #endregion Constructors
@@ -64,7 +64,7 @@ namespace CSSPWebAPIs.Controllers
         public async Task<ActionResult<List<PostAppTaskModel>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await AzureAppTaskService.GetAllAzureAppTask();
         }
@@ -72,7 +72,7 @@ namespace CSSPWebAPIs.Controllers
         public async Task<ActionResult<PostAppTaskModel>> Post(PostAppTaskModel appTaskModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
         }
@@ -81,7 +81,7 @@ namespace CSSPWebAPIs.Controllers
         public async Task<ActionResult<bool>> Delete(int AppTaskID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await AzureAppTaskService.DeleteAzureAppTask(AppTaskID);
         }

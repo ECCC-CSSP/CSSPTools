@@ -3,8 +3,7 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
-using CSSPHelperServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +25,7 @@ namespace UploadAllJsonFilesToAzure
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         public ICreateGzFileService CreateGzFileService { get; set; }
-        public ILoggedInService LoggedInService { get; set; }
+        public ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         public string AzureStore { get; set; }
         public string AzureStoreCSSPJSONPath { get; set; }
         #endregion Properties
@@ -78,7 +77,6 @@ namespace UploadAllJsonFilesToAzure
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
@@ -90,17 +88,17 @@ namespace UploadAllJsonFilesToAzure
                 return false;
             }
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            if (LoggedInService == null)
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            if (CSSPLocalLoggedInService == null)
             {
-                Console.WriteLine("LoggedInService should not be null");
+                Console.WriteLine("CSSPLocalLoggedInService should not be null");
                 return false;
             }
 
-            LoggedInService.SetLoggedInLocalContactInfo();
-            if (LoggedInService.LoggedInContactInfo == null)
+            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null)
             {
-                Console.WriteLine("LoggedInService.LoggedInContactInfo should not be null");
+                Console.WriteLine("CSSPLocalLoggedInService.LoggedInContactInfo should not be null");
                 return false;
             }
 

@@ -3,9 +3,8 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
-using CSSPHelperServices;
-using CSSPLogServices;
-using LoggedInServices;
+using CSSPScrambleServices;
+using CSSPServerLoggedInServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -84,10 +83,11 @@ namespace CSSPWebAPIs
 
             services.AddScoped<ICSSPCultureService, CSSPCultureService>();
             services.AddScoped<IEnums, Enums>();
-            services.AddScoped<ILoggedInService, LoggedInService>();
+            services.AddScoped<ICSSPScrambleService, CSSPScrambleService>();
+            services.AddScoped<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
 
-            services.AddScoped<ILoginModelService, LoginModelService>();
-            services.AddScoped<IRegisterModelService, RegisterModelService>();
+            //services.AddScoped<ILoginModelService, LoginModelService>();
+            //services.AddScoped<IRegisterModelService, RegisterModelService>();
 
             services.AddScoped<IAppTaskDBService, AppTaskDBService>();
             services.AddScoped<IAppTaskLanguageDBService, AppTaskLanguageDBService>();

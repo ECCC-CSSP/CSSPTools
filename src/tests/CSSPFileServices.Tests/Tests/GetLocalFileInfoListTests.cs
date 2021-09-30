@@ -43,7 +43,7 @@ namespace CSSPFileServices.Tests
 
             int ParentTVItemID = 1;
 
-            LoggedInService.LoggedInContactInfo = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
             var actionRes = await CSSPFileService.GetLocalFileInfoList(ParentTVItemID);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);

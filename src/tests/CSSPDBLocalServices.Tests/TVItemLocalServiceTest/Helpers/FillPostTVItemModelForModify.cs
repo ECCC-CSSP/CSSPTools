@@ -40,35 +40,35 @@ namespace CSSPDBLocalServices.Tests
 
                 tvItemLanguageList.Add(new TVItemLanguage()
                 {
-                    DBCommand = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].DBCommand,
+                    DBCommand = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].DBCommand,
                     Language = LanguageEnum.en,
-                    LastUpdateContactTVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].LastUpdateContactTVItemID,
-                    LastUpdateDate_UTC = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].LastUpdateDate_UTC,
+                    LastUpdateContactTVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateContactTVItemID,
+                    LastUpdateDate_UTC = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
                     TranslationStatus = TranslationStatusEnum.Translated,
-                    TVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].TVItemID,
-                    TVItemLanguageID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].TVItemLanguageID,
+                    TVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].TVItemID,
+                    TVItemLanguageID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].TVItemLanguageID,
                     TVText = tvTextEN,
                 });
                 tvItemLanguageList.Add(new TVItemLanguage()
                 {
-                    DBCommand = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].DBCommand,
+                    DBCommand = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].DBCommand,
                     Language = LanguageEnum.en,
-                    LastUpdateContactTVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].LastUpdateContactTVItemID,
-                    LastUpdateDate_UTC = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].LastUpdateDate_UTC,
+                    LastUpdateContactTVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateContactTVItemID,
+                    LastUpdateDate_UTC = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
                     TranslationStatus = TranslationStatusEnum.Translated,
-                    TVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].TVItemID,
-                    TVItemLanguageID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en].TVItemLanguageID,
+                    TVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].TVItemID,
+                    TVItemLanguageID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.en - 1].TVItemLanguageID,
                     TVText = tvTextEN,
                 });
                 tvItemLanguageList.Add(new TVItemLanguage()
                 {
-                    DBCommand = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr].DBCommand,
+                    DBCommand = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr - 1].DBCommand,
                     Language = LanguageEnum.fr,
-                    LastUpdateContactTVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr].LastUpdateContactTVItemID,
-                    LastUpdateDate_UTC = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr].LastUpdateDate_UTC,
+                    LastUpdateContactTVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr - 1].LastUpdateContactTVItemID,
+                    LastUpdateDate_UTC = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr - 1].LastUpdateDate_UTC,
                     TranslationStatus = TranslationStatusEnum.Translated,
-                    TVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr].TVItemID,
-                    TVItemLanguageID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr].TVItemLanguageID,
+                    TVItemID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVItemID,
+                    TVItemLanguageID = webBaseCurrent.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVItemLanguageID,
                     TVText = tvTextFR,
                 });
             }

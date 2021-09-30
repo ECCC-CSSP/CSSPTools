@@ -8,7 +8,7 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPLogServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -89,7 +89,7 @@ namespace CSSPUpdateServices
             total = ParentIDList.Count;
             foreach (int ParentID in ParentIDList)
             {
-                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient directory = shareClient.GetDirectoryClient(ParentID.ToString());
 
                 count += 1;

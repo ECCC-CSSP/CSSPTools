@@ -1,7 +1,7 @@
 using CSSPCultureServices.Services;
 using CSSPEnums;
 using CSSPLogServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPScrambleServices;
 
 namespace CSSPFileServices.Tests
 {
@@ -29,7 +30,8 @@ namespace CSSPFileServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private ICSSPFileService CSSPFileService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
@@ -156,7 +158,8 @@ namespace CSSPFileServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
 
             FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
@@ -192,18 +195,21 @@ namespace CSSPFileServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 
             ManageFileService = Provider.GetService<IManageFileService>();
             Assert.NotNull(ManageFileService);
 
             CSSPFileService = Provider.GetService<ICSSPFileService>();
             Assert.NotNull(CSSPFileService);
+
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            Assert.NotNull(CSSPScrambleService);
 
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);

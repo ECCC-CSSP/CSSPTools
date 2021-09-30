@@ -34,20 +34,20 @@ namespace CSSPDBLocalServices
                 // already exist TVTextEN
                 if ((from c in gzObjectList.tvItemFileSiblingList
                      where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
-                     && c.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText
+                     && c.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText
                      select c).Any())
                 {
-                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText));
                     return await Task.FromResult(false);
                 }
 
                 // already exist TVTextFR
                 if ((from c in gzObjectList.tvItemFileSiblingList
                      where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
-                     && c.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText
+                     && c.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText
                      select c).Any())
                 {
-                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText));
                     return await Task.FromResult(false);
                 }
             }
@@ -56,20 +56,20 @@ namespace CSSPDBLocalServices
                 // already exist TVTextEN
                 if ((from c in gzObjectList.tvItemSiblingList
                      where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
-                     && c.TVItemLanguageList[(int)LanguageEnum.en].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText
+                     && c.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText
                      select c).Any())
                 {
-                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText));
                     return await Task.FromResult(false);
                 }
 
                 // already exist TVTextFR
                 if ((from c in gzObjectList.tvItemSiblingList
                      where c.TVItem.TVItemID != postTVItemModel.TVItem.TVItemID
-                     && c.TVItemLanguageList[(int)LanguageEnum.fr].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText
+                     && c.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText == postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText
                      select c).Any())
                 {
-                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText));
                     return await Task.FromResult(false);
                 }
             }
@@ -103,7 +103,7 @@ namespace CSSPDBLocalServices
 
                             try
                             {
-                                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang]);
+                                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang - 1]);
                                 dbLocal.SaveChanges();
                             }
                             catch (Exception ex)
@@ -133,7 +133,7 @@ namespace CSSPDBLocalServices
                     TVPath = $"{ gzObjectList.ParentTVItem.TVPath }p{TVItemIDNew}",
                     TVType = postTVItemModel.TVItem.TVType,
                     LastUpdateDate_UTC = DateTime.UtcNow,
-                    LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
+                    LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
                 };
 
                 try
@@ -177,9 +177,9 @@ namespace CSSPDBLocalServices
                         TVItemID = TVItemIDNew,
                         Language = lang,
                         TranslationStatus = TranslationStatusEnum.Translated,
-                        TVText = lang == LanguageEnum.fr ? postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText : postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText,
+                        TVText = lang == LanguageEnum.fr ? postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText : postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText,
                         LastUpdateDate_UTC = DateTime.UtcNow,
-                        LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
+                        LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID,
                     };
 
                     try
@@ -265,14 +265,14 @@ namespace CSSPDBLocalServices
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
                     TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages
-                                                     where c.TVItemLanguageID == tvItemModelToChange.TVItemLanguageList[(int)lang].TVItemLanguageID
+                                                     where c.TVItemLanguageID == tvItemModelToChange.TVItemLanguageList[(int)lang - 1].TVItemLanguageID
                                                      select c).FirstOrDefault();
 
-                    string tvText = lang == LanguageEnum.fr ? postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr].TVText : postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText;
+                    string tvText = lang == LanguageEnum.fr ? postTVItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].TVText : postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText;
                     if (tvItemLanguage == null)
                     {
-                        TVItemLanguage tvItemLanguageNew = tvItemModelToChange.TVItemLanguageList[(int)lang];
-                        if (tvItemModelToChange.TVItemLanguageList[(int)lang].TVText == tvText)
+                        TVItemLanguage tvItemLanguageNew = tvItemModelToChange.TVItemLanguageList[(int)lang - 1];
+                        if (tvItemModelToChange.TVItemLanguageList[(int)lang - 1].TVText == tvText)
                         {
                             tvItemLanguageNew.DBCommand = DBCommandEnum.Original;
                         }
@@ -281,7 +281,7 @@ namespace CSSPDBLocalServices
                             tvItemLanguageNew.DBCommand = DBCommandEnum.Modified;
                             tvItemLanguageNew.TVText = tvText;
                             tvItemLanguageNew.LastUpdateDate_UTC = DateTime.UtcNow;
-                            tvItemLanguageNew.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+                            tvItemLanguageNew.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
                         }
 
                         dbLocal.TVItemLanguages.Add(tvItemLanguageNew);
@@ -311,7 +311,7 @@ namespace CSSPDBLocalServices
                         }
                         tvItemLanguage.TVText = tvText;
                         tvItemLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
-                        tvItemLanguage.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+                        tvItemLanguage.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
                     }
 
                     try

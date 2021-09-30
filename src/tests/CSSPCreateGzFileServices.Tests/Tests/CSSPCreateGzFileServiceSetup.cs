@@ -2,7 +2,7 @@ using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPLogServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPScrambleServices;
 
 namespace CreateGzFileServices.Tests
 {
@@ -29,9 +30,10 @@ namespace CreateGzFileServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IEnums enums { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
 
@@ -68,8 +70,9 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
 
@@ -118,14 +121,17 @@ namespace CreateGzFileServices.Tests
             enums = Provider.GetService<IEnums>();
             Assert.NotNull(enums);
 
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            Assert.NotNull(CSSPScrambleService);
+
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
 
             CreateGzFileService = Provider.GetService<ICreateGzFileService>();
             Assert.NotNull(CreateGzFileService);

@@ -5,7 +5,8 @@
 
 using CSSPCultureServices.Services;
 using CSSPDBModels;
-using LoggedInServices;
+using CSSPLogServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIsLocal.TVItemController.Tests
 {
@@ -28,7 +30,9 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
+        private ICSSPLogService CSSPLogService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private string CSSPJSONPath { get; set; }
         private string CSSPJSONPathLocal { get; set; }
@@ -110,7 +114,9 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
             });
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
@@ -120,14 +126,14 @@ namespace CSSPWebAPIsLocal.TVItemController.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            contact = LoggedInService.LoggedInContactInfo.LoggedInContact;
+            contact = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact;
 
             dbLocal = Provider.GetService<CSSPDBLocalContext>();
             Assert.NotNull(dbLocal);

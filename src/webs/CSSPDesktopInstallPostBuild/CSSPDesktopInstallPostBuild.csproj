@@ -30,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPLoggedInServices\CSSPLoggedInServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
+    <ProjectReference Include="..\..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>
 
 </Project>

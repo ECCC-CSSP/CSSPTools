@@ -55,7 +55,7 @@ namespace ReadGzFileServices.Tests
             {
                 Assert.True(await ReadGzFileServiceSetup(culture));
 
-                LoggedInService.LoggedInContactInfo = null;
+                CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
 

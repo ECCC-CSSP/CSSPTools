@@ -13,7 +13,9 @@ using CSSPCultureServices.Resources;
 using ReadGzFileServices;
 using System.Linq;
 using System.Threading;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
+using CSSPLogServices;
+using CSSPScrambleServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -31,14 +33,19 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
+        private ICSSPLogService CSSPLogService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         #endregion Properties
 
         #region Constructors
-        public LoggedInContactController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService)
+        public LoggedInContactController(ICSSPCultureService CSSPCultureService, ICSSPScrambleService CSSPScrambleService, 
+            ICSSPLogService CSSPLogService, ICSSPLocalLoggedInService CSSPLocalLoggedInService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPScrambleService = CSSPScrambleService;
+            this.CSSPLogService = CSSPLogService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
         }
         #endregion Constructors
 
@@ -48,11 +55,11 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact.PasswordHash = "";
-            LoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash = LoggedInService.Descramble(LoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash);
-            return await Task.FromResult(Ok(LoggedInService.LoggedInContactInfo.LoggedInContact));
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.PasswordHash = "";
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash = CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash);
+            return await Task.FromResult(Ok(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact));
         }
         #endregion Functions public
 

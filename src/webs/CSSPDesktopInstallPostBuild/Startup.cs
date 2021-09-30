@@ -1,4 +1,5 @@
-﻿using LoggedInServices;
+﻿using CSSPLocalLoggedInServices;
+using CSSPScrambleServices;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
@@ -11,16 +12,18 @@ namespace CSSPDesktopInstallPostBuild
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration Configuration, ILoggedInService LoggedInService)
+        public Startup(IConfiguration Configuration, ICSSPScrambleService CSSPScrambleService, ICSSPLocalLoggedInService CSSPLocalLoggedInService)
         {
             this.Configuration = Configuration;
-            this.LoggedInService = LoggedInService;
+            this.CSSPScrambleService = CSSPScrambleService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
         }
         #endregion Constructors
 

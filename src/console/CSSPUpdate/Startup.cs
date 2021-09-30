@@ -5,7 +5,7 @@ using CSSPDBModels;
 using CSSPEnums;
 using CSSPLogServices;
 using CSSPUpdateServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +30,7 @@ namespace CSSPUpdate
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IEnums enums { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
@@ -71,7 +71,7 @@ namespace CSSPUpdate
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<ICSSPUpdateService, CSSPUpdateService>();
 
@@ -139,17 +139,17 @@ namespace CSSPUpdate
             CSSPLogService.CSSPAppName = "CSSPUpdate";
             CSSPLogService.CSSPCommandName = "Unknown";
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            if (LoggedInService == null)
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            if (CSSPLocalLoggedInService == null)
             {
-                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
                 return await Task.FromResult(false);
             }
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            if (LoggedInService.LoggedInContactInfo == null)
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null)
             {
-                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService.LoggedInContactInfo") }");
+                Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService.LoggedInContactInfo") }");
                 return await Task.FromResult(false);
             }
 

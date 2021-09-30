@@ -11,8 +11,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CSSPHelperModels;
 using ManageServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using CSSPCultureServices.Resources;
+using CSSPScrambleServices;
+using CSSPLogServices;
 
 namespace CSSPDesktopServices.Services
 {
@@ -62,23 +64,27 @@ namespace CSSPDesktopServices.Services
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private IEnums enums { get; }
+        private ICSSPScrambleService CSSPScrambleService { get; }
+        private ICSSPLogService CSSPLogService { get; }
         private IReadGzFileService ReadGzFileService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         private Process processCSSPWebAPIsLocal { get; set; }
         private Process processBrowser { get; set; }
         #endregion Properties private
 
         #region Constructors
-        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums,
-            CSSPDBManageContext dbManage, IReadGzFileService ReadGzFileService, ILoggedInService LoggedInService)
+        public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPScrambleService CSSPScrambleService,
+            ICSSPLogService CSSPLogService, CSSPDBManageContext dbManage, IReadGzFileService ReadGzFileService, ICSSPLocalLoggedInService CSSPLocalLoggedInService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
             if (enums == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "enums") }");
+            if (CSSPScrambleService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPScrambleService") }");
+            if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
             if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
             if (ReadGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "ReadGzFileService") }");
-            if (LoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "LoggedInService") }");
+            if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
 
             if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CSSPDesktopService") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPDesktopService") }");
@@ -101,9 +107,11 @@ namespace CSSPDesktopServices.Services
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
             this.enums = enums;
+            this.CSSPScrambleService = CSSPScrambleService;
+            this.CSSPLogService = CSSPLogService;
             this.dbManage = dbManage;
             this.ReadGzFileService = ReadGzFileService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
 
             contact = new Contact();
         }
@@ -124,7 +132,7 @@ namespace CSSPDesktopServices.Services
         }
         public async Task<bool> CheckIfUpdateIsNeeded()
         {
-            if (!await LoggedInService.SetLoggedInLocalContactInfo()) return await Task.FromResult(false);
+            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
 
             if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
 
@@ -152,7 +160,7 @@ namespace CSSPDesktopServices.Services
 
             if (!await Stop()) await Task.FromResult(false);
 
-            if (!await LoggedInService.SetLoggedInLocalContactInfo()) return await Task.FromResult(false);
+            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
 
             if (!await DoInstallUpdates()) return await Task.FromResult(false);
 
@@ -162,7 +170,7 @@ namespace CSSPDesktopServices.Services
         {
             if (!await DoLogin(loginModel)) return await Task.FromResult(false);
 
-            if (!await LoggedInService.SetLoggedInLocalContactInfo()) return await Task.FromResult(false);
+            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

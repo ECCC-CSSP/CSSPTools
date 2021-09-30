@@ -26,7 +26,7 @@ namespace CSSPDBLocalServices
             appTask.EndDateTime_UTC = postAppTask.EndDateTime_UTC;
             appTask.EstimatedLength_second = postAppTask.EstimatedLength_second;
             appTask.Language = postAppTask.Language;
-            appTask.LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+            appTask.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
             appTask.LastUpdateDate_UTC = DateTime.UtcNow;
             appTask.Parameters = postAppTask.Parameters;
             appTask.PercentCompleted = postAppTask.PercentCompleted;

@@ -109,7 +109,7 @@ namespace ManageServices.Tests
 
             // testing GetCommandLogBetweenDatesList
             DateTime StartDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day - 1, 0, 0, 0);
-            DateTime EndDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day + 4, 23, 59, 59);
+            DateTime EndDate = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 23, 59, 59).AddDays(4);
             var actionCommandLogGetCommandLogBetweenDatesList = await CommandLogService.CommandLogGetBetweenDatesList(StartDate, EndDate);
             Assert.Equal(200, ((ObjectResult)actionCommandLogGetCommandLogBetweenDatesList.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCommandLogGetCommandLogBetweenDatesList.Result).Value);

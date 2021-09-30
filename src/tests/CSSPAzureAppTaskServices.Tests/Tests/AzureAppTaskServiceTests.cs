@@ -30,8 +30,8 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPServerLoggedInService);
+            Assert.NotNull(CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.NotNull(AzureAppTaskService);
             Assert.NotNull(dbTempAzureTest);
 
@@ -414,7 +414,7 @@ namespace CSSPAzureAppTaskServices.Tests
 
             PostAppTaskModel appTaskModel = FillAppTaskModel();
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             await TestAddOrModifyUnauthorized(appTaskModel, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
         }
@@ -427,7 +427,7 @@ namespace CSSPAzureAppTaskServices.Tests
 
             int AppTaskID = 1000;
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             await TestDeleteUnauthorized(AppTaskID, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         }
@@ -438,7 +438,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             await TestGetAllUnauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         }

@@ -6,8 +6,7 @@ using Xunit;
 
 namespace ReadGzFileServices.Tests
 {
-    [Collection("Sequential")]
-    public partial class ReadGzFileServiceTests
+     public partial class ReadGzFileServiceTests
     {
         [Theory]
         [InlineData("en-CA")]

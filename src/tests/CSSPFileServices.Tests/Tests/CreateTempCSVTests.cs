@@ -76,7 +76,7 @@ namespace CSSPFileServices.Tests
             CSSPLogService.CSSPAppName = "FileServiceTests";
             CSSPLogService.CSSPCommandName = "Testing_CreateTempCSV_Unauthorized";
 
-            LoggedInService.LoggedInContactInfo = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
             FileInfo fi = new FileInfo($@"{ Configuration["CSSPTempFilesPath"] }\\TestingThisWillBeUnique.csv");
             if (fi.Exists)

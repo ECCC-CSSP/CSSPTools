@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using CSSPWebModels;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
@@ -37,7 +37,7 @@ namespace CSSPFileServices
             ShareFileProperties shareFileProperties;
             try
             {
-                ShareClient shareClient = new ShareClient(LoggedInService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient shareDirectoryClient = shareClient.GetDirectoryClient($"{ParentTVItemID}");
                 shareFileClient = shareDirectoryClient.GetFileClient(FileName);
                 shareFileProperties = shareFileClient.GetProperties();

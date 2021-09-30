@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 
 namespace CSSPWebAPIs.Controllers
 {
@@ -29,15 +29,15 @@ namespace CSSPWebAPIs.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private ITVTypeUserAuthorizationDBService TVTypeUserAuthorizationDBService { get; }
         #endregion Properties
 
         #region Constructors
-        public TVTypeUserAuthorizationController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, ITVTypeUserAuthorizationDBService TVTypeUserAuthorizationDBService)
+        public TVTypeUserAuthorizationController(ICSSPCultureService CSSPCultureService, ICSSPServerLoggedInService CSSPServerLoggedInService, ITVTypeUserAuthorizationDBService TVTypeUserAuthorizationDBService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.TVTypeUserAuthorizationDBService = TVTypeUserAuthorizationDBService;
         }
         #endregion Constructors
@@ -48,7 +48,7 @@ namespace CSSPWebAPIs.Controllers
         public async Task<ActionResult<List<TVTypeUserAuthorization>>> GetWithContactTVItemID(int ContactTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
             return await TVTypeUserAuthorizationDBService.GetTVTypeUserAuthorizationWithContactTVItemID(ContactTVItemID);
         }

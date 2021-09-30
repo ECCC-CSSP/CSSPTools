@@ -1,7 +1,7 @@
 ﻿using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

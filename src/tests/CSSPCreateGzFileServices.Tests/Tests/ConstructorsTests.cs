@@ -15,10 +15,11 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
             Assert.NotNull(enums);
+            Assert.NotNull(CSSPScrambleService);
             Assert.NotNull(CSSPLogService);
             Assert.NotNull(CreateGzFileService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(dbManage);
         }
     }

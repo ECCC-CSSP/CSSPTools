@@ -6,7 +6,7 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +33,7 @@ namespace CSSPAzureAppTaskServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPServerLoggedInService CSSPServerLoggedInService { get; set; }
         private IAzureAppTaskService AzureAppTaskService { get; set; }
         private CSSPDBContext dbTempAzureTest { get; set; }
         //private string LoginEmail { get; set; }
@@ -61,19 +61,15 @@ namespace CSSPAzureAppTaskServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            // --------- Reading Configuration Variables
-            // -----------------------------------------
-            //Assert.NotNull(Configuration["APISecret"]);
             Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.Contains("CSSPTemporaryDBTest", Configuration["AzureCSSPDB"]);
-            //Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.Contains("localhost:", Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["LoginEmail"]);
             Assert.NotNull(Configuration["Password"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
             Services.AddSingleton<IEnums, Enums>();
 
             Services.AddSingleton<IAzureAppTaskService, AzureAppTaskService>();
@@ -96,13 +92,13 @@ namespace CSSPAzureAppTaskServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPServerLoggedInService = Provider.GetService<ICSSPServerLoggedInService>();
+            Assert.NotNull(CSSPServerLoggedInService);
 
-            await LoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail"]);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail"]);
+            Assert.NotNull(CSSPServerLoggedInService.LoggedInContactInfo);
 
-            //config.AzureStore = LoggedInService.Descramble(config.AzureStore);
+            //config.AzureStore = CSSPServerLoggedInService.Descramble(config.AzureStore);
 
             AzureAppTaskService = Provider.GetService<IAzureAppTaskService>();
             Assert.NotNull(AzureAppTaskService);

@@ -30,15 +30,14 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(dbLocal);
             Assert.NotNull(dbManage);
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.NotNull(FileService);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(CreateGzFileService);
             Assert.NotNull(ReadGzFileService);
             Assert.NotNull(AppTaskLocalService);
             Assert.NotNull(TVItemLocalService);
-            Assert.NotNull(CSSPSQLiteService);
 
         }
         [Theory]

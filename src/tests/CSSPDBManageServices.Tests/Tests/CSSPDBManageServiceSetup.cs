@@ -1,5 +1,4 @@
 using CSSPCultureServices.Services;
-using LoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-
+ 
 namespace ManageServices.Tests
 {
     [Collection("Sequential")]

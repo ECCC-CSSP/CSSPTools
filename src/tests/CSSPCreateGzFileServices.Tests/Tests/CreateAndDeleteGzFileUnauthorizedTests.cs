@@ -58,7 +58,7 @@ namespace CreateGzFileServices.Tests
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-                LoggedInService.LoggedInContactInfo = null;
+                CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test
@@ -85,7 +85,7 @@ namespace CreateGzFileServices.Tests
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-                LoggedInService.LoggedInContactInfo = null;
+                CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
                 int TVItemID = 1; // not important for this test

@@ -25,76 +25,76 @@ namespace CSSPDBLocalServices
             string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)postAppTaskModel.AppTask.DBCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
             }
 
             if (postAppTaskModel.AppTask.TVItemID == 0)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
             }
 
             if (postAppTaskModel.AppTask.TVItemID2 == 0)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID2"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID2"));
             }
 
             retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), (int?)postAppTaskModel.AppTask.AppTaskCommand);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskCommand"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskCommand"));
             }
 
             retStr = enums.EnumTypeOK(typeof(AppTaskStatusEnum), (int?)postAppTaskModel.AppTask.AppTaskStatus);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskStatus"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskStatus"));
             }
 
             if (postAppTaskModel.AppTask.PercentCompleted < 0)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "PercentCompleted"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "PercentCompleted"));
             }
 
             //if (string.IsNullOrWhiteSpace(appTaskModel.AppTask.Parameters))
             //{
-            //    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Parameters"));
+            //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Parameters"));
             //}
 
             retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)postAppTaskModel.AppTask.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
             }
 
             if (postAppTaskModel.AppTask.StartDateTime_UTC.Year < 1980)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1979"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1979"));
             }
 
             if (postAppTaskModel.AppTask.EndDateTime_UTC != null)
             {
                 if (((DateTime)postAppTaskModel.AppTask.EndDateTime_UTC).Year < 1980)
                 {
-                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1979"));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1979"));
                 }
             }
 
             if (postAppTaskModel.AppTaskLanguageList.Count != 2)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "appTaskModel.AppTaskLanguageList.Count", "2"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "appTaskModel.AppTaskLanguageList.Count", "2"));
             }
 
             if (!postAppTaskModel.AppTaskLanguageList.Where(c => c.Language == LanguageEnum.en).Any())
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", "en"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", "en"));
             }
 
             if (!postAppTaskModel.AppTaskLanguageList.Where(c => c.Language == LanguageEnum.fr).Any())
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", "fr"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", "fr"));
             }
 
-            if (errRes.ErrList.Count == 0)
+            if (CSSPLogService.ErrRes.ErrList.Count == 0)
             {
                 // validating AppTaskLanguage
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
@@ -105,7 +105,7 @@ namespace CSSPDBLocalServices
                     {
                         if (postAppTaskModel.AppTaskLanguageList[langID].AppTaskLanguageID != 0)
                         {
-                            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageID", "0"));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageID", "0"));
                         }
                     }
 
@@ -113,27 +113,27 @@ namespace CSSPDBLocalServices
                     {
                         if (postAppTaskModel.AppTaskLanguageList[langID].AppTaskID == 0)
                         {
-                            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
                         }
                     }
 
                     retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)postAppTaskModel.AppTaskLanguageList[langID].DBCommand);
                     if (!string.IsNullOrWhiteSpace(retStr))
                     {
-                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
                     }
 
                     retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)postAppTaskModel.AppTaskLanguageList[langID].Language);
                     if (!string.IsNullOrWhiteSpace(retStr))
                     {
-                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
                     }
 
                     if (!string.IsNullOrWhiteSpace(postAppTaskModel.AppTaskLanguageList[langID].StatusText))
                     {
                         if (postAppTaskModel.AppTaskLanguageList[langID].StatusText.Length > 250)
                         {
-                            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StatusText", 250));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StatusText", 250));
                         }
                     }
 
@@ -141,19 +141,19 @@ namespace CSSPDBLocalServices
                     {
                         if (postAppTaskModel.AppTaskLanguageList[langID].ErrorText.Length > 250)
                         {
-                            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorText", 250));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorText", 250));
                         }
                     }
 
                     retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)postAppTaskModel.AppTaskLanguageList[langID].TranslationStatus);
                     if (!string.IsNullOrWhiteSpace(retStr))
                     {
-                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatus"));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatus"));
                     }
                 }
             }
 
-            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }

@@ -54,19 +54,7 @@ namespace CSSPWebAPIsLocal.DownloadController.Tests
 
             using (HttpClient httpClient = new HttpClient())
             {
-                LocalFileInfo localFileInfo = new LocalFileInfo()
-                {
-                    ParentTVItemID = 1,
-                    FileName = "BarTopBottom.png",
-                    Length = 0
-                };
-
-                var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-                httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-
-                string stringData = JsonSerializer.Serialize(localFileInfo);
-                var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = httpClient.PostAsync($"{ LocalUrl }api/{ culture }/download/", contentData).Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ LocalUrl }api/{ culture }/download/1/BarTopBottom.png").Result;
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 Assert.True(responseContent.Length > 0);

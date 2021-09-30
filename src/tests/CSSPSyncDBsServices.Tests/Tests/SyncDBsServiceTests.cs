@@ -28,8 +28,8 @@ namespace CSSPSyncDBsServices.Tests
             Assert.True(await CSSPSyncDBsServiceSetup(culture));
 
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.NotNull(db);
             Assert.NotNull(SyncDBsService);
 
@@ -394,7 +394,7 @@ namespace CSSPSyncDBsServices.Tests
 
         //    AppTaskModel appTaskModel = FillAppTaskModel();
 
-        //    LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        //    CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
         //    await TestAddOrModifyUnauthorized(appTaskModel, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         //}
@@ -407,7 +407,7 @@ namespace CSSPSyncDBsServices.Tests
 
         //    int AppTaskID = 1000;
 
-        //    LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        //    CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
         //    await TestDeleteUnauthorized(AppTaskID, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         //}
@@ -418,7 +418,7 @@ namespace CSSPSyncDBsServices.Tests
         //{
         //    Assert.True(await Setup(culture));
 
-        //    LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        //    CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
         //    await TestGetAllUnauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         //}

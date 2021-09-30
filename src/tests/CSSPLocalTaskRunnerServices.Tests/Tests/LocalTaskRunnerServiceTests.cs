@@ -28,8 +28,8 @@ namespace CSSPLocalTaskRunnerServices.Tests
             Assert.True(await Setup(culture));
 
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.NotNull(db);
             Assert.NotNull(LocalTaskRunnerService);
 
@@ -394,7 +394,7 @@ namespace CSSPLocalTaskRunnerServices.Tests
 
         //    AppTaskModel appTaskModel = FillAppTaskModel();
 
-        //    LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        //    CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
         //    await TestAddOrModifyUnauthorized(appTaskModel, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         //}
@@ -407,7 +407,7 @@ namespace CSSPLocalTaskRunnerServices.Tests
 
         //    int AppTaskID = 1000;
 
-        //    LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        //    CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
         //    await TestDeleteUnauthorized(AppTaskID, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         //}
@@ -418,7 +418,7 @@ namespace CSSPLocalTaskRunnerServices.Tests
         //{
         //    Assert.True(await Setup(culture));
 
-        //    LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        //    CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
         //    await TestGetAllUnauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         //}

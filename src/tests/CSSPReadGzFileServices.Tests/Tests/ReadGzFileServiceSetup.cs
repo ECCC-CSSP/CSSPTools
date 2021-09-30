@@ -3,7 +3,7 @@ using CSSPDBModels;
 using CSSPEnums;
 using CSSPLogServices;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,9 +12,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
+using CSSPScrambleServices;
 
 namespace ReadGzFileServices.Tests
 {
+    [Collection("Sequential")]
     public partial class ReadGzFileServiceTests
     {
         #region Variables
@@ -27,7 +29,8 @@ namespace ReadGzFileServices.Tests
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private IReadGzFileService ReadGzFileService { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private ICSSPFileService CSSPFileService { get; set; }
         private CSSPDBContext db { get; set; }
@@ -76,33 +79,30 @@ namespace ReadGzFileServices.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBContext
-             * ---------------------------------------------------------------------------------      
-             */
-            Services.AddDbContext<CSSPDBContext>(options =>
+            Assert.NotNull(Configuration["CSSPDBManage"]);
+
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
+            Assert.True(fiCSSPDBManage.Exists);
+
+            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
+            if (!fiCSSPDBManageTest.Exists)
             {
-                options.UseSqlServer(Configuration["CSSPDB"]);
-            });
-
-            ///* ---------------------------------------------------------------------------------
-            // * CSSPDBLocalContext
-            // * ---------------------------------------------------------------------------------      
-            // */
-
-            //FileInfo fiCSSPDBLocalFileName = new FileInfo(configReadGzfile.CSSPDBLocal);
-
-            //Services.AddDbContext<CSSPDBLocalContext>(options =>
-            //{
-            //    options.UseSqlite($"Data Source={ fiCSSPDBLocalFileName.FullName }");
-            //});
-
+                try
+                {
+                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
+                }
+            }
 
             /* ---------------------------------------------------------------------------------
              * CSSPDBManageContext
@@ -124,12 +124,15 @@ namespace ReadGzFileServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            await LoggedInService.SetLoggedInLocalContactInfo();
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
+
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            Assert.NotNull(CSSPScrambleService);
 
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);

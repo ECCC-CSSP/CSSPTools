@@ -25,7 +25,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPHelperServices\CSSPHelperServices.csproj" />
-    <ProjectReference Include="..\CSSPLogServices\CSSPLogServices.csproj" />
+    <ProjectReference Include="..\CSSPScrambleServices\CSSPScrambleServices.csproj" />
+    <ProjectReference Include="..\CSSPServerLoggedInServices\CSSPServerLoggedInServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

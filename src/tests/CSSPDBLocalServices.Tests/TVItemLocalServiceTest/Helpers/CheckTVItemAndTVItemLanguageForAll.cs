@@ -46,7 +46,7 @@ namespace CSSPDBLocalServices.Tests
                 TVPath = $"{ tvItemParent.TVPath}p{TVItemID}",
                 TVType = tvType,
                 LastUpdateDate_UTC = tvItem.LastUpdateDate_UTC,
-                LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
             };
 
             CompareTVItems(tvItem, tvItemNew);
@@ -61,8 +61,8 @@ namespace CSSPDBLocalServices.Tests
                      TVItemLanguageID = TVItemID,
                      TranslationStatus = TranslationStatusEnum.Translated,
                      TVText = tvTextEN,
-                     LastUpdateDate_UTC = tvItemLanguageList[(int)LanguageEnum.en].LastUpdateDate_UTC,
-                     LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                     LastUpdateDate_UTC = tvItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
+                     LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
                 },
                 new TVItemLanguage()
                 {
@@ -72,19 +72,8 @@ namespace CSSPDBLocalServices.Tests
                      TVItemLanguageID = TVItemID,
                      TranslationStatus = TranslationStatusEnum.Translated,
                      TVText = tvTextEN,
-                     LastUpdateDate_UTC = tvItemLanguageList[(int)LanguageEnum.en].LastUpdateDate_UTC,
-                     LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
-                },
-                new TVItemLanguage()
-                {
-                     DBCommand = dbCommand,
-                     Language = LanguageEnum.en,
-                     TVItemID = TVItemID,
-                     TVItemLanguageID = TVItemID,
-                     TranslationStatus = TranslationStatusEnum.Translated,
-                     TVText = tvTextEN,
-                     LastUpdateDate_UTC = tvItemLanguageList[(int)LanguageEnum.fr].LastUpdateDate_UTC,
-                     LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                     LastUpdateDate_UTC = tvItemLanguageList[(int)LanguageEnum.fr - 1].LastUpdateDate_UTC,
+                     LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
                 },
             };
 

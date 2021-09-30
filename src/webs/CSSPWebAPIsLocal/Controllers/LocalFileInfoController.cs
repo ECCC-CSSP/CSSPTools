@@ -13,7 +13,7 @@ using CSSPCultureServices.Resources;
 using ReadGzFileServices;
 using System.Threading;
 using CSSPWebModels;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using Microsoft.Extensions.Configuration;
 using CSSPFileServices;
 
@@ -35,16 +35,16 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private IConfiguration Configuration { get;  }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
         public LocalFileInfoController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
-            ILoggedInService LoggedInService, ICSSPFileService FileService)
+            ICSSPLocalLoggedInService CSSPLocalLoggedInService, ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.Configuration = Configuration;
             this.FileService = FileService;
         }
@@ -56,7 +56,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             FileName = FileName.Replace(".mmdf", ".mdf");
 
@@ -67,7 +67,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await FileService.GetLocalFileInfoList(ParentTVItemID);
         }

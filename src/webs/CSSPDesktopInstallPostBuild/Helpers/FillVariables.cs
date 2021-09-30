@@ -10,7 +10,7 @@ namespace CSSPDesktopInstallPostBuild
     {
         private async Task<bool> FillVariables()
         {
-            AzureStore = LoggedInService.Descramble(Configuration.GetValue<string>("AzureStore"));
+            AzureStore = CSSPScrambleService.Descramble(Configuration.GetValue<string>("AzureStore"));
             if (string.IsNullOrWhiteSpace(AzureStore))
             {
                 Console.WriteLine("Could not read AzureStore from Configuration");

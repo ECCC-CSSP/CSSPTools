@@ -1,7 +1,8 @@
 ﻿using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
+using CSSPScrambleServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,8 @@ namespace UploadAllFilesToAzure
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         public string AzureStore { get; set; }
         public string AzureStoreCSSPFilesPath { get; set; }
         public CSSPDBContext db { get; set; }
@@ -63,7 +65,8 @@ namespace UploadAllFilesToAzure
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 
             /* ---------------------------------------------------------------------------------
            * CSSPDBContext
@@ -95,28 +98,28 @@ namespace UploadAllFilesToAzure
                 return false;
             }
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            if (LoggedInService == null)
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            if (CSSPLocalLoggedInService == null)
             {
-                Console.WriteLine("LoggedInService should not be null");
+                Console.WriteLine("CSSPLocalLoggedInService should not be null");
                 return false;
             }
 
-            string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            if (LoginEmail == null)
+            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null)
             {
-                Console.WriteLine("LoginEmail should not be null");
+                Console.WriteLine("CSSPLocalLoggedInService.LoggedInContactInfo should not be null");
                 return false;
             }
 
-            LoggedInService.SetLoggedInContactInfo(LoginEmail);
-            if (LoggedInService.LoggedInContactInfo == null)
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            if (CSSPScrambleService == null)
             {
-                Console.WriteLine("LoggedInService.LoggedInContactInfo should not be null");
+                Console.WriteLine("CSSPScrambleService should not be null");
                 return false;
             }
 
-            AzureStore = LoggedInService.Descramble(AzureStore);
+            AzureStore = CSSPScrambleService.Descramble(AzureStore);
 
             return true;
         }

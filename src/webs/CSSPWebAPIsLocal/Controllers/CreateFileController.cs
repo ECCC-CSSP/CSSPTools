@@ -13,7 +13,7 @@ using CSSPCultureServices.Resources;
 using ReadGzFileServices;
 using System.Threading;
 using CSSPWebModels;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using CSSPDBLocalServices;
 using System.IO;
 using CSSPFileServices;
@@ -39,16 +39,16 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
-        public CreateFileController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+        public CreateFileController(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
             ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.FileService = FileService;
         }
         #endregion Constructors
@@ -59,7 +59,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<bool>> CreateTempCSV(TableConvertToCSVModel tableConvertToCSVModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await FileService.CreateTempCSV(tableConvertToCSVModel);
         }
@@ -69,7 +69,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
 
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await FileService.CreateTempPNG(Request);
 

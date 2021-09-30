@@ -9,8 +9,7 @@ using CSSPDBModels;
 using CSSPDBServices;
 using CSSPEnums;
 using CSSPHelperModels;
-using CSSPHelperServices;
-using LoggedInServices;
+using CSSPServerLoggedInServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,9 +83,9 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
-            Services.AddSingleton<ILoginModelService, LoginModelService>();
-            Services.AddSingleton<IRegisterModelService, RegisterModelService>();
+            Services.AddSingleton<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
+            //Services.AddSingleton<ILoginModelService, LoginModelService>();
+            //Services.AddSingleton<IRegisterModelService, RegisterModelService>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
             Services.AddSingleton<IAzureAppTaskService, AzureAppTaskService>();
 

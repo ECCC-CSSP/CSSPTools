@@ -13,7 +13,7 @@ using CSSPCultureServices.Resources;
 using ReadGzFileServices;
 using System.Threading;
 using CSSPWebModels;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 //using WebAppLoadedServices;
 
 namespace CSSPWebAPIsLocal.Controllers
@@ -67,16 +67,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private IReadGzFileService ReadGzFileService { get; }
         #endregion Properties
 
         #region Constructors
-        public ReadController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+        public ReadController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
             IReadGzFileService ReadGzFileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.ReadGzFileService = ReadGzFileService;
 
         }
@@ -88,7 +88,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllAddresses>> WebAllAddresses()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses);
         }
@@ -97,7 +97,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllContacts>> WebAllContacts()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllContacts>(WebTypeEnum.WebAllContacts);
         }
@@ -106,7 +106,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllCountries>> WebAllCountries()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllCountries>(WebTypeEnum.WebAllCountries);
         }
@@ -115,7 +115,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllEmails>> WebAllEmails()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllEmails>(WebTypeEnum.WebAllEmails);
         }
@@ -124,7 +124,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllHelpDocs>> WebAllHelpDocs()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs);
         }
@@ -133,7 +133,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllMunicipalities>> WebAllMunicipalities()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities);
         }
@@ -142,7 +142,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllMWQMLookupMPNs>> WebAllMWQMLookupMPNs()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs);
         }
@@ -151,7 +151,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllPolSourceGroupings>> WebAllPolSourceGroupings()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllPolSourceGroupings>(WebTypeEnum.WebAllPolSourceGroupings);
         }
@@ -160,7 +160,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllPolSourceSiteEffectTerms>> WebAllPolSourceSiteEffectTerms()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllPolSourceSiteEffectTerms>(WebTypeEnum.WebAllPolSourceSiteEffectTerms);
         }
@@ -169,7 +169,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllProvinces>> WebAllProvinces()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllProvinces>(WebTypeEnum.WebAllProvinces);
         }
@@ -178,7 +178,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllReportTypes>> WebAllReportTypes()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllReportTypes>(WebTypeEnum.WebAllReportTypes);
         }
@@ -187,7 +187,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllTels>> WebAllTels()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllTels>(WebTypeEnum.WebAllTels);
         }
@@ -196,7 +196,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllTideLocations>> WebAllTideLocations()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllTideLocations>(WebTypeEnum.WebAllTideLocations);
         }
@@ -205,7 +205,7 @@ namespace CSSPWebAPIsLocal.Controllers
         //public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages1980_2020()
         //{
         //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await LoggedInService.SetLoggedInLocalContactInfo();
+        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
         //    return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020);
         //}
@@ -214,7 +214,7 @@ namespace CSSPWebAPIsLocal.Controllers
         //public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages2021_2060()
         //{
         //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await LoggedInService.SetLoggedInLocalContactInfo();
+        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
         //    return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages2021_2060);
         //}
@@ -223,7 +223,7 @@ namespace CSSPWebAPIsLocal.Controllers
         //public async Task<ActionResult<WebAllTVItems>> WebAllTVItems1980_2020()
         //{
         //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await LoggedInService.SetLoggedInLocalContactInfo();
+        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
         //    return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020);
         //}
@@ -232,7 +232,7 @@ namespace CSSPWebAPIsLocal.Controllers
         //public async Task<ActionResult<WebAllTVItems>> WebAllTVItems2021_2060()
         //{
         //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await LoggedInService.SetLoggedInLocalContactInfo();
+        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
         //    return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems2021_2060);
         //}
@@ -242,7 +242,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
         }
@@ -252,7 +252,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
         }
@@ -262,7 +262,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = CountryTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
         }
@@ -272,7 +272,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebDrogueRuns>(WebTypeEnum.WebDrogueRuns, TVItemID);
         }
@@ -282,7 +282,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
         }
@@ -292,7 +292,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebLabSheets>(WebTypeEnum.WebLabSheets, TVItemID);
         }
@@ -302,7 +302,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
         }
@@ -312,7 +312,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMonitoringOtherStatsCountry>(WebTypeEnum.WebMonitoringOtherStatsCountry, TVItemID);
         }
@@ -322,7 +322,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMonitoringRoutineStatsCountry>(WebTypeEnum.WebMonitoringRoutineStatsCountry, TVItemID);
         }
@@ -332,7 +332,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMonitoringOtherStatsProvince>(WebTypeEnum.WebMonitoringOtherStatsProvince, TVItemID);
         }
@@ -342,7 +342,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMonitoringRoutineStatsProvince>(WebTypeEnum.WebMonitoringRoutineStatsProvince, TVItemID);
         }
@@ -352,7 +352,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = MunicipalityTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
         }
@@ -362,7 +362,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
         }
@@ -372,7 +372,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples1980_2020, TVItemID);
         }
@@ -382,7 +382,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples2021_2060, TVItemID);
         }
@@ -392,7 +392,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
         }
@@ -402,7 +402,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
         }
@@ -412,7 +412,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
         }
@@ -421,7 +421,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebRoot>> WebRoot()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebRoot>(WebTypeEnum.WebRoot);
         }
@@ -430,7 +430,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<WebAllSearch>> WebAllSearch()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebAllSearch>(WebTypeEnum.WebAllSearch);
         }
@@ -440,7 +440,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
         }
@@ -450,7 +450,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = SubsectorTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
         }
@@ -460,7 +460,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = ProvinceTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await ReadGzFileService.ReadJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
         }

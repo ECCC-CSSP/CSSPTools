@@ -28,12 +28,12 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.NotNull(CSSPScrambleService);
             Assert.NotNull(CSSPLogService);
             Assert.NotNull(enums);
-            Assert.NotNull(CSSPSQLiteService);
             Assert.NotNull(FileService);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(CreateGzFileService);
@@ -130,11 +130,6 @@ namespace CSSPDBLocalServices.Tests
 
             PostAppTaskModel appTaskModel2 = FillPostAppTaskModel();
             await TestAddOrModifyError(appTaskModel2, string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"));
-
-            Assert.True(await TestDelete(appTaskModelRet.AppTask.AppTaskID));
-
-            List<PostAppTaskModel> appTaskModelListRet3 = await TestGetAll();
-            Assert.Equal(appTaskModelCount, appTaskModelListRet3.Count);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -159,11 +154,6 @@ namespace CSSPDBLocalServices.Tests
             appTaskModel2.AppTaskLanguageList[0].AppTaskID = -1;
             appTaskModel2.AppTaskLanguageList[1].AppTaskID = -1;
             await TestAddOrModifyError(appTaskModel2, string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskModel2.AppTask.AppTaskID.ToString()));
-
-            Assert.True(await TestDelete(appTaskModelRet.AppTask.AppTaskID));
-
-            List<PostAppTaskModel> appTaskModelListRet3 = await TestGetAll();
-            Assert.Equal(appTaskModelCount, appTaskModelListRet3.Count);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -182,11 +172,6 @@ namespace CSSPDBLocalServices.Tests
             int AppTaskID = -100000;
 
             await TestDeleteError(AppTaskID, string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString()));
-
-            Assert.True(await TestDelete(appTaskModelRet.AppTask.AppTaskID));
-
-            List<PostAppTaskModel> appTaskModelListRet3 = await TestGetAll();
-            Assert.Equal(appTaskModelCount, appTaskModelListRet3.Count);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -430,7 +415,7 @@ namespace CSSPDBLocalServices.Tests
 
             PostAppTaskModel appTaskModel = FillPostAppTaskModel();
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             await TestAddOrModifyUnauthorized(appTaskModel, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         }
@@ -443,7 +428,7 @@ namespace CSSPDBLocalServices.Tests
 
             int AppTaskID = 1000;
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             await TestDeleteUnauthorized(AppTaskID, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         }
@@ -454,7 +439,7 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AppTaskLocalServiceSetup(culture, false));
 
-            LoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
             await TestGetAllUnauthorized(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         }

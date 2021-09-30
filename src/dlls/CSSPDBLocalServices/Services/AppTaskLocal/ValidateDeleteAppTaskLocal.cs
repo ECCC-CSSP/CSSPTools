@@ -23,10 +23,10 @@ namespace CSSPDBLocalServices
         {
             if (appTaskID == 0)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
             }
 
-            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) :  await Task.FromResult(false);
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) :  await Task.FromResult(false);
         }
     }
 }

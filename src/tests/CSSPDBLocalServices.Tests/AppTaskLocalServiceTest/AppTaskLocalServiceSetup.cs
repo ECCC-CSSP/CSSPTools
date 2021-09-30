@@ -7,9 +7,8 @@ using CreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPSQLiteServices;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +21,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
 using CSSPLogServices;
+using CSSPScrambleServices;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -34,9 +34,9 @@ namespace CSSPDBLocalServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IEnums enums { get; set; }
-        private ILoggedInService LoggedInService { get; set; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+        private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
-        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private ICSSPFileService FileService { get; set; }
         private IManageFileService ManageFileService { get; set; }
         private ICreateGzFileService CreateGzFileService { get; set; }
@@ -88,12 +88,12 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(Configuration["ComputerName"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ILoggedInService, LoggedInService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
             Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
@@ -169,19 +169,19 @@ namespace CSSPDBLocalServices.Tests
 
             CSSPCultureService.SetCulture(culture);
 
-            LoggedInService = Provider.GetService<ILoggedInService>();
-            Assert.NotNull(LoggedInService);
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
-            Assert.True(await LoggedInService.SetLoggedInLocalContactInfo());
+            Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
+
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            Assert.NotNull(CSSPScrambleService);
 
             CSSPLogService = Provider.GetService<ICSSPLogService>();
             Assert.NotNull(CSSPLogService);
 
             enums = Provider.GetService<IEnums>();
             Assert.NotNull(enums);
-
-            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
-            Assert.NotNull(CSSPSQLiteService);
 
             FileService = Provider.GetService<ICSSPFileService>();
             Assert.NotNull(FileService);

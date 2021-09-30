@@ -56,7 +56,7 @@ namespace CSSPFileServices.Tests
 
             File.WriteAllText(fi.FullName, "bonjour");
 
-            LoggedInService.LoggedInContactInfo = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
             var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);

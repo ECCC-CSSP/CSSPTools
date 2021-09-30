@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\dlls\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
     <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />
+    <ProjectReference Include="..\..\tests\CSSPScrambleServices.Tests\CSSPScrambleServices.Tests.csproj" />
   </ItemGroup>
  
   <ItemGroup>

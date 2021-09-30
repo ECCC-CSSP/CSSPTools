@@ -53,7 +53,7 @@ namespace CSSPFileServices.Tests
             FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
             Assert.True(fi.Exists);
 
-            LoggedInService.LoggedInContactInfo = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
             var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);

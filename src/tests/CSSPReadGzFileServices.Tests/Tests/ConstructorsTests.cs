@@ -14,8 +14,9 @@ namespace ReadGzFileServices.Tests
 
             Assert.NotNull(Configuration);
             Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(LoggedInService);
-            Assert.NotNull(LoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPScrambleService);
             Assert.NotNull(CSSPLogService);
             Assert.NotNull(ManageFileService);
             Assert.NotNull(ReadGzFileService);

@@ -662,7 +662,6 @@ namespace CSSPFileServices.Tests
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebRoot;
 
             var actionRes = await CSSPFileService.DownloadGzFile(webType);
@@ -750,7 +749,7 @@ namespace CSSPFileServices.Tests
 
                 Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-                LoggedInService.LoggedInContactInfo = null;
+                CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
 

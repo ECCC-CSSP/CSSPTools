@@ -12,7 +12,7 @@ using CSSPEnums;
 using CSSPCultureServices.Resources;
 using System.Threading;
 using CSSPFileServices;
-using LoggedInServices;
+using CSSPLocalLoggedInServices;
 using CSSPWebModels;
 
 namespace CSSPWebAPIsLocal.Controllers
@@ -31,16 +31,16 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
-        private ILoggedInService LoggedInService { get; }
+        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPFileService FileService { get; }
         #endregion Properties
 
         #region Constructors
-        public DownloadController(ICSSPCultureService CSSPCultureService, ILoggedInService LoggedInService, 
+        public DownloadController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
             ICSSPFileService FileService)
         {
             this.CSSPCultureService = CSSPCultureService;
-            this.LoggedInService = LoggedInService;
+            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.FileService = FileService;
 
         }
@@ -53,7 +53,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await LoggedInService.SetLoggedInLocalContactInfo();
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
             return await FileService.DownloadFile(ParentTVItemID, FileName);
         }

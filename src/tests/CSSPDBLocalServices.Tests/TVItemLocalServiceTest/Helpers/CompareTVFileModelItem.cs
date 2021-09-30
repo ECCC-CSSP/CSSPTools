@@ -14,7 +14,7 @@ namespace CSSPDBLocalServices.Tests
         private void CompareTVFileModelItem(PostTVItemModel postTVItemModel, TVFileModel tvFileModel)
         {
             Assert.Equal(postTVItemModel.TVItem.ParentID, tvFileModel.TVItem.ParentID);
-            Assert.Equal(postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en].TVText, tvFileModel.TVFile.ServerFileName);
+            Assert.Equal(postTVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].TVText, tvFileModel.TVFile.ServerFileName);
         }
     }
 }

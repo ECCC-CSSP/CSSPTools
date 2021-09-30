@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices.Tests
                 EstimatedLength_second = null,
                 RemainingTime_second = null,
                 LastUpdateDate_UTC = DateTime.UtcNow,
-                LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
             };
 
             appTaskModel.AppTask = appTask;
@@ -50,7 +50,7 @@ namespace CSSPDBLocalServices.Tests
                     StatusText = "This is the status text",
                     TranslationStatus = TranslationStatusEnum.Translated,
                     LastUpdateDate_UTC = DateTime.UtcNow,
-                    LastUpdateContactTVItemID = LoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                    LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
                 };
 
                 appTaskModel.AppTaskLanguageList.Add(appTaskLanguage);

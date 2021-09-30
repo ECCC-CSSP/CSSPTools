@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 
                 if (appTask != null)
                 {
-                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"));
                     return false;
                 }
 
@@ -49,7 +49,7 @@ namespace CSSPDBLocalServices
                 }
                 catch (Exception ex)
                 {
-                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message));
                     return false;
                 }
 
@@ -70,7 +70,7 @@ namespace CSSPDBLocalServices
                         }
                         catch (Exception ex)
                         {
-                            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguage", ex.Message));
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "AppTaskLanguage", ex.Message));
                             return false;
                         }
                     }
@@ -90,7 +90,7 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message));
                         return false;
                     }
                 }
@@ -103,7 +103,7 @@ namespace CSSPDBLocalServices
 
                 if (appTask == null)
                 {
-                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", postAppTaskModel.AppTask.AppTaskID.ToString()));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", postAppTaskModel.AppTask.AppTaskID.ToString()));
                     return false;
                 }
 
@@ -115,7 +115,7 @@ namespace CSSPDBLocalServices
                 }
                 catch (Exception ex)
                 {
-                    errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTask", ex.Message));
                     return false;
                 }
 
@@ -129,7 +129,7 @@ namespace CSSPDBLocalServices
 
                     if (appTaskLanguage == null)
                     {
-                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", postAppTaskModel.AppTaskLanguageList[langID].AppTaskLanguageID.ToString()));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "AppTaskLanguageID", postAppTaskModel.AppTaskLanguageList[langID].AppTaskLanguageID.ToString()));
                         return false;
                     }
 
@@ -141,14 +141,14 @@ namespace CSSPDBLocalServices
                     }
                     catch (Exception ex)
                     {
-                        errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message));
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "AppTaskLanguage", ex.Message));
                         return false;
                     }
 
                 }
             }
 
-            return errRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
+            return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);
         }
     }
 }
