@@ -47,14 +47,9 @@ namespace ReadGzFileServices
 
             foreach (TVItemModel TVItemModel in TVItemModelList)
             {
-                TVItemModel TVItemModelOriginal = WebProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
-                if (TVItemModelOriginal == null)
+                if (WebProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault() == null)
                 {
-                    WebProvince.TVItemModelAreaList.Add(TVItemModelOriginal);
-                }
-                else
-                {
-                    TVItemModelOriginal = TVItemModel;
+                    WebProvince.TVItemModelAreaList.Add(TVItemModel);
                 }
             }
 

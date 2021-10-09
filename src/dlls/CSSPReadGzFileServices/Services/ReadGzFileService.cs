@@ -22,7 +22,6 @@ namespace ReadGzFileServices
     {
         Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0);
-        WebAppLoaded webAppLoaded { get; set; }
     }
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
@@ -30,8 +29,6 @@ namespace ReadGzFileServices
         #endregion Variables
 
         #region Properties
-        public WebAppLoaded webAppLoaded { get; set; } = new WebAppLoaded();
-
         private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }

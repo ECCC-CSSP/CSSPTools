@@ -43,14 +43,14 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
-            List<PostAppTaskModel> appTaskModelListRet = await TestGetAll();
+            List<AppTaskLocalModel> appTaskModelListRet = await TestGetAll();
             Assert.Empty(appTaskModelListRet);
 
             // ----------- 
             // TestAddOrModify
-            PostAppTaskModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
+            AppTaskLocalModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
             Assert.NotNull(postAppTaskModelRet);
             Assert.NotNull(postAppTaskModelRet.AppTask);
             Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
@@ -74,12 +74,12 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
-            List<PostAppTaskModel> postAppTaskModelListRet = await TestGetAll();
+            List<AppTaskLocalModel> postAppTaskModelListRet = await TestGetAll();
             Assert.Empty(postAppTaskModelListRet);
 
-            PostAppTaskModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
+            AppTaskLocalModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
             Assert.NotNull(postAppTaskModelRet);
             Assert.NotNull(postAppTaskModelRet.AppTask);
             Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
@@ -95,7 +95,7 @@ namespace CSSPAzureAppTaskServices.Tests
             postAppTaskModelRet.AppTaskLanguageList[1].StatusText = StatusText;
             postAppTaskModelRet.AppTaskLanguageList[1].ErrorText = ErrorText;
 
-            PostAppTaskModel appTaskModelRet5 = await TestAddOrModify(postAppTaskModelRet);
+            AppTaskLocalModel appTaskModelRet5 = await TestAddOrModify(postAppTaskModelRet);
             Assert.NotNull(postAppTaskModelRet);
             Assert.NotNull(postAppTaskModelRet.AppTask);
             Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
@@ -108,7 +108,7 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.Equal(StatusText, appTaskModelRet5.AppTaskLanguageList[1].StatusText);
             Assert.Equal(ErrorText, appTaskModelRet5.AppTaskLanguageList[1].ErrorText);
 
-            List<PostAppTaskModel> appTaskModelListRet = await TestGetAll();
+            List<AppTaskLocalModel> appTaskModelListRet = await TestGetAll();
             Assert.NotEmpty(appTaskModelListRet);
 
             await TestDelete(postAppTaskModelRet.AppTask.AppTaskID);
@@ -123,17 +123,17 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
-            List<PostAppTaskModel> postAppTaskModelListRet = await TestGetAll();
+            List<AppTaskLocalModel> postAppTaskModelListRet = await TestGetAll();
             Assert.Empty(postAppTaskModelListRet);
 
-            PostAppTaskModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
+            AppTaskLocalModel postAppTaskModelRet = await TestAddOrModify(appTaskModel);
             Assert.NotNull(postAppTaskModelRet);
             Assert.NotNull(postAppTaskModelRet.AppTask);
             Assert.NotEmpty(postAppTaskModelRet.AppTaskLanguageList);
 
-            PostAppTaskModel appTaskModel2 = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel2 = FillAppTaskModel();
             await TestAddOrModifyError(appTaskModel2, string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"));
         }
         [Theory]
@@ -143,13 +143,13 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
-            PostAppTaskModel appTaskModelRet = await TestAddOrModify(appTaskModel);
+            AppTaskLocalModel appTaskModelRet = await TestAddOrModify(appTaskModel);
 
             int AppTaskIDToDelete = appTaskModelRet.AppTask.AppTaskID;
 
-            PostAppTaskModel appTaskModel2 = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel2 = FillAppTaskModel();
             appTaskModel2.AppTask.AppTaskID = -1;
             appTaskModel2.AppTaskLanguageList[0].AppTaskLanguageID = -1;
             appTaskModel2.AppTaskLanguageList[1].AppTaskLanguageID = -1;
@@ -164,9 +164,9 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
-            PostAppTaskModel appTaskModelRet = await TestAddOrModify(appTaskModel);
+            AppTaskLocalModel appTaskModelRet = await TestAddOrModify(appTaskModel);
 
             int AppTaskID = -1;
 
@@ -179,7 +179,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.DBCommand = (DBCommandEnum)10000;
 
@@ -192,7 +192,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.TVItemID = 0;
 
@@ -205,7 +205,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.TVItemID2 = 0;
 
@@ -218,7 +218,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.AppTaskCommand = (AppTaskCommandEnum)10000;
 
@@ -231,7 +231,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.AppTaskStatus = (AppTaskStatusEnum)10000;
 
@@ -244,7 +244,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.PercentCompleted = -1;
 
@@ -257,7 +257,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.Language = (LanguageEnum)10000;
 
@@ -270,7 +270,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.StartDateTime_UTC = new DateTime(1970, 1, 1);
 
@@ -283,7 +283,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.EndDateTime_UTC = new DateTime(1970, 1, 1);
 
@@ -296,7 +296,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList.Remove(appTaskModel.AppTaskLanguageList[appTaskModel.AppTaskLanguageList.Count - 1]);
 
@@ -309,7 +309,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList[0].AppTaskLanguageID = 1;
 
@@ -322,7 +322,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTask.AppTaskID = 1;
             appTaskModel.AppTaskLanguageList[0].AppTaskLanguageID = 0;
@@ -336,7 +336,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList[0].DBCommand = (DBCommandEnum)10000;
 
@@ -349,7 +349,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList[0].Language = (LanguageEnum)10000;
 
@@ -362,7 +362,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList[0].StatusText = "".PadLeft(251, 'a');
 
@@ -375,7 +375,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList[0].ErrorText = "".PadLeft(251, 'a');
 
@@ -388,7 +388,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             appTaskModel.AppTaskLanguageList[0].TranslationStatus = (TranslationStatusEnum)10000;
 
@@ -412,7 +412,7 @@ namespace CSSPAzureAppTaskServices.Tests
         {
             Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            PostAppTaskModel appTaskModel = FillAppTaskModel();
+            AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
             CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 

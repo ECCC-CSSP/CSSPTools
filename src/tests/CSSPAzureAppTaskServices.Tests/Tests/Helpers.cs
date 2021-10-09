@@ -20,9 +20,9 @@ namespace CSSPAzureAppTaskServices.Tests
 {
     public partial class AzureAppTaskServiceTest
     {
-        private PostAppTaskModel FillAppTaskModel()
+        private AppTaskLocalModel FillAppTaskModel()
         {
-            PostAppTaskModel postAppTaskModel = new PostAppTaskModel();
+            AppTaskLocalModel postAppTaskModel = new AppTaskLocalModel();
 
             AppTask appTask = new AppTask()
             {
@@ -65,17 +65,17 @@ namespace CSSPAzureAppTaskServices.Tests
 
             return postAppTaskModel;
         }
-        private async Task<PostAppTaskModel> TestAddOrModify(PostAppTaskModel appTaskModel)
+        private async Task<AppTaskLocalModel> TestAddOrModify(AppTaskLocalModel appTaskModel)
         {
             var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            PostAppTaskModel appTaskModelRet = (PostAppTaskModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+            AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(appTaskModelRet);
 
             return await Task.FromResult(appTaskModelRet);
         }
-        private async Task TestAddOrModifyError(PostAppTaskModel appTaskModel, string errorMessage)
+        private async Task TestAddOrModifyError(AppTaskLocalModel appTaskModel, string errorMessage)
         {
             var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
@@ -83,7 +83,7 @@ namespace CSSPAzureAppTaskServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
         }
-        private async Task TestAddOrModifyUnauthorized(PostAppTaskModel appTaskModel, string errorMessage)
+        private async Task TestAddOrModifyUnauthorized(AppTaskLocalModel appTaskModel, string errorMessage)
         {
             var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
@@ -117,12 +117,12 @@ namespace CSSPAzureAppTaskServices.Tests
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
         }
-        private async Task<List<PostAppTaskModel>> TestGetAll()
+        private async Task<List<AppTaskLocalModel>> TestGetAll()
         {
             var actionPostTVItemModelRes = await AzureAppTaskService.GetAllAzureAppTask();
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            List<PostAppTaskModel> appTaskModelListRet = (List<PostAppTaskModel>)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+            List<AppTaskLocalModel> appTaskModelListRet = (List<AppTaskLocalModel>)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(appTaskModelListRet);
 
             return await Task.FromResult(appTaskModelListRet);

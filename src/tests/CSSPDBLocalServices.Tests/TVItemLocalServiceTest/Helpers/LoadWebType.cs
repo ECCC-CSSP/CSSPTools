@@ -16,184 +16,220 @@ namespace CSSPDBLocalServices.Tests
         {
             switch (webType)
             {
-                case WebTypeEnum.WebRoot:
+                case WebTypeEnum.WebAllAddresses:
                     {
-                        ReadGzFileService.webAppLoaded.WebRoot = await ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebRoot);
-                    }
-                    break;
-                case WebTypeEnum.WebAllSearch:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllSearch = await ReadGzFileService.GetUncompressJSON<WebAllSearch>(WebTypeEnum.WebAllSearch, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllSearch);
-                    }
-                    break;
-                case WebTypeEnum.WebCountry:
-                    {
-                        ReadGzFileService.webAppLoaded.WebCountry = await ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebCountry);
-                    }
-                    break;
-                case WebTypeEnum.WebProvince:
-                    {
-                        ReadGzFileService.webAppLoaded.WebProvince = await ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebProvince);
-                    }
-                    break;
-                case WebTypeEnum.WebArea:
-                    {
-                        ReadGzFileService.webAppLoaded.WebArea = await ReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebArea);
-                    }
-                    break;
-                case WebTypeEnum.WebSector:
-                    {
-                        ReadGzFileService.webAppLoaded.WebSector = await ReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebSector);
-                    }
-                    break;
-                case WebTypeEnum.WebSubsector:
-                    {
-                        ReadGzFileService.webAppLoaded.WebSubsector = await ReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebSubsector);
-                    }
-                    break;
-                case WebTypeEnum.WebMunicipality:
-                    {
-                        ReadGzFileService.webAppLoaded.WebMunicipality = await ReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebMunicipality);
-                    }
-                    break;
-                case WebTypeEnum.WebMWQMSamples1980_2020:
-                    {
-                        ReadGzFileService.webAppLoaded.WebMWQMSamples1980_2020 = await ReadGzFileService.GetUncompressJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples1980_2020, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebMWQMSamples1980_2020);
-                    }
-                    break;
-                case WebTypeEnum.WebMWQMSamples2021_2060:
-                    {
-                        ReadGzFileService.webAppLoaded.WebMWQMSamples2021_2060 = await ReadGzFileService.GetUncompressJSON<WebMWQMSamples>(WebTypeEnum.WebMWQMSamples2021_2060, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebMWQMSamples2021_2060);
-                    }
-                    break;
-                case WebTypeEnum.WebMWQMRuns:
-                    {
-                        ReadGzFileService.webAppLoaded.WebMWQMRuns = await ReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebMWQMRuns);
-                    }
-                    break;
-                case WebTypeEnum.WebMWQMSites:
-                    {
-                        ReadGzFileService.webAppLoaded.WebMWQMSites = await ReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebMWQMSites);
+                        webAllAddresses = await ReadGzFileService.GetUncompressJSON<WebAllAddresses>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllAddresses);
                     }
                     break;
                 case WebTypeEnum.WebAllContacts:
                     {
-                        ReadGzFileService.webAppLoaded.WebAllContacts = await ReadGzFileService.GetUncompressJSON<WebAllContacts>(WebTypeEnum.WebAllContacts, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllContacts);
-                    }
-                    break;
-                case WebTypeEnum.WebClimateSites:
-                    {
-                        ReadGzFileService.webAppLoaded.WebClimateSites = await ReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebClimateSites);
-                    }
-                    break;
-                case WebTypeEnum.WebHydrometricSites:
-                    {
-                        ReadGzFileService.webAppLoaded.WebHydrometricSites = await ReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebHydrometricSites);
-                    }
-                    break;
-                case WebTypeEnum.WebDrogueRuns:
-                    {
-                        ReadGzFileService.webAppLoaded.WebDrogueRuns = await ReadGzFileService.GetUncompressJSON<WebDrogueRuns>(WebTypeEnum.WebDrogueRuns, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebDrogueRuns);
-                    }
-                    break;
-                case WebTypeEnum.WebAllMWQMLookupMPNs:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllMWQMLookupMPNs = await ReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllMWQMLookupMPNs);
-                    }
-                    break;
-                case WebTypeEnum.WebAllHelpDocs:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllHelpDocs = await ReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllHelpDocs);
-                    }
-                    break;
-                case WebTypeEnum.WebAllTideLocations:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllTideLocations = await ReadGzFileService.GetUncompressJSON<WebAllTideLocations>(WebTypeEnum.WebAllTideLocations, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllTideLocations);
-                    }
-                    break;
-                case WebTypeEnum.WebPolSourceSites:
-                    {
-                        ReadGzFileService.webAppLoaded.WebPolSourceSites = await ReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebPolSourceSites);
-                    }
-                    break;
-                case WebTypeEnum.WebAllPolSourceGroupings:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllPolSourceGroupings = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceGroupings>(WebTypeEnum.WebAllPolSourceGroupings, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllPolSourceGroupings);
-                    }
-                    break;
-                case WebTypeEnum.WebAllReportTypes:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllReportTypes = await ReadGzFileService.GetUncompressJSON<WebAllReportTypes>(WebTypeEnum.WebAllReportTypes, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllReportTypes);
-                    }
-                    break;
-                case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllPolSourceSiteEffectTerms = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceSiteEffectTerms>(WebTypeEnum.WebAllPolSourceSiteEffectTerms, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllPolSourceSiteEffectTerms);
-                    }
-                    break;
-                case WebTypeEnum.WebAllMunicipalities:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllMunicipalities = await ReadGzFileService.GetUncompressJSON<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllMunicipalities);
-                    }
-                    break;
-                case WebTypeEnum.WebAllProvinces:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllProvinces = await ReadGzFileService.GetUncompressJSON<WebAllProvinces>(WebTypeEnum.WebAllProvinces, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllProvinces);
+                        webAllContacts = await ReadGzFileService.GetUncompressJSON<WebAllContacts>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllContacts);
                     }
                     break;
                 case WebTypeEnum.WebAllCountries:
                     {
-                        ReadGzFileService.webAppLoaded.WebAllCountries = await ReadGzFileService.GetUncompressJSON<WebAllCountries>(WebTypeEnum.WebAllCountries, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllCountries);
-                    }
-                    break;
-                case WebTypeEnum.WebAllAddresses:
-                    {
-                        ReadGzFileService.webAppLoaded.WebAllAddresses = await ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllAddresses);
+                        webAllCountries = await ReadGzFileService.GetUncompressJSON<WebAllCountries>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllCountries);
                     }
                     break;
                 case WebTypeEnum.WebAllEmails:
                     {
-                        ReadGzFileService.webAppLoaded.WebAllEmails = await ReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllEmails);
+                        webAllEmails = await ReadGzFileService.GetUncompressJSON<WebAllEmails>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllEmails);
+                    }
+                    break;
+                case WebTypeEnum.WebAllHelpDocs:
+                    {
+                        webAllHelpDocs = await ReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllHelpDocs);
+                    }
+                    break;
+                case WebTypeEnum.WebAllMunicipalities:
+                    {
+                        webAllMunicipalities = await ReadGzFileService.GetUncompressJSON<WebAllMunicipalities>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllMunicipalities);
+                    }
+                    break;
+                case WebTypeEnum.WebAllMWQMLookupMPNs:
+                    {
+                        webAllMWQMLookupMPNs = await ReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllMWQMLookupMPNs);
+                    }
+                    break;
+                case WebTypeEnum.WebAllPolSourceGroupings:
+                    {
+                        webAllPolSourceGroupings = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceGroupings>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllPolSourceGroupings);
+                    }
+                    break;
+                case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
+                    {
+                        webAllPolSourceSiteEffectTerms = await ReadGzFileService.GetUncompressJSON<WebAllPolSourceSiteEffectTerms>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllPolSourceSiteEffectTerms);
+                    }
+                    break;
+                case WebTypeEnum.WebAllProvinces:
+                    {
+                        webAllProvinces = await ReadGzFileService.GetUncompressJSON<WebAllProvinces>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllProvinces);
+                    }
+                    break;
+                case WebTypeEnum.WebAllReportTypes:
+                    {
+                        webAllReportTypes = await ReadGzFileService.GetUncompressJSON<WebAllReportTypes>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllReportTypes);
+                    }
+                    break;
+                case WebTypeEnum.WebAllSearch:
+                    {
+                        webAllSearch = await ReadGzFileService.GetUncompressJSON<WebAllSearch>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllSearch);
                     }
                     break;
                 case WebTypeEnum.WebAllTels:
                     {
-                        ReadGzFileService.webAppLoaded.WebAllTels = await ReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebAllTels);
+                        webAllTels = await ReadGzFileService.GetUncompressJSON<WebAllTels>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllTels);
+                    }
+                    break;
+                case WebTypeEnum.WebAllTideLocations:
+                    {
+                        webAllTideLocations = await ReadGzFileService.GetUncompressJSON<WebAllTideLocations>(webType, ParentTVItemID);
+                        Assert.NotNull(webAllTideLocations);
+                    }
+                    break;
+                case WebTypeEnum.WebArea:
+                    {
+                        webArea = await ReadGzFileService.GetUncompressJSON<WebArea>(webType, ParentTVItemID);
+                        Assert.NotNull(webArea);
+                    }
+                    break;
+                case WebTypeEnum.WebClimateSites:
+                    {
+                        webClimateSites = await ReadGzFileService.GetUncompressJSON<WebClimateSites>(webType, ParentTVItemID);
+                        Assert.NotNull(webClimateSites);
+                    }
+                    break;
+                case WebTypeEnum.WebCountry:
+                    {
+                        webCountry = await ReadGzFileService.GetUncompressJSON<WebCountry>(webType, ParentTVItemID);
+                        Assert.NotNull(webCountry);
+                    }
+                    break;
+                case WebTypeEnum.WebDrogueRuns:
+                    {
+                        webDrogueRuns = await ReadGzFileService.GetUncompressJSON<WebDrogueRuns>(webType, ParentTVItemID);
+                        Assert.NotNull(webDrogueRuns);
+                    }
+                    break;
+                case WebTypeEnum.WebHydrometricSites:
+                    {
+                        webHydrometricSites = await ReadGzFileService.GetUncompressJSON<WebHydrometricSites>(webType, ParentTVItemID);
+                        Assert.NotNull(webHydrometricSites);
+                    }
+                    break;
+                case WebTypeEnum.WebLabSheets:
+                    {
+                        webLabSheets = await ReadGzFileService.GetUncompressJSON<WebLabSheets>(webType, ParentTVItemID);
+                        Assert.NotNull(webLabSheets);
+                    }
+                    break;
+                case WebTypeEnum.WebMikeScenarios:
+                    {
+                        webMikeScenarios = await ReadGzFileService.GetUncompressJSON<WebMikeScenarios>(webType, ParentTVItemID);
+                        Assert.NotNull(webMikeScenarios);
+                    }
+                    break;
+                case WebTypeEnum.WebMonitoringOtherStatsCountry:
+                    {
+                        webMonitoringOtherStatsCountry = await ReadGzFileService.GetUncompressJSON<WebMonitoringOtherStatsCountry>(webType, ParentTVItemID);
+                        Assert.NotNull(webMonitoringOtherStatsCountry);
+                    }
+                    break;
+                case WebTypeEnum.WebMonitoringOtherStatsProvince:
+                    {
+                        webMonitoringOtherStatsProvince = await ReadGzFileService.GetUncompressJSON<WebMonitoringOtherStatsProvince>(webType, ParentTVItemID);
+                        Assert.NotNull(webMonitoringOtherStatsProvince);
+                    }
+                    break;
+                case WebTypeEnum.WebMonitoringRoutineStatsCountry:
+                    {
+                        webMonitoringRoutineStatsCountry = await ReadGzFileService.GetUncompressJSON<WebMonitoringRoutineStatsCountry>(webType, ParentTVItemID);
+                        Assert.NotNull(webMonitoringRoutineStatsCountry);
+                    }
+                    break;
+                case WebTypeEnum.WebMonitoringRoutineStatsProvince:
+                    {
+                        webMonitoringRoutineStatsProvince = await ReadGzFileService.GetUncompressJSON<WebMonitoringRoutineStatsProvince>(webType, ParentTVItemID);
+                        Assert.NotNull(webMonitoringRoutineStatsProvince);
+                    }
+                    break;
+                case WebTypeEnum.WebMunicipality:
+                    {
+                        webMunicipality = await ReadGzFileService.GetUncompressJSON<WebMunicipality>(webType, ParentTVItemID);
+                        Assert.NotNull(webMunicipality);
+                    }
+                    break;
+                case WebTypeEnum.WebMWQMRuns:
+                    {
+                        webMWQMRuns = await ReadGzFileService.GetUncompressJSON<WebMWQMRuns>(webType, ParentTVItemID);
+                        Assert.NotNull(webMWQMRuns);
+                    }
+                    break;
+                case WebTypeEnum.WebMWQMSamples1980_2020:
+                    {
+                        webMWQMSamples1980_2020 = await ReadGzFileService.GetUncompressJSON<WebMWQMSamples>(webType, ParentTVItemID);
+                        Assert.NotNull(webMWQMSamples1980_2020);
+                    }
+                    break;
+                case WebTypeEnum.WebMWQMSamples2021_2060:
+                    {
+                        webMWQMSamples2021_2060 = await ReadGzFileService.GetUncompressJSON<WebMWQMSamples>(webType, ParentTVItemID);
+                        Assert.NotNull(webMWQMSamples2021_2060);
+                    }
+                    break;
+                case WebTypeEnum.WebMWQMSites:
+                    {
+                        webMWQMSites = await ReadGzFileService.GetUncompressJSON<WebMWQMSites>(webType, ParentTVItemID);
+                        Assert.NotNull(webMWQMSites);
+                    }
+                    break;
+                case WebTypeEnum.WebPolSourceSites:
+                    {
+                        webPolSourceSites = await ReadGzFileService.GetUncompressJSON<WebPolSourceSites>(webType, ParentTVItemID);
+                        Assert.NotNull(webPolSourceSites);
+                    }
+                    break;
+                case WebTypeEnum.WebProvince:
+                    {
+                        webProvince = await ReadGzFileService.GetUncompressJSON<WebProvince>(webType, ParentTVItemID);
+                        Assert.NotNull(webProvince);
+                    }
+                    break;
+                case WebTypeEnum.WebRoot:
+                    {
+                        webRoot = await ReadGzFileService.GetUncompressJSON<WebRoot>(webType, ParentTVItemID);
+                        Assert.NotNull(webRoot);
+                    }
+                    break;
+                case WebTypeEnum.WebSector:
+                    {
+                        webSector = await ReadGzFileService.GetUncompressJSON<WebSector>(webType, ParentTVItemID);
+                        Assert.NotNull(webSector);
+                    }
+                    break;
+                case WebTypeEnum.WebSubsector:
+                    {
+                        webSubsector = await ReadGzFileService.GetUncompressJSON<WebSubsector>(webType, ParentTVItemID);
+                        Assert.NotNull(webSubsector);
                     }
                     break;
                 case WebTypeEnum.WebTideSites:
                     {
-                        ReadGzFileService.webAppLoaded.WebTideSites = await ReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, ParentTVItemID);
-                        Assert.NotNull(ReadGzFileService.webAppLoaded.WebTideSites);
+                        webTideSites = await ReadGzFileService.GetUncompressJSON<WebTideSites>(webType, ParentTVItemID);
+                        Assert.NotNull(webTideSites);
                     }
                     break;
                 default:

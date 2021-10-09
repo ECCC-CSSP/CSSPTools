@@ -19,31 +19,31 @@ namespace CSSPDBLocalServices.Tests
         {
             await LoadWebType(ParentTVItemID, webTypeParent);
 
-            List<TVItemModel> webBaseList = await GetWebBaseList(webTypeParent, tvType, ParentTVItemID);
+            List<TVItemModel> TVItemModelList = await GetTVItemModelList(webTypeParent, tvType, ParentTVItemID);
 
-            TVItemModel webBaseItem = webBaseList.Where(c => c.TVItem.TVItemID == TVItemID).FirstOrDefault();
+            TVItemModel tvItemModel = TVItemModelList.Where(c => c.TVItem.TVItemID == TVItemID).FirstOrDefault();
 
-            List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webTypeParent);
-            Assert.NotNull(tvItemParentList);
+            List<TVItemModel> tvItemModelParentList = await GetTVItemModelParentList(webTypeParent);
+            Assert.NotNull(tvItemModelParentList);
+            Assert.NotEmpty(tvItemModelParentList);
 
-            TVItemModel webBaseLast = tvItemParentList.Last();
-
-            TVItem tvItemParent = webBaseLast.TVItem;
+            TVItemModel tvItemModelParent = tvItemModelParentList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+            Assert.NotNull(tvItemModelParent);
 
             TVItem tvItemNew = new TVItem()
             {
                 DBCommand = dbCommand,
-                IsActive = tvItemParent.IsActive,
-                ParentID = tvItemParent.TVItemID,
+                IsActive = tvItemModelParent.TVItem.IsActive,
+                ParentID = tvItemModelParent.TVItem.TVItemID,
                 TVItemID = TVItemID,
-                TVLevel = tvItemParent.TVLevel + 1,
-                TVPath = $"{ tvItemParent.TVPath}p{TVItemID}",
+                TVLevel = tvItemModelParent.TVItem.TVLevel + 1,
+                TVPath = $"{ tvItemModelParent.TVItem.TVPath}p{TVItemID}",
                 TVType = tvType,
-                LastUpdateDate_UTC = webBaseItem.TVItem.LastUpdateDate_UTC,
+                LastUpdateDate_UTC = tvItemModel.TVItem.LastUpdateDate_UTC,
                 LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
             };
 
-            CompareTVItems(webBaseItem.TVItem, tvItemNew);
+            CompareTVItems(tvItemModel.TVItem, tvItemNew);
 
             List<TVItemLanguage> tvItemLanguageListNew = new List<TVItemLanguage>()
             {
@@ -55,18 +55,7 @@ namespace CSSPDBLocalServices.Tests
                      TVItemLanguageID = TVItemID,
                      TranslationStatus = TranslationStatusEnum.Translated,
                      TVText = tvTextEN,
-                     LastUpdateDate_UTC = webBaseItem.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
-                     LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
-                },
-                new TVItemLanguage()
-                {
-                     DBCommand = dbCommand,
-                     Language = LanguageEnum.en,
-                     TVItemID = TVItemID,
-                     TVItemLanguageID = TVItemID,
-                     TranslationStatus = TranslationStatusEnum.Translated,
-                     TVText = tvTextEN,
-                     LastUpdateDate_UTC = webBaseItem.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
+                     LastUpdateDate_UTC = tvItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
                      LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
                 },
                 new TVItemLanguage()
@@ -77,12 +66,12 @@ namespace CSSPDBLocalServices.Tests
                      TVItemLanguageID = TVItemID - 1,
                      TranslationStatus = TranslationStatusEnum.Translated,
                      TVText = tvTextFR,
-                     LastUpdateDate_UTC = webBaseItem.TVItemLanguageList[(int)LanguageEnum.fr - 1].LastUpdateDate_UTC,
+                     LastUpdateDate_UTC = tvItemModel.TVItemLanguageList[(int)LanguageEnum.fr - 1].LastUpdateDate_UTC,
                      LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
                 }
             };
 
-            CompareTVItemLanguage(webBaseItem.TVItemLanguageList, tvItemLanguageListNew);
+            CompareTVItemLanguage(tvItemModel.TVItemLanguageList, tvItemLanguageListNew);
         }
     }
 }

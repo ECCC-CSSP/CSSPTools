@@ -19,7 +19,7 @@ namespace CSSPAzureAppTaskServices
 {
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
-        private async Task<bool> DoAddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
+        private async Task<bool> DoAddOrModifyAzureAppTask(AppTaskLocalModel postAppTaskModel)
         {
             AppTask appTask = new AppTask();
 

@@ -15,35 +15,35 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private async Task CheckTVItemAndTVItemLanguageForAll(int TVItemID, int ParentTVItemID, WebTypeEnum webType, WebTypeEnum webTypeParent, TVTypeEnum tvType, DBCommandEnum dbCommand, string tvTextEN, string tvTextFR)
+        private async Task CheckTVItemAndTVItemLanguageForAll(int TVItemID, int ParentTVItemID, WebTypeEnum webTypeParent, WebTypeEnum webType, TVTypeEnum tvType, DBCommandEnum dbCommand, string tvTextEN, string tvTextFR)
         {
             await LoadWebType(ParentTVItemID, webTypeParent);
-
-            List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webTypeParent);
-            Assert.NotNull(tvItemParentList);
-
-            TVItem tvItemParent = tvItemParentList[tvItemParentList.Count - 1].TVItem;
-            Assert.NotNull(tvItemParent);
-
             await LoadWebType(TVItemID, webType);
 
-            List<TVItemModel> webBaseList = await GetWebBaseList(webType, tvType, ParentTVItemID);
-            Assert.True(webBaseList.Count > 0);
+            List<TVItemModel> tvItemModelParentList = await GetTVItemModelParentList(webTypeParent);
+            Assert.NotNull(tvItemModelParentList);
+            Assert.NotEmpty(tvItemModelParentList);
 
-            TVItemModel webBaseNew = webBaseList.Where(c => c.TVItem.TVItemID == TVItemID).First();
-            Assert.NotNull(webBaseNew);
+            TVItemModel tvItemModelParent = tvItemModelParentList.Where(c => c.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+            Assert.NotNull(tvItemModelParent);
 
-            TVItem tvItem = webBaseNew.TVItem;
-            List<TVItemLanguage> tvItemLanguageList = webBaseNew.TVItemLanguageList;
+            List<TVItemModel> TVItemModelList = await GetTVItemModelList(webType, tvType, ParentTVItemID);
+            Assert.True(TVItemModelList.Count > 0);
+
+            TVItemModel tvItemModel = TVItemModelList.Where(c => c.TVItem.TVItemID == TVItemID).FirstOrDefault();
+            Assert.NotNull(tvItemModel);
+
+            TVItem tvItem = tvItemModel.TVItem;
+            List<TVItemLanguage> tvItemLanguageList = tvItemModel.TVItemLanguageList;
 
             TVItem tvItemNew = new TVItem()
             {
                 DBCommand = dbCommand,
-                IsActive = tvItemParent.IsActive,
-                ParentID = tvItemParent.TVItemID,
+                IsActive = tvItemModelParent.TVItem.IsActive,
+                ParentID = tvItemModelParent.TVItem.TVItemID,
                 TVItemID = TVItemID,
-                TVLevel = tvItemParent.TVLevel + 1,
-                TVPath = $"{ tvItemParent.TVPath}p{TVItemID}",
+                TVLevel = tvItemModelParent.TVItem.TVLevel + 1,
+                TVPath = $"{ tvItemModelParent.TVItem.TVPath}p{TVItemID}",
                 TVType = tvType,
                 LastUpdateDate_UTC = tvItem.LastUpdateDate_UTC,
                 LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,

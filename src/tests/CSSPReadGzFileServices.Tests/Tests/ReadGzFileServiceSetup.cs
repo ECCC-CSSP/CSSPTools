@@ -60,15 +60,12 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.EndsWith("test", Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(Configuration["ComputerName"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
-            Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPDatabasesPath"]);
             Assert.NotNull(Configuration["CSSPDB"]);
             Assert.NotNull(Configuration["CSSPDBLocal"]);
             Assert.NotNull(Configuration["CSSPDBManage"]);
-            Assert.Contains("_test", Configuration["CSSPDBManage"]);
             Assert.NotNull(Configuration["CSSPDesktopPath"]);
             Assert.NotNull(Configuration["CSSPFilesPath"]);
             Assert.NotNull(Configuration["CSSPJSONPath"]);
@@ -88,32 +85,17 @@ namespace ReadGzFileServices.Tests
 
             Assert.NotNull(Configuration["CSSPDBManage"]);
 
-            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
             Assert.True(fiCSSPDBManage.Exists);
-
-            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
-            if (!fiCSSPDBManageTest.Exists)
-            {
-                try
-                {
-                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
-                }
-            }
 
             /* ---------------------------------------------------------------------------------
              * CSSPDBManageContext
              * ---------------------------------------------------------------------------------      
              */
 
-            FileInfo fiCSSPDBManageFileName = new FileInfo(Configuration["CSSPDBManage"]);
-
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManageFileName.FullName }");
+                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
             });
 
             Provider = Services.BuildServiceProvider();

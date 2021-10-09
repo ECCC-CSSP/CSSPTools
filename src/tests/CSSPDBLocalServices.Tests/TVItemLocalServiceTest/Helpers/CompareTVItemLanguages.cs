@@ -17,14 +17,14 @@ namespace CSSPDBLocalServices.Tests
         {
             foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
-                Assert.Equal(tvItemLanguageList[(int)lang].TVItemLanguageID, tvItemLanguageList[(int)lang].TVItemLanguageID);
-                Assert.Equal(tvItemLanguageList[(int)lang].DBCommand, tvItemLanguageList[(int)lang].DBCommand);
-                Assert.Equal(tvItemLanguageList[(int)lang].TVItemID, tvItemLanguageList[(int)lang].TVItemID);
-                Assert.Equal(tvItemLanguageList[(int)lang].Language, tvItemLanguageList[(int)lang].Language);
-                Assert.Equal(tvItemLanguageList[(int)lang].TVText, tvItemLanguageList[(int)lang].TVText);
-                Assert.Equal(tvItemLanguageList[(int)lang].TranslationStatus, tvItemLanguageList[(int)lang].TranslationStatus);
-                Assert.Equal(tvItemLanguageList[(int)lang].LastUpdateContactTVItemID, tvItemLanguageList[(int)lang].LastUpdateContactTVItemID);
-                Assert.Equal(tvItemLanguageList[(int)lang].LastUpdateDate_UTC, tvItemLanguageList[(int)lang].LastUpdateDate_UTC);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].TVItemLanguageID, tvItemLanguageList[(int)lang - 1].TVItemLanguageID);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].DBCommand, tvItemLanguageList[(int)lang - 1].DBCommand);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].TVItemID, tvItemLanguageList[(int)lang - 1].TVItemID);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].Language, tvItemLanguageList[(int)lang - 1].Language);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].TVText, tvItemLanguageList[(int)lang - 1].TVText);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].TranslationStatus, tvItemLanguageList[(int)lang - 1].TranslationStatus);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].LastUpdateContactTVItemID, tvItemLanguageList[(int)lang - 1].LastUpdateContactTVItemID);
+                Assert.Equal(tvItemLanguageList[(int)lang - 1].LastUpdateDate_UTC, tvItemLanguageList[(int)lang - 1].LastUpdateDate_UTC);
             }
         }
     }

@@ -14,7 +14,6 @@ using ReadGzFileServices;
 using System.Threading;
 using CSSPWebModels;
 using CSSPLocalLoggedInServices;
-//using WebAppLoadedServices;
 
 namespace CSSPWebAPIsLocal.Controllers
 {
@@ -200,42 +199,6 @@ namespace CSSPWebAPIsLocal.Controllers
 
             return await ReadGzFileService.ReadJSON<WebAllTideLocations>(WebTypeEnum.WebAllTideLocations);
         }
-        //[Route("WebAllTVItemLanguages1980_2020")]
-        //[HttpGet]
-        //public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages1980_2020()
-        //{
-        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
-
-        //    return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages1980_2020);
-        //}
-        //[Route("WebAllTVItemLanguages2021_2060")]
-        //[HttpGet]
-        //public async Task<ActionResult<WebAllTVItemLanguages>> WebAllTVItemLanguages2021_2060()
-        //{
-        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
-
-        //    return await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(WebTypeEnum.WebAllTVItemLanguages2021_2060);
-        //}
-        //[Route("WebAllTVItems1980_2020")]
-        //[HttpGet]
-        //public async Task<ActionResult<WebAllTVItems>> WebAllTVItems1980_2020()
-        //{
-        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
-
-        //    return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems1980_2020);
-        //}
-        //[Route("WebAllTVItems2021_2060")]
-        //[HttpGet]
-        //public async Task<ActionResult<WebAllTVItems>> WebAllTVItems2021_2060()
-        //{
-        //    CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-        //    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
-
-        //    return await ReadGzFileService.ReadJSON<WebAllTVItems>(WebTypeEnum.WebAllTVItems2021_2060);
-        //}
         [Route("WebArea/{TVItemID:int}")]
         [HttpGet]
         public async Task<ActionResult<WebArea>> WebArea(int TVItemID)

@@ -21,7 +21,7 @@ namespace CSSPAzureAppTaskServices
 {
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
-        public async Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask()
+        public async Task<ActionResult<List<AppTaskLocalModel>>> GetAllAzureAppTask()
         {
             if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
@@ -29,14 +29,14 @@ namespace CSSPAzureAppTaskServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            List<PostAppTaskModel> appTaskModelList = new List<PostAppTaskModel>();
+            List<AppTaskLocalModel> appTaskModelList = new List<AppTaskLocalModel>();
 
             List<AppTask> appTaskList = (from c in db.AppTasks select c).ToList();
             List<AppTaskLanguage> appTaskLanguageList = (from c in db.AppTaskLanguages select c).ToList();
 
             foreach (AppTask appTask in appTaskList)
             {
-                appTaskModelList.Add(new PostAppTaskModel()
+                appTaskModelList.Add(new AppTaskLocalModel()
                 {
                     AppTask = appTask,
                     AppTaskLanguageList = (from c in appTaskLanguageList

@@ -18,7 +18,7 @@ namespace CSSPDBLocalServices.Tests
         {
             await LoadWebType(TVItemID, webType);
 
-            List<TVItemModel> tvItemParentList = await GetWebBaseParentList(webType);
+            List<TVItemModel> tvItemParentList = await GetTVItemModelParentList(webType);
             Assert.NotNull(tvItemParentList);
 
             TVItem tvItem = tvItemParentList[tvItemParentList.Count - 1].TVItem;
@@ -47,17 +47,6 @@ namespace CSSPDBLocalServices.Tests
 
             List<TVItemLanguage> tvItemLanguageListNew = new List<TVItemLanguage>()
             {
-                new TVItemLanguage()
-                {
-                     DBCommand = dbCommand,
-                     Language = LanguageEnum.en,
-                     TVItemID = TVItemID,
-                     TVItemLanguageID = TVItemID,
-                     TranslationStatus = TranslationStatusEnum.Translated,
-                     TVText = tvTextEN,
-                     LastUpdateDate_UTC = tvItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
-                     LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
-                },
                 new TVItemLanguage()
                 {
                      DBCommand = dbCommand,

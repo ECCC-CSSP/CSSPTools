@@ -30,9 +30,10 @@ namespace CSSPDBLocalServices
 
     public partial interface IAppTaskLocalService
     {
-        Task<ActionResult<PostAppTaskModel>> AddOrModifyLocal(PostAppTaskModel postAppTaskModel);
-        Task<ActionResult<bool>> DeleteLocal(int appTaskID);
-        Task<ActionResult<List<PostAppTaskModel>>> GetAllAppTaskLocal();
+        Task<ActionResult<AppTaskLocalModel>> AddAppTaskLocal(AppTaskLocalModel appTaskModel);
+        Task<ActionResult<bool>> DeleteAppTaskLocal(AppTaskLocalModel appTaskModel);
+        Task<ActionResult<List<AppTaskLocalModel>>> GetAllAppTaskLocal();
+        Task<ActionResult<AppTaskLocalModel>> ModifyAppTaskLocal(AppTaskLocalModel appTaskModel);
     }
     public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
     {
@@ -86,19 +87,19 @@ namespace CSSPDBLocalServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<PostAppTaskModel>> AddOrModifyLocal(PostAppTaskModel appTaskModel)
+        public async Task<ActionResult<AppTaskLocalModel>> AddAppTaskLocal(AppTaskLocalModel appTaskModel)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel appTaskModel)";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (!await ValidateAddOrModifyAppTaskLocal(appTaskModel))
+            if (!await ValidateAddAppTaskLocal(appTaskModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (!await DoAddOrModifyAppTask(appTaskModel))
+            if (!await DoAddAppTaskLocal(appTaskModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
@@ -107,19 +108,19 @@ namespace CSSPDBLocalServices
 
             return await Task.FromResult(Ok(appTaskModel));
         }
-        public async Task<ActionResult<bool>> DeleteLocal(int appTaskID)
+        public async Task<ActionResult<bool>> DeleteAppTaskLocal(AppTaskLocalModel appTaskModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: {appTaskID}";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int appTaskID) -- appTaskID: {appTaskModel.AppTask.AppTaskID}";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (!await ValidateDeleteAppTaskLocal(appTaskID))
+            if (!await ValidateDeleteAppTaskLocal(appTaskModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (!await DoDeleteAppTaskLocal(appTaskID))
+            if (!await DoDeleteAppTaskLocal(appTaskModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
@@ -128,21 +129,21 @@ namespace CSSPDBLocalServices
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<List<PostAppTaskModel>>> GetAllAppTaskLocal()
+        public async Task<ActionResult<List<AppTaskLocalModel>>> GetAllAppTaskLocal()
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            List<PostAppTaskModel> appTaskModelList = new List<PostAppTaskModel>();
+            List<AppTaskLocalModel> appTaskModelList = new List<AppTaskLocalModel>();
 
             List<AppTask> appTaskList = (from c in dbLocal.AppTasks select c).ToList();
             List<AppTaskLanguage> appTaskLanguageList = (from c in dbLocal.AppTaskLanguages select c).ToList();
 
             foreach (AppTask appTask in appTaskList)
             {
-                appTaskModelList.Add(new PostAppTaskModel()
+                appTaskModelList.Add(new AppTaskLocalModel()
                 {
                     AppTask = appTask,
                     AppTaskLanguageList = (from c in appTaskLanguageList
@@ -154,6 +155,27 @@ namespace CSSPDBLocalServices
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(Ok(appTaskModelList));
+        }
+        public async Task<ActionResult<AppTaskLocalModel>> ModifyAppTaskLocal(AppTaskLocalModel appTaskModel)
+        {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel appTaskModel)";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            if (!await ValidateModifyAppTaskLocal(appTaskModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            if (!await DoModifyAppTaskLocal(appTaskModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(appTaskModel));
         }
         #endregion Functions public
 

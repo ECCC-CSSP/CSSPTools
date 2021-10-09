@@ -3,36 +3,31 @@
  *
  */
 
-using CSSPEnums;
-using CSSPDBModels;
+using CreateGzFileServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using CSSPDBModels;
+using CSSPEnums;
 using CSSPLocalLoggedInServices;
+using CSSPLogServices;
+using CSSPWebModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ReadGzFileServices;
-using CSSPWebModels;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using CreateGzFileServices;
-using CSSPLogServices;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
-using CSSPHelperModels;
+using System.Threading.Tasks;
 
 namespace CSSPDBLocalServices
 {
 
     public partial interface ITVItemLocalService
     {
-        Task<ActionResult<bool>> DeleteLocal(PostTVItemModel postTVItemModel);
-        Task<ActionResult<bool>> AddOrModifyLocal(PostTVItemModel postTVItemModel);
+        Task<ActionResult<bool>> AddTVItemLocal(TVItemLocalModel tvItemLocalModel);
+        Task<ActionResult<bool>> DeleteTVItemLocal(TVItemLocalModel tvItemLocalModel);
+        Task<ActionResult<bool>> ModifyTVItemLocal(TVItemLocalModel tvItemLocalModel);
+        Task<List<ToRecreate>> GetToRecreateList();
     }
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
@@ -95,53 +90,106 @@ namespace CSSPDBLocalServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<bool>> AddOrModifyLocal(PostTVItemModel postTVItemModel)
+        public async Task<ActionResult<bool>> AddTVItemLocal(TVItemLocalModel tvItemLocalModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostTVItemModel postTVItemModel)";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostTVItemModel tvItemLocalModel)";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            bool ForAdd = postTVItemModel.TVItem.TVItemID == 0 ? true : false;
-
-            if (!await ValidatePostTVItemModel(postTVItemModel, ForAdd))
+            if (!await ValidateAddTVItemModel(tvItemLocalModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (! await DoAddOrModifyTVItem(postTVItemModel))
+            if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
             {
-                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                if (!await DoAddFileTVItemLocal(tvItemLocalModel))
+                {
+                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                }
+            }
+            else
+            {
+                if (!await DoAddTVItemLocal(tvItemLocalModel))
+                {
+                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                }
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(Ok(true));
         }
-        public async Task<ActionResult<bool>> DeleteLocal(PostTVItemModel postTVItemModel)
+        public async Task<ActionResult<bool>> DeleteTVItemLocal(TVItemLocalModel tvItemLocalModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostTVItemModel postTVItemModel)";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostTVItemModel tvItemLocalModel)";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (!await ValidatePostTVItemModel(postTVItemModel, false))
+            if (!await ValidateDeleteTVItemModel(tvItemLocalModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (!await DoDeleteTVItemLocal(postTVItemModel))
+            if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
             {
-                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                if (!await DoDeleteFileTVItemLocal(tvItemLocalModel))
+                {
+                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                }
+            }
+            else
+            {
+                if (!await DoDeleteTVItemLocal(tvItemLocalModel))
+                {
+                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                }
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(Ok(true));
+        }
+        public async Task<ActionResult<bool>> ModifyTVItemLocal(TVItemLocalModel tvItemLocalModel)
+        {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostTVItemModel tvItemLocalModel)";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            if (!await ValidateModifyTVItemModel(tvItemLocalModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
+            {
+                if (!await DoModifyFileTVItemLocal(tvItemLocalModel))
+                {
+                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                }
+            }
+            else
+            {
+                if (!await DoModifyTVItemLocal(tvItemLocalModel))
+                {
+                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                }
+            }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(true));
+        }
+        public async Task<List<ToRecreate>> GetToRecreateList()
+        {
+            return await Task.FromResult(ToRecreateList);
         }
         #endregion Functions public
 
-        #region Functions private
-        #endregion Functions private
+            #region Functions private
+            #endregion Functions private
+        }
     }
-}

@@ -147,7 +147,7 @@ namespace CreateGzFileServices
 
                     TVItemModel TVItemModelBC = new TVItemModel();
                     TVItemModelBC.TVItem = tvItem;
-                    TVItemModelBC.TVItemLanguageList = TVItemLanguageListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                    TVItemModelBC.TVItemLanguageList = TVItemLanguageListMikeBoundary.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
                     foreach (TVItemLanguage tvItemLanguage in TVItemModelBC.TVItemLanguageList)
                     {
@@ -158,11 +158,11 @@ namespace CreateGzFileServices
                         tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
                     }
 
-                    foreach (MapInfo MapInfo in MapInfoListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID))
+                    foreach (MapInfo MapInfo in MapInfoListMikeBoundary.Where(c => c.TVItemID == tvItem.TVItemID))
                     {
                         MapInfoModel MapInfoModel = new MapInfoModel();
                         MapInfoModel.MapInfo = MapInfo;
-                        MapInfoModel.MapInfoPointList = MapInfoPointListMikeSource.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
+                        MapInfoModel.MapInfoPointList = MapInfoPointListMikeBoundary.Where(c => c.MapInfoID == MapInfo.MapInfoID).Select(c => c).ToList();
 
                         TVItemModelBC.MapInfoModelList.Add(MapInfoModel);
                     }

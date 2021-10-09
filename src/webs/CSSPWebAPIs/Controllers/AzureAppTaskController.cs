@@ -31,8 +31,8 @@ namespace CSSPWebAPIs.Controllers
 {
     public partial interface IAppTaskController
     {
-        Task<ActionResult<List<PostAppTaskModel>>> Get();
-        Task<ActionResult<PostAppTaskModel>> Post(PostAppTaskModel appTaskModel);
+        Task<ActionResult<List<AppTaskLocalModel>>> Get();
+        Task<ActionResult<AppTaskLocalModel>> Post(AppTaskLocalModel appTaskModel);
         Task<ActionResult<bool>> Delete(int AppTaskID);
     }
 
@@ -61,7 +61,7 @@ namespace CSSPWebAPIs.Controllers
 
         #region Functions public
         [HttpGet]
-        public async Task<ActionResult<List<PostAppTaskModel>>> Get()
+        public async Task<ActionResult<List<AppTaskLocalModel>>> Get()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
@@ -69,7 +69,7 @@ namespace CSSPWebAPIs.Controllers
             return await AzureAppTaskService.GetAllAzureAppTask();
         }
         [HttpPost]
-        public async Task<ActionResult<PostAppTaskModel>> Post(PostAppTaskModel appTaskModel)
+        public async Task<ActionResult<AppTaskLocalModel>> Post(AppTaskLocalModel appTaskModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);

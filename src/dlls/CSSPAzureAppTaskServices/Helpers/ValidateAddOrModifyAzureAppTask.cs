@@ -20,7 +20,7 @@ namespace CSSPAzureAppTaskServices
 
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
-        private async Task<bool> ValidateAzureAddOrModifyAppTaskModel(PostAppTaskModel postAppTaskModel)
+        private async Task<bool> ValidateAzureAddOrModifyAppTaskModel(AppTaskLocalModel postAppTaskModel)
         {
             // validating AppTask
             string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)postAppTaskModel.AppTask.DBCommand);

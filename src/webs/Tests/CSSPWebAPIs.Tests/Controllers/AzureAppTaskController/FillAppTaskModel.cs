@@ -27,9 +27,9 @@ namespace CSSPWebAPIs.AppTaskModelController.Tests
 {
     public partial class CSSPWebAPIsAppTaskControllerTests
     {
-        private PostAppTaskModel FillAppTaskModel()
+        private AppTaskLocalModel FillAppTaskModel()
         {
-            PostAppTaskModel appTaskModel = new PostAppTaskModel();
+            AppTaskLocalModel appTaskModel = new AppTaskLocalModel();
 
             AppTask appTask = new AppTask()
             {

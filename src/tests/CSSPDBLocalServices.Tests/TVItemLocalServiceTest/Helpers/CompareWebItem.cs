@@ -11,7 +11,7 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TVItemLocalServiceTest
     {
-        private void CompareWebItem(PostTVItemModel postTVItemModel, TVItemModel webBase)
+        private void CompareWebItem(TVItemLocalModel postTVItemModel, TVItemModel webBase)
         {
             Assert.Equal(postTVItemModel.TVItem.ParentID, webBase.TVItem.ParentID);
             Assert.Equal(postTVItemModel.TVItem.TVType, webBase.TVItem.TVType);

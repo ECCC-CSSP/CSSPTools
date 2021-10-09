@@ -19,12 +19,12 @@ namespace CSSPDBLocalServices.Tests
 
         //    if (tvTypeParent == TVTypeEnum.Infrastructure)
         //    {
-        //        WebBase webBaseInfrastructure = ReadGzFileService.webAppLoaded.WebInfrastructures.TVItemInfrastructureList.Where(c => c.TVItemModel.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+        //        WebBase webBaseInfrastructure = WebInfrastructures.TVItemInfrastructureList.Where(c => c.TVItemModel.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
         //        Assert.NotNull(webBaseInfrastructure);
 
         //        tvItemParentList.Add(webBaseInfrastructure);
 
-        //        InfrastructureModel infrastructureModel = ReadGzFileService.webAppLoaded.WebInfrastructures.InfrastructureModelList.Where(c => c.Infrastructure.InfrastructureTVItemID == ParentTVItemID).FirstOrDefault();
+        //        InfrastructureModel infrastructureModel = WebInfrastructures.InfrastructureModelList.Where(c => c.Infrastructure.InfrastructureTVItemID == ParentTVItemID).FirstOrDefault();
         //        Assert.NotNull(infrastructureModel);
 
         //        webBaseFile = infrastructureModel.TVItemFileList.Where(c => c.TVItemModel.TVItem.TVItemID == TVItemID).FirstOrDefault();
@@ -36,12 +36,12 @@ namespace CSSPDBLocalServices.Tests
         //    }
         //    else if (tvTypeParent == TVTypeEnum.MWQMSite)
         //    {
-        //        WebBase webBaseMWQMSite = ReadGzFileService.webAppLoaded.WebMWQMSites.TVItemMWQMSiteList.Where(c => c.TVItemModel.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+        //        WebBase webBaseMWQMSite = WebMWQMSites.TVItemMWQMSiteList.Where(c => c.TVItemModel.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
         //        Assert.NotNull(webBaseMWQMSite);
 
         //        tvItemParentList.Add(webBaseMWQMSite);
 
-        //        MWQMSiteModel mwqmSiteModel = ReadGzFileService.webAppLoaded.WebMWQMSites.MWQMSiteModelList.Where(c => c.MWQMSite.MWQMSiteTVItemID == ParentTVItemID).FirstOrDefault();
+        //        MWQMSiteModel mwqmSiteModel = WebMWQMSites.MWQMSiteModelList.Where(c => c.MWQMSite.MWQMSiteTVItemID == ParentTVItemID).FirstOrDefault();
         //        Assert.NotNull(mwqmSiteModel);
 
         //        webBaseFile = mwqmSiteModel.TVItemFileList.Where(c => c.TVItemModel.TVItem.TVItemID == TVItemID).FirstOrDefault();
@@ -53,12 +53,12 @@ namespace CSSPDBLocalServices.Tests
         //    }
         //    else if (tvTypeParent == TVTypeEnum.PolSourceSite)
         //    {
-        //        WebBase webBasePolSourceSite = ReadGzFileService.webAppLoaded.WebPolSourceSites.PolSourceSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
+        //        WebBase webBasePolSourceSite = WebPolSourceSites.PolSourceSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == ParentTVItemID).FirstOrDefault();
         //        Assert.NotNull(webBasePolSourceSite);
 
         //        tvItemParentList.Add(webBasePolSourceSite);
 
-        //        PolSourceSiteModel polSourceSiteModel = ReadGzFileService.webAppLoaded.WebPolSourceSites.PolSourceSiteModelList.Where(c => c.PolSourceSite.PolSourceSiteTVItemID == ParentTVItemID).FirstOrDefault();
+        //        PolSourceSiteModel polSourceSiteModel = WebPolSourceSites.PolSourceSiteModelList.Where(c => c.PolSourceSite.PolSourceSiteTVItemID == ParentTVItemID).FirstOrDefault();
         //        Assert.NotNull(polSourceSiteModel);
 
         //        webBaseFile = polSourceSiteModel.TVItemFileList.Where(c => c.TVItemModel.TVItem.TVItemID == TVItemID).FirstOrDefault();
@@ -91,17 +91,6 @@ namespace CSSPDBLocalServices.Tests
 
         //    List<TVItemLanguage> tvItemLanguageListNew = new List<TVItemLanguage>()
         //    {
-        //        new TVItemLanguage()
-        //        {
-        //             DBCommand = dbCommand,
-        //             Language = LanguageEnum.en,
-        //             TVItemID = TVItemID,
-        //             TVItemLanguageID = TVItemID,
-        //             TranslationStatus = TranslationStatusEnum.Translated,
-        //             TVText = tvTextEN,
-        //             LastUpdateDate_UTC = webBaseFile.TVItemModel.TVItemLanguageList[(int)LanguageEnum.en - 1].LastUpdateDate_UTC,
-        //             LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
-        //        },
         //        new TVItemLanguage()
         //        {
         //             DBCommand = dbCommand,

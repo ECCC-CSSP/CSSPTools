@@ -24,9 +24,9 @@ namespace CSSPAzureAppTaskServices
 
     public partial interface IAzureAppTaskService
     {
-        Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel);
+        Task<ActionResult<AppTaskLocalModel>> AddOrModifyAzureAppTask(AppTaskLocalModel postAppTaskModel);
         Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID);
-        Task<ActionResult<List<PostAppTaskModel>>> GetAllAzureAppTask();
+        Task<ActionResult<List<AppTaskLocalModel>>> GetAllAzureAppTask();
     }
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {

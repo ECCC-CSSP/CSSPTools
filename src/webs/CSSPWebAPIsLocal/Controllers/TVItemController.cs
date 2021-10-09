@@ -20,8 +20,9 @@ namespace CSSPWebAPIsLocal.Controllers
 {
     public partial interface ITVItemController
     {
-        Task<ActionResult<bool>> Delete(PostTVItemModel postTVItemModel);
-        Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel);
+        Task<ActionResult<bool>> Delete(TVItemLocalModel postTVItemModel);
+        Task<ActionResult<bool>> Add(TVItemLocalModel postTVItemModel);
+        Task<ActionResult<bool>> Modify(TVItemLocalModel postTVItemModel);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -38,7 +39,7 @@ namespace CSSPWebAPIsLocal.Controllers
         #endregion Properties
 
         #region Constructors
-        public TVItemController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
+        public TVItemController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
             ITVItemLocalService PostTVItemModelService)
         {
             this.CSSPCultureService = CSSPCultureService;
@@ -49,20 +50,28 @@ namespace CSSPWebAPIsLocal.Controllers
 
         #region Functions public
         [HttpDelete]
-        public async Task<ActionResult<bool>> Delete(PostTVItemModel postTVItemModel)
+        public async Task<ActionResult<bool>> Delete(TVItemLocalModel postTVItemModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await TVItemService.DeleteLocal(postTVItemModel);
+            return await TVItemService.DeleteTVItemLocal(postTVItemModel);
         }
         [HttpPost]
-        public async Task<ActionResult<bool>> Post(PostTVItemModel postTVItemModel)
+        public async Task<ActionResult<bool>> Add(TVItemLocalModel postTVItemModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await TVItemService.AddOrModifyLocal(postTVItemModel);
+            return await TVItemService.AddTVItemLocal(postTVItemModel);
+        }
+        [HttpPut]
+        public async Task<ActionResult<bool>> Modify(TVItemLocalModel postTVItemModel)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+
+            return await TVItemService.ModifyTVItemLocal(postTVItemModel);
         }
         #endregion Functions public
 

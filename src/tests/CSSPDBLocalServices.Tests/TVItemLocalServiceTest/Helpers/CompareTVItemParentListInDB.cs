@@ -49,12 +49,12 @@ namespace CSSPDBLocalServices.Tests
                                       select c).FirstOrDefault();
 
                     Assert.NotNull(tvItemLanguage);
-                    Assert.Equal(webBase.TVItemLanguageList[(int)lang].TVItemLanguageID, tvItemLanguage.TVItemLanguageID);
-                    Assert.Equal(webBase.TVItemLanguageList[(int)lang].DBCommand, tvItemLanguage.DBCommand);
-                    Assert.Equal(webBase.TVItemLanguageList[(int)lang].TVItemID, tvItemLanguage.TVItemID);
-                    Assert.Equal(webBase.TVItemLanguageList[(int)lang].Language, tvItemLanguage.Language);
-                    Assert.Equal(webBase.TVItemLanguageList[(int)lang].TVText, tvItemLanguage.TVText);
-                    Assert.Equal(webBase.TVItemLanguageList[(int)lang].TranslationStatus, tvItemLanguage.TranslationStatus);
+                    Assert.Equal(webBase.TVItemLanguageList[(int)lang - 1].TVItemLanguageID, tvItemLanguage.TVItemLanguageID);
+                    Assert.Equal(webBase.TVItemLanguageList[(int)lang - 1].DBCommand, tvItemLanguage.DBCommand);
+                    Assert.Equal(webBase.TVItemLanguageList[(int)lang - 1].TVItemID, tvItemLanguage.TVItemID);
+                    Assert.Equal(webBase.TVItemLanguageList[(int)lang - 1].Language, tvItemLanguage.Language);
+                    Assert.Equal(webBase.TVItemLanguageList[(int)lang - 1].TVText, tvItemLanguage.TVText);
+                    Assert.Equal(webBase.TVItemLanguageList[(int)lang - 1].TranslationStatus, tvItemLanguage.TranslationStatus);
                     Assert.True(tvItemLanguage.LastUpdateDate_UTC.Year > 1979);
                     Assert.True(tvItemLanguage.LastUpdateContactTVItemID > 0);
                 }

@@ -50,7 +50,7 @@ import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.mo
   providedIn: 'root'
 })
 export class AppLoadedService {
-  BaseApiUrl = 'http://localhost:4446/api/'; 
+  BaseApiUrl = 'http://localhost:4449/api/'; 
   //BaseApiUrl = 'http://localhost:49467/api/';
 
   LoggedInContact?: Contact;

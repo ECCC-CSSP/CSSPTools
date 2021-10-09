@@ -26,7 +26,9 @@ namespace CSSPDBLocalServices
 
     public partial interface IMapInfoLocalService
     {
-        Task<ActionResult<bool>> AddOrModifyMapInfoLocal(PostMapInfoModel postMapInfoModel);
+        Task<ActionResult<bool>> AddMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
+        Task<ActionResult<bool>> DeleteMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
+        Task<ActionResult<bool>> ModifyMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
     }
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
@@ -89,19 +91,61 @@ namespace CSSPDBLocalServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<bool>> AddOrModifyMapInfoLocal(PostMapInfoModel postMapInfoModel)
+        public async Task<ActionResult<bool>> AddMapInfoLocal(MapInfoLocalModel mapInfoLocalModel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostMapInfoModel postMapInfoModel)";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostMapInfoModel mapInfoLocalModel)";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (!await ValidateAddOrModifyMapInfoLocal(postMapInfoModel))
+            if (!await ValidateAddMapInfoLocal(mapInfoLocalModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (!await DoAddOrModifyMapInfoLocal(postMapInfoModel))
+            if (!await DoAddMapInfoLocal(mapInfoLocalModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(true));
+        }
+        public async Task<ActionResult<bool>> DeleteMapInfoLocal(MapInfoLocalModel mapInfoLocalModel)
+        {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostMapInfoModel mapInfoLocalModel)";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            if (!await ValidateDeleteMapInfoLocal(mapInfoLocalModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            if (!await DoDeleteMapInfoLocal(mapInfoLocalModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(true));
+        }
+        public async Task<ActionResult<bool>> ModifyMapInfoLocal(MapInfoLocalModel mapInfoLocalModel)
+        {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostMapInfoModel mapInfoLocalModel)";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            if (!await ValidateModifyMapInfoLocal(mapInfoLocalModel))
+            {
+                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
+
+            if (!await DoModifyMapInfoLocal(mapInfoLocalModel))
             {
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }

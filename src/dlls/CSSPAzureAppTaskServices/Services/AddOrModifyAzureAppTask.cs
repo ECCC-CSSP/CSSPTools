@@ -21,7 +21,7 @@ namespace CSSPAzureAppTaskServices
 {
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {
-        public async Task<ActionResult<PostAppTaskModel>> AddOrModifyAzureAppTask(PostAppTaskModel postAppTaskModel)
+        public async Task<ActionResult<AppTaskLocalModel>> AddOrModifyAzureAppTask(AppTaskLocalModel postAppTaskModel)
         {
             if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
