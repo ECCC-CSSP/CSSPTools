@@ -60,7 +60,6 @@ namespace CreateGzFileServices.Tests
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
 //            Assert.EndsWith("test", Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["ComputerName"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPDB"]);

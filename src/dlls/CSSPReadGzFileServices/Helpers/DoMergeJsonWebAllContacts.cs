@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,12 +15,21 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllContacts(WebAllContacts WebAllContacts, WebAllContacts WebAllContactsLocal)
+        private async Task<bool> DoMergeJsonWebAllContacts(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllContacts WebAllContacts, WebAllContacts WebAllContactsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            List<ContactModel> contactModelLocalList = (from c in WebAllContactsLocal.ContactModelList
+            DoMergeJsonWebAllContactsContactModelList(webAllContacts, webAllContactsLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+
+        private void DoMergeJsonWebAllContactsContactModelList(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
+        {
+            List<ContactModel> contactModelLocalList = (from c in webAllContactsLocal.ContactModelList
                                                         where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                                         || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                         || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
@@ -28,20 +38,17 @@ namespace ReadGzFileServices
 
             foreach (ContactModel contactModelLocal in contactModelLocalList)
             {
-                ContactModel contactModelOriginal = WebAllContacts.ContactModelList.Where(c => c.TVItemModel.TVItem.TVItemID == contactModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                ContactModel contactModelOriginal = webAllContacts.ContactModelList.Where(c => c.TVItemModel.TVItem.TVItemID == contactModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (contactModelOriginal == null)
                 {
-                    WebAllContacts.ContactModelList.Add(contactModelLocal);
+                    webAllContacts.ContactModelList.Add(contactModelLocal);
                 }
                 else
                 {
-                    contactModelOriginal = contactModelLocal;
+                    SyncContact(contactModelOriginal.Contact, contactModelLocal.Contact);
+                    SyncTVItemModel(contactModelOriginal.TVItemModel, contactModelLocal.TVItemModel);
                 }
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

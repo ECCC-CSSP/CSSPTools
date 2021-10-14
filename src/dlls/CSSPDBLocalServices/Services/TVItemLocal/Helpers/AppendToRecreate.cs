@@ -153,11 +153,13 @@ namespace CSSPDBLocalServices
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllMunicipalities, 0);
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, tvItem.TVItemID);
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebProvince, (int)tvItem.ParentID);
                     }
                     break;
                 case TVTypeEnum.MWQMRun:
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMRuns, (int)tvItem.ParentID);
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID);
                     }
                     break;
                 case TVTypeEnum.MWQMSiteSample:
@@ -169,11 +171,13 @@ namespace CSSPDBLocalServices
                 case TVTypeEnum.MWQMSite:
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMSites, (int)tvItem.ParentID);
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID);
                     }
                     break;
                 case TVTypeEnum.PolSourceSite:
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebPolSourceSites, (int)tvItem.ParentID);
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID);
                     }
                     break;
                 case TVTypeEnum.Province:

@@ -90,7 +90,6 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
             Assert.NotNull(Configuration["CSSPFilesPath"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
-            Assert.NotNull(Configuration["ComputerName"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();

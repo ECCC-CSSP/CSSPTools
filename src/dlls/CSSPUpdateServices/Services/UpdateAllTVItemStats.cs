@@ -24,7 +24,6 @@ namespace CSSPUpdateServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "TVItems") } { DateTime.Now }");

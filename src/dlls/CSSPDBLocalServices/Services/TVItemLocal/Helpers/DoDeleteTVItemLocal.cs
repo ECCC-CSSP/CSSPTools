@@ -40,7 +40,6 @@ namespace CSSPDBLocalServices
                     {
                         dbLocal.TVItems.Add(tvItemModel.TVItem);
                         dbLocal.SaveChanges();
-                        AppendToRecreate(tvItemModel.TVItem, tvItemLocalModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {
@@ -95,6 +94,7 @@ namespace CSSPDBLocalServices
                 {
                     List<TVItemLanguage> TVItemLanguageToDeleteList = (from c in dbLocal.TVItemLanguages
                                                                        where c.TVItemID == tvItemLocalModel.TVItem.TVItemID
+                                                                       orderby c.Language
                                                                        select c).ToList();
 
                     foreach (TVItemLanguage tvItemLanguage in TVItemLanguageToDeleteList)
@@ -117,31 +117,22 @@ namespace CSSPDBLocalServices
             }
             else
             {
-                TVItemModel WebBaseToChange = new TVItemModel();
-                foreach (TVItemModel tvItemModel in gzObjectList.tvItemList)
-                {
-                    if (tvItemModel.TVItem.TVItemID == tvItemLocalModel.TVItem.TVItemID)
-                    {
-                        WebBaseToChange = tvItemModel;
-                        break;
-                    }
-                }
-
                 TVItem tvItem = (from c in dbLocal.TVItems
-                                 where c.TVItemID == WebBaseToChange.TVItem.TVItemID
+                                 where c.TVItemID == tvItemLocalModel.TVItem.TVItemID
                                  select c).FirstOrDefault();
 
                 if (tvItem == null)
                 {
-                    tvItem = WebBaseToChange.TVItem;
+                    tvItem = tvItemLocalModel.TVItem;
                     tvItem.DBCommand = DBCommandEnum.Deleted;
+                    tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
+                    tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
                     dbLocal.TVItems.Add(tvItem);
                     AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
                 }
                 else
                 {
-                    tvItem.IsActive = WebBaseToChange.TVItem.IsActive;
                     tvItem.DBCommand = DBCommandEnum.Deleted;
                 }
 
@@ -158,25 +149,23 @@ namespace CSSPDBLocalServices
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
                     TVItemLanguage tvItemLanguage = (from c in dbLocal.TVItemLanguages
-                                                     where c.TVItemLanguageID == WebBaseToChange.TVItemLanguageList[(int)lang - 1].TVItemLanguageID
+                                                     where c.TVItemLanguageID == tvItemLocalModel.TVItemLanguageList[(int)lang - 1].TVItemLanguageID
                                                      select c).FirstOrDefault();
 
                     if (tvItemLanguage == null)
                     {
-                        tvItemLanguage = WebBaseToChange.TVItemLanguageList[(int)lang - 1];
+                        tvItemLanguage = tvItemLocalModel.TVItemLanguageList[(int)lang - 1];
                         tvItemLanguage.DBCommand = DBCommandEnum.Deleted;
                         tvItemLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
                         tvItemLanguage.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
                         dbLocal.TVItemLanguages.Add(tvItemLanguage);
-                        AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
                     }
                     else
                     {
                         tvItemLanguage.DBCommand = DBCommandEnum.Deleted;
                         tvItemLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
                         tvItemLanguage.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
-                        AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
                     }
 
                     try

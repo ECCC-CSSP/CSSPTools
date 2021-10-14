@@ -67,7 +67,10 @@ namespace CreateGzFileServices
                 foreach (TVItem tvItem in TVItemListMikeScenario.Where(c => c.TVItemID == tvItemMikeScenario.TVItemID))
                 {
                     tvItemModel.TVItem = tvItem;
-                    tvItemModel.TVItemLanguageList = TVItemLanguageListMikeScenario.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                    tvItemModel.TVItemLanguageList = (from c in TVItemLanguageListMikeScenario
+                                                      where c.TVItemID == tvItem.TVItemID
+                                                      orderby c.Language
+                                                      select c).ToList();
 
                     foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)
                     {
@@ -101,7 +104,11 @@ namespace CreateGzFileServices
                     tvFileModel.TVItem = tvItem;
                     tvFileModel.TVItemLanguageList = TVItemLanguageFileListAll.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
                     tvFileModel.TVFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
-                    tvFileModel.TVFileLanguageList = TVFileLanguageListAll.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();
+                   
+                    if (tvFileModel.TVFile != null)
+                    {
+                        tvFileModel.TVFileLanguageList = TVFileLanguageListAll.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();
+                    }
 
                     MikeScenarioModel.TVFileModelList.Add(tvFileModel);
                 }

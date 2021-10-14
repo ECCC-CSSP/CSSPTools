@@ -924,12 +924,6 @@
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
-    <value>This app can only be run on computer name</value>
-  </data>
-  <data name="ThisComputerNameIs" xml:space="preserve">
-    <value>This computer name is</value>
-  </data>
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>

@@ -814,7 +814,7 @@
     <value>{0} should be equal to TVItemParent ParentID (fr)</value>
   </data>
   <data name="_ShouldNotBeOfType_" xml:space="preserve">
-    <value>{0} ne devrait pas &#x1E;être de type {1}</value>
+    <value>{0} ne devrait pas être de type {1}</value>
   </data>
   <data name="YouDoNotHaveAuthorization" xml:space="preserve">
     <value>Vous n'avez pas l'authorisation</value>
@@ -917,12 +917,6 @@
   </data>
   <data name="Start" xml:space="preserve">
     <value>Début</value>
-  </data>
-  <data name="ThisAppCanOnlyBeRunOnComputerName" xml:space="preserve">
-    <value>Cette application ne peux qu'être exécuté sur l'ordinateur</value>
-  </data>
-  <data name="ThisComputerNameIs" xml:space="preserve">
-    <value>Cette ordinateur est </value>
   </data>
   <data name="Unauthorized" xml:space="preserve">
     <value>Non authorisé</value>

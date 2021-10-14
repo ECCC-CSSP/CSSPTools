@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,72 +16,131 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebProvince(WebProvince WebProvince, WebProvince WebProvinceLocal)
+        private async Task<bool> DoMergeJsonWebProvince(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebProvince WebProvince, WebProvince WebProvinceLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebProvinceLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebProvinceLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebProvinceLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebProvinceLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebProvince.TVItemModel = WebProvinceLocal.TVItemModel;
-            }
+            DoMergeJsonWebProvinceTVItemModel(webProvince, webProvinceLocal);
 
-            if ((from c in WebProvinceLocal.TVItemModelParentList
+            DoMergeJsonWebProvinceTVItemModelParentList(webProvince, webProvinceLocal);
+
+            DoMergeJsonWebProvinceTVItemModelAreaList(webProvince, webProvinceLocal);
+
+            DoMergeJsonWebProvinceTVItemModelMunicipalityList(webProvince, webProvinceLocal);
+
+            DoMergeJsonWebProvinceTVFileModelList(webProvince, webProvinceLocal);
+
+            DoMergeJsonWebProvinceIsLocalized(webProvince, webProvinceLocal);
+
+            DoMergeJsonWebProvinceSamplingPlanModelList(webProvince, webProvinceLocal);
+
+            DoMergeJsonWebProvinceMunicipalityWithInfrastructureTVItemIDList(webProvince, webProvinceLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebProvinceTVItemModel(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            if (webProvinceLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webProvinceLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || webProvinceLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || webProvinceLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webProvince.TVItemModel, webProvinceLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebProvinceTVItemModelParentList(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            if ((from c in webProvinceLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebProvince.TVItemModelParentList = WebProvinceLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webProvince.TVItemModelParentList, webProvinceLocal.TVItemModelParentList);
             }
+        }
+        private void DoMergeJsonWebProvinceTVItemModelAreaList(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            List<TVItemModel> TVItemModelLocalList = (from c in webProvinceLocal.TVItemModelAreaList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            List<TVItemModel> TVItemModelList = (from c in WebProvinceLocal.TVItemModelAreaList
-                                                               where c.TVItem.TVItemID != 0 
-                                                               && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                               select c).ToList();
-
-            foreach (TVItemModel TVItemModel in TVItemModelList)
+            foreach (TVItemModel TVItemModelLocal in TVItemModelLocalList)
             {
-                if (WebProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault() == null)
-                {
-                    WebProvince.TVItemModelAreaList.Add(TVItemModel);
-                }
-            }
+                TVItemModel tvItemModelOriginal = webProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == TVItemModelLocal.TVItem.TVItemID).FirstOrDefault();
 
-            List<TVFileModel> TVFileModelList = (from c in WebProvinceLocal.TVFileModelList
-                                                 where c.TVItem.TVItemID != 0
-                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                 select c).ToList();
-
-            foreach (TVFileModel tvFileModel in TVFileModelList)
-            {
-                TVFileModel tvFileModelOriginal = WebProvince.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
-                if (tvFileModelOriginal == null)
+                if (webProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == TVItemModelLocal.TVItem.TVItemID).FirstOrDefault() == null)
                 {
-                    WebProvince.TVFileModelList.Add(tvFileModel);
+                    webProvince.TVItemModelAreaList.Add(TVItemModelLocal);
                 }
                 else
                 {
-                    tvFileModelOriginal = tvFileModel;
+                    SyncTVItemModel(tvItemModelOriginal, TVItemModelLocal);
                 }
             }
+        }
+        private void DoMergeJsonWebProvinceTVItemModelMunicipalityList(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            List<TVItemModel> TVItemModeLocallList = (from c in webProvinceLocal.TVItemModelMunicipalityList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            // checking if files are localized
-            DirectoryInfo di = new DirectoryInfo($"{Configuration["CSSPFilesPath"] }{ WebProvince.TVItemModel.TVItem.TVItemID }\\");
+            foreach (TVItemModel TVItemModelLocal in TVItemModeLocallList)
+            {
+                TVItemModel tvItemModelOriginal = webProvince.TVItemModelMunicipalityList.Where(c => c.TVItem.TVItemID == TVItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+
+                if (webProvince.TVItemModelMunicipalityList.Where(c => c.TVItem.TVItemID == TVItemModelLocal.TVItem.TVItemID).FirstOrDefault() == null)
+                {
+                    webProvince.TVItemModelMunicipalityList.Add(TVItemModelLocal);
+                }
+                else
+                {
+                    SyncTVItemModel(tvItemModelOriginal, TVItemModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebProvinceTVFileModelList(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            List<TVFileModel> TVFileModelLocalList = (from c in webProvinceLocal.TVFileModelList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
+
+            foreach (TVFileModel tvFileModelLocal in TVFileModelLocalList)
+            {
+                TVFileModel tvFileModelOriginal = webProvince.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
+
+                if (tvFileModelOriginal == null)
+                {
+                    webProvince.TVFileModelList.Add(tvFileModelLocal);
+                }
+                else
+                {
+                    SyncTVFileModel(tvFileModelOriginal, tvFileModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebProvinceIsLocalized(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            DirectoryInfo di = new DirectoryInfo($"{Configuration["CSSPFilesPath"] }{ webProvince.TVItemModel.TVItem.TVItemID }\\");
 
             if (di.Exists)
             {
                 List<FileInfo> FileInfoList = di.GetFiles().ToList();
 
-                foreach (TVFileModel tvFileModel in WebProvince.TVFileModelList)
+                foreach (TVFileModel tvFileModel in webProvince.TVFileModelList)
                 {
                     if ((from c in FileInfoList
                          where c.Name == tvFileModel.TVFile.ServerFileName
@@ -94,10 +154,37 @@ namespace ReadGzFileServices
                     }
                 }
             }
+        }
+        private void DoMergeJsonWebProvinceSamplingPlanModelList(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            List<SamplingPlanModel> SamplingPlanModelLocalList = (from c in webProvinceLocal.SamplingPlanModelList
+                                                                  where c.SamplingPlan.SamplingPlanID != 0
+                                                                  && (c.SamplingPlan.DBCommand != DBCommandEnum.Original)
+                                                                  select c).ToList();
 
-            CSSPLogService.EndFunctionLog(FunctionName);
+            foreach (SamplingPlanModel samplingPlanModelLocal in SamplingPlanModelLocalList)
+            {
+                SamplingPlanModel samplingPlanModelOriginal = webProvince.SamplingPlanModelList.Where(c => c.SamplingPlan.SamplingPlanID == samplingPlanModelLocal.SamplingPlan.SamplingPlanID).FirstOrDefault();
 
-            return await Task.FromResult(true);
+                if (webProvince.SamplingPlanModelList.Where(c => c.SamplingPlan.SamplingPlanID == samplingPlanModelLocal.SamplingPlan.SamplingPlanID).FirstOrDefault() == null)
+                {
+                    webProvince.SamplingPlanModelList.Add(samplingPlanModelLocal);
+                }
+                else
+                {
+                    SyncSamplingPlanModel(samplingPlanModelOriginal, samplingPlanModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebProvinceMunicipalityWithInfrastructureTVItemIDList(WebProvince webProvince, WebProvince webProvinceLocal)
+        {
+            foreach (int municipalityWithInfrastructureTVItemIDLocal in webProvinceLocal.MunicipalityWithInfrastructureTVItemIDList)
+            {
+                if (!webProvince.MunicipalityWithInfrastructureTVItemIDList.Where(c => c == municipalityWithInfrastructureTVItemIDLocal).Any())
+                {
+                    webProvince.MunicipalityWithInfrastructureTVItemIDList.Add(municipalityWithInfrastructureTVItemIDLocal);
+                }
+            }
         }
     }
 }

@@ -18,7 +18,6 @@ namespace CreateGzFileServices
 {
     public interface ICreateGzFileService
     {
-        Task<bool> CheckComputerName(string FunctionName);
         Task<ActionResult<bool>> CreateAllGzFiles();
         Task<ActionResult<bool>> CreateGzFile(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<bool>> DeleteGzFile(WebTypeEnum webType, int TVItemID = 0);
@@ -60,7 +59,6 @@ namespace CreateGzFileServices
             if (string.IsNullOrEmpty(Configuration["CSSPDBLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBLocal", "CreateGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CreateGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "CreateGzFileService") }");
-            if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CreateGzFileService") }");
 
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;

@@ -461,8 +461,8 @@ namespace CSSPDesktop
 
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
 
-            if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDesktopForm") }");
-            if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "CSSPDesktopForm") }");
+            //if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDesktopForm") }");
+            //if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "CSSPDesktopForm") }");
             if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CSSPDesktopForm") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPDesktopForm") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPDesktopForm") }");
@@ -482,9 +482,9 @@ namespace CSSPDesktop
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
-            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
@@ -530,6 +530,13 @@ namespace CSSPDesktop
             }
 
             CSSPCultureService.SetCulture("en-CA");
+
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            if (CSSPScrambleService == null)
+            {
+                richTextBoxStatus.AppendText("CSSPLocalLoggedInService should not be null\r\n");
+                return await Task.FromResult(false);
+            }
 
             CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
             if (CSSPLocalLoggedInService == null)

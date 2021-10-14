@@ -34,14 +34,13 @@ namespace CreateGzFileServices
                 tvFileModel.TVItem = tvItem;
                 tvFileModel.TVItemLanguageList = TVItemLanguageFileList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
 
-                TVFile tvFile = TVFileList.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
-                if (tvFile != null)
+                tvFileModel.TVFile = TVFileList.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
+                if (tvFileModel.TVFile != null)
                 {
-                    tvFileModel.TVFile = tvFile;
-                    tvFileModel.TVFileLanguageList = TVFileLanguageList.Where(c => c.TVFileID == tvFile.TVFileID).ToList();
-
-                    TVFileModelList.Add(tvFileModel);
+                    tvFileModel.TVFileLanguageList = TVFileLanguageList.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();
                 }
+
+                TVFileModelList.Add(tvFileModel);
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);

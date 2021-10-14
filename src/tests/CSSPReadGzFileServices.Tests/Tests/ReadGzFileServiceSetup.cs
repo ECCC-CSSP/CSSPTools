@@ -60,7 +60,6 @@ namespace ReadGzFileServices.Tests
             Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["ComputerName"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPDatabasesPath"]);
             Assert.NotNull(Configuration["CSSPDB"]);

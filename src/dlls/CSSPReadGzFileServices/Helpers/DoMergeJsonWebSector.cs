@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,77 +16,101 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebSector(WebSector WebSector, WebSector WebSectorLocal)
+        private async Task<bool> DoMergeJsonWebSector(WebSector webSector, WebSector webSectorLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebSector WebSector, WebSector WebSectorLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebSectorLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebSectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebSectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebSectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebSector.TVItemModel = WebSectorLocal.TVItemModel;
-            }
+            DoMergeJsonWebSectorTVItemModel(webSector, webSectorLocal);
 
-            if ((from c in WebSectorLocal.TVItemModelParentList
+            DoMergeJsonWebSectorTVItemModelParentList(webSector, webSectorLocal);
+
+            DoMergeJsonWebSectorTVItemModelSubsectorList(webSector, webSectorLocal);
+
+            DoMergeJsonWebSectorTVFileModelList(webSector, webSectorLocal);
+
+            DoMergeJsonWebSectorIsLocalized(webSector, webSectorLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebSectorTVItemModel(WebSector webSector, WebSector webSectorLocal)
+        {
+            if (webSectorLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webSectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || webSectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || webSectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webSector.TVItemModel, webSectorLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebSectorTVItemModelParentList(WebSector webSector, WebSector webSectorLocal)
+        {
+            if ((from c in webSectorLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebSector.TVItemModelParentList = WebSectorLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webSector.TVItemModelParentList, webSectorLocal.TVItemModelParentList);
             }
+        }
+        private void DoMergeJsonWebSectorTVItemModelSubsectorList(WebSector webSector, WebSector webSectorLocal)
+        {
+            List<TVItemModel> TVItemModelLocalList = (from c in webSectorLocal.TVItemModelSubsectorList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            List<TVItemModel> TVItemModelList = (from c in WebSectorLocal.TVItemModelSubsectorList
-                                                               where c.TVItem.TVItemID != 0
-                                                               && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                               || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                               select c).ToList();
-
-            foreach (TVItemModel TVItemModel in TVItemModelList)
+            foreach (TVItemModel TVItemModelLocal in TVItemModelLocalList)
             {
-                TVItemModel TVItemModelOriginal = WebSector.TVItemModelSubsectorList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                TVItemModel TVItemModelOriginal = webSector.TVItemModelSubsectorList.Where(c => c.TVItem.TVItemID == TVItemModelLocal.TVItem.TVItemID).FirstOrDefault();
                 if (TVItemModelOriginal == null)
                 {
-                    WebSector.TVItemModelSubsectorList.Add(TVItemModelOriginal);
+                    webSector.TVItemModelSubsectorList.Add(TVItemModelLocal);
                 }
                 else
                 {
-                    TVItemModelOriginal = TVItemModel;
+                    SyncTVItemModel(TVItemModelOriginal, TVItemModelLocal);
                 }
             }
 
-            List<TVFileModel> TVFileModelList = (from c in WebSectorLocal.TVFileModelList
-                                                 where c.TVItem.TVItemID != 0
-                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                 select c).ToList();
+        }
+        private void DoMergeJsonWebSectorTVFileModelList(WebSector webSector, WebSector webSectorLocal)
+        {
+            List<TVFileModel> TVFileModelLocalList = (from c in webSectorLocal.TVFileModelList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            foreach (TVFileModel tvFileModel in TVFileModelList)
+            foreach (TVFileModel tvFileModelLocal in TVFileModelLocalList)
             {
-                TVFileModel tvFileModelOriginal = WebSector.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = webSector.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
-                    WebSector.TVFileModelList.Add(tvFileModel);
+                    webSector.TVFileModelList.Add(tvFileModelLocal);
                 }
                 else
                 {
-                    tvFileModelOriginal = tvFileModel;
+                    SyncTVFileModel(tvFileModelOriginal, tvFileModelLocal);
                 }
             }
-
-            // checking if files are localized
-            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ WebSector.TVItemModel.TVItem.TVItemID }\\");
+        }
+        private void DoMergeJsonWebSectorIsLocalized(WebSector webSector, WebSector webSectorLocal)
+        {
+            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webSector.TVItemModel.TVItem.TVItemID }\\");
 
             if (di.Exists)
             {
                 List<FileInfo> FileInfoList = di.GetFiles().ToList();
 
-                foreach (TVFileModel tvFileModel in WebSector.TVFileModelList)
+                foreach (TVFileModel tvFileModel in webSector.TVFileModelList)
                 {
                     if ((from c in FileInfoList
                          where c.Name == tvFileModel.TVFile.ServerFileName
@@ -99,10 +124,6 @@ namespace ReadGzFileServices
                     }
                 }
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

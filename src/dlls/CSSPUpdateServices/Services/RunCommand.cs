@@ -15,7 +15,6 @@ namespace CSSPUpdateServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(string[] args) -- { string.Join("  ", args) }";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(false);
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(false);
 
             List<string> AllowableCSSPCommandNameFor1ArgsList = new List<string>()

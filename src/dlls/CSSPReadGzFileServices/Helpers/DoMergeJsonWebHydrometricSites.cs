@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
@@ -14,55 +15,69 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebHydrometricSites(WebHydrometricSites WebHydrometricSites, WebHydrometricSites WebHydrometricSitesLocal)
+        private async Task<bool> DoMergeJsonWebHydrometricSites(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebHydrometricSites WebHydrometricSites, WebHydrometricSites WebHydrometricSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebHydrometricSitesLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebHydrometricSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                || WebHydrometricSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                || WebHydrometricSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebHydrometricSites.TVItemModel = WebHydrometricSitesLocal.TVItemModel;
-            }
+            DoMergeJsonWebHydrometricSitesTVItemModel(webHydrometricSites, webHydrometricSitesLocal);
 
-            if ((from c in WebHydrometricSitesLocal.TVItemModelParentList
+            DoMergeJsonWebHydrometricSitesTVItemModelParentList(webHydrometricSites, webHydrometricSitesLocal);
+
+            DoMergeJsonWebHydrometricSitesHydrometricSiteModelList(webHydrometricSites, webHydrometricSitesLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebHydrometricSitesTVItemModel(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        {
+            if (webHydrometricSitesLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webHydrometricSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                || webHydrometricSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                || webHydrometricSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webHydrometricSites.TVItemModel, webHydrometricSitesLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebHydrometricSitesTVItemModelParentList(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        {
+            if ((from c in webHydrometricSitesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebHydrometricSites.TVItemModelParentList = WebHydrometricSitesLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webHydrometricSites.TVItemModelParentList, webHydrometricSitesLocal.TVItemModelParentList);
             }
+        }
+        private void DoMergeJsonWebHydrometricSitesHydrometricSiteModelList(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        {
 
-            List<HydrometricSiteModel> HydrometricSiteModelList = (from c in WebHydrometricSitesLocal.HydrometricSiteModelList
-                                                           where c.HydrometricSite.HydrometricSiteID != 0
-                                                           && (c.HydrometricSite.DBCommand != DBCommandEnum.Original
-                                                           || (from d in c.HydrometricDataValueList
-                                                               where d.DBCommand != DBCommandEnum.Original
-                                                               select d).Any())
-                                                           select c).ToList();
+            List<HydrometricSiteModel> HydrometricSiteModelLocalList = (from c in webHydrometricSitesLocal.HydrometricSiteModelList
+                                                                        where c.TVItemModel.TVItem.TVItemID != 0
+                                                                        select c).ToList();
 
-            foreach (HydrometricSiteModel hydrometricSiteModel in HydrometricSiteModelList)
+            foreach (HydrometricSiteModel HydrometricSiteModelLocal in HydrometricSiteModelLocalList)
             {
-                HydrometricSiteModel hydrometricSiteModelOriginal = WebHydrometricSites.HydrometricSiteModelList.Where(c => c.HydrometricSite.HydrometricSiteID == hydrometricSiteModel.HydrometricSite.HydrometricSiteID).FirstOrDefault();
-                if (hydrometricSiteModelOriginal == null)
-                {
-                    WebHydrometricSites.HydrometricSiteModelList.Add(hydrometricSiteModelOriginal);
-                }
-                else
-                {
-                    hydrometricSiteModelOriginal = hydrometricSiteModel;
-                }
+                HydrometricSiteModel HydrometricSiteModel = webHydrometricSites.HydrometricSiteModelList.Where(c => c.TVItemModel.TVItem.TVItemID == HydrometricSiteModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
 
-                // will need to do rating curve
+                if (HydrometricSiteModelLocal.TVItemModel.TVItem.TVItemID != 0
+                    && (HydrometricSiteModelLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                    || HydrometricSiteModelLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                    || HydrometricSiteModelLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+                {
+                    if (HydrometricSiteModel == null)
+                    {
+                        webHydrometricSites.HydrometricSiteModelList.Add(HydrometricSiteModelLocal);
+                    }
+                    else
+                    {
+                        SyncHydrometricSiteModel(HydrometricSiteModel, HydrometricSiteModelLocal);
+                    }
+                }
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

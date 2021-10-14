@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,54 +15,66 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebLabSheets(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)
+        private async Task<bool> DoMergeJsonWebLabSheets(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebLabSheetsLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebLabSheetsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebLabSheets.TVItemModel = WebLabSheetsLocal.TVItemModel;
-            }
+            DoMergeJsonWebLabSheetsTVItemModel(webLabSheets, webLabSheetsLocal);
 
-            if ((from c in WebLabSheetsLocal.TVItemModelParentList
+            DoMergeJsonWebLabSheetsTVItemModelParentList(webLabSheets, webLabSheetsLocal);
+
+            DoMergeJsonWebLabSheetsLabSheetModelList(webLabSheets, webLabSheetsLocal);
+
+            CSSPLogService.FunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebLabSheetsTVItemModel(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        {
+            if (webLabSheetsLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || webLabSheetsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || webLabSheetsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webLabSheets.TVItemModel, webLabSheetsLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebLabSheetsTVItemModelParentList(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        {
+            if ((from c in webLabSheetsLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebLabSheets.TVItemModelParentList = WebLabSheetsLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webLabSheets.TVItemModelParentList, webLabSheetsLocal.TVItemModelParentList);
             }
-
-            List<LabSheetModel> LabSheetModelList = (from c in WebLabSheetsLocal.LabSheetModelList
-                                                               where c.LabSheet.LabSheetID != 0
-                                                               && (c.LabSheet.DBCommand != DBCommandEnum.Original
-                                                               || c.LabSheetDetail.DBCommand != DBCommandEnum.Original
-                                                               || (from d in c.LabSheetTubeMPNDetailList
-                                                                   where d.DBCommand != DBCommandEnum.Original
-                                                                   select d).Any())
-                                                               select c).ToList();
+        }
+        private void DoMergeJsonWebLabSheetsLabSheetModelList(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        {
+            List<LabSheetModel> LabSheetModelList = (from c in webLabSheetsLocal.LabSheetModelList
+                                                     where c.LabSheet.LabSheetID != 0
+                                                     && (c.LabSheet.DBCommand != DBCommandEnum.Original
+                                                     || c.LabSheetDetail.DBCommand != DBCommandEnum.Original
+                                                     || (from d in c.LabSheetTubeMPNDetailList
+                                                         where d.DBCommand != DBCommandEnum.Original
+                                                         select d).Any())
+                                                     select c).ToList();
 
             foreach (LabSheetModel labSheetModel in LabSheetModelList)
             {
-                LabSheetModel labSheetModelOriginal = WebLabSheets.LabSheetModelList.Where(c => c.LabSheet.LabSheetID == labSheetModel.LabSheet.LabSheetID).FirstOrDefault();
+                LabSheetModel labSheetModelOriginal = webLabSheets.LabSheetModelList.Where(c => c.LabSheet.LabSheetID == labSheetModel.LabSheet.LabSheetID).FirstOrDefault();
                 if (labSheetModelOriginal == null)
                 {
-                    WebLabSheets.LabSheetModelList.Add(labSheetModelOriginal);
+                    webLabSheets.LabSheetModelList.Add(labSheetModel);
                 }
                 else
                 {
                     labSheetModelOriginal = labSheetModel;
                 }
             }
-
-            CSSPLogService.FunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

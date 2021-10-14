@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,50 +16,68 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebMWQMSites(WebMWQMSites WebMWQMSites, WebMWQMSites WebMWQMSitesLocal)
+        private async Task<bool> DoMergeJsonWebMWQMSites(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMWQMSites WebMWQMSites, WebMWQMSites WebMWQMSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            List<MWQMSiteModel> MWQMSiteModelList = (from c in WebMWQMSitesLocal.MWQMSiteModelList
+            DoMergeJsonWebMWQMSitesTVItemModel(webMWQMSites, webMWQMSitesLocal);
+
+            DoMergeJsonWebMWQMSitesTVItemModelParentList(webMWQMSites, webMWQMSitesLocal);
+
+            DoMergeJsonWebMWQMSitesMWQMSiteModelList(webMWQMSites, webMWQMSitesLocal);
+
+            DoMergeJsonWebMWQMSitesIsLocalized(webMWQMSites, webMWQMSitesLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebMWQMSitesTVItemModel(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        {
+            if (webMWQMSitesLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webMWQMSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+              || webMWQMSitesLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+              || webMWQMSitesLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webMWQMSites.TVItemModel, webMWQMSitesLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebMWQMSitesTVItemModelParentList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        {
+            if ((from c in webMWQMSitesLocal.TVItemModelParentList
+                 where c.TVItem.TVItemID != 0
+                 && (c.TVItem.DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                 select c).Any())
+            {
+                SyncTVItemModelParentList(webMWQMSites.TVItemModelParentList, webMWQMSitesLocal.TVItemModelParentList);
+            }
+        }
+        private void DoMergeJsonWebMWQMSitesMWQMSiteModelList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        {
+            List<MWQMSiteModel> MWQMSiteModelLocalList = (from c in webMWQMSitesLocal.MWQMSiteModelList
                                                      where c.MWQMSite.MWQMSiteID != 0
                                                      && c.MWQMSite.DBCommand != DBCommandEnum.Original
                                                      select c).ToList();
 
-            foreach (MWQMSiteModel mwqmSiteModel in MWQMSiteModelList)
+            foreach (MWQMSiteModel mwqmSiteModelLocal in MWQMSiteModelLocalList)
             {
-                MWQMSiteModel mwqmSiteModelOriginal = WebMWQMSites.MWQMSiteModelList.Where(c => c.MWQMSite.MWQMSiteID == mwqmSiteModel.MWQMSite.MWQMSiteID).FirstOrDefault();
+                MWQMSiteModel mwqmSiteModelOriginal = webMWQMSites.MWQMSiteModelList.Where(c => c.MWQMSite.MWQMSiteID == mwqmSiteModelLocal.MWQMSite.MWQMSiteID).FirstOrDefault();
                 if (mwqmSiteModelOriginal == null)
                 {
-                    WebMWQMSites.MWQMSiteModelList.Add(mwqmSiteModelOriginal);
+                    webMWQMSites.MWQMSiteModelList.Add(mwqmSiteModelLocal);
                 }
                 else
                 {
-                    mwqmSiteModelOriginal = mwqmSiteModel;
+                    SyncMWQMSiteModel(mwqmSiteModelOriginal, mwqmSiteModelLocal);
                 }
-
-                List<TVFileModel> TVFileModelList = (from c in mwqmSiteModel.TVFileModelList
-                                                     where c.TVItem.TVItemID != 0
-                                                     && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                     || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                     || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                     select c).ToList();
-
-                foreach (TVFileModel tvFileModel in TVFileModelList)
-                {
-                    TVFileModel tvFileModelOriginal = mwqmSiteModel.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
-                    if (tvFileModelOriginal == null)
-                    {
-                        mwqmSiteModel.TVFileModelList.Add(tvFileModel);
-                    }
-                    else
-                    {
-                        tvFileModelOriginal = tvFileModel;
-                    }
-                }             
             }
-
-            foreach (MWQMSiteModel mwqmSiteModel in WebMWQMSites.MWQMSiteModelList)
+        }
+        private void DoMergeJsonWebMWQMSitesIsLocalized(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        {
+            foreach (MWQMSiteModel mwqmSiteModel in webMWQMSites.MWQMSiteModelList)
             {
                 // checking if files are localized
                 DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ mwqmSiteModel.TVItemModel.TVItem.TVItemID }\\");
@@ -82,10 +101,6 @@ namespace ReadGzFileServices
                     }
                 }
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

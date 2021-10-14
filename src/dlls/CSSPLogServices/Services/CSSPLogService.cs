@@ -26,7 +26,6 @@ namespace CSSPLogServices
 
         void AppendError(string Err);
         void AppendLog(string logText);
-        Task<bool> CheckComputerName(string FunctionName);
         Task<bool> CheckLogin(string FunctionName);
         void EndFunctionLog(string FullFunctionName);
         Task<ActionResult> EndFunctionReturnBadRequest(string FunctionName, string ErrorText);
@@ -76,7 +75,6 @@ namespace CSSPLogServices
             if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
 
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
-            if (string.IsNullOrEmpty(Configuration["ComputerName"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "ComputerName", "CSSPLogService") }");
 
             this.Configuration = Configuration;
             this.CSSPScrambleService = CSSPScrambleService;

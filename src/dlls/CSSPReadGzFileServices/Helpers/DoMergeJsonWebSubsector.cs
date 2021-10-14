@@ -2,9 +2,11 @@
  * Manually edited
  * 
  */
+using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,57 +17,92 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebSubsector(WebSubsector WebSubsector, WebSubsector WebSubsectorLocal)
+        private async Task<bool> DoMergeJsonWebSubsector(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebSubsector WebSubsector, WebSubsector WebSubsectorLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebSubsectorLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebSubsectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebSubsectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebSubsectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebSubsector.TVItemModel = WebSubsectorLocal.TVItemModel;
-            }
+            DoMergeJsonWebSubsectorTVItemModel(webSubsector, webSubsectorLocal);
 
-            if ((from c in WebSubsectorLocal.TVItemModelParentList
+            DoMergeJsonWebSubsectorTVItemModelParentList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorTVFileModelList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorIsLocalized(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorTVItemModelClassificationList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorTVItemModelMWQMSiteList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorTVItemModelMWQMRunList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorTVItemModelPolSourceSiteList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorMWQMAnalysisReportParameterList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorMWQMSubsector(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorMWQMSubsectorLanguageList(webSubsector, webSubsectorLocal);
+
+            DoMergeJsonWebSubsectorUseOfSiteList(webSubsector, webSubsectorLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebSubsectorTVItemModel(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            if (webSubsectorLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webSubsectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || webSubsectorLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || webSubsectorLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webSubsector.TVItemModel, webSubsectorLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebSubsectorTVItemModelParentList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            if ((from c in webSubsectorLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebSubsector.TVItemModelParentList = WebSubsectorLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webSubsector.TVItemModelParentList, webSubsectorLocal.TVItemModelParentList);
             }
+        }
+        private void DoMergeJsonWebSubsectorTVFileModelList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<TVFileModel> TVFileModelLocalList = (from c in webSubsectorLocal.TVFileModelList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            List<TVFileModel> TVFileModelList = (from c in WebSubsectorLocal.TVFileModelList
-                                                 where c.TVItem.TVItemID != 0
-                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                 select c).ToList();
-
-            foreach (TVFileModel tvFileModel in TVFileModelList)
+            foreach (TVFileModel tvFileModelLocal in TVFileModelLocalList)
             {
-                TVFileModel tvFileModelOriginal = WebSubsector.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = webSubsector.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
-                    WebSubsector.TVFileModelList.Add(tvFileModel);
+                    webSubsector.TVFileModelList.Add(tvFileModelLocal);
                 }
                 else
                 {
-                    tvFileModelOriginal = tvFileModel;
+                    SyncTVFileModel(tvFileModelOriginal, tvFileModelLocal);
                 }
             }
-
-            // checking if files are localized
-            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ WebSubsector.TVItemModel.TVItem.TVItemID }\\");
+        }
+        private void DoMergeJsonWebSubsectorIsLocalized(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webSubsector.TVItemModel.TVItem.TVItemID }\\");
 
             if (di.Exists)
             {
                 List<FileInfo> FileInfoList = di.GetFiles().ToList();
 
-                foreach (TVFileModel tvFileModel in WebSubsector.TVFileModelList)
+                foreach (TVFileModel tvFileModel in webSubsector.TVFileModelList)
                 {
                     if ((from c in FileInfoList
                          where c.Name == tvFileModel.TVFile.ServerFileName
@@ -79,10 +116,151 @@ namespace ReadGzFileServices
                     }
                 }
             }
+        }
+        private void DoMergeJsonWebSubsectorTVItemModelClassificationList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<TVItemModel> TVItemModelLocalList = (from c in webSubsectorLocal.TVItemModelClassificationList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            CSSPLogService.EndFunctionLog(FunctionName);
+            foreach (TVItemModel tvItemModelLocal in TVItemModelLocalList)
+            {
+                TVItemModel tvItemModelOriginal = webSubsector.TVItemModelClassificationList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
+                {
+                    webSubsector.TVItemModelClassificationList.Add(tvItemModelLocal);
+                }
+                else
+                {
+                    SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebSubsectorTVItemModelMWQMSiteList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<TVItemModel> TVItemModelLocalList = (from c in webSubsectorLocal.TVItemModelMWQMSiteList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
 
-            return await Task.FromResult(true);
+            foreach (TVItemModel tvItemModelLocal in TVItemModelLocalList)
+            {
+                TVItemModel tvItemModelOriginal = webSubsector.TVItemModelMWQMSiteList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
+                {
+                    webSubsector.TVItemModelMWQMSiteList.Add(tvItemModelLocal);
+                }
+                else
+                {
+                    SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebSubsectorTVItemModelMWQMRunList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<TVItemModel> TVItemModelLocalList = (from c in webSubsectorLocal.TVItemModelMWQMRunList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
+
+            foreach (TVItemModel tvItemModelLocal in TVItemModelLocalList)
+            {
+                TVItemModel tvItemModelOriginal = webSubsector.TVItemModelMWQMRunList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
+                {
+                    webSubsector.TVItemModelMWQMRunList.Add(tvItemModelLocal);
+                }
+                else
+                {
+                    SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebSubsectorTVItemModelPolSourceSiteList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<TVItemModel> TVItemModelLocalList = (from c in webSubsectorLocal.TVItemModelPolSourceSiteList
+                                                      where c.TVItem.TVItemID != 0
+                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      select c).ToList();
+
+            foreach (TVItemModel tvItemModelLocal in TVItemModelLocalList)
+            {
+                TVItemModel tvItemModelOriginal = webSubsector.TVItemModelPolSourceSiteList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
+                {
+                    webSubsector.TVItemModelPolSourceSiteList.Add(tvItemModelLocal);
+                }
+                else
+                {
+                    SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
+                }
+            }
+        }
+        private void DoMergeJsonWebSubsectorMWQMAnalysisReportParameterList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterLocalList = (from c in webSubsectorLocal.MWQMAnalysisReportParameterList
+                                                                                      where c.SubsectorTVItemID != 0
+                                                                                      && c.DBCommand != DBCommandEnum.Original
+                                                                                      select c).ToList();
+
+            foreach (MWQMAnalysisReportParameter mwqmAnalysisReportParameterLocal in MWQMAnalysisReportParameterLocalList)
+            {
+                MWQMAnalysisReportParameter mwqmAnalysisReportParameterOriginal = webSubsector.MWQMAnalysisReportParameterList.Where(c => c.SubsectorTVItemID == mwqmAnalysisReportParameterLocal.SubsectorTVItemID).FirstOrDefault();
+                if (mwqmAnalysisReportParameterOriginal == null)
+                {
+                    webSubsector.MWQMAnalysisReportParameterList.Add(mwqmAnalysisReportParameterLocal);
+                }
+                else
+                {
+                    mwqmAnalysisReportParameterOriginal = mwqmAnalysisReportParameterLocal;
+                }
+            }
+        }
+        private void DoMergeJsonWebSubsectorMWQMSubsector(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            if (webSubsectorLocal.MWQMSubsector != null)
+            {
+                if (webSubsectorLocal.MWQMSubsector.DBCommand != DBCommandEnum.Original)
+                {
+                    webSubsector.MWQMSubsector = webSubsectorLocal.MWQMSubsector;
+                }
+            }
+        }
+        private void DoMergeJsonWebSubsectorMWQMSubsectorLanguageList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            if (webSubsectorLocal.MWQMSubsectorLanguageList != null)
+            {
+                webSubsector.MWQMSubsectorLanguageList = webSubsectorLocal.MWQMSubsectorLanguageList;
+            }
+        }
+        private void DoMergeJsonWebSubsectorUseOfSiteList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        {
+            List<UseOfSite> UseOfSiteLocalList = (from c in webSubsectorLocal.UseOfSiteList
+                                                  where c.SubsectorTVItemID != 0
+                                                  && c.DBCommand != DBCommandEnum.Original
+                                                  select c).ToList();
+
+            foreach (UseOfSite useOfSiteLocal in UseOfSiteLocalList)
+            {
+                UseOfSite useOfSiteOriginal = webSubsector.UseOfSiteList.Where(c => c.SubsectorTVItemID == useOfSiteLocal.SubsectorTVItemID).FirstOrDefault();
+                if (useOfSiteOriginal == null)
+                {
+                    webSubsector.UseOfSiteList.Add(useOfSiteLocal);
+                }
+                else
+                {
+                    useOfSiteOriginal = useOfSiteLocal;
+                }
+            }
         }
     }
 }

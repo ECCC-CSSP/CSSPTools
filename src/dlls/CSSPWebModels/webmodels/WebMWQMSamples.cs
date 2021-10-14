@@ -26,15 +26,4 @@ namespace CSSPWebModels
         }
         #endregion Constructors
     }
-
-    [NotMapped]
-    public partial class WebMWQMSamples1980_2020 : WebMWQMSamples
-    {
-    }
-
-    [NotMapped]
-    public partial class WebMWQMSamples2021_2060 : WebMWQMSamples
-    {
-    }
-
 }

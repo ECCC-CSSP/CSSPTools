@@ -26,21 +26,9 @@ namespace CSSPDBLocalServices
             {
                 case TVTypeEnum.Address:
                     {
-                        WebAllAddresses webAllAddresses = ReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0).GetAwaiter().GetResult();
-
-                        WebRoot webRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0).GetAwaiter().GetResult();
+                        WebRoot webRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 1).GetAwaiter().GetResult();
 
                         gzObjectList.tvItemParentList = webRoot.TVItemModelParentList;
-
-                        AddressModel addressModel = (from c in webAllAddresses.AddressModelList
-                                                     where c.TVItemModel.TVItem.TVItemID == tvItemLocalModel.TVItem.TVItemID
-                                                     select c).FirstOrDefault();
-
-                        gzObjectList.tvItemParentList.Add(new TVItemModel()
-                        {
-                            TVItem = addressModel.TVItemModel.TVItem,
-                            TVItemLanguageList = addressModel.TVItemModel.TVItemLanguageList,
-                        });
                     }
                     break;
                 case TVTypeEnum.Area:
@@ -100,9 +88,9 @@ namespace CSSPDBLocalServices
                     break;
                 case TVTypeEnum.Contact:
                     {
-                        WebAllContacts webAllContacts = ReadGzFileService.GetUncompressJSON<WebAllContacts>(WebTypeEnum.WebAllContacts, 0).GetAwaiter().GetResult();
+                        WebAllContacts webAllContacts = ReadGzFileService.GetUncompressJSON<WebAllContacts>(WebTypeEnum.WebAllContacts, 1).GetAwaiter().GetResult();
 
-                        WebRoot webRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0).GetAwaiter().GetResult();
+                        WebRoot webRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 1).GetAwaiter().GetResult();
 
                         gzObjectList.tvItemParentList = webRoot.TVItemModelParentList;
 
@@ -383,9 +371,9 @@ namespace CSSPDBLocalServices
                     break;
                 case TVTypeEnum.Email:
                     {
-                        WebAllEmails webAllEmails = ReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0).GetAwaiter().GetResult();
+                        WebAllEmails webAllEmails = ReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 1).GetAwaiter().GetResult();
 
-                        WebRoot webRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0).GetAwaiter().GetResult();
+                        WebRoot webRoot = ReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 1).GetAwaiter().GetResult();
 
                         gzObjectList.tvItemParentList = webRoot.TVItemModelParentList;
 

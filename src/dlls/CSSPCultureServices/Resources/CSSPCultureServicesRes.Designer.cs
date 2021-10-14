@@ -2680,24 +2680,6 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This app can only be run on computer name.
-        /// </summary>
-        public static string ThisAppCanOnlyBeRunOnComputerName {
-            get {
-                return ResourceManager.GetString("ThisAppCanOnlyBeRunOnComputerName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This computer name is.
-        /// </summary>
-        public static string ThisComputerNameIs {
-            get {
-                return ResourceManager.GetString("ThisComputerNameIs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to to {0}.
         /// </summary>
         public static string To_ {

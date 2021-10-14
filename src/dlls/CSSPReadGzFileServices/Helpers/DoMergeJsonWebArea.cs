@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,30 +16,50 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebArea(WebArea WebArea, WebArea WebAreaLocal)
+        private async Task<bool> DoMergeJsonWebArea(WebArea webArea, WebArea webAreaLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebArea WebArea, WebArea WebAreaLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebAreaLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebAreaLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                || WebAreaLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                || WebAreaLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebArea.TVItemModel = WebAreaLocal.TVItemModel;
-            }
+            DoMergeJsonWebAreaTVItemModel(webArea, webAreaLocal);
 
-            if ((from c in WebAreaLocal.TVItemModelParentList
+            DoMergeJsonWebAreaTVItemModelParentList(webArea, webAreaLocal);
+
+            DoMergeJsonWebAreaTVItemModelSectorList(webArea, webAreaLocal);
+
+            DoMergeJsonWebAreaTVFileModelList(webArea, webAreaLocal);
+
+            DoMergeJsonWebAreaIsLocalized(webArea, webAreaLocal);
+            
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebAreaTVItemModel(WebArea webArea, WebArea webAreaLocal)
+        {
+            if (webAreaLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webAreaLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                || webAreaLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                || webAreaLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webArea.TVItemModel, webAreaLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebAreaTVItemModelParentList(WebArea webArea, WebArea webAreaLocal)
+        {
+            if ((from c in webAreaLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebArea.TVItemModelParentList = WebAreaLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webArea.TVItemModelParentList, webAreaLocal.TVItemModelParentList);
             }
-
-            List<TVItemModel> TVItemModelList = (from c in WebAreaLocal.TVItemModelSectorList
+        }
+        private void DoMergeJsonWebAreaTVItemModelSectorList(WebArea webArea, WebArea webAreaLocal)
+        {
+            List<TVItemModel> TVItemModelList = (from c in webAreaLocal.TVItemModelSectorList
                                                  where c.TVItem.TVItemID != 0
                                                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
@@ -47,45 +68,48 @@ namespace ReadGzFileServices
 
             foreach (TVItemModel TVItemModel in TVItemModelList)
             {
-                TVItemModel TVItemModelOriginal = WebArea.TVItemModelSectorList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                TVItemModel TVItemModelOriginal = webArea.TVItemModelSectorList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (TVItemModelOriginal == null)
                 {
-                    WebArea.TVItemModelSectorList.Add(TVItemModelOriginal);
+                    webArea.TVItemModelSectorList.Add(TVItemModel);
                 }
                 else
                 {
-                    TVItemModelOriginal = TVItemModel;
+                    SyncTVItemModel(TVItemModelOriginal, TVItemModel);
                 }
             }
-
-            List<TVFileModel> TVFileModelList = (from c in WebAreaLocal.TVFileModelList
+        }
+        private void DoMergeJsonWebAreaTVFileModelList(WebArea webArea, WebArea webAreaLocal)
+        {
+            List<TVFileModel> TVFileModelList = (from c in webAreaLocal.TVFileModelList
                                                  where c.TVItem.TVItemID != 0
                                                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                                                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                  select c).ToList();
 
-            foreach (TVFileModel tvFileModel in TVFileModelList)
+            foreach (TVFileModel tvFileModelLocal in TVFileModelList)
             {
-                TVFileModel tvFileModelOriginal = WebArea.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = webArea.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
-                    WebArea.TVFileModelList.Add(tvFileModel);
+                    webArea.TVFileModelList.Add(tvFileModelLocal);
                 }
                 else
                 {
-                    tvFileModelOriginal = tvFileModel;
+                    SyncTVFileModel(tvFileModelOriginal, tvFileModelLocal);
                 }
             }
-
-            // checking if files are localized
-            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ WebArea.TVItemModel.TVItem.TVItemID }\\");
+        }
+        private void DoMergeJsonWebAreaIsLocalized(WebArea webArea, WebArea webAreaLocal)
+        {
+            DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webArea.TVItemModel.TVItem.TVItemID }\\");
 
             if (di.Exists)
             {
                 List<FileInfo> FileInfoList = di.GetFiles().ToList();
 
-                foreach (TVFileModel tvFileModel in WebArea.TVFileModelList)
+                foreach (TVFileModel tvFileModel in webArea.TVFileModelList)
                 {
                     if ((from c in FileInfoList
                          where c.Name == tvFileModel.TVFile.ServerFileName
@@ -99,10 +123,6 @@ namespace ReadGzFileServices
                     }
                 }
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

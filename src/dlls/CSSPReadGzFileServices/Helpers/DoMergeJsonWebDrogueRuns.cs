@@ -5,6 +5,7 @@
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,30 +15,46 @@ namespace ReadGzFileServices
 {
     public partial class ReadGzFileService : ControllerBase, IReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebDrogueRuns(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)
+        private async Task<bool> DoMergeJsonWebDrogueRuns(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            if (WebDrogueRunsLocal.TVItemModel.TVItem.TVItemID != 0
-                && (WebDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-               || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-               || WebDrogueRunsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
-            {
-                WebDrogueRuns.TVItemModel = WebDrogueRunsLocal.TVItemModel;
-            }
+            DoMergeJsonWebDrogueRunsTVItemModel(webDrogueRuns, webDrogueRunsLocal);
 
-            if ((from c in WebDrogueRunsLocal.TVItemModelParentList
+            DoMergeJsonWebDrogueRunsTVItemModelParentList(webDrogueRuns, webDrogueRunsLocal);
+
+            DoMergeJsonWebDrogueRunsDrogueRunModelList(webDrogueRuns, webDrogueRunsLocal);
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(true);
+        }
+        private void DoMergeJsonWebDrogueRunsTVItemModel(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        {
+            if (webDrogueRunsLocal.TVItemModel.TVItem.TVItemID != 0
+                && (webDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+               || webDrogueRunsLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+               || webDrogueRunsLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original))
+            {
+                SyncTVItemModel(webDrogueRuns.TVItemModel, webDrogueRunsLocal.TVItemModel);
+            }
+        }
+        private void DoMergeJsonWebDrogueRunsTVItemModelParentList(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        {
+            if ((from c in webDrogueRunsLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
                  && (c.TVItem.DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
                  select c).Any())
             {
-                WebDrogueRuns.TVItemModelParentList = WebDrogueRunsLocal.TVItemModelParentList;
+                SyncTVItemModelParentList(webDrogueRuns.TVItemModelParentList, webDrogueRunsLocal.TVItemModelParentList);
             }
-
-            List<DrogueRunModel> DrogueRunModelList = (from c in WebDrogueRunsLocal.DrogueRunModelList
+        }
+        private void DoMergeJsonWebDrogueRunsDrogueRunModelList(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        {
+            List<DrogueRunModel> DrogueRunModelLocalList = (from c in webDrogueRunsLocal.DrogueRunModelList
                                                        where c.DrogueRun.DrogueRunID != 0
                                                        && (c.DrogueRun.DBCommand != DBCommandEnum.Original
                                                        || (from d in c.DrogueRunPositionList
@@ -45,22 +62,18 @@ namespace ReadGzFileServices
                                                            select d).Any())
                                                        select c).ToList();
 
-            foreach (DrogueRunModel drogueRunModel in DrogueRunModelList)
+            foreach (DrogueRunModel drogueRunModelLocal in DrogueRunModelLocalList)
             {
-                DrogueRunModel drogueRunModelOriginal = WebDrogueRuns.DrogueRunModelList.Where(c => c.DrogueRun.DrogueRunID == drogueRunModel.DrogueRun.DrogueRunID).FirstOrDefault();
+                DrogueRunModel drogueRunModelOriginal = webDrogueRuns.DrogueRunModelList.Where(c => c.DrogueRun.DrogueRunID == drogueRunModelLocal.DrogueRun.DrogueRunID).FirstOrDefault();
                 if (drogueRunModelOriginal == null)
                 {
-                    WebDrogueRuns.DrogueRunModelList.Add(drogueRunModelOriginal);
+                    webDrogueRuns.DrogueRunModelList.Add(drogueRunModelLocal);
                 }
                 else
                 {
-                    drogueRunModelOriginal = drogueRunModel;
+                    drogueRunModelOriginal = drogueRunModelLocal;
                 }
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
     }
 }

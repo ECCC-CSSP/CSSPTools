@@ -50,6 +50,7 @@ namespace CreateGzFileServices
                 tvItemModel.TVItem = tvItem;
                 tvItemModel.TVItemLanguageList = (from c in TVItemLanguageContactList
                                                   where c.TVItemID == tvItem.TVItemID
+                                                  orderby c.Language
                                                   select c).ToList();
 
                 foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)

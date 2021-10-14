@@ -25,7 +25,6 @@ namespace CSSPUpdateServices
             // remove the next line when you are sure
             return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (!await CSSPLogService.CheckComputerName(FunctionName)) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             List<TVItemStat> TVItemStatList = (from c in db.TVItemStats

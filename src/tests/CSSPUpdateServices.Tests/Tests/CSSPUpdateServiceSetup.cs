@@ -62,7 +62,6 @@ namespace UpdateServices.Tests
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["ComputerName"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.Contains("csspwebapis.", Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPLocalUrl"]);

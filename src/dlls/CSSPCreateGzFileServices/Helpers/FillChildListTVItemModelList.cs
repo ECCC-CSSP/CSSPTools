@@ -33,7 +33,10 @@ namespace CreateGzFileServices
             {
                 TVItemModel tvItemModel = new TVItemModel();
                 tvItemModel.TVItem = tvItem;
-                tvItemModel.TVItemLanguageList = TVItemLanguageList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
+                                                  where c.TVItemID == tvItem.TVItemID
+                                                  orderby c.Language
+                                                  select c).ToList();
 
                 foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)
                 {

@@ -63,7 +63,6 @@ namespace CSSPLogServices.Tests
 
             string CSSPDBManageTest = Configuration["CSSPDBManage"].Replace(".db", "_test.db");
 
-            Assert.NotNull(Configuration["ComputerName"]);
 
             FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
             Assert.True(fiCSSPDBManage.Exists);
