@@ -123,12 +123,12 @@ namespace CSSPDBLocalServices.Tests
                 TVText = TVTextFR,
             });
 
-            return new TVItemLocalModel()
+            return await Task.FromResult(new TVItemLocalModel()
             {
                 TVItem = tvItem,
                 TVItemLanguageList = tvItemLanguageList,
                 TVItemParent = tvItemModelParent.TVItem,
-            };
+            });
         }
         private async Task<TVItemLocalModel> FillTVItemLocalModelForAdd(int WebTypeTVItemID, WebTypeEnum webType, TVTypeEnum tvType, TVTypeEnum tvTypeParent)
         {

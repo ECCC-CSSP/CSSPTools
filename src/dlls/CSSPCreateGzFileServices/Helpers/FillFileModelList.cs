@@ -32,7 +32,10 @@ namespace CreateGzFileServices
             {
                 TVFileModel tvFileModel = new TVFileModel();
                 tvFileModel.TVItem = tvItem;
-                tvFileModel.TVItemLanguageList = TVItemLanguageFileList.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                tvFileModel.TVItemLanguageList = (from c in TVItemLanguageFileList 
+                                                  where c.TVItemID == tvItem.TVItemID 
+                                                  orderby c.Language 
+                                                  select c).ToList();
 
                 tvFileModel.TVFile = TVFileList.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
                 if (tvFileModel.TVFile != null)

@@ -83,7 +83,27 @@ namespace CSSPDBLocalServices
                 try
                 {
                     dbLocal.SaveChanges();
-                    AppendToRecreate(tvItemToMarkDeleted, tvItemLocalModel.TVItemParent.TVType);
+                    if (tvItemToMarkDeleted.TVType == TVTypeEnum.MWQMRun)
+                    {
+                        AppendToRecreate(tvItemToMarkDeleted, TVTypeEnum.MWQMRun);
+                    }
+                    else if (tvItemToMarkDeleted.TVType == TVTypeEnum.MWQMSite)
+                    {
+                        AppendToRecreate(tvItemToMarkDeleted, TVTypeEnum.MWQMSite);
+                    }
+                    else if (tvItemToMarkDeleted.TVType == TVTypeEnum.PolSourceSite)
+                    {
+                        AppendToRecreate(tvItemToMarkDeleted, TVTypeEnum.PolSourceSite);
+                    }
+                    else if (tvItemToMarkDeleted.TVType == TVTypeEnum.MikeBoundaryConditionMesh || tvItemToMarkDeleted.TVType == TVTypeEnum.MikeBoundaryConditionWebTide || tvItemToMarkDeleted.TVType == TVTypeEnum.MikeSource)
+                    {
+                        AppendToRecreate(tvItemLocalModel.TVItemParent, TVTypeEnum.MikeScenario);
+                    }
+                    else
+                    {
+                        AppendToRecreate(tvItemToMarkDeleted, tvItemLocalModel.TVItemParent.TVType);
+                    }
+                    //AppendToRecreate(tvItemToMarkDeleted, tvItemLocalModel.TVItemParent.TVType);
                 }
                 catch (Exception ex)
                 {
@@ -92,48 +112,53 @@ namespace CSSPDBLocalServices
 
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
-                    List<TVItemLanguage> TVItemLanguageToDeleteList = (from c in dbLocal.TVItemLanguages
-                                                                       where c.TVItemID == tvItemLocalModel.TVItem.TVItemID
-                                                                       orderby c.Language
-                                                                       select c).ToList();
+                    TVItemLanguage tvItemLanguageToDelete = (from c in dbLocal.TVItemLanguages
+                                                             where c.TVItemID == tvItemLocalModel.TVItem.TVItemID
+                                                             && c.Language == lang
+                                                             select c).FirstOrDefault();
 
-                    foreach (TVItemLanguage tvItemLanguage in TVItemLanguageToDeleteList)
+                    tvItemLanguageToDelete.DBCommand = DBCommandEnum.Deleted;
+                    tvItemLanguageToDelete.LastUpdateDate_UTC = DateTime.UtcNow;
+                    tvItemLanguageToDelete.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
+
+                    try
                     {
-                        tvItemLanguage.DBCommand = DBCommandEnum.Deleted;
-                        tvItemLanguage.LastUpdateDate_UTC = DateTime.UtcNow;
-                        tvItemLanguage.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
-
-                        try
-                        {
-                            dbLocal.SaveChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVItemLanguage", ex.Message));
-                            return await Task.FromResult(false);
-                        }
+                        dbLocal.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVItemLanguage", ex.Message));
+                        return await Task.FromResult(false);
                     }
                 }
             }
             else
             {
-                TVItem tvItem = (from c in dbLocal.TVItems
-                                 where c.TVItemID == tvItemLocalModel.TVItem.TVItemID
-                                 select c).FirstOrDefault();
+                tvItemToMarkDeleted = tvItemLocalModel.TVItem;
+                tvItemToMarkDeleted.DBCommand = DBCommandEnum.Deleted;
+                tvItemToMarkDeleted.LastUpdateDate_UTC = DateTime.UtcNow;
+                tvItemToMarkDeleted.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
-                if (tvItem == null)
+                dbLocal.TVItems.Add(tvItemToMarkDeleted);
+                if (tvItemToMarkDeleted.TVType == TVTypeEnum.MWQMRun)
                 {
-                    tvItem = tvItemLocalModel.TVItem;
-                    tvItem.DBCommand = DBCommandEnum.Deleted;
-                    tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
-                    tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
-
-                    dbLocal.TVItems.Add(tvItem);
-                    AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
+                    AppendToRecreate(tvItemToMarkDeleted, TVTypeEnum.MWQMRun);
+                }
+                else if (tvItemToMarkDeleted.TVType == TVTypeEnum.MWQMSite)
+                {
+                    AppendToRecreate(tvItemToMarkDeleted, TVTypeEnum.MWQMSite);
+                }
+                else if (tvItemToMarkDeleted.TVType == TVTypeEnum.PolSourceSite)
+                {
+                    AppendToRecreate(tvItemToMarkDeleted, TVTypeEnum.PolSourceSite);
+                }
+                else if (tvItemToMarkDeleted.TVType == TVTypeEnum.MikeBoundaryConditionMesh || tvItemToMarkDeleted.TVType == TVTypeEnum.MikeBoundaryConditionWebTide || tvItemToMarkDeleted.TVType == TVTypeEnum.MikeSource)
+                {
+                    AppendToRecreate(tvItemLocalModel.TVItemParent, TVTypeEnum.MikeScenario);
                 }
                 else
                 {
-                    tvItem.DBCommand = DBCommandEnum.Deleted;
+                    AppendToRecreate(tvItemToMarkDeleted, tvItemLocalModel.TVItemParent.TVType);
                 }
 
                 try
@@ -171,7 +196,6 @@ namespace CSSPDBLocalServices
                     try
                     {
                         dbLocal.SaveChanges();
-                        AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {
@@ -189,7 +213,6 @@ namespace CSSPDBLocalServices
                     ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
                     CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
                 }
-
             }
 
             return CSSPLogService.ErrRes.ErrList.Count == 0 ? await Task.FromResult(true) : await Task.FromResult(false);

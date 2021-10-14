@@ -32,7 +32,7 @@ namespace CreateGzFileServices
                 TVItemModel tvItemModel = new TVItemModel();
                 tvItemModel.TVItem = tvItem;
                 tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
-                                                  where c.TVItemID == c.TVItemID
+                                                  where c.TVItemID == tvItem.TVItemID
                                                   orderby c.Language
                                                   select c).ToList();
                
@@ -44,6 +44,7 @@ namespace CreateGzFileServices
                     Regex regex = new Regex("[ ]{2,}", options);
                     tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
                 }
+
                 EmailModelList.Add(new EmailModel()
                 {
                     TVItemModel = tvItemModel,

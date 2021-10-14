@@ -103,7 +103,28 @@ namespace CSSPDBLocalServices
                 try
                 {
                     dbLocal.SaveChanges();
-                    AppendToRecreate(tvItemToModify, tvItemLocalModel.TVItemParent.TVType);
+                    if (tvItemToModify.TVType == TVTypeEnum.MWQMRun)
+                    {
+                        AppendToRecreate(tvItemToModify, TVTypeEnum.MWQMRun);
+                    }
+                    else if (tvItemToModify.TVType == TVTypeEnum.MWQMSite)
+                    {
+                        AppendToRecreate(tvItemToModify, TVTypeEnum.MWQMSite);
+                    }
+                    else if (tvItemToModify.TVType == TVTypeEnum.PolSourceSite)
+                    {
+                        AppendToRecreate(tvItemToModify, TVTypeEnum.PolSourceSite);
+                    }
+                    else if (tvItemToModify.TVType == TVTypeEnum.MikeBoundaryConditionMesh
+                        || tvItemToModify.TVType == TVTypeEnum.MikeBoundaryConditionWebTide
+                        || tvItemToModify.TVType == TVTypeEnum.MikeSource)
+                    {
+                        AppendToRecreate(tvItemLocalModel.TVItemParent, TVTypeEnum.MikeScenario);
+                    }
+                    else
+                    {
+                        AppendToRecreate(tvItemToModify, tvItemLocalModel.TVItemParent.TVType);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -138,23 +159,33 @@ namespace CSSPDBLocalServices
             }
             else
             {
-                TVItem tvItem = (from c in dbLocal.TVItems
-                                 where c.TVItemID == tvItemLocalModel.TVItem.TVItemID
-                                 select c).FirstOrDefault();
+                tvItemToModify = tvItemLocalModel.TVItem;
+                tvItemToModify.DBCommand = DBCommandEnum.Modified;
+                tvItemToModify.LastUpdateDate_UTC = DateTime.UtcNow;
+                tvItemToModify.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
-                if (tvItem == null)
+                dbLocal.TVItems.Add(tvItemToModify);
+                if (tvItemToModify.TVType == TVTypeEnum.MWQMRun)
                 {
-                    tvItem = tvItemLocalModel.TVItem;
-                    tvItem.DBCommand = DBCommandEnum.Modified;
-                    tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
-                    tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
-
-                    dbLocal.TVItems.Add(tvItem);
-                    AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
+                    AppendToRecreate(tvItemToModify, TVTypeEnum.MWQMRun);
+                }
+                else if (tvItemToModify.TVType == TVTypeEnum.MWQMSite)
+                {
+                    AppendToRecreate(tvItemToModify, TVTypeEnum.MWQMSite);
+                }
+                else if (tvItemToModify.TVType == TVTypeEnum.PolSourceSite)
+                {
+                    AppendToRecreate(tvItemToModify, TVTypeEnum.PolSourceSite);
+                }
+                else if (tvItemToModify.TVType == TVTypeEnum.MikeBoundaryConditionMesh
+                    || tvItemToModify.TVType == TVTypeEnum.MikeBoundaryConditionWebTide
+                    || tvItemToModify.TVType == TVTypeEnum.MikeSource)
+                {
+                    AppendToRecreate(tvItemLocalModel.TVItemParent, TVTypeEnum.MikeScenario);
                 }
                 else
                 {
-                    tvItem.DBCommand = DBCommandEnum.Modified;
+                    AppendToRecreate(tvItemToModify, tvItemLocalModel.TVItemParent.TVType);
                 }
 
                 try
@@ -193,7 +224,6 @@ namespace CSSPDBLocalServices
                     try
                     {
                         dbLocal.SaveChanges();
-                        AppendToRecreate(tvItem, tvItemLocalModel.TVItemParent.TVType);
                     }
                     catch (Exception ex)
                     {

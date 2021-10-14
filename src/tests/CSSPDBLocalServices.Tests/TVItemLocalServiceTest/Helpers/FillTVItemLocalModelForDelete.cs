@@ -20,12 +20,12 @@ namespace CSSPDBLocalServices.Tests
     {
         private async Task<TVItemLocalModel> FillTVItemLocalModelForDelete(TVItemModel tvItemModel, TVItemModel tvItemModelParent)
         {
-            return new TVItemLocalModel()
+            return await Task.FromResult(new TVItemLocalModel()
             {
                 TVItem = tvItemModel.TVItem,
                 TVItemLanguageList = tvItemModel.TVItemLanguageList,
                 TVItemParent = tvItemModelParent.TVItem,
-            };
+            });
         }
     }
 }

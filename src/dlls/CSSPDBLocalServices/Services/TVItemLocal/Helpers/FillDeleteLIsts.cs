@@ -35,18 +35,6 @@ namespace CSSPDBLocalServices
                     {
                         WebArea webArea = ReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, tvItemLocalModel.TVItem.TVItemID).GetAwaiter().GetResult();
 
-                        if (webArea.TVItemModelSectorList.Count > 0)
-                        {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                webArea.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Sectors));
-                        }
-
-                        if (webArea.TVFileModelList.Count > 0)
-                        {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                webArea.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
-                        }
-
                         gzObjectList.tvItemParentList = webArea.TVItemModelParentList;
                     }
                     break;
@@ -71,19 +59,7 @@ namespace CSSPDBLocalServices
                     {
                         WebClimateSites webClimateSites = ReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, tvItemLocalModel.TVItemParent.TVItemID).GetAwaiter().GetResult();
 
-                        WebProvince webProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, (int)tvItemLocalModel.TVItemParent.ParentID).GetAwaiter().GetResult();
-
-                        gzObjectList.tvItemParentList = webProvince.TVItemModelParentList;
-
-                        ClimateSiteModel climateSiteModel = (from c in webClimateSites.ClimateSiteModelList
-                                                             where c.ClimateSite.ClimateSiteTVItemID == tvItemLocalModel.TVItem.TVItemID
-                                                             select c).FirstOrDefault();
-
-                        gzObjectList.tvItemParentList.Add(new TVItemModel()
-                        {
-                            TVItem = climateSiteModel.TVItemModel.TVItem,
-                            TVItemLanguageList = climateSiteModel.TVItemModel.TVItemLanguageList,
-                        });
+                        gzObjectList.tvItemParentList = webClimateSites.TVItemModelParentList;
                     }
                     break;
                 case TVTypeEnum.Contact:
@@ -109,18 +85,6 @@ namespace CSSPDBLocalServices
                 case TVTypeEnum.Country:
                     {
                         WebCountry webCountry = ReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemLocalModel.TVItem.TVItemID).GetAwaiter().GetResult();
-
-                        if (webCountry.TVItemModelProvinceList.Count > 0)
-                        {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                webCountry.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Provinces));
-                        }
-
-                        if (webCountry.TVFileModelList.Count > 0)
-                        {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CantRemove_BecauseThereAre_Underneath,
-                                webCountry.TVItemModel.TVItemLanguageList[(int)langEnum].TVText, CSSPCultureServicesRes.Files));
-                        }
 
                         gzObjectList.tvItemParentList = webCountry.TVItemModelParentList;
                     }
@@ -392,19 +356,7 @@ namespace CSSPDBLocalServices
                     {
                         WebHydrometricSites webHydrometricSites = ReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, tvItemLocalModel.TVItemParent.TVItemID).GetAwaiter().GetResult();
 
-                        WebProvince webProvince = ReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemLocalModel.TVItemParent.TVItemID).GetAwaiter().GetResult();
-
-                        gzObjectList.tvItemParentList = webProvince.TVItemModelParentList;
-
-                        HydrometricSiteModel hydrometricSiteModel = (from c in webHydrometricSites.HydrometricSiteModelList
-                                                                     where c.HydrometricSite.HydrometricSiteTVItemID == tvItemLocalModel.TVItem.TVItemID
-                                                                     select c).FirstOrDefault();
-
-                        gzObjectList.tvItemParentList.Add(new TVItemModel()
-                        {
-                            TVItem = hydrometricSiteModel.TVItemModel.TVItem,
-                            TVItemLanguageList = hydrometricSiteModel.TVItemModel.TVItemLanguageList,
-                        });
+                        gzObjectList.tvItemParentList = webHydrometricSites.TVItemModelParentList;
                     }
                     break;
                 case TVTypeEnum.Infrastructure:
@@ -694,6 +646,13 @@ namespace CSSPDBLocalServices
                             TVItem = telModel.TVItemModel.TVItem,
                             TVItemLanguageList = telModel.TVItemModel.TVItemLanguageList,
                         });
+                    }
+                    break;
+                case TVTypeEnum.TideSite:
+                    {
+                        WebTideSites webTideSites = ReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, tvItemLocalModel.TVItemParent.TVItemID).GetAwaiter().GetResult();
+
+                        gzObjectList.tvItemParentList = webTideSites.TVItemModelParentList;
                     }
                     break;
                 default:

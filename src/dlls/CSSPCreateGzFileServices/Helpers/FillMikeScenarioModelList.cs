@@ -102,7 +102,10 @@ namespace CreateGzFileServices
                 {
                     TVFileModel tvFileModel = new TVFileModel();
                     tvFileModel.TVItem = tvItem;
-                    tvFileModel.TVItemLanguageList = TVItemLanguageFileListAll.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                    tvFileModel.TVItemLanguageList = (from c in TVItemLanguageFileListAll
+                                                      where c.TVItemID == tvItem.TVItemID
+                                                      orderby c.Language
+                                                      select c).ToList();
                     tvFileModel.TVFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
                    
                     if (tvFileModel.TVFile != null)
@@ -120,7 +123,10 @@ namespace CreateGzFileServices
 
                     TVItemModel TVItemModelMikeSource = new TVItemModel();
                     TVItemModelMikeSource.TVItem = tvItem;
-                    TVItemModelMikeSource.TVItemLanguageList = TVItemLanguageListMikeSource.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                    TVItemModelMikeSource.TVItemLanguageList = (from c in TVItemLanguageListMikeSource 
+                                                                where c.TVItemID == tvItem.TVItemID 
+                                                                orderby c.Language 
+                                                                select c).ToList();
 
                     foreach (TVItemLanguage tvItemLanguage in TVItemModelMikeSource.TVItemLanguageList)
                     {
@@ -154,7 +160,10 @@ namespace CreateGzFileServices
 
                     TVItemModel TVItemModelBC = new TVItemModel();
                     TVItemModelBC.TVItem = tvItem;
-                    TVItemModelBC.TVItemLanguageList = TVItemLanguageListMikeBoundary.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
+                    TVItemModelBC.TVItemLanguageList = (from c in TVItemLanguageListMikeBoundary
+                                                        where c.TVItemID == tvItem.TVItemID
+                                                        orderby c.Language
+                                                        select c).ToList();
 
                     foreach (TVItemLanguage tvItemLanguage in TVItemModelBC.TVItemLanguageList)
                     {
