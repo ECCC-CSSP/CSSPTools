@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllEmails(WebAllEmails webAllEmails, WebAllEmails webAllEmailsLocal)
         {
@@ -29,23 +30,20 @@ namespace ReadGzFileServices
 
         private void DoMergeJsonWebAllEmailsEmailModelList(WebAllEmails webAllEmails, WebAllEmails webAllEmailsLocal)
         {
-            List<EmailModel> emailModelLocalList = (from c in webAllEmailsLocal.EmailModelList
-                                                    where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                    || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                    || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+            List<Email> emailLocalList = (from c in webAllEmailsLocal.EmailList
+                                                    where c.DBCommand != DBCommandEnum.Original
                                                     select c).ToList();
 
-            foreach (EmailModel emailModelLocal in emailModelLocalList)
+            foreach (Email emailLocal in emailLocalList)
             {
-                EmailModel emailModelOriginal = webAllEmails.EmailModelList.Where(c => c.TVItemModel.TVItem.TVItemID == emailModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
-                if (emailModelOriginal == null)
+                Email emailOriginal = webAllEmails.EmailList.Where(c => c.EmailID == emailLocal.EmailID).FirstOrDefault();
+                if (emailOriginal == null)
                 {
-                    webAllEmails.EmailModelList.Add(emailModelLocal);
+                    webAllEmails.EmailList.Add(emailLocal);
                 }
                 else
                 {
-                    SyncEmail(emailModelOriginal.Email, emailModelLocal.Email);
-                    SyncTVItemModel(emailModelOriginal.TVItemModel, emailModelLocal.TVItemModel);
+                    emailOriginal = emailLocal;
                 }
             }
         }

@@ -12,9 +12,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoCreateWebAllTelsGzFile()
         {
@@ -35,7 +35,7 @@ namespace CreateGzFileServices
 
             try
             {
-                if (!await FillTelModelList(webAllTels.TelModelList, TVItemRoot)) return await Task.FromResult(false);
+                webAllTels.TelList = await GetAllTel();
 
                 if (dbLocal != null)
                 {

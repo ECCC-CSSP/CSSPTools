@@ -14,9 +14,9 @@ using CSSPWebModels;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> FillPolSourceSiteModelList(List<PolSourceSiteModel> PolSourceSiteModelList, TVItem TVItem, TVTypeEnum TVType)
         {
@@ -39,11 +39,9 @@ namespace CreateGzFileServices
             List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
             List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
 
-            List<TVItem> TVItemFileListAll = await GetTVItemListFileUnderMunicipality(TVItem);
-            List<TVItemLanguage> TVItemLanguageFileListAll = await GetTVItemLanguageListFileUnderMunicipality(TVItem);
-
             foreach (TVItem tvItem in TVItemList)
             {
+
                 PolSourceSiteModel polSourceSiteModel = new PolSourceSiteModel();
 
                 TVItemModel TVItemModel = new TVItemModel();
@@ -76,20 +74,14 @@ namespace CreateGzFileServices
                 polSourceSiteModel.TVItemModel = TVItemModel;
 
                 // doing PolSourceSiteModel.TVItemFileList
-                foreach (TVItem tvItemFile in TVItemFileListAll.Where(c => c.ParentID == tvItem.TVItemID))
+                foreach (TVFile tvFile in TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID))
                 {
                     TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVItem = tvItemFile;
-                    tvFileModel.TVItemLanguageList = (from c in TVItemLanguageFileListAll 
-                                                      where c.TVItemID == tvItemFile.TVItemID 
+                    tvFileModel.TVFile = tvFile;
+                    tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
+                                                      where c.TVFileID == tvFile.TVFileID
                                                       orderby c.Language 
                                                       select c).ToList();
-                    tvFileModel.TVFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItemFile.TVItemID).FirstOrDefault();
-
-                    if (tvFileModel.TVFile != null)
-                    {
-                        tvFileModel.TVFileLanguageList = TVFileLanguageListAll.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();
-                    }
 
                     polSourceSiteModel.TVFileModelList.Add(tvFileModel);
                 }

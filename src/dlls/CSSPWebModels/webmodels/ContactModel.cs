@@ -13,7 +13,6 @@ namespace CSSPWebModels
     {
         #region Properties
         public Contact Contact { get; set; }
-        public TVItemModel TVItemModel { get; set; }
         public List<int> ContactEmailTVItemIDList { get; set; }
         public List<int> ContactTelTVItemIDList { get; set; }
         public List<int> ContactAddressTVItemIDList { get; set; }
@@ -23,7 +22,6 @@ namespace CSSPWebModels
         public ContactModel()
         {
             Contact = new Contact();
-            TVItemModel = new TVItemModel();
             ContactEmailTVItemIDList = new List<int>();
             ContactTelTVItemIDList = new List<int>();
             ContactAddressTVItemIDList = new List<int>();

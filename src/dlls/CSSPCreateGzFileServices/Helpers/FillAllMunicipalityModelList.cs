@@ -14,11 +14,11 @@ using CSSPWebModels;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillAllMunicipalityModelList(List<TVItemModel> TVItemModelList, TVItem TVItem)
+        private async Task<bool> FillAllMunicipalityModelList(List<TVModel> TVModelList, TVItem TVItem)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVItemModel> TVItemModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
             CSSPLogService.FunctionLog(FunctionName);
@@ -28,14 +28,14 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVItemModel tvItemModel = new TVItemModel();
-                tvItemModel.TVItem = tvItem;
-                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
+                TVModel tvModel = new TVModel();
+                tvModel.TVItem = tvItem;
+                tvModel.TVItemLanguageList = (from c in TVItemLanguageList
                                                   where c.TVItemID == tvItem.TVItemID
                                                   orderby c.Language
                                                   select c).ToList();
 
-                foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)
+                foreach (TVItemLanguage tvItemLanguage in tvModel.TVItemLanguageList)
                 {
                     tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
 
@@ -44,7 +44,7 @@ namespace CreateGzFileServices
                     tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
                 }
 
-                TVItemModelList.Add(tvItemModel);
+                TVModelList.Add(tvModel);
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);

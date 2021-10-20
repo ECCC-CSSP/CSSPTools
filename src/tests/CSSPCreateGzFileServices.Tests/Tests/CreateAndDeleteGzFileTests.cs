@@ -12,9 +12,9 @@ using ManageServices;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CreateGzFileServices.Tests
+namespace CSSPCreateGzFileServices.Tests
 {
-    public partial class CreateGzFileServiceTests
+    public partial class CSSPCreateGzFileServiceTests
     {
         [Theory]
         [InlineData("en-CA")]

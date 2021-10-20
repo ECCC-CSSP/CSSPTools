@@ -3,7 +3,7 @@
  *  
  */
 
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
@@ -13,7 +13,7 @@ using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.IO;

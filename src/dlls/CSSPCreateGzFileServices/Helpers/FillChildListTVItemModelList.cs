@@ -14,9 +14,9 @@ using CSSPWebModels;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> FillChildListTVItemModelList(List<TVItemModel> TVItemChildList, TVItem TVItem, TVTypeEnum TVType)
         {

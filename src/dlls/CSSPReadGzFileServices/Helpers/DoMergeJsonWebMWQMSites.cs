@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebMWQMSites(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
@@ -58,13 +58,15 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebMWQMSitesMWQMSiteModelList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             List<MWQMSiteModel> MWQMSiteModelLocalList = (from c in webMWQMSitesLocal.MWQMSiteModelList
-                                                     where c.MWQMSite.MWQMSiteID != 0
-                                                     && c.MWQMSite.DBCommand != DBCommandEnum.Original
-                                                     select c).ToList();
+                                                          where c.TVItemModel.TVItem.TVItemID != 0
+                                                          && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                                          select c).ToList();
 
             foreach (MWQMSiteModel mwqmSiteModelLocal in MWQMSiteModelLocalList)
             {
-                MWQMSiteModel mwqmSiteModelOriginal = webMWQMSites.MWQMSiteModelList.Where(c => c.MWQMSite.MWQMSiteID == mwqmSiteModelLocal.MWQMSite.MWQMSiteID).FirstOrDefault();
+                MWQMSiteModel mwqmSiteModelOriginal = (from c in webMWQMSites.MWQMSiteModelList
+                                                       where c.TVItemModel.TVItem.TVItemID == mwqmSiteModelLocal.TVItemModel.TVItem.TVItemID
+                                                       select c).FirstOrDefault();
                 if (mwqmSiteModelOriginal == null)
                 {
                     webMWQMSites.MWQMSiteModelList.Add(mwqmSiteModelLocal);

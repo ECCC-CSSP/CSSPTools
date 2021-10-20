@@ -13,9 +13,9 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         public async Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0)
         {

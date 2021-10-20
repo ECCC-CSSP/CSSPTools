@@ -55,70 +55,6 @@ namespace CSSPDBLocalServices
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebAllEmails, 0);
                     }
                     break;
-                case TVTypeEnum.File:
-                    {
-                        switch (ParentTVType)
-                        {
-                            case TVTypeEnum.Area:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebArea, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Country:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebCountry, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Infrastructure:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.MikeScenario:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenarios, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Municipality:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.MWQMSite:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMWQMSites, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.PolSourceSite:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebPolSourceSites, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Province:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebProvince, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Root:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebRoot, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Sector:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSector, (int)tvItem.ParentID);
-                                }
-                                break;
-                            case TVTypeEnum.Subsector:
-                                {
-                                    ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebSubsector, (int)tvItem.ParentID);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    break;
                 case TVTypeEnum.HydrometricSite:
                     {
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebHydrometricSites, (int)tvItem.ParentID);
@@ -141,6 +77,7 @@ namespace CSSPDBLocalServices
                     break;
                 case TVTypeEnum.MikeScenario:
                     {
+                        ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMunicipality, (int)tvItem.ParentID);
                         ToRecreate.AppendToRecreateList(ToRecreateList, WebTypeEnum.WebMikeScenarios, (int)tvItem.ParentID);
                     }
                     break;

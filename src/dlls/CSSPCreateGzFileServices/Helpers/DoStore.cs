@@ -17,9 +17,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoStore<T>(T webJson, string fileName)
         {

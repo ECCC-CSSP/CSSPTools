@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ReadGzFileServices.Tests
+namespace CSSPReadGzFileServices.Tests
 {
-    public partial class ReadGzFileServiceTests
+    public partial class CSSPReadGzFileServiceTests
     {
         [Theory]
         [InlineData("en-CA")]
@@ -53,13 +53,13 @@ namespace ReadGzFileServices.Tests
 
             foreach (WebTypeEnum webTypeToTry in webTypeList)
             {
-                Assert.True(await ReadGzFileServiceSetup(culture));
+                Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
                 CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
                 WebTypeEnum webType = webTypeToTry;
 
-                var actionWeb = await ReadGzFileService.ReadJSON<WebAllAddresses /* type not important */>(webType);
+                var actionWeb = await CSSPReadGzFileService.ReadJSON<WebAllAddresses /* type not important */>(webType);
                 Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
                 ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
                 Assert.NotEmpty(errRes.ErrList);

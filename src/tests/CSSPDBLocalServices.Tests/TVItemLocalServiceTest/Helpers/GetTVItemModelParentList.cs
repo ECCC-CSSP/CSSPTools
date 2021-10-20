@@ -60,10 +60,10 @@ namespace CSSPDBLocalServices.Tests
                     {
                         return await Task.FromResult(webRoot.TVItemModelParentList);
                     }
-                case WebTypeEnum.WebAllSearch:
-                    {
-                        return await Task.FromResult(webAllSearch.TVItemModelList);
-                    }
+                //case WebTypeEnum.WebAllSearch:
+                //    {
+                //        return await Task.FromResult(webAllSearch.TVItemModelList);
+                //    }
                 case WebTypeEnum.WebAllTels:
                     {
                         return await Task.FromResult(webRoot.TVItemModelParentList);

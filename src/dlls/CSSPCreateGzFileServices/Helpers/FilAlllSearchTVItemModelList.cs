@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 using CSSPWebModels;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillAllSearchTVItemModelList(List<TVItemModel> TVItemSearchList)
+        private async Task<bool> FillAllSearchTVItemModelList(List<TVModel> TVSearchList)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVItemModel> TVItemSearchList)";
             CSSPLogService.FunctionLog(FunctionName);
@@ -27,17 +27,17 @@ namespace CreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVItemModel tvItemModel = new TVItemModel();
-                tvItemModel.TVItem = tvItem;
-                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
+                TVModel tvModel = new TVModel();
+                tvModel.TVItem = tvItem;
+                tvModel.TVItemLanguageList = (from c in TVItemLanguageList
                                                   where c.TVItemID == tvItem.TVItemID
                                                   orderby c.Language
                                                   select c).ToList();
 
-                TVItemSearchList.Add(tvItemModel);
+                TVSearchList.Add(tvModel);
             }
 
-            TVItemSearchList = (from c in TVItemSearchList
+            TVSearchList = (from c in TVSearchList
                                 orderby c.TVItem.TVLevel
                                 select c).ToList();
 

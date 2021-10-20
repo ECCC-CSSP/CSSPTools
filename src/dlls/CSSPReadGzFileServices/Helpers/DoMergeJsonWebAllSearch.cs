@@ -11,9 +11,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllSearch(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
         {
@@ -28,23 +28,23 @@ namespace ReadGzFileServices
         }
         private void DoMergeJsonWebAllSearchTVItemModelList(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
         {
-            List<TVItemModel> TVItemModelList = (from c in webAllSearchLocal.TVItemModelList
-                                                 where c.TVItem.TVItemID != 0
-                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                 select c).ToList();
+            List<TVModel> TVModelList = (from c in webAllSearchLocal.TVModelList
+                                         where c.TVItem.TVItemID != 0
+                                         && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                         || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                         || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                         select c).ToList();
 
-            foreach (TVItemModel TVItemModel in TVItemModelList)
+            foreach (TVModel tvModel in TVModelList)
             {
-                TVItemModel TVItemModelOriginal = webAllSearch.TVItemModelList.Where(c => c.TVItem.TVItemID == TVItemModel.TVItem.TVItemID).FirstOrDefault();
-                if (TVItemModelOriginal == null)
+                TVModel TVModelOriginal = webAllSearch.TVModelList.Where(c => c.TVItem.TVItemID == tvModel.TVItem.TVItemID).FirstOrDefault();
+                if (TVModelOriginal == null)
                 {
-                    webAllSearch.TVItemModelList.Add(TVItemModel);
+                    webAllSearch.TVModelList.Add(tvModel);
                 }
                 else
                 {
-                    SyncTVItemModel(TVItemModelOriginal, TVItemModel);
+                    SyncTVModel(TVModelOriginal, tvModel);
                 }
             }
         }

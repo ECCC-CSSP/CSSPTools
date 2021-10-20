@@ -14,15 +14,15 @@ using System;
 using System.Threading.Tasks;
 using CSSPScrambleServices;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public interface ICreateGzFileService
+    public interface ICSSPCreateGzFileService
     {
         Task<ActionResult<bool>> CreateAllGzFiles();
         Task<ActionResult<bool>> CreateGzFile(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<bool>> DeleteGzFile(WebTypeEnum webType, int TVItemID = 0);
     }
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         #region Variables
         #endregion Variables
@@ -39,7 +39,7 @@ namespace CreateGzFileServices
         #endregion Properties
 
         #region Constructors
-        public CreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
+        public CSSPCreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
             ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");

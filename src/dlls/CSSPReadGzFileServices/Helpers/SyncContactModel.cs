@@ -12,18 +12,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private void SyncContactModel(ContactModel contactModelOriginal, ContactModel contactModelLocal)
         {
             if (contactModelLocal != null)
             {
-                if (contactModelLocal.TVItemModel != null)
-                {
-                    SyncTVItemModel(contactModelOriginal.TVItemModel, contactModelLocal.TVItemModel);
-                }
                 if (contactModelLocal.Contact != null)
                 {
                     contactModelOriginal.Contact = contactModelLocal.Contact;

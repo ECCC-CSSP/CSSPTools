@@ -14,11 +14,11 @@ using CSSPWebModels;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillMikeScenarioModelList(TVItemModel TVItemModel, List<TVItemModel> TVItemParentList, List<MikeScenarioModel> MIKEScenarioModelList, TVItem TVItem)
+        private async Task<bool> FillMikeScenarioModelList(TVItemModel TVItemModel, List<TVItemModel> TVItemModelParentList, List<MikeScenarioModel> MIKEScenarioModelList, TVItem TVItem)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TVItemModel TVItemModel, List<TVItemModel> TVItemParentList, List<MikeScenarioModel> MIKEScenarioModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
             CSSPLogService.FunctionLog(FunctionName);
@@ -28,11 +28,6 @@ namespace CreateGzFileServices
             List<TVItemStat> TVItemStatListMikeScenario = await GetTVItemStatChildrenListWithTVItemID(TVItem, TVTypeEnum.MikeScenario);
             List<MapInfo> MapInfoListMikeScenario = await GetMapInfoChildrenListWithTVItemID(TVItem, TVTypeEnum.MikeScenario);
             List<MapInfoPoint> MapInfoPointListMikeScenario = await GetMapInfoPointChildrenListWithTVItemID(TVItem, TVTypeEnum.MikeScenario);
-            List<TVItem> TVItemFileListAll = await GetTVItemListFileUnderMunicipality(TVItem);
-            List<TVItemLanguage> TVItemLanguageFileListAll = await GetTVItemLanguageListFileUnderMunicipality(TVItem);
-
-            List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
-            List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
 
             List<TVItem> TVItemListMikeSource = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.MikeSource);
             List<TVItemLanguage> TVItemLanguageListMikeSource = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.MikeSource);
@@ -53,13 +48,15 @@ namespace CreateGzFileServices
 
             List<MikeScenario> MIKEScenarioList = await GetMikeScenarioListUnderMunicipality(TVItem);
 
+            List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
+            List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
+
             foreach (TVItem tvItemMikeScenario in TVItemListMikeScenario)
             {
+
                 MikeScenarioModel MikeScenarioModel = new MikeScenarioModel();
 
                 MikeScenarioModel.MikeScenario = MIKEScenarioList.Where(c => c.MikeScenarioTVItemID == tvItemMikeScenario.TVItemID).FirstOrDefault();
-
-                MikeScenarioModel.TVItemModelParentList.AddRange(TVItemParentList);
 
                 TVItemModel tvItemModel = new TVItemModel();
 
@@ -82,8 +79,6 @@ namespace CreateGzFileServices
                     }
 
                     tvItemModel.TVItemStatList = TVItemStatListMikeScenario.Where(c => c.TVItemID == tvItem.TVItemID).ToList();
-
-                    MikeScenarioModel.TVItemModelParentList.Add(tvItemModel);
                 }
 
                 foreach (MapInfo MapInfo in MapInfoListMikeScenario.Where(c => c.TVItemID == tvItemMikeScenario.TVItemID))
@@ -98,20 +93,14 @@ namespace CreateGzFileServices
                 MikeScenarioModel.TVItemModel = tvItemModel;
 
                 // doing MikeScenarioModel.TVItemFileList
-                foreach (TVItem tvItem in TVItemFileListAll.Where(c => c.ParentID == tvItemMikeScenario.TVItemID))
+                foreach (TVFile tvFile in TVFileListAll.Where(c => c.TVFileTVItemID == tvItemMikeScenario.TVItemID))
                 {
                     TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVItem = tvItem;
-                    tvFileModel.TVItemLanguageList = (from c in TVItemLanguageFileListAll
-                                                      where c.TVItemID == tvItem.TVItemID
+                    tvFileModel.TVFile = tvFile;
+                    tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
+                                                      where c.TVFileID == tvFile.TVFileID
                                                       orderby c.Language
                                                       select c).ToList();
-                    tvFileModel.TVFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
-                   
-                    if (tvFileModel.TVFile != null)
-                    {
-                        tvFileModel.TVFileLanguageList = TVFileLanguageListAll.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();
-                    }
 
                     MikeScenarioModel.TVFileModelList.Add(tvFileModel);
                 }

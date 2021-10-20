@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.IO.Compression;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private Stream Compress(Stream decompressed, CompressionLevel compressionLevel = CompressionLevel.Fastest)
         {

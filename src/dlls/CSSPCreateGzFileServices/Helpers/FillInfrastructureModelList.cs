@@ -14,11 +14,11 @@ using CSSPWebModels;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillInfrastructureModelList(List<InfrastructureModel> InfrastructureModelList, TVItem TVItem)
+        private async Task<bool> FillInfrastructureModelList(List<TVItemModel> TVItemModelParentList, List<InfrastructureModel> InfrastructureModelList, TVItem TVItem)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<InfrastructureModel> InfrastructureModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
             CSSPLogService.FunctionLog(FunctionName);
@@ -27,6 +27,8 @@ namespace CreateGzFileServices
             List<TVItemLanguage> TVItemLanguageList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
             List<MapInfo> MapInfoList = await GetMapInfoChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
             List<MapInfoPoint> MapInfoPointList = await GetMapInfoPointChildrenListWithTVItemID(TVItem, TVTypeEnum.Infrastructure);
+            List<TVItem> TVItemFileListAll = await GetTVItemListFileUnderMunicipality(TVItem);
+            List<TVItemLanguage> TVItemLanguageFileListAll = await GetTVItemLanguageListFileUnderMunicipality(TVItem);
 
             List<Infrastructure> InfrastructureList = await GetInfrastructureListUnderMunicipality(TVItem);
             List<InfrastructureLanguage> InfrastructureLanguageList = await GetInfrastructureLanguageListUnderMunicipality(TVItem);
@@ -38,15 +40,15 @@ namespace CreateGzFileServices
             List<VPAmbient> VPAmbientList = await GetVPAmbientListUnderMunicipality(TVItem);
             List<VPResult> VPResultList = await GetVPResultListUnderMunicipality(TVItem);
 
-            List<TVItem> TVItemFileList = await GetTVItemAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
-            List<TVItemLanguage> TVItemLanguageFileList = await GetTVItemLanguageAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
-
-            List<TVFile> TVFileList = await GetAllTVFileListUnder(TVItem);
-            List<TVFileLanguage> TVFileLanguageList = await GetAllTVFileLanguageListUnder(TVItem);
+            List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
+            List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
 
             foreach (TVItem tvItem in TVItemList)
             {
+
                 InfrastructureModel InfrastructureModel = new InfrastructureModel();
+
+                InfrastructureModel.Infrastructure = InfrastructureList.Where(c => c.InfrastructureTVItemID == tvItem.TVItemID).FirstOrDefault();
 
                 TVItemModel TVItemModel = new TVItemModel();
                 TVItemModel.TVItem = tvItem;
@@ -75,16 +77,14 @@ namespace CreateGzFileServices
 
                 InfrastructureModel.TVItemModel = TVItemModel;
 
-                foreach (TVItem tvItemFile in TVItemFileList.Where(c => c.ParentID == tvItem.TVItemID))
+                foreach (TVFile tvFile in TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID))
                 {
                     TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVItem = tvItemFile;
-                    tvFileModel.TVItemLanguageList = (from c in TVItemLanguageFileList
-                                                      where c.TVItemID == tvItemFile.TVItemID
+                    tvFileModel.TVFile = tvFile;
+                    tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
+                                                      where c.TVFileID == tvFileModel.TVFile.TVFileID
                                                       orderby c.Language
                                                       select c).ToList();
-                    tvFileModel.TVFile = TVFileList.Where(c => c.TVFileTVItemID == tvItemFile.TVItemID).FirstOrDefault();
-                    tvFileModel.TVFileLanguageList = TVFileLanguageList.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();
 
                     InfrastructureModel.TVFileModelList.Add(tvFileModel);
 

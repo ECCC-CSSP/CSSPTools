@@ -12,9 +12,9 @@ using CSSPWebModels;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoCreateWebMunicipalityGzFile(int MunicipalityTVItemID)
         {
@@ -37,15 +37,11 @@ namespace CreateGzFileServices
             {
                 if (!await FillTVItemModelAndParentTVItemModelList(webMunicipality.TVItemModel, webMunicipality.TVItemModelParentList, TVItemMunicipality)) return await Task.FromResult(false);
 
-                if (!await FillChildListTVItemModelList(webMunicipality.TVItemModelInfrastructureList, TVItemMunicipality, TVTypeEnum.Infrastructure)) return await Task.FromResult(false);
-
-                if (!await FillChildListTVItemModelList(webMunicipality.TVItemModelMikeScenarioList, TVItemMunicipality, TVTypeEnum.MikeScenario)) return await Task.FromResult(false);
-
                 if (!await FillFileModelList(webMunicipality.TVFileModelList, TVItemMunicipality)) return await Task.FromResult(false);
 
                 if (!await FillChildListTVItemContactModelList(webMunicipality.MunicipalityContactModelList, TVItemMunicipality)) return await Task.FromResult(false);
 
-                if (!await FillInfrastructureModelList(webMunicipality.InfrastructureModelList, TVItemMunicipality)) return await Task.FromResult(false);
+                if (!await FillInfrastructureModelList(webMunicipality.TVItemModelParentList, webMunicipality.InfrastructureModelList, TVItemMunicipality)) return await Task.FromResult(false);
 
                 webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipality(TVItemMunicipality);
 

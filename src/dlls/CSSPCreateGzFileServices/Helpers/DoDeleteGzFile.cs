@@ -12,9 +12,9 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoDeleteGzFile(WebTypeEnum webType, int TVItemID)
         {

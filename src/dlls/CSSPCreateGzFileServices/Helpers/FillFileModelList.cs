@@ -13,31 +13,23 @@ using System.Threading.Tasks;
 using CSSPWebModels;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> FillFileModelList(List<TVFileModel> TVFileModelList, TVItem TVItem)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVFileModel> TVFileModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
             CSSPLogService.FunctionLog(FunctionName);
 
-            List<TVItem> TVItemFileList = await GetTVItemChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
-            List<TVItemLanguage> TVItemLanguageFileList = await GetTVItemLanguageChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
-
             List<TVFile> TVFileList = await GetTVFileListWithTVItemID(TVItem.TVItemID);
             List<TVFileLanguage> TVFileLanguageList = await GetTVFileLanguageListWithTVItemID(TVItem.TVItemID);
 
-            foreach (TVItem tvItem in TVItemFileList)
+            foreach (TVFile tvFile in TVFileList)
             {
                 TVFileModel tvFileModel = new TVFileModel();
-                tvFileModel.TVItem = tvItem;
-                tvFileModel.TVItemLanguageList = (from c in TVItemLanguageFileList 
-                                                  where c.TVItemID == tvItem.TVItemID 
-                                                  orderby c.Language 
-                                                  select c).ToList();
 
-                tvFileModel.TVFile = TVFileList.Where(c => c.TVFileTVItemID == tvItem.TVItemID).FirstOrDefault();
+                tvFileModel.TVFile = TVFileList.Where(c => c.TVFileTVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
                 if (tvFileModel.TVFile != null)
                 {
                     tvFileModel.TVFileLanguageList = TVFileLanguageList.Where(c => c.TVFileID == tvFileModel.TVFile.TVFileID).ToList();

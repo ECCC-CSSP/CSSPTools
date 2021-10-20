@@ -11,9 +11,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllCountries(WebAllCountries webAllCountries, WebAllCountries webAllCountriesLocal)
         {
@@ -29,22 +29,22 @@ namespace ReadGzFileServices
 
         private void DoMergeJsonWebAllCountriesTVItemModelList(WebAllCountries webAllCountries, WebAllCountries webAllCountriesLocal)
         {
-            List<TVItemModel> tvItemModelLocalList = (from c in webAllCountriesLocal.TVItemModelList
+            List<TVModel> tvModelLocalList = (from c in webAllCountriesLocal.TVModelList
                                                       where c.TVItem.DBCommand != DBCommandEnum.Original
                                                       || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                       || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                       select c).ToList();
 
-            foreach (TVItemModel tvItemModelLocal in tvItemModelLocalList)
+            foreach (TVModel tvModelLocal in tvModelLocalList)
             {
-                TVItemModel tvItemModelOriginal = webAllCountries.TVItemModelList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
-                if (tvItemModelOriginal == null)
+                TVModel tvModelOriginal = webAllCountries.TVModelList.Where(c => c.TVItem.TVItemID == tvModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvModelOriginal == null)
                 {
-                    webAllCountries.TVItemModelList.Add(tvItemModelLocal);
+                    webAllCountries.TVModelList.Add(tvModelLocal);
                 }
                 else
                 {
-                    SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
+                    SyncTVModel(tvModelOriginal, tvModelLocal);
                 }
             }
         }

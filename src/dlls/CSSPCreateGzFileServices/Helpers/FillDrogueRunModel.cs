@@ -14,9 +14,9 @@ using CSSPWebModels;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Reflection;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> FillDrogueRunModel(List<DrogueRunModel> DrogueRunModelList, TVItem TVItemProvince)
         {

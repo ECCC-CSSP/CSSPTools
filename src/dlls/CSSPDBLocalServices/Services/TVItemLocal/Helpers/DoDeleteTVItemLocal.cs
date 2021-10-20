@@ -103,7 +103,6 @@ namespace CSSPDBLocalServices
                     {
                         AppendToRecreate(tvItemToMarkDeleted, tvItemLocalModel.TVItemParent.TVType);
                     }
-                    //AppendToRecreate(tvItemToMarkDeleted, tvItemLocalModel.TVItemParent.TVType);
                 }
                 catch (Exception ex)
                 {

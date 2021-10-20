@@ -16,14 +16,14 @@ using System;
 using CSSPCultureServices.Resources;
 using CSSPScrambleServices;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public interface IReadGzFileService
+    public interface ICSSPReadGzFileService
     {
         Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0);
     }
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         #region Variables
         #endregion Variables
@@ -41,7 +41,7 @@ namespace ReadGzFileServices
         #endregion Properties
 
         #region Constructors
-        public ReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
+        public CSSPReadGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
             ICSSPFileService FileService, ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, IManageFileService ManageFileService, CSSPDBManageContext dbManage)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");

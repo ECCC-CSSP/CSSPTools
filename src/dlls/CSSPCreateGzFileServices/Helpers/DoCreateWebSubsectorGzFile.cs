@@ -12,9 +12,9 @@ using CSSPWebModels;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoCreateWebSubsectorGzFile(int SubsectorTVItemID)
         {
@@ -38,12 +38,6 @@ namespace CreateGzFileServices
                 if (!await FillTVItemModelAndParentTVItemModelList(webSubsector.TVItemModel, webSubsector.TVItemModelParentList, TVItemSubsector)) return await Task.FromResult(false);
 
                 if (!await FillChildListTVItemModelList(webSubsector.TVItemModelClassificationList, TVItemSubsector, TVTypeEnum.Classification)) return await Task.FromResult(false);
-
-                if (!await FillChildListTVItemModelList(webSubsector.TVItemModelMWQMSiteList, TVItemSubsector, TVTypeEnum.MWQMSite)) return await Task.FromResult(false);
-
-                if (!await FillChildListTVItemModelList(webSubsector.TVItemModelMWQMRunList, TVItemSubsector, TVTypeEnum.MWQMRun)) return await Task.FromResult(false);
-
-                if (!await FillChildListTVItemModelList(webSubsector.TVItemModelPolSourceSiteList, TVItemSubsector, TVTypeEnum.PolSourceSite)) return await Task.FromResult(false);
 
                 if (!await FillFileModelList(webSubsector.TVFileModelList, TVItemSubsector)) return await Task.FromResult(false);
 

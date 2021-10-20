@@ -3,7 +3,7 @@ using CSSPDesktopServices.Models;
 using CSSPEnums;
 using CSSPDBModels;
 using Microsoft.Extensions.Configuration;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -66,7 +66,7 @@ namespace CSSPDesktopServices.Services
         private IEnums enums { get; }
         private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
-        private IReadGzFileService ReadGzFileService { get; }
+        private ICSSPReadGzFileService ReadGzFileService { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
         private Process processCSSPWebAPIsLocal { get; set; }
@@ -75,7 +75,7 @@ namespace CSSPDesktopServices.Services
 
         #region Constructors
         public CSSPDesktopService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPScrambleService CSSPScrambleService,
-            ICSSPLogService CSSPLogService, CSSPDBManageContext dbManage, IReadGzFileService ReadGzFileService, ICSSPLocalLoggedInService CSSPLocalLoggedInService)
+            ICSSPLogService CSSPLogService, CSSPDBManageContext dbManage, ICSSPReadGzFileService ReadGzFileService, ICSSPLocalLoggedInService CSSPLocalLoggedInService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");

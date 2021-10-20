@@ -4,36 +4,36 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ReadGzFileServices.Tests
+namespace CSSPReadGzFileServices.Tests
 {
-     public partial class ReadGzFileServiceTests
+     public partial class CSSPReadGzFileServiceTests
     {
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllAddresses_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllAddresses>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllAddresses>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllAddresses webAllAddresses = (WebAllAddresses)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllAddresses);
-            Assert.NotNull(webAllAddresses.AddressModelList);
+            //Assert.NotNull(webAllAddresses.AddressModelList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllContacts_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllContacts;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllContacts>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllContacts>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllContacts webAllContacts = (WebAllContacts)((OkObjectResult)actionRes.Result).Value;
@@ -45,43 +45,43 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllCountries_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllCountries;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllCountries>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllCountries>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllCountries webAllCountries = (WebAllCountries)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllCountries);
-            Assert.NotNull(webAllCountries.TVItemModelList);
+            //Assert.NotNull(webAllCountries.TVItemModelList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllEmails_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllEmails;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllEmails>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllEmails>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllEmails webAllEmails = (WebAllEmails)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllEmails);
-            Assert.NotNull(webAllEmails.EmailModelList);
+            //Assert.NotNull(webAllEmails.EmailModelList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllHelpDocs_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllHelpDocs>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllHelpDocs>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllHelpDocs webAllHelpDocs = (WebAllHelpDocs)((OkObjectResult)actionRes.Result).Value;
@@ -93,27 +93,27 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllMunicipalities_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllMunicipalities;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllMunicipalities>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllMunicipalities>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllMunicipalities webAllMunicipalities = (WebAllMunicipalities)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllMunicipalities);
-            Assert.NotNull(webAllMunicipalities.TVItemModelList);
+            //Assert.NotNull(webAllMunicipalities.TVItemModelList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllMWQMLookupMPNs>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllMWQMLookupMPNs>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = (WebAllMWQMLookupMPNs)((OkObjectResult)actionRes.Result).Value;
@@ -125,11 +125,11 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllPolSourceGroupings_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllPolSourceGroupings>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllPolSourceGroupings>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllPolSourceGroupings webAllPolSourceGroupings = (WebAllPolSourceGroupings)((OkObjectResult)actionRes.Result).Value;
@@ -141,11 +141,11 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllPolSourceSiteEffectTerms_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllPolSourceSiteEffectTerms>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllPolSourceSiteEffectTerms>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllPolSourceSiteEffectTerms webAllPolSourceSiteEffectTerms = (WebAllPolSourceSiteEffectTerms)((OkObjectResult)actionRes.Result).Value;
@@ -157,11 +157,11 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllReportTypes_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllReportTypes>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllReportTypes>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllReportTypes webAllReportTypes = (WebAllReportTypes)((OkObjectResult)actionRes.Result).Value;
@@ -173,27 +173,27 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllTels_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllTels;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllTels>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllTels>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllTels webAllTels = (WebAllTels)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllTels);
-            Assert.NotNull(webAllTels.TelModelList);
+            //Assert.NotNull(webAllTels.TelModelList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllTideLocations_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllTideLocations>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllTideLocations>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllTideLocations webAllTideLocations = (WebAllTideLocations)((OkObjectResult)actionRes.Result).Value;
@@ -269,12 +269,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebArea_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 629;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebArea>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebArea>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebArea webArea = (WebArea)((OkObjectResult)actionRes.Result).Value;
@@ -286,12 +286,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebClimateSite_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebClimateSites;
             int TVItemID = 7;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebClimateSites>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebClimateSites>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebClimateSites webClimateSite = (WebClimateSites)((OkObjectResult)actionRes.Result).Value;
@@ -303,12 +303,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebCountry_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 5;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebCountry>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebCountry>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebCountry webCountry = (WebCountry)((OkObjectResult)actionRes.Result).Value;
@@ -320,12 +320,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebHydrometricSite_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebHydrometricSites;
             int TVItemID = 7;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebHydrometricSites>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebHydrometricSites>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebHydrometricSites webHydrometricSite = (WebHydrometricSites)((OkObjectResult)actionRes.Result).Value;
@@ -337,12 +337,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebMunicipality_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 27764;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebMunicipality>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMunicipality>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebMunicipality webMunicipality = (WebMunicipality)((OkObjectResult)actionRes.Result).Value;
@@ -354,12 +354,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebMWQMRun_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
             int TVItemID = 635;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebMWQMRuns>(webType, TVItemID);            
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMWQMRuns>(webType, TVItemID);            
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebMWQMRuns webMWQMRun = (WebMWQMRuns)((OkObjectResult)actionRes.Result).Value;
@@ -371,12 +371,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebMWQMSamples1980_2020_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
             int TVItemID = 635;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebMWQMSamples>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMWQMSamples>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebMWQMSamples webMWQMSample = (WebMWQMSamples)((OkObjectResult)actionRes.Result).Value;
@@ -388,12 +388,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebMWQMSamples2021_2060_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSamples2021_2060;
             int TVItemID = 635;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebMWQMSamples>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMWQMSamples>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebMWQMSamples webMWQMSample = (WebMWQMSamples)((OkObjectResult)actionRes.Result).Value;
@@ -405,12 +405,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebMWQMSite_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
             int TVItemID = 635;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebMWQMSites>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMWQMSites>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebMWQMSites webMWQMSite = (WebMWQMSites)((OkObjectResult)actionRes.Result).Value;
@@ -422,12 +422,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebPolSourceSite_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSites;
             int TVItemID = 635;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebPolSourceSites>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebPolSourceSites>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebPolSourceSites webPolSourceSite = (WebPolSourceSites)((OkObjectResult)actionRes.Result).Value;
@@ -439,12 +439,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebProvince_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebProvince>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebProvince>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebProvince webProvince = (WebProvince)((OkObjectResult)actionRes.Result).Value;
@@ -456,11 +456,11 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebRoot_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebRoot;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebRoot>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebRoot>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebRoot webRoot = (WebRoot)((OkObjectResult)actionRes.Result).Value;
@@ -472,28 +472,28 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllSearch_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebAllSearch;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebAllSearch>(webType);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllSearch>(webType);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllSearch WebAllSearch = (WebAllSearch)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(WebAllSearch);
-            Assert.NotNull(WebAllSearch.TVItemModelList);
+            //Assert.NotNull(WebAllSearch.TVItemModelList);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebSector_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 633;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebSector>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebSector>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebSector webSector = (WebSector)((OkObjectResult)actionRes.Result).Value;
@@ -505,12 +505,12 @@ namespace ReadGzFileServices.Tests
         //[InlineData("fr-CA")]
         public async Task ReadJSON_WebSubsector_Good_Test(string culture)
         {
-            Assert.True(await ReadGzFileServiceSetup(culture));
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
             WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 635;
 
-            var actionRes = await ReadGzFileService.ReadJSON<WebSubsector>(webType, TVItemID);
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebSubsector>(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebSubsector webSubsector = (WebSubsector)((OkObjectResult)actionRes.Result).Value;

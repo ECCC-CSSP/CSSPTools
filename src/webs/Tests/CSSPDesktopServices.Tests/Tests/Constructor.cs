@@ -9,7 +9,7 @@ using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.IO;
 using System.Threading.Tasks;

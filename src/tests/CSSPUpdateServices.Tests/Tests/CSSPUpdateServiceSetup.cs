@@ -1,4 +1,4 @@
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
@@ -32,7 +32,7 @@ namespace UpdateServices.Tests
         private IEnums enums { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
+        private ICSSPCreateGzFileService CreateGzFileService { get; set; }
         public ICSSPUpdateService CSSPUpdateService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
@@ -82,7 +82,7 @@ namespace UpdateServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
             Services.AddSingleton<ICSSPUpdateService, CSSPUpdateService>();
 
             /* ---------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace UpdateServices.Tests
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            CreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
             Assert.NotNull(CreateGzFileService);
 
             CSSPUpdateService = Provider.GetService<ICSSPUpdateService>();

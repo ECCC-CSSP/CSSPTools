@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebPolSourceSites(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
@@ -58,13 +58,15 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebPolSourceSitesPolSourceSiteModelList(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
             List<PolSourceSiteModel> PolSourceSiteModelLocalList = (from c in webPolSourceSitesLocal.PolSourceSiteModelList
-                                                               where c.PolSourceSite.PolSourceSiteID != 0
-                                                               && c.PolSourceSite.DBCommand != DBCommandEnum.Original
-                                                               select c).ToList();
+                                                                    where c.TVItemModel.TVItem.TVItemID != 0
+                                                                    && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                                                    select c).ToList();
 
             foreach (PolSourceSiteModel mwqmPolSourceSiteModelLocal in PolSourceSiteModelLocalList)
             {
-                PolSourceSiteModel mwqmPolSourceSiteModelOriginal = webPolSourceSites.PolSourceSiteModelList.Where(c => c.PolSourceSite.PolSourceSiteID == mwqmPolSourceSiteModelLocal.PolSourceSite.PolSourceSiteID).FirstOrDefault();
+                PolSourceSiteModel mwqmPolSourceSiteModelOriginal = (from c in webPolSourceSites.PolSourceSiteModelList
+                                                                     where c.TVItemModel.TVItem.TVItemID == mwqmPolSourceSiteModelLocal.TVItemModel.TVItem.TVItemID
+                                                                     select c).FirstOrDefault();
                 if (mwqmPolSourceSiteModelOriginal == null)
                 {
                     webPolSourceSites.PolSourceSiteModelList.Add(mwqmPolSourceSiteModelLocal);
@@ -75,15 +77,15 @@ namespace ReadGzFileServices
                 }
 
                 List<TVFileModel> TVFileModelList = (from c in mwqmPolSourceSiteModelLocal.TVFileModelList
-                                                     where c.TVItem.TVItemID != 0
-                                                     && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                     || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                     || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                     where c.TVFile.TVFileID != 0
+                                                     && (c.TVFile.DBCommand != DBCommandEnum.Original
+                                                     || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                     || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                      select c).ToList();
 
                 foreach (TVFileModel tvFileModel in TVFileModelList)
                 {
-                    TVFileModel tvFileModelOriginal = mwqmPolSourceSiteModelLocal.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModel.TVItem.TVItemID).FirstOrDefault();
+                    TVFileModel tvFileModelOriginal = mwqmPolSourceSiteModelLocal.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModel.TVFile.TVFileID).FirstOrDefault();
                     if (tvFileModelOriginal == null)
                     {
                         mwqmPolSourceSiteModelLocal.TVFileModelList.Add(tvFileModel);

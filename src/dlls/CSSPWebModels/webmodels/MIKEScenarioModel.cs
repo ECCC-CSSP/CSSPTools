@@ -14,7 +14,6 @@ namespace CSSPWebModels
         #region Properties
         public MikeScenario MikeScenario { get; set; }
         public TVItemModel TVItemModel { get; set; }
-        public List<TVItemModel> TVItemModelParentList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<MikeBoundaryConditionModel> MikeBoundaryConditionModelList { get; set; }
         public List<MikeSourceModel> MikeSourceModelList { get; set; }
@@ -25,7 +24,6 @@ namespace CSSPWebModels
         {
             MikeScenario = new MikeScenario();
             TVItemModel = new TVItemModel();
-            TVItemModelParentList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
             MikeBoundaryConditionModelList = new List<MikeBoundaryConditionModel>();
             MikeSourceModelList = new List<MikeSourceModel>();

@@ -12,14 +12,19 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private void SyncRainExceedanceModel(RainExceedanceModel rainExceedanceModelOriginal, RainExceedanceModel rainExceedanceModelLocal)
         {
             if (rainExceedanceModelLocal != null)
             {
+                if (rainExceedanceModelLocal.TVItemModel != null)
+                {
+                    SyncTVItemModel(rainExceedanceModelOriginal.TVItemModel, rainExceedanceModelLocal.TVItemModel);
+                }
+
                 if (rainExceedanceModelLocal.RainExceedance != null)
                 {
                     rainExceedanceModelOriginal.RainExceedance = rainExceedanceModelLocal.RainExceedance;

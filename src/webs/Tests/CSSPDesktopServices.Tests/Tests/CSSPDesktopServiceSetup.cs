@@ -10,7 +10,7 @@ using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -65,7 +65,7 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
             Assert.NotNull(Configuration["APISecret"]);

@@ -11,30 +11,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private void SyncTVFileModel(TVFileModel tvFileModelOriginal, TVFileModel tvFileModelLocal)
         {
             if (tvFileModelLocal != null)
             {
-                if (tvFileModelLocal.TVItem != null)
-                {
-                    tvFileModelOriginal.TVItem = tvFileModelLocal.TVItem;
-                }
-                if (tvFileModelLocal.TVItemLanguageList != null)
-                {
-                    tvFileModelOriginal.TVItemLanguageList = tvFileModelLocal.TVItemLanguageList;
-                }
-                if (tvFileModelLocal.MapInfoModelList != null)
-                {
-                    tvFileModelOriginal.MapInfoModelList = tvFileModelLocal.MapInfoModelList;
-                }
-                if (tvFileModelLocal.TVItemStatList != null)
-                {
-                    tvFileModelOriginal.TVItemStatList = tvFileModelLocal.TVItemStatList;
-                }
                 if (tvFileModelLocal.TVFile!= null)
                 {
                     tvFileModelOriginal.TVFile = tvFileModelLocal.TVFile;

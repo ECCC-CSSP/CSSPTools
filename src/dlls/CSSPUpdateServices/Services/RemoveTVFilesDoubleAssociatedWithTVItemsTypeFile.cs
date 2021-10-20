@@ -2,7 +2,7 @@
  * Manually edited
  * 
  */
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;

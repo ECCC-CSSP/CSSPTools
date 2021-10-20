@@ -16,11 +16,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CSSPFileServices;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using Microsoft.AspNetCore.Http.Features;
 using CSSPLocalLoggedInServices;
 using CSSPDBLocalServices;
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPWebAPIsLocal.Controllers;
 using ManageServices;
 using CSSPLogServices;
@@ -100,8 +100,8 @@ namespace CSSPWebAPIsLocal
 
             services.AddScoped<IManageFileService, ManageFileService>();
             services.AddScoped<ICSSPFileService, CSSPFileService>();
-            services.AddScoped<IReadGzFileService, ReadGzFileService>();
-            services.AddScoped<ICreateGzFileService, CreateGzFileService>();
+            services.AddScoped<ICSSPReadGzFileService, CSSPReadGzFileService>();
+            services.AddScoped<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
             services.AddScoped<ITVItemLocalService, TVItemLocalService>();
             services.AddScoped<ICSSPFileService, CSSPFileService>();
 

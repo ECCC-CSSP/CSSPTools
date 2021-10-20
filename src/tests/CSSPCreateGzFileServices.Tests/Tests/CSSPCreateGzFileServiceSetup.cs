@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 using Xunit;
 using CSSPScrambleServices;
 
-namespace CreateGzFileServices.Tests
+namespace CSSPCreateGzFileServices.Tests
 {
     [Collection("Sequential")]
-    public partial class CreateGzFileServiceTests
+    public partial class CSSPCreateGzFileServiceTests
     {
         #region Variables
         DateTime LastTime = DateTime.Now;
@@ -32,7 +32,7 @@ namespace CreateGzFileServices.Tests
         private IEnums enums { get; set; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
+        private ICSSPCreateGzFileService CreateGzFileService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
@@ -73,7 +73,7 @@ namespace CreateGzFileServices.Tests
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
 
             FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
             Assert.True(fiCSSPDBManage.Exists);
@@ -132,7 +132,7 @@ namespace CreateGzFileServices.Tests
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            CreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
             Assert.NotNull(CreateGzFileService);
 
             dbManage = Provider.GetService<CSSPDBManageContext>();

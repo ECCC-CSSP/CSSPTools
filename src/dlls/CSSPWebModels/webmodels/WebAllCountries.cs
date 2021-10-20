@@ -11,13 +11,13 @@ namespace CSSPWebModels
     public partial class WebAllCountries
     {
         #region Properties
-        public List<TVItemModel> TVItemModelList { get; set; }
+        public List<TVModel> TVModelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebAllCountries()
         {
-            TVItemModelList = new List<TVItemModel>();
+            TVModelList = new List<TVModel>();
         }
         #endregion Constructors
     }

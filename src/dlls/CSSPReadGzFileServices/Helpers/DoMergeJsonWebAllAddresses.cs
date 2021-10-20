@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllAddresses(WebAllAddresses webAllAddresses, WebAllAddresses webAllAddressesLocal)
         {
@@ -29,24 +30,20 @@ namespace ReadGzFileServices
 
         private void DoMergeJsonWebAllAddressesAddressModelList(WebAllAddresses webAllAddresses, WebAllAddresses webAllAddressesLocal)
         {
-            List<AddressModel> addressModelLocalList = (from c in webAllAddressesLocal.AddressModelList
-                                                        where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
-                                                        || c.Address.DBCommand != DBCommandEnum.Original
+            List<Address> addressLocalList = (from c in webAllAddressesLocal.AddressList
+                                                        where c.DBCommand != DBCommandEnum.Original
                                                         select c).ToList();
 
-            foreach (AddressModel addressModelLocal in addressModelLocalList)
+            foreach (Address addressLocal in addressLocalList)
             {
-                AddressModel addressModelOriginal = webAllAddresses.AddressModelList.Where(c => c.TVItemModel.TVItem.TVItemID == addressModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
-                if (addressModelOriginal == null)
+                Address addressOriginal = webAllAddresses.AddressList.Where(c => c.AddressID == addressLocal.AddressID).FirstOrDefault();
+                if (addressOriginal == null)
                 {
-                    webAllAddresses.AddressModelList.Add(addressModelLocal);
+                    webAllAddresses.AddressList.Add(addressLocal);
                 }
                 else
                 {
-                    SyncAddress(addressModelOriginal.Address, addressModelLocal.Address);
-                    SyncTVItemModel(addressModelOriginal.TVItemModel, addressModelLocal.TVItemModel);
+                    addressOriginal = addressLocal;
                 }
             }
         }

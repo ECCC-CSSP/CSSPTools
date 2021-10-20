@@ -70,14 +70,27 @@ namespace CSSPDBLocalServices.Tests
 
             await LoadWebType(-1, WebTypeEnum.WebArea);
 
-            Assert.True(webArea.TVItemModel.TVItem.TVItemID == -1);
+            Assert.True(webArea.TVItemModel.TVItem.TVItemID == -1
+                && webArea.TVItemModel.TVItem.TVType == TVTypeEnum.Area);
+
+            TVItemModel tvItemModel = webArea.TVItemModel;
+            Assert.NotNull(tvItemModel);
+
+            Assert.Equal(DBCommandEnum.Created, tvItemModel.TVItem.DBCommand);
+            Assert.Equal(-1, tvItemModel.TVItem.TVItemID);
+            Assert.Equal(tvItemModelParent.TVItem.TVItemID, tvItemModel.TVItem.ParentID);
+
+            Assert.Equal(TVTextEN, tvItemModel.TVItemLanguageList[0].TVText);
+            Assert.Equal(TVTextFR, tvItemModel.TVItemLanguageList[1].TVText);
+            Assert.Equal(-1, tvItemModel.TVItemLanguageList[0].TVItemID);
+            Assert.Equal(-1, tvItemModel.TVItemLanguageList[1].TVItemID);
 
             await LoadWebType(7, WebTypeEnum.WebProvince);
 
             Assert.True(webProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == -1
             && c.TVItem.TVType == TVTypeEnum.Area).Any());
 
-            TVItemModel tvItemModel = webProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == -1
+            tvItemModel = webProvince.TVItemModelAreaList.Where(c => c.TVItem.TVItemID == -1
             && c.TVItem.TVType == TVTypeEnum.Area).FirstOrDefault();
             Assert.NotNull(tvItemModel);
 

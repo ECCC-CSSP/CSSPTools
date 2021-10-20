@@ -1,4 +1,4 @@
-﻿using CreateGzFileServices;
+﻿using CSSPCreateGzFileServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
@@ -31,7 +31,7 @@ namespace CSSPUpdate
         private IEnums enums { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
+        private ICSSPCreateGzFileService CreateGzFileService { get; set; }
         private CSSPDBContext db { get; set; }
         #endregion Properties
 
@@ -71,7 +71,7 @@ namespace CSSPUpdate
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
             Services.AddSingleton<ICSSPUpdateService, CSSPUpdateService>();
 
             /* ---------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ namespace CSSPUpdate
                 return await Task.FromResult(false);
             }
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
+            CreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
             if (CreateGzFileService == null)
             {
                 Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CreateGzFileService") }");

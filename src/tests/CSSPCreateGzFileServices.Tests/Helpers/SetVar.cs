@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Diagnostics;
 
-namespace CreateGzFileServices.Tests
+namespace CSSPCreateGzFileServices.Tests
 {
-    public partial class CreateGzFileServiceTests
+    public partial class CSSPCreateGzFileServiceTests
     {
         private void SetVar(WebTypeEnum webTypeEnum)
         {

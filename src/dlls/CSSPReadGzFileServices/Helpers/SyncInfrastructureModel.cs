@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private void SyncInfrastructureModel(InfrastructureModel infrastructureModelOriginal, InfrastructureModel infrastructureModelLocal)
         {
@@ -32,16 +32,17 @@ namespace ReadGzFileServices
                 {
                     infrastructureModelOriginal.InfrastructureLanguageList = infrastructureModelLocal.InfrastructureLanguageList;
                 }
+
                 List<TVFileModel> TVFileModelInfrastructureLocalList = (from c in infrastructureModelLocal.TVFileModelList
-                                                                        where c.TVItem.TVItemID != 0
-                                                                        && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                                        || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                                        || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                                        where c.TVFile.TVFileID != 0
+                                                                        && (c.TVFile.DBCommand != DBCommandEnum.Original
+                                                                        || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                                        || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                                         select c).ToList();
 
                 foreach (TVFileModel tvFileModelInfrastructureLocal in TVFileModelInfrastructureLocalList)
                 {
-                    TVFileModel tvFileModelInfrastructureOriginal = infrastructureModelOriginal.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelInfrastructureLocal.TVItem.TVItemID).FirstOrDefault();
+                    TVFileModel tvFileModelInfrastructureOriginal = infrastructureModelOriginal.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModelInfrastructureLocal.TVFile.TVFileID).FirstOrDefault();
                     if (tvFileModelInfrastructureOriginal == null)
                     {
                         infrastructureModelOriginal.TVFileModelList.Add(tvFileModelInfrastructureLocal);

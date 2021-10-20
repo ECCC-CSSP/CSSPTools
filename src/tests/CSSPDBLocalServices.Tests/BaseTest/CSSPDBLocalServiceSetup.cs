@@ -3,7 +3,7 @@
  *  
  */
 
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
@@ -13,7 +13,7 @@ using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,22 +32,23 @@ namespace CSSPDBLocalServices.Tests
         protected IConfiguration Configuration { get; set; }
         protected ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         protected CSSPDBLocalContext dbLocal { get; set; }
-        protected IReadGzFileService ReadGzFileService { get; set; }
+        protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
+        protected IAddressLocalService AddressLocalService { get; set; }
         protected IAppTaskLocalService AppTaskLocalService { get; set; }
         protected IMapInfoLocalService MapInfoLocalService { get; set; }
         protected ITVItemLocalService TVItemLocalService { get; set; }
+        protected CSSPDBManageContext dbManage { get; set; }
+        protected ICSSPLogService CSSPLogService { get; set; }
 
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IEnums enums { get; set; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
-        private ICSSPLogService CSSPLogService { get; set; }
         private ICSSPFileService FileService { get; set; }
         private IManageFileService ManageFileService { get; set; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
+        private ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
         private CSSPDBContext db { get; set; }
-        private CSSPDBManageContext dbManage { get; set; }
         private FileInfo fiCSSPDBLocal { get; set; }
         private FileInfo fiCSSPDBLocalTest { get; set; }
         private FileInfo fiCSSPDBManage { get; set; }
@@ -99,10 +100,11 @@ namespace CSSPDBLocalServices.Tests
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
+            Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
 
 
+            Services.AddSingleton<IAddressLocalService, AddressLocalService>();
             Services.AddSingleton<IAppTaskLocalService, AppTaskLocalService>();
             Services.AddSingleton<IMapInfoLocalService, MapInfoLocalService>();
             Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
@@ -137,11 +139,14 @@ namespace CSSPDBLocalServices.Tests
             ManageFileService = Provider.GetService<IManageFileService>();
             Assert.NotNull(ManageFileService);
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
-            Assert.NotNull(CreateGzFileService);
+            CSSPCreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
+            Assert.NotNull(CSSPCreateGzFileService);
 
-            ReadGzFileService = Provider.GetService<IReadGzFileService>();
-            Assert.NotNull(ReadGzFileService);
+            CSSPReadGzFileService = Provider.GetService<ICSSPReadGzFileService>();
+            Assert.NotNull(CSSPReadGzFileService);
+
+            AddressLocalService = Provider.GetService<IAddressLocalService>();
+            Assert.NotNull(AddressLocalService);
 
             AppTaskLocalService = Provider.GetService<IAppTaskLocalService>();
             Assert.NotNull(AppTaskLocalService);
@@ -173,8 +178,8 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(enums);
             Assert.NotNull(FileService);
             Assert.NotNull(ManageFileService);
-            Assert.NotNull(CreateGzFileService);
-            Assert.NotNull(ReadGzFileService);
+            Assert.NotNull(CSSPCreateGzFileService);
+            Assert.NotNull(CSSPReadGzFileService);
             Assert.NotNull(AppTaskLocalService);
             Assert.NotNull(MapInfoLocalService);
             Assert.NotNull(TVItemLocalService);

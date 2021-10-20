@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebSector(WebSector webSector, WebSector webSectorLocal)
         {
@@ -83,15 +83,15 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebSectorTVFileModelList(WebSector webSector, WebSector webSectorLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webSectorLocal.TVFileModelList
-                                                      where c.TVItem.TVItemID != 0
-                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      where c.TVFile.TVFileID != 0
+                                                      && (c.TVFile.DBCommand != DBCommandEnum.Original
+                                                      || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                       select c).ToList();
 
             foreach (TVFileModel tvFileModelLocal in TVFileModelLocalList)
             {
-                TVFileModel tvFileModelOriginal = webSector.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = webSector.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModelLocal.TVFile.TVFileID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
                     webSector.TVFileModelList.Add(tvFileModelLocal);

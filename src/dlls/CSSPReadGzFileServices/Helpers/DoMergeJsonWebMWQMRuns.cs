@@ -11,9 +11,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebMWQMRuns(WebMWQMRuns webMWQMRuns, WebMWQMRuns webMWQMRunsLocal)
         {
@@ -55,13 +55,15 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebMWQMRunsMWQMRunModelList(WebMWQMRuns webMWQMRuns, WebMWQMRuns webMWQMRunsLocal)
         {
             List<MWQMRunModel> MWQMRunModelLocalList = (from c in webMWQMRunsLocal.MWQMRunModelList
-                                                   where c.MWQMRun.MWQMRunID != 0
-                                                   && c.MWQMRun.DBCommand != DBCommandEnum.Original
+                                                   where c.TVItemModel.TVItem.TVItemID != 0
+                                                   && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                                    select c).ToList();
 
             foreach (MWQMRunModel mwqmRunModelLocal in MWQMRunModelLocalList)
             {
-                MWQMRunModel mwqmRunModelOriginal = webMWQMRuns.MWQMRunModelList.Where(c => c.MWQMRun.MWQMRunID == mwqmRunModelLocal.MWQMRun.MWQMRunID).FirstOrDefault();
+                MWQMRunModel mwqmRunModelOriginal = (from c in webMWQMRuns.MWQMRunModelList
+                                                     where c.TVItemModel.TVItem.TVItemID == mwqmRunModelLocal.TVItemModel.TVItem.TVItemID
+                                                     select c).FirstOrDefault();
                 if (mwqmRunModelOriginal == null)
                 {
                     webMWQMRuns.MWQMRunModelList.Add(mwqmRunModelLocal);

@@ -2,7 +2,7 @@
  * Manually edited
  * 
  */
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
@@ -98,7 +98,7 @@ namespace CSSPUpdateServices
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
-        private ICreateGzFileService CreateGzFileService { get; set; }
+        private ICSSPCreateGzFileService CreateGzFileService { get; set; }
         private CSSPDBContext db { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         private DateTime UpdateFromDate { get; set; }
@@ -107,7 +107,7 @@ namespace CSSPUpdateServices
 
         #region Constructors
         public CSSPUpdateService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
-            ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, ICreateGzFileService CreateGzFileService, CSSPDBContext db, CSSPDBManageContext dbManage)
+            ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, ICSSPCreateGzFileService CreateGzFileService, CSSPDBContext db, CSSPDBManageContext dbManage)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");

@@ -12,13 +12,13 @@ namespace CSSPWebModels
     public partial class WebAllAddresses
     {
         #region Properties
-        public List<AddressModel> AddressModelList { get; set; }
+        public List<Address> AddressList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebAllAddresses()
         {
-            AddressModelList = new List<AddressModel>();
+            AddressList = new List<Address>();
         }
         #endregion Constructors
     }

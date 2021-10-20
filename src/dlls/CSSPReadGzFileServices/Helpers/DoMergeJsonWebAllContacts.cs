@@ -11,9 +11,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllContacts(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
         {
@@ -30,23 +30,19 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebAllContactsContactModelList(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
         {
             List<ContactModel> contactModelLocalList = (from c in webAllContactsLocal.ContactModelList
-                                                        where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
-                                                        || c.Contact.DBCommand != DBCommandEnum.Original
+                                                        where c.Contact.DBCommand != DBCommandEnum.Original
                                                         select c).ToList();
 
             foreach (ContactModel contactModelLocal in contactModelLocalList)
             {
-                ContactModel contactModelOriginal = webAllContacts.ContactModelList.Where(c => c.TVItemModel.TVItem.TVItemID == contactModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                ContactModel contactModelOriginal = webAllContacts.ContactModelList.Where(c => c.Contact.ContactID == contactModelLocal.Contact.ContactID).FirstOrDefault();
                 if (contactModelOriginal == null)
                 {
                     webAllContacts.ContactModelList.Add(contactModelLocal);
                 }
                 else
                 {
-                    SyncContact(contactModelOriginal.Contact, contactModelLocal.Contact);
-                    SyncTVItemModel(contactModelOriginal.TVItemModel, contactModelLocal.TVItemModel);
+                    contactModelOriginal.Contact = contactModelLocal.Contact;
                 }
             }
         }

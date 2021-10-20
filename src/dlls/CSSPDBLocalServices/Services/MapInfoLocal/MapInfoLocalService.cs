@@ -3,7 +3,7 @@
  *
  */
 
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
@@ -13,7 +13,7 @@ using CSSPWebModels;
 using CSSPLocalLoggedInServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -42,14 +42,14 @@ namespace CSSPDBLocalServices
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private CSSPDBLocalContext dbLocal { get; }
-        private IReadGzFileService ReadGzFileService { get; }
-        private ICreateGzFileService CreateGzFileService { get; }
+        private ICSSPReadGzFileService ReadGzFileService { get; }
+        private ICSSPCreateGzFileService CreateGzFileService { get; }
         private List<ToRecreate> ToRecreateList { get; set; }
         #endregion Properties
 
         #region Constructors
         public MapInfoLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
-           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, IReadGzFileService ReadGzFileService, ICreateGzFileService CreateGzFileService)
+           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, ICSSPReadGzFileService ReadGzFileService, ICSSPCreateGzFileService CreateGzFileService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");

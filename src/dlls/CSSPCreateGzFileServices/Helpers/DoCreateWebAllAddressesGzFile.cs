@@ -12,9 +12,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoCreateWebAllAddressesGzFile()
         {
@@ -34,7 +34,7 @@ namespace CreateGzFileServices
 
             try
             {
-                if (!await FillAddressModelList(webAllAddresses.AddressModelList, TVItemRoot)) return await Task.FromResult(false);
+                webAllAddresses.AddressList = await GetAllAddress();
 
                 if (dbLocal != null)
                 {

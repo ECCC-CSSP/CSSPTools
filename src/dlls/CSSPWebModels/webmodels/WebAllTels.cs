@@ -12,13 +12,13 @@ namespace CSSPWebModels
     public partial class WebAllTels
     {
         #region Properties
-        public List<TelModel> TelModelList { get; set; }
+        public List<Tel> TelList { get; set; }
         #endregion Properties
 
         #region Constructors
         public WebAllTels()
         {
-            TelModelList = new List<TelModel>();
+            TelList = new List<Tel>();
         }
         #endregion Constructors
     }

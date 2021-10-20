@@ -3,7 +3,7 @@
  *
  */
 
-using CreateGzFileServices;
+using CSSPCreateGzFileServices;
 using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
@@ -13,7 +13,7 @@ using CSSPLogServices;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -41,14 +41,14 @@ namespace CSSPDBLocalServices
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private CSSPDBLocalContext dbLocal { get; }
-        private IReadGzFileService ReadGzFileService { get; }
-        private ICreateGzFileService CreateGzFileService { get; }
+        private ICSSPReadGzFileService ReadGzFileService { get; }
+        private ICSSPCreateGzFileService CreateGzFileService { get; }
         private List<ToRecreate> ToRecreateList { get; set; }
         #endregion Properties
 
         #region Constructors
         public TVItemLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
-           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, IReadGzFileService ReadGzFileService, ICreateGzFileService CreateGzFileService)
+           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, ICSSPReadGzFileService ReadGzFileService, ICSSPCreateGzFileService CreateGzFileService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
@@ -101,20 +101,20 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
-            {
-                if (!await DoAddFileTVItemLocal(tvItemLocalModel))
-                {
-                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-                }
-            }
-            else
-            {
+            //if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
+            //{
+            //    if (!await DoAddFileTVItemLocal(tvItemLocalModel))
+            //    {
+            //        return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            //    }
+            //}
+            //else
+            //{
                 if (!await DoAddTVItemLocal(tvItemLocalModel))
                 {
                     return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                 }
-            }
+            //}
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
@@ -132,20 +132,20 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
-            {
-                if (!await DoDeleteFileTVItemLocal(tvItemLocalModel))
-                {
-                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-                }
-            }
-            else
-            {
+            //if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
+            //{
+            //    if (!await DoDeleteFileTVItemLocal(tvItemLocalModel))
+            //    {
+            //        return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            //    }
+            //}
+            //else
+            //{
                 if (!await DoDeleteTVItemLocal(tvItemLocalModel))
                 {
                     return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                 }
-            }
+            //}
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
@@ -163,20 +163,20 @@ namespace CSSPDBLocalServices
                 return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
             }
 
-            if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
-            {
-                if (!await DoModifyFileTVItemLocal(tvItemLocalModel))
-                {
-                    return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-                }
-            }
-            else
-            {
+            //if (tvItemLocalModel.TVItem.TVType == TVTypeEnum.File)
+            //{
+            //    if (!await DoModifyFileTVItemLocal(tvItemLocalModel))
+            //    {
+            //        return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            //    }
+            //}
+            //else
+            //{
                 if (!await DoModifyTVItemLocal(tvItemLocalModel))
                 {
                     return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                 }
-            }
+            //}
 
             CSSPLogService.EndFunctionLog(FunctionName);
 

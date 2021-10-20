@@ -2,6 +2,7 @@
  * Manually edited
  * 
  */
+using CSSPDBModels;
 using CSSPEnums;
 using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllTels(WebAllTels webAllTels, WebAllTels webAllTelsLocal)
         {
@@ -29,23 +30,20 @@ namespace ReadGzFileServices
 
         private void DoMergeJsonWebAllTelsTelModelList(WebAllTels webAllTels, WebAllTels webAllTelsLocal)
         {
-            List<TelModel> telModelLocalList = (from c in webAllTelsLocal.TelModelList
-                                                where c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+            List<Tel> telLocalList = (from c in webAllTelsLocal.TelList
+                                                where c.DBCommand != DBCommandEnum.Original
                                                 select c).ToList();
 
-            foreach (TelModel telModelLocal in telModelLocalList)
+            foreach (Tel telLocal in telLocalList)
             {
-                TelModel telModelOriginal = webAllTels.TelModelList.Where(c => c.TVItemModel.TVItem.TVItemID == telModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
-                if (telModelOriginal == null)
+                Tel telOriginal = webAllTels.TelList.Where(c => c.TelID == telLocal.TelID).FirstOrDefault();
+                if (telOriginal == null)
                 {
-                    webAllTels.TelModelList.Add(telModelLocal);
+                    webAllTels.TelList.Add(telLocal);
                 }
                 else
                 {
-                    SyncTel(telModelOriginal.Tel, telModelLocal.Tel);
-                    SyncTVItemModel(telModelOriginal.TVItemModel, telModelLocal.TVItemModel);
+                    telOriginal = telLocal;
                 }
             }
         }

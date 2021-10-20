@@ -12,14 +12,12 @@ namespace CSSPWebModels
     public partial class AddressModel
     {
         #region Properties
-        public TVItemModel TVItemModel { get; set; }
         public Address Address { get; set; }
         #endregion Properties
 
         #region Constructors
         public AddressModel()
         {
-            TVItemModel = new TVItemModel();
             Address = new Address();
         }
         #endregion Constructors

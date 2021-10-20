@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CSSPEnums;
 using CSSPCultureServices.Resources;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System.Threading;
 using CSSPWebModels;
 using CSSPLocalLoggedInServices;
@@ -67,12 +67,12 @@ namespace CSSPWebAPIsLocal.Controllers
         #region Properties
         private ICSSPCultureService CSSPCultureService { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
-        private IReadGzFileService ReadGzFileService { get; }
+        private ICSSPReadGzFileService ReadGzFileService { get; }
         #endregion Properties
 
         #region Constructors
         public ReadController(ICSSPCultureService CSSPCultureService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, 
-            IReadGzFileService ReadGzFileService)
+            ICSSPReadGzFileService ReadGzFileService)
         {
             this.CSSPCultureService = CSSPCultureService;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;

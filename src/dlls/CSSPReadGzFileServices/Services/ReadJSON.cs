@@ -24,9 +24,9 @@ using System;
 using System.IO.Compression;
 using System.Text.Json;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         public async Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0)
         {
@@ -43,7 +43,7 @@ namespace ReadGzFileServices
 
             FileInfo fiGZ = new FileInfo(Configuration["CSSPJSONPath"] + string.Format(fileName, TVItemID));
 
-            if (TVItemID > 0)
+            if (TVItemID > -1)
             {
                 if (fiGZ.Exists)
                 {

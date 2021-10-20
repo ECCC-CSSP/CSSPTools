@@ -12,9 +12,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebMikeScenarios(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
         {
@@ -74,8 +74,6 @@ namespace ReadGzFileServices
                 DoMergeJsonWebMikeScenariosMikeScenarioModelListMikeSourceModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
                 DoMergeJsonWebMikeScenariosMikeScenarioModelListTVItemModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
-
-                DoMergeJsonWebMikeScenariosMikeScenarioModelListTVItemModelParentList(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
                 DoMergeJsonWebMikeScenariosMikeScenarioModelListTVFileModelList(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
@@ -144,33 +142,18 @@ namespace ReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelListTVItemModelParentList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
-        {
-            if (mikeScenarioModelLocal.TVItemModelParentList != null)
-            {
-                if ((from c in mikeScenarioModelLocal.TVItemModelParentList
-                     where c.TVItem.TVItemID != 0
-                     && (c.TVItem.DBCommand != DBCommandEnum.Original
-                     || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                     || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                     select c).Any())
-                {
-                    SyncTVItemModelParentList(mikeScenarioModel.TVItemModelParentList, mikeScenarioModelLocal.TVItemModelParentList);
-                }
-            }
-        }
         private void DoMergeJsonWebMikeScenariosMikeScenarioModelListTVFileModelList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in mikeScenarioModelLocal.TVFileModelList
-                                                 where c.TVItem.TVItemID != 0
-                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                 where c.TVFile.TVFileID != 0
+                                                 && (c.TVFile.DBCommand != DBCommandEnum.Original
+                                                 || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                 || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                  select c).ToList();
 
             foreach (TVFileModel tvFileModelLocal in TVFileModelLocalList)
             {
-                TVFileModel tvFileModelOriginal = mikeScenarioModel.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = mikeScenarioModel.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModelLocal.TVFile.TVFileID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
                     mikeScenarioModel.TVFileModelList.Add(tvFileModelLocal);

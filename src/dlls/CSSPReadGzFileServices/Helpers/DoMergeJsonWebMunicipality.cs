@@ -13,9 +13,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ReadGzFileServices
+namespace CSSPReadGzFileServices
 {
-    public partial class ReadGzFileService : ControllerBase, IReadGzFileService
+    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebMunicipality(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
@@ -25,10 +25,6 @@ namespace ReadGzFileServices
             DoMergeJsonWebMunicipalityTVItemModel(webMunicipality, webMunicipalityLocal);
 
             DoMergeJsonWebMunicipalityTVItemModelParentList(webMunicipality, webMunicipalityLocal);
-
-            DoMergeJsonWebMunicipalityTVItemModelInfrastructureList(webMunicipality, webMunicipalityLocal);
-
-            DoMergeJsonWebMunicipalityTVItemModelMikeScenarioList(webMunicipality, webMunicipalityLocal);
 
             DoMergeJsonWebMunicipalityTVFileModelList(webMunicipality, webMunicipalityLocal);
 
@@ -68,62 +64,18 @@ namespace ReadGzFileServices
                 SyncTVItemModelParentList(webMunicipality.TVItemModelParentList, webMunicipalityLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebMunicipalityTVItemModelInfrastructureList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
-        {
-            List<TVItemModel> TVItemModelInfrastructureLocalList = (from c in webMunicipalityLocal.TVItemModelInfrastructureList
-                                                                    where c.TVItem.TVItemID != 0
-                                                                    && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                                    || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                                    || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                                    select c).ToList();
-
-            foreach (TVItemModel TVItemModelInfrastructureLocal in TVItemModelInfrastructureLocalList)
-            {
-                TVItemModel TVItemModelInfrastructureOriginal = webMunicipality.TVItemModelInfrastructureList.Where(c => c.TVItem.TVItemID == TVItemModelInfrastructureLocal.TVItem.TVItemID).FirstOrDefault();
-                if (TVItemModelInfrastructureOriginal == null)
-                {
-                    webMunicipality.TVItemModelInfrastructureList.Add(TVItemModelInfrastructureLocal);
-                }
-                else
-                {
-                    SyncTVItemModel(TVItemModelInfrastructureOriginal, TVItemModelInfrastructureLocal);
-                }
-            }
-        }
-        private void DoMergeJsonWebMunicipalityTVItemModelMikeScenarioList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
-        {
-            List<TVItemModel> TVItemModelMikeScenarioLocalList = (from c in webMunicipalityLocal.TVItemModelMikeScenarioList
-                                                                  where c.TVItem.TVItemID != 0
-                                                                  && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                                  || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                                  || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                                  select c).ToList();
-
-            foreach (TVItemModel TVItemModelMikeScenarioLocal in TVItemModelMikeScenarioLocalList)
-            {
-                TVItemModel TVItemModelMikeScenarioOriginal = webMunicipality.TVItemModelMikeScenarioList.Where(c => c.TVItem.TVItemID == TVItemModelMikeScenarioLocal.TVItem.TVItemID).FirstOrDefault();
-                if (TVItemModelMikeScenarioOriginal == null)
-                {
-                    webMunicipality.TVItemModelMikeScenarioList.Add(TVItemModelMikeScenarioLocal);
-                }
-                else
-                {
-                    SyncTVItemModel(TVItemModelMikeScenarioOriginal, TVItemModelMikeScenarioLocal);
-                }
-            }
-        }
         private void DoMergeJsonWebMunicipalityTVFileModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webMunicipalityLocal.TVFileModelList
-                                                      where c.TVItem.TVItemID != 0
-                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                      where c.TVFile.TVFileID != 0
+                                                      && (c.TVFile.DBCommand != DBCommandEnum.Original
+                                                      || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
                                                       select c).ToList();
 
             foreach (TVFileModel tvFileModelLocal in TVFileModelLocalList)
             {
-                TVFileModel tvFileModelOriginal = webMunicipality.TVFileModelList.Where(c => c.TVItem.TVItemID == tvFileModelLocal.TVItem.TVItemID).FirstOrDefault();
+                TVFileModel tvFileModelOriginal = webMunicipality.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModelLocal.TVFile.TVFileID).FirstOrDefault();
                 if (tvFileModelOriginal == null)
                 {
                     webMunicipality.TVFileModelList.Add(tvFileModelLocal);
@@ -160,15 +112,13 @@ namespace ReadGzFileServices
         private void DoMergeJsonWebMunicipalityMunicipalityContactModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             List<ContactModel> ContactModelLocalList = (from c in webMunicipalityLocal.MunicipalityContactModelList
-                                                        where c.TVItemModel.TVItem.TVItemID != 0
-                                                        && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                        || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                        where c.Contact.ContactID != 0
+                                                        && c.Contact.DBCommand != DBCommandEnum.Original
                                                         select c).ToList();
 
             foreach (ContactModel contactModelLocal in ContactModelLocalList)
             {
-                ContactModel contactModelOriginal = webMunicipality.MunicipalityContactModelList.Where(c => c.TVItemModel.TVItem.TVItemID == contactModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                ContactModel contactModelOriginal = webMunicipality.MunicipalityContactModelList.Where(c => c.Contact.ContactID == contactModelLocal.Contact.ContactID).FirstOrDefault();
                 if (contactModelOriginal == null)
                 {
                     webMunicipality.MunicipalityContactModelList.Add(contactModelLocal);
@@ -201,10 +151,33 @@ namespace ReadGzFileServices
         }
         private void DoMergeJsonWebMunicipalityInfrastructureModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
+            foreach(InfrastructureModel infrastructureModelLocal in webMunicipalityLocal.InfrastructureModelList)
+            {
+                bool needSync = false;
+                if (infrastructureModelLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                    || infrastructureModelLocal.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                    || infrastructureModelLocal.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                {
+                    needSync = true;
+                }
+
+                if (needSync)
+                {
+                    InfrastructureModel infrastructureModelOriginal = webMunicipality.InfrastructureModelList.Where(c => c.Infrastructure.InfrastructureID == infrastructureModelLocal.Infrastructure.InfrastructureID).FirstOrDefault();
+                    if (infrastructureModelOriginal == null)
+                    {
+                        webMunicipality.InfrastructureModelList.Add(infrastructureModelLocal);
+                    }
+                    else
+                    {
+                        SyncInfrastructureModel(infrastructureModelOriginal, infrastructureModelLocal);
+                    }
+                }
+            }
             List<InfrastructureModel> InfrastructureModelLocalList = (from c in webMunicipalityLocal.InfrastructureModelList
                                                                  where c.Infrastructure != null
-                                                                 && c.Infrastructure.InfrastructureID != 0
-                                                                 && (c.Infrastructure.DBCommand != DBCommandEnum.Original)
+                                                                 && c.TVItemModel.TVItem.TVItemID != 0
+                                                                 && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
                                                                  select c).ToList();
 
             foreach (InfrastructureModel infrastructureModelLocal in InfrastructureModelLocalList)
@@ -219,6 +192,8 @@ namespace ReadGzFileServices
                     SyncInfrastructureModel(infrastructureModelOriginal, infrastructureModelLocal);
                 }
             }
+
+            // more to do
         }
         private void DoMergeJsonWebMunicipalityInfrastructureIsLocalized(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {

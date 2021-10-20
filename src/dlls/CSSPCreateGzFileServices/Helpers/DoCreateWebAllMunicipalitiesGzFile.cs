@@ -12,9 +12,9 @@ using CSSPWebModels;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 
-namespace CreateGzFileServices
+namespace CSSPCreateGzFileServices
 {
-    public partial class CreateGzFileService : ControllerBase, ICreateGzFileService
+    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
         private async Task<bool> DoCreateWebAllMunicipalitiesGzFile()
         {
@@ -35,7 +35,7 @@ namespace CreateGzFileServices
 
             try
             {
-                if (!await FillAllMunicipalityModelList(webAllMunicipalities.TVItemModelList, TVItemRoot)) return await Task.FromResult(false);
+                if (!await FillAllMunicipalityModelList(webAllMunicipalities.TVModelList, TVItemRoot)) return await Task.FromResult(false);
 
                 if (dbLocal != null)
                 {

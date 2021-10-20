@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 using Xunit;
 using CSSPScrambleServices;
 
-namespace ReadGzFileServices.Tests
+namespace CSSPReadGzFileServices.Tests
 {
     [Collection("Sequential")]
-    public partial class ReadGzFileServiceTests
+    public partial class CSSPReadGzFileServiceTests
     {
         #region Variables
         #endregion Variables
@@ -28,7 +28,7 @@ namespace ReadGzFileServices.Tests
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
         private IManageFileService ManageFileService { get; set; }
-        private IReadGzFileService ReadGzFileService { get; set; }
+        private ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
@@ -43,7 +43,7 @@ namespace ReadGzFileServices.Tests
         #endregion Tests Generated CRUD
 
         #region Functions private
-        private async Task<bool> ReadGzFileServiceSetup(string culture)
+        private async Task<bool> CSSPReadGzFileServiceSetup(string culture)
         {
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -55,9 +55,6 @@ namespace ReadGzFileServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-
-            Assert.NotNull(Configuration["APISecret"]);
-            Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
@@ -79,7 +76,7 @@ namespace ReadGzFileServices.Tests
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 
             Assert.NotNull(Configuration["CSSPDBManage"]);
@@ -124,8 +121,8 @@ namespace ReadGzFileServices.Tests
             ManageFileService = Provider.GetService<IManageFileService>();
             Assert.NotNull(ManageFileService);
 
-            ReadGzFileService = Provider.GetService<IReadGzFileService>();
-            Assert.NotNull(ReadGzFileService);
+            CSSPReadGzFileService = Provider.GetService<ICSSPReadGzFileService>();
+            Assert.NotNull(CSSPReadGzFileService);
 
             return await Task.FromResult(true);
         }

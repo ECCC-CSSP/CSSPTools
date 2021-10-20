@@ -12,7 +12,7 @@ using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ReadGzFileServices;
+using CSSPReadGzFileServices;
 using System;
 using System.IO;
 using System.Reflection;
@@ -490,7 +490,7 @@ namespace CSSPDesktop
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-            Services.AddSingleton<IReadGzFileService, ReadGzFileService>();
+            Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBLocal
