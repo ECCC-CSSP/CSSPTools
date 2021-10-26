@@ -43,8 +43,14 @@ namespace CSSPCreateGzFileServices
                 case WebTypeEnum.WebAllMunicipalities:
                     await DoCreateWebAllMunicipalitiesGzFile();
                     break;
+                case WebTypeEnum.WebAllMWQMAnalysisReportParameters:
+                    await DoCreateWebAllMWQMAnalysisReportParametersGzFile();
+                    break;
                 case WebTypeEnum.WebAllMWQMLookupMPNs:
                     await DoCreateWebAllMWQMLookupMPNsGzFile();
+                    break;
+                case WebTypeEnum.WebAllMWQMSubsectors:
+                    await DoCreateWebAllMWQMSubsectorsGzFile();
                     break;
                 case WebTypeEnum.WebAllPolSourceGroupings:
                     await DoCreateWebAllPolSourceGroupingsGzFile();
@@ -58,11 +64,17 @@ namespace CSSPCreateGzFileServices
                 case WebTypeEnum.WebAllReportTypes:
                     await DoCreateWebAllReportTypesGzFile();
                     break;
+                case WebTypeEnum.WebAllSearch:
+                    await DoCreateWebAllSearchGzFile();
+                    break;
                 case WebTypeEnum.WebAllTels:
                     await DoCreateWebAllTelsGzFile();
                     break;
                 case WebTypeEnum.WebAllTideLocations:
                     await DoCreateWebAllTideLocationsGzFile();
+                    break;
+                case WebTypeEnum.WebAllUseOfSites:
+                    await DoCreateWebAllUseOfSitesGzFile();
                     break;
                 case WebTypeEnum.WebArea:
                     await DoCreateWebAreaGzFile(TVItemID); // TVItemID = AreaTVItemID
@@ -108,9 +120,6 @@ namespace CSSPCreateGzFileServices
                     break;
                 case WebTypeEnum.WebRoot:
                     await DoCreateWebRootGzFile();
-                    break;
-                case WebTypeEnum.WebAllSearch:
-                    await DoCreateWebAllSearchGzFile();
                     break;
                 case WebTypeEnum.WebSector:
                     await DoCreateWebSectorGzFile(TVItemID); // TVItemID = SectorTVItemID

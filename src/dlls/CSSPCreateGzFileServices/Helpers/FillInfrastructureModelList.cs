@@ -18,7 +18,7 @@ namespace CSSPCreateGzFileServices
 {
     public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillInfrastructureModelList(List<TVItemModel> TVItemModelParentList, List<InfrastructureModel> InfrastructureModelList, TVItem TVItem)
+        private async Task<bool> FillInfrastructureModelList(List<InfrastructureModel> InfrastructureModelList, TVItem TVItem)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<InfrastructureModel> InfrastructureModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
             CSSPLogService.FunctionLog(FunctionName);
@@ -42,6 +42,8 @@ namespace CSSPCreateGzFileServices
 
             List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
             List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
+
+            List<TVItem> TVItemFileList = await GetTVItemAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
 
             foreach (TVItem tvItem in TVItemList)
             {
@@ -77,17 +79,20 @@ namespace CSSPCreateGzFileServices
 
                 InfrastructureModel.TVItemModel = TVItemModel;
 
-                foreach (TVFile tvFile in TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID))
+                foreach (TVItem tvItemFile in TVItemFileList.Where(c => c.TVPath.StartsWith(tvItem.TVPath + "p")))
                 {
-                    TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVFile = tvFile;
-                    tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
-                                                      where c.TVFileID == tvFileModel.TVFile.TVFileID
-                                                      orderby c.Language
-                                                      select c).ToList();
+                    TVFile tvFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItemFile.TVItemID).FirstOrDefault();
+                    if (tvFile != null)
+                    {
+                        TVFileModel tvFileModel = new TVFileModel();
+                        tvFileModel.TVFile = tvFile;
+                        tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
+                                                          where c.TVFileID == tvFileModel.TVFile.TVFileID
+                                                          orderby c.Language
+                                                          select c).ToList();
 
-                    InfrastructureModel.TVFileModelList.Add(tvFileModel);
-
+                        InfrastructureModel.TVFileModelList.Add(tvFileModel);
+                    }
                 }
 
                 InfrastructureModel.Infrastructure = InfrastructureList.Where(c => c.InfrastructureTVItemID == tvItem.TVItemID).FirstOrDefault();

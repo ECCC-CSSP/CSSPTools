@@ -16,10 +16,6 @@ namespace CSSPWebModels
         public List<TVItemModel> TVItemModelParentList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
         public List<TVItemModel> TVItemModelClassificationList { get; set; }
-        public List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterList { get; set; }
-        public MWQMSubsector MWQMSubsector { get; set; }
-        public List<MWQMSubsectorLanguage> MWQMSubsectorLanguageList { get; set; }
-        public List<UseOfSite> UseOfSiteList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -29,10 +25,6 @@ namespace CSSPWebModels
             TVItemModelParentList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
             TVItemModelClassificationList = new List<TVItemModel>();
-            MWQMAnalysisReportParameterList = new List<MWQMAnalysisReportParameter>();
-            MWQMSubsector = new MWQMSubsector();
-            MWQMSubsectorLanguageList = new List<MWQMSubsectorLanguage>();
-            UseOfSiteList = new List<UseOfSite>();
         }
         #endregion Constructors
     }

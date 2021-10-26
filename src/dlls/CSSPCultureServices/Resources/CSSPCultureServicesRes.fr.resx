@@ -1071,4 +1071,16 @@
   <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
     <value>Dans l'impossibilité de trouver {0} dans la filière de configuration {1}</value>
   </data>
+  <data name="_IsNotAParentTypeOf_" xml:space="preserve">
+    <value>{0} n'est pas un type parent de {1}</value>
+  </data>
+  <data name="NotAllowedToRemove_" xml:space="preserve">
+    <value>Ce n'est pas permis d'enlever {0}</value>
+  </data>
+  <data name="CouldNotDelete_Because_ChildrenExist" xml:space="preserve">
+    <value>Dans l'impossibilité d'effacer {0} puisque des enfants {1} existe</value>
+  </data>
+  <data name="CouldNotDelete_BecauseItIsBeingUsedIn_" xml:space="preserve">
+    <value>Dans l'impossibilité d'effacer {0} puisque il est utilisé par {1}</value>
+  </data>
 </root>

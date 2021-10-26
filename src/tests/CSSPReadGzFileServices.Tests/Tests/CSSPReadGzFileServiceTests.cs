@@ -107,6 +107,22 @@ namespace CSSPReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebAllMWQMAnalysisReportParameters_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMAnalysisReportParameters;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllMWQMAnalysisReportParameters>(webType);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParameters = (WebAllMWQMAnalysisReportParameters)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllMWQMAnalysisReportParameters);
+            Assert.NotNull(webAllMWQMAnalysisReportParameters.MWQMAnalysisReportParameterList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
@@ -119,6 +135,22 @@ namespace CSSPReadGzFileServices.Tests
             WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = (WebAllMWQMLookupMPNs)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllMWQMLookupMPNs);
             Assert.NotNull(webAllMWQMLookupMPNs.MWQMLookupMPNList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebAllMWQMSubsectors_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMSubsectors;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllMWQMSubsectors>(webType);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllMWQMSubsectors webAllMWQMSubsectors = (WebAllMWQMSubsectors)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllMWQMSubsectors);
+            Assert.NotNull(webAllMWQMSubsectors.MWQMSubsectorModelList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -171,6 +203,22 @@ namespace CSSPReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebAllSearch_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebAllSearch;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllSearch>(webType);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllSearch webAllSearch = (WebAllSearch)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllSearch);
+            Assert.NotEmpty(webAllSearch.TVItemModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task ReadJSON_WebAllTels_Good_Test(string culture)
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
@@ -182,7 +230,7 @@ namespace CSSPReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebAllTels webAllTels = (WebAllTels)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webAllTels);
-            //Assert.NotNull(webAllTels.TelModelList);
+            Assert.NotEmpty(webAllTels.TelList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -200,70 +248,22 @@ namespace CSSPReadGzFileServices.Tests
             Assert.NotNull(webAllTideLocations);
             Assert.NotNull(webAllTideLocations.TideLocationList);
         }
-        //[Theory]
-        //[InlineData("en-CA")]
-        ////[InlineData("fr-CA")]
-        //public async Task ReadJSON_WebAllTVItemLanguages1980_2020_Good_Test(string culture)
-        //{
-        //    Assert.True(await Setup(culture));
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebAllUseOfSites_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages1980_2020;
+            WebTypeEnum webType = WebTypeEnum.WebAllUseOfSites;
 
-        //    var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(webType);
-        //    Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-        //    Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-        //    WebAllTVItemLanguages webAllTVItemLanguages = (WebAllTVItemLanguages)((OkObjectResult)actionRes.Result).Value;
-        //    Assert.NotNull(webAllTVItemLanguages);
-        //    Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
-        //}
-        //[Theory]
-        //[InlineData("en-CA")]
-        ////[InlineData("fr-CA")]
-        //public async Task ReadJSON_WebAllTVItemLanguages2021_2060_Good_Test(string culture)
-        //{
-        //    Assert.True(await Setup(culture));
-
-        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItemLanguages2021_2060;
-
-        //    var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItemLanguages>(webType);
-        //    Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-        //    Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-        //    WebAllTVItemLanguages webAllTVItemLanguages = (WebAllTVItemLanguages)((OkObjectResult)actionRes.Result).Value;
-        //    Assert.NotNull(webAllTVItemLanguages);
-        //    Assert.NotNull(webAllTVItemLanguages.TVItemLanguageList);
-        //}
-        //[Theory]
-        //[InlineData("en-CA")]
-        ////[InlineData("fr-CA")]
-        //public async Task ReadJSON_WebAllTVItems1980_2020_Good_Test(string culture)
-        //{
-        //    Assert.True(await Setup(culture));
-
-        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItems1980_2020;
-
-        //    var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItems>(webType);
-        //    Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-        //    Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-        //    WebAllTVItems webAllTVItems = (WebAllTVItems)((OkObjectResult)actionRes.Result).Value;
-        //    Assert.NotNull(webAllTVItems);
-        //    Assert.NotNull(webAllTVItems.TVItemList);
-        //}
-        //[Theory]
-        //[InlineData("en-CA")]
-        ////[InlineData("fr-CA")]
-        //public async Task ReadJSON_WebAllTVItems2021_2060_Good_Test(string culture)
-        //{
-        //    Assert.True(await Setup(culture));
-
-        //    WebTypeEnum webType = WebTypeEnum.WebAllTVItems2021_2060;
-
-        //    var actionRes = await ReadGzFileService.ReadJSON<WebAllTVItems>(webType);
-        //    Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-        //    Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-        //    WebAllTVItems webAllTVItems = (WebAllTVItems)((OkObjectResult)actionRes.Result).Value;
-        //    Assert.NotNull(webAllTVItems);
-        //    Assert.NotNull(webAllTVItems.TVItemList);
-        //}
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllUseOfSites>(webType);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebAllUseOfSites webAllUseOfSites = (WebAllUseOfSites)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webAllUseOfSites);
+            Assert.NotEmpty(webAllUseOfSites.UseOfSiteList);
+        }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
@@ -318,6 +318,23 @@ namespace CSSPReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebDrogueRuns_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
+            int TVItemID = 7;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebDrogueRuns>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebDrogueRuns webDrogueRuns = (WebDrogueRuns)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webDrogueRuns);
+            Assert.NotEmpty(webDrogueRuns.DrogueRunModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task ReadJSON_WebHydrometricSite_Good_Test(string culture)
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
@@ -331,6 +348,108 @@ namespace CSSPReadGzFileServices.Tests
             WebHydrometricSites webHydrometricSite = (WebHydrometricSites)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webHydrometricSite);
             Assert.NotNull(webHydrometricSite.HydrometricSiteModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebLabSheets_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebLabSheets;
+            int TVItemID = 635;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebLabSheets>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebLabSheets webLabSheets = (WebLabSheets)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webLabSheets);
+            Assert.NotEmpty(webLabSheets.LabSheetModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebMikeScenarios_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMikeScenarios;
+            int TVItemID = 27764;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMikeScenarios>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebMikeScenarios webMikeScenarios = (WebMikeScenarios)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webMikeScenarios);
+            Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebMonitoringOtherStatsCountry_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsCountry;
+            int TVItemID = 5;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMonitoringOtherStatsCountry>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebMonitoringOtherStatsCountry webMonitoringOtherStatsCountry = (WebMonitoringOtherStatsCountry)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webMonitoringOtherStatsCountry);
+            Assert.NotEmpty(webMonitoringOtherStatsCountry.MonitoringStatsModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebMonitoringOtherStatsProvince_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsProvince;
+            int TVItemID = 7;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMonitoringOtherStatsProvince>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebMonitoringOtherStatsProvince webMonitoringOtherStatsProvince = (WebMonitoringOtherStatsProvince)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webMonitoringOtherStatsProvince);
+            Assert.NotEmpty(webMonitoringOtherStatsProvince.MonitoringStatsModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsCountry;
+            int TVItemID = 5;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMonitoringRoutineStatsCountry>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebMonitoringRoutineStatsCountry webMonitoringRoutineStatsCountry = (WebMonitoringRoutineStatsCountry)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webMonitoringRoutineStatsCountry);
+            Assert.NotEmpty(webMonitoringRoutineStatsCountry.MonitoringStatsModelList);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task ReadJSON_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsProvince;
+            int TVItemID = 7;
+
+            var actionRes = await CSSPReadGzFileService.ReadJSON<WebMonitoringRoutineStatsProvince>(webType, TVItemID);
+            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+            WebMonitoringRoutineStatsProvince webMonitoringRoutineStatsProvince = (WebMonitoringRoutineStatsProvince)((OkObjectResult)actionRes.Result).Value;
+            Assert.NotNull(webMonitoringRoutineStatsProvince);
+            Assert.NotEmpty(webMonitoringRoutineStatsProvince.MonitoringStatsModelList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -470,22 +589,6 @@ namespace CSSPReadGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task ReadJSON_WebAllSearch_Good_Test(string culture)
-        {
-            Assert.True(await CSSPReadGzFileServiceSetup(culture));
-
-            WebTypeEnum webType = WebTypeEnum.WebAllSearch;
-
-            var actionRes = await CSSPReadGzFileService.ReadJSON<WebAllSearch>(webType);
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-            WebAllSearch WebAllSearch = (WebAllSearch)((OkObjectResult)actionRes.Result).Value;
-            Assert.NotNull(WebAllSearch);
-            //Assert.NotNull(WebAllSearch.TVItemModelList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
         public async Task ReadJSON_WebSector_Good_Test(string culture)
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
@@ -515,7 +618,6 @@ namespace CSSPReadGzFileServices.Tests
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             WebSubsector webSubsector = (WebSubsector)((OkObjectResult)actionRes.Result).Value;
             Assert.NotNull(webSubsector);
-            Assert.NotNull(webSubsector.MWQMSubsector);
         }
     }
 }

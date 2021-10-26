@@ -1074,4 +1074,16 @@
   <data name="_CouldNotBeFoundInConfigurationFile_" xml:space="preserve">
     <value>{0} could not be found in the configuration file {1}</value>
   </data>
+  <data name="_IsNotAParentTypeOf_" xml:space="preserve">
+    <value>{0} is not a parent type of {1}</value>
+  </data>
+  <data name="NotAllowedToRemove_" xml:space="preserve">
+    <value>Not allowed to remove {0}</value>
+  </data>
+  <data name="CouldNotDelete_Because_ChildrenExist" xml:space="preserve">
+    <value>Could not delete {0} because {1} children exist</value>
+  </data>
+  <data name="CouldNotDelete_BecauseItIsBeingUsedIn_" xml:space="preserve">
+    <value>Could not delete {0} because it it being used in {1}</value>
+  </data>
 </root>

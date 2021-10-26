@@ -2623,17 +2623,15 @@ namespace CSSPCreateGzFileServices
                           && d.DrogueRunID == p.DrogueRunID
                           select p).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMAnalysisReportParameter>> GetMWQMAnalysisReportParameterListUnderSubsector(int subsectorTVItemID)
+        private async Task<List<MWQMAnalysisReportParameter>> GetAllMWQMAnalysisReportParameterList()
         {
             if (dbLocal != null)
             {
                 return await (from c in dbLocal.MWQMAnalysisReportParameters
-                              where c.SubsectorTVItemID == subsectorTVItemID
                               select c).AsNoTracking().ToListAsync();
             }
 
             return await (from c in db.MWQMAnalysisReportParameters
-                          where c.SubsectorTVItemID == subsectorTVItemID
                           select c).AsNoTracking().ToListAsync();
         }
         private async Task<List<MWQMLookupMPN>> GetMWQMLookupMPN()
@@ -2867,34 +2865,26 @@ namespace CSSPCreateGzFileServices
                           && c.SubsectorTVItemID == subsectorTVItemID
                           select ct).AsNoTracking().ToListAsync();
         }
-        private async Task<MWQMSubsector> GetMWQMSubsector(int subsectorTVItemID)
+        private async Task<List<MWQMSubsector>> GetAllMWQMSubsector()
         {
             if (dbLocal != null)
             {
                 return await (from c in dbLocal.MWQMSubsectors
-                              where c.MWQMSubsectorID == subsectorTVItemID
-                              select c).AsNoTracking().FirstOrDefaultAsync();
+                              select c).AsNoTracking().ToListAsync();
             }
 
             return await (from c in db.MWQMSubsectors
-                          where c.MWQMSubsectorID == subsectorTVItemID
-                          select c).AsNoTracking().FirstOrDefaultAsync();
+                          select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<MWQMSubsectorLanguage>> GetMWQMSubsectorLanguageList(int subsectorTVItemID)
+        private async Task<List<MWQMSubsectorLanguage>> GetAllMWQMSubsectorLanguage()
         {
             if (dbLocal != null)
             {
-                return await (from c in dbLocal.MWQMSubsectors
-                              from cl in dbLocal.MWQMSubsectorLanguages
-                              where c.MWQMSubsectorID == cl.MWQMSubsectorID
-                              && c.MWQMSubsectorID == subsectorTVItemID
+                return await (from cl in dbLocal.MWQMSubsectorLanguages
                               select cl).AsNoTracking().ToListAsync();
             }
 
-            return await (from c in db.MWQMSubsectors
-                          from cl in db.MWQMSubsectorLanguages
-                          where c.MWQMSubsectorID == cl.MWQMSubsectorID
-                          && c.MWQMSubsectorID == subsectorTVItemID
+            return await (from cl in db.MWQMSubsectorLanguages
                           select cl).AsNoTracking().ToListAsync();
         }
         private async Task<List<TideLocation>> GetTideLocation()
@@ -2908,17 +2898,15 @@ namespace CSSPCreateGzFileServices
             return await (from c in db.TideLocations
                           select c).AsNoTracking().ToListAsync();
         }
-        private async Task<List<UseOfSite>> GetUseOfSiteList(int subsectorTVItemID)
+        private async Task<List<UseOfSite>> GetAllUseOfSiteList()
         {
             if (dbLocal != null)
             {
                 return await (from c in dbLocal.UseOfSites
-                              where c.SubsectorTVItemID == subsectorTVItemID
                               select c).AsNoTracking().ToListAsync();
             }
 
             return await (from c in db.UseOfSites
-                          where c.SubsectorTVItemID == subsectorTVItemID
                           select c).AsNoTracking().ToListAsync();
         }
         private async Task<List<PolSourceSite>> GetPolSourceSiteListFromSubsector(TVItem TVItemSubsector)

@@ -41,7 +41,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillChildListTVItemContactModelList(webMunicipality.MunicipalityContactModelList, TVItemMunicipality)) return await Task.FromResult(false);
 
-                if (!await FillInfrastructureModelList(webMunicipality.TVItemModelParentList, webMunicipality.InfrastructureModelList, TVItemMunicipality)) return await Task.FromResult(false);
+                if (!await FillInfrastructureModelList(webMunicipality.InfrastructureModelList, TVItemMunicipality)) return await Task.FromResult(false);
 
                 webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipality(TVItemMunicipality);
 

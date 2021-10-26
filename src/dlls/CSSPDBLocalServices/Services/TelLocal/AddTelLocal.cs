@@ -1,0 +1,137 @@
+/*
+ * Manually edited
+ *
+ */
+
+using CSSPEnums;
+using CSSPDBModels;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using CSSPLocalLoggedInServices;
+using Microsoft.Extensions.Configuration;
+using CSSPWebModels;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using CSSPHelperModels;
+using CSSPLogServices;
+using System.Reflection;
+using System.Security.Cryptography;
+using CSSPReadGzFileServices;
+using CSSPCreateGzFileServices;
+
+namespace CSSPDBLocalServices
+{
+    public partial class TelLocalService : ControllerBase, ITelLocalService
+    {
+        public async Task<ActionResult<TelLocalModel>> AddTelLocal(TelLocalModel telLocalModel)
+        {
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TelLocalModel telLocalModel)";
+            CSSPLogService.FunctionLog(FunctionName);
+
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+            #region Check Tel
+            if (telLocalModel.Tel.TelID != 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "TelID", "0"));
+            }
+
+            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)TelModel.Tel.DBCommand);
+            //if (!string.IsNullOrWhiteSpace(retStr))
+            //{
+            //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
+            //}
+
+            //if (TelModel.Tel.TelTVItemID == 0)
+            //{
+            //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelTVItemID"));
+            //}
+
+            if (string.IsNullOrWhiteSpace(telLocalModel.Tel.TelNumber))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelNumber"));
+            }
+
+            string retStr = enums.EnumTypeOK(typeof(TelTypeEnum), (int?)telLocalModel.Tel.TelType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelType"));
+            }
+            #endregion Check Tel
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, 0);
+
+            Tel telJSON = (from c in webAllTels.TelList
+                                   where c.TelNumber == telLocalModel.Tel.TelNumber
+                                   select c).FirstOrDefault();
+
+            if (telJSON != null)
+            {
+                return await Task.FromResult(Ok(new TelLocalModel() { Tel = telJSON }));
+            }
+
+            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+
+            await TVItemLocalService.AddTVItemParentLocal(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            string TVTextEN = $"{ telLocalModel.Tel.TelNumber }";
+            string TVTextFR = $"{ telLocalModel.Tel.TelNumber }";
+
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Tel, TVTextEN, TVTextFR);
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            int TelIDNew = (from c in dbLocal.Tels
+                                where c.TelID < 0
+                                orderby c.TelID descending
+                                select c.TelID).FirstOrDefault() - 1;
+
+            telLocalModel.Tel.DBCommand = DBCommandEnum.Created;
+            telLocalModel.Tel.TelID = TelIDNew;
+            telLocalModel.Tel.TelTVItemID = tvItemModel.TVItem.TVItemID;
+            telLocalModel.Tel.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+            telLocalModel.Tel.LastUpdateDate_UTC = DateTime.UtcNow;
+
+            dbLocal.Tels.Add(telLocalModel.Tel);
+            try
+            {
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Tel", ex.Message));
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTels, 0);
+            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+            {
+                ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(telLocalModel));
+        }
+    }
+}

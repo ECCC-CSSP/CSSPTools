@@ -21,16 +21,6 @@ namespace CSSPCreateGzFileServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             CSSPLogService.FunctionLog(FunctionName);
 
-            TVItem TVItemRoot = await GetTVItemRoot();
-
-            if (TVItemRoot == null || TVItemRoot.TVType != TVTypeEnum.Root)
-            {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, 
-                    "TVItem", "TVType", TVTypeEnum.Root.ToString()));
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
-            }
-
             WebAllEmails webAllEmails  = new WebAllEmails();
 
             try

@@ -21,20 +21,11 @@ namespace CSSPCreateGzFileServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             CSSPLogService.FunctionLog(FunctionName);
 
-            TVItem TVItemRoot = await GetTVItemRoot();
-
-            if (TVItemRoot == null || TVItemRoot.TVType != TVTypeEnum.Root)
-            {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, "TVItem", "TVType", TVTypeEnum.Root.ToString()));
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
-            }
-
             WebAllContacts webAllContacts  = new WebAllContacts();
 
             try
             {
-                if (!await FillContactModelList(webAllContacts.ContactModelList, TVItemRoot)) return await Task.FromResult(false);
+                if (!await FillAllContactModelList(webAllContacts.ContactModelList)) return await Task.FromResult(false);
 
                 if (dbLocal != null)
                 {

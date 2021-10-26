@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
 
             try
             {
-                if (!await FillAllSearchTVItemModelList(WebAllSearch.TVModelList)) return await Task.FromResult(false);
+                if (!await FillAllSearchTVItemModelList(WebAllSearch.TVItemModelList)) return await Task.FromResult(false);
 
                 if (dbLocal != null)
                 {

@@ -18,7 +18,7 @@ namespace CSSPCreateGzFileServices
 {
     public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillCountryTVItemModelList(List<TVModel> TVModelList, TVItem TVItem)
+        private async Task<bool> FillAllCountryTVItemModelList(List<TVItemModel> TVItemModelList, TVItem TVItem)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVItemModel> TVItemModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
             CSSPLogService.FunctionLog(FunctionName);
@@ -28,14 +28,14 @@ namespace CSSPCreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVModel tvModel = new TVModel();
-                tvModel.TVItem = tvItem;
-                tvModel.TVItemLanguageList = (from c in TVItemLanguageList
+                TVItemModel tvItemModel = new TVItemModel();
+                tvItemModel.TVItem = tvItem;
+                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
                                                   where c.TVItemID == tvItem.TVItemID
                                                   orderby c.Language
                                                   select c).ToList();
 
-                foreach (TVItemLanguage tvItemLanguage in tvModel.TVItemLanguageList)
+                foreach (TVItemLanguage tvItemLanguage in tvItemModel.TVItemLanguageList)
                 {
                     tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
 
@@ -44,7 +44,7 @@ namespace CSSPCreateGzFileServices
                     tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
                 }
 
-                TVModelList.Add(tvModel);
+                TVItemModelList.Add(tvItemModel);
             }
 
             CSSPLogService.EndFunctionLog(FunctionName);

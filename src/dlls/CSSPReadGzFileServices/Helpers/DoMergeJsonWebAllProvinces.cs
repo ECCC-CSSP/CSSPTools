@@ -29,22 +29,22 @@ namespace CSSPReadGzFileServices
 
         private void DoMergeJsonWebAllProvincesTVItemModelList(WebAllProvinces webAllProvinces, WebAllProvinces webAllProvincesLocal)
         {
-            List<TVModel> tvModelLocalList = (from c in webAllProvincesLocal.TVModelList
-                                              where c.TVItem.DBCommand != DBCommandEnum.Original
-                                              || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                              || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
-                                              select c).ToList();
+            List<TVItemModel> tvItemModelLocalList = (from c in webAllProvincesLocal.TVItemModelList
+                                                      where c.TVItem.DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
+                                                      select c).ToList();
 
-            foreach (TVModel tvModelLocal in tvModelLocalList)
+            foreach (TVItemModel tvItemModelLocal in tvItemModelLocalList)
             {
-                TVModel tvModelOriginal = webAllProvinces.TVModelList.Where(c => c.TVItem.TVItemID == tvModelLocal.TVItem.TVItemID).FirstOrDefault();
-                if (tvModelOriginal == null)
+                TVItemModel tvItemModelOriginal = webAllProvinces.TVItemModelList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
                 {
-                    webAllProvinces.TVModelList.Add(tvModelLocal);
+                    webAllProvinces.TVItemModelList.Add(tvItemModelLocal);
                 }
                 else
                 {
-                    SyncTVModel(tvModelOriginal, tvModelLocal);
+                    SyncTVModel(tvItemModelOriginal, tvItemModelLocal);
                 }
             }
         }

@@ -32,14 +32,6 @@ namespace CSSPReadGzFileServices
 
             DoMergeJsonWebSubsectorTVItemModelClassificationList(webSubsector, webSubsectorLocal);
 
-            DoMergeJsonWebSubsectorMWQMAnalysisReportParameterList(webSubsector, webSubsectorLocal);
-
-            DoMergeJsonWebSubsectorMWQMSubsector(webSubsector, webSubsectorLocal);
-
-            DoMergeJsonWebSubsectorMWQMSubsectorLanguageList(webSubsector, webSubsectorLocal);
-
-            DoMergeJsonWebSubsectorUseOfSiteList(webSubsector, webSubsectorLocal);
-
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
@@ -130,63 +122,6 @@ namespace CSSPReadGzFileServices
                 else
                 {
                     SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
-                }
-            }
-        }
-        private void DoMergeJsonWebSubsectorMWQMAnalysisReportParameterList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
-        {
-            List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterLocalList = (from c in webSubsectorLocal.MWQMAnalysisReportParameterList
-                                                                                      where c.SubsectorTVItemID != 0
-                                                                                      && c.DBCommand != DBCommandEnum.Original
-                                                                                      select c).ToList();
-
-            foreach (MWQMAnalysisReportParameter mwqmAnalysisReportParameterLocal in MWQMAnalysisReportParameterLocalList)
-            {
-                MWQMAnalysisReportParameter mwqmAnalysisReportParameterOriginal = webSubsector.MWQMAnalysisReportParameterList.Where(c => c.SubsectorTVItemID == mwqmAnalysisReportParameterLocal.SubsectorTVItemID).FirstOrDefault();
-                if (mwqmAnalysisReportParameterOriginal == null)
-                {
-                    webSubsector.MWQMAnalysisReportParameterList.Add(mwqmAnalysisReportParameterLocal);
-                }
-                else
-                {
-                    mwqmAnalysisReportParameterOriginal = mwqmAnalysisReportParameterLocal;
-                }
-            }
-        }
-        private void DoMergeJsonWebSubsectorMWQMSubsector(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
-        {
-            if (webSubsectorLocal.MWQMSubsector != null)
-            {
-                if (webSubsectorLocal.MWQMSubsector.DBCommand != DBCommandEnum.Original)
-                {
-                    webSubsector.MWQMSubsector = webSubsectorLocal.MWQMSubsector;
-                }
-            }
-        }
-        private void DoMergeJsonWebSubsectorMWQMSubsectorLanguageList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
-        {
-            if (webSubsectorLocal.MWQMSubsectorLanguageList != null)
-            {
-                webSubsector.MWQMSubsectorLanguageList = webSubsectorLocal.MWQMSubsectorLanguageList;
-            }
-        }
-        private void DoMergeJsonWebSubsectorUseOfSiteList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
-        {
-            List<UseOfSite> UseOfSiteLocalList = (from c in webSubsectorLocal.UseOfSiteList
-                                                  where c.SubsectorTVItemID != 0
-                                                  && c.DBCommand != DBCommandEnum.Original
-                                                  select c).ToList();
-
-            foreach (UseOfSite useOfSiteLocal in UseOfSiteLocalList)
-            {
-                UseOfSite useOfSiteOriginal = webSubsector.UseOfSiteList.Where(c => c.SubsectorTVItemID == useOfSiteLocal.SubsectorTVItemID).FirstOrDefault();
-                if (useOfSiteOriginal == null)
-                {
-                    webSubsector.UseOfSiteList.Add(useOfSiteLocal);
-                }
-                else
-                {
-                    useOfSiteOriginal = useOfSiteLocal;
                 }
             }
         }

@@ -23,14 +23,6 @@ namespace CSSPCreateGzFileServices
 
             TVItem TVItemRoot = await GetTVItemRoot();
 
-            if (TVItemRoot == null || TVItemRoot.TVType != TVTypeEnum.Root)
-            {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, 
-                    "TVItem", "TVType", TVTypeEnum.Root.ToString()));
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
-            }
-
             WebAllTels webAllTels  = new WebAllTels();
 
             try

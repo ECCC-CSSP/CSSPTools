@@ -27,15 +27,19 @@ namespace CSSPCreateGzFileServices
             //await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
             //await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
             //await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
+            //await CreateGzFile(WebTypeEnum.WebAllMWQMAnalysisReportParameters, 0);
             //await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+            //await CreateGzFile(WebTypeEnum.WebAllMWQMSubsectors, 0);
             //await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
             //await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
             //await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
             //await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
             //await CreateGzFile(WebTypeEnum.WebAllTels, 0);
             //await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
-            //await CreateGzFile(WebTypeEnum.WebRoot, 0);
             //await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
+            //await CreateGzFile(WebTypeEnum.WebAllUseOfSites, 0);
+
+            //await CreateGzFile(WebTypeEnum.WebRoot, 0);
 
             //foreach (TVItem tvItem in (from c in db.TVItems
             //                           where c.TVType == TVTypeEnum.Country

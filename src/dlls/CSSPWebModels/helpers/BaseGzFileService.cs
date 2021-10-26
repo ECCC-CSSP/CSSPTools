@@ -41,7 +41,9 @@ namespace CSSPWebModels
                 case WebTypeEnum.WebAllContacts: fileName = $"{ WebTypeEnum.WebAllContacts }.gz"; break;
                 case WebTypeEnum.WebAllCountries: fileName = $"{ WebTypeEnum.WebAllCountries }.gz"; break;
                 case WebTypeEnum.WebAllHelpDocs: fileName = $"{ WebTypeEnum.WebAllHelpDocs }.gz"; break;
+                case WebTypeEnum.WebAllMWQMAnalysisReportParameters: fileName = $"{ WebTypeEnum.WebAllMWQMAnalysisReportParameters }.gz"; break;
                 case WebTypeEnum.WebAllMWQMLookupMPNs: fileName = $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz"; break;
+                case WebTypeEnum.WebAllMWQMSubsectors: fileName = $"{ WebTypeEnum.WebAllMWQMSubsectors }.gz"; break;
                 case WebTypeEnum.WebAllMunicipalities: fileName = $"{ WebTypeEnum.WebAllMunicipalities }.gz"; break;
                 case WebTypeEnum.WebAllPolSourceGroupings: fileName = $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz"; break;
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms: fileName = $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz"; break;
@@ -49,6 +51,7 @@ namespace CSSPWebModels
                 case WebTypeEnum.WebAllReportTypes: fileName = $"{ WebTypeEnum.WebAllReportTypes }.gz"; break;
                 case WebTypeEnum.WebAllSearch: fileName = $"{ WebTypeEnum.WebAllSearch }.gz"; break;
                 case WebTypeEnum.WebAllTideLocations: fileName = $"{ WebTypeEnum.WebAllTideLocations }.gz"; break;
+                case WebTypeEnum.WebAllUseOfSites: fileName = $"{ WebTypeEnum.WebAllUseOfSites }.gz"; break;
                 case WebTypeEnum.WebArea: fileName = $"{ WebTypeEnum.WebArea }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebClimateSites: fileName = $"{ WebTypeEnum.WebClimateSites }_{ TVItemID }.gz"; break;
                 case WebTypeEnum.WebCountry: fileName = $"{ WebTypeEnum.WebCountry }_{ TVItemID }.gz"; break;

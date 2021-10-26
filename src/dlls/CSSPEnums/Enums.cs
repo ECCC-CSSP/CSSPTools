@@ -1292,6 +1292,9 @@ namespace CSSPEnums
         WebMonitoringOtherStatsCountry = 34,
         WebMonitoringRoutineStatsProvince = 35,
         WebMonitoringOtherStatsProvince = 36,
+        WebAllMWQMAnalysisReportParameters = 37,
+        WebAllMWQMSubsectors = 38,
+        WebAllUseOfSites = 39,
     }
     public enum WebTideDataSetEnum
     {

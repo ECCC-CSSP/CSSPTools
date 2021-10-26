@@ -18,9 +18,9 @@ namespace CSSPCreateGzFileServices
 {
     public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillContactModelList(List<ContactModel> ContactModelList, TVItem TVItem)
+        private async Task<bool> FillAllContactModelList(List<ContactModel> ContactModelList)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ContactModel> ContactModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<ContactModel> ContactModelList)";
             CSSPLogService.FunctionLog(FunctionName);
 
             List<Contact> ContactList = await GetAllContact();

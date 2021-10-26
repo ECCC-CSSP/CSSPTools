@@ -29,22 +29,22 @@ namespace CSSPReadGzFileServices
 
         private void DoMergeJsonWebAllCountriesTVItemModelList(WebAllCountries webAllCountries, WebAllCountries webAllCountriesLocal)
         {
-            List<TVModel> tvModelLocalList = (from c in webAllCountriesLocal.TVModelList
+            List<TVItemModel> tvItemModelLocalList = (from c in webAllCountriesLocal.TVItemModelList
                                                       where c.TVItem.DBCommand != DBCommandEnum.Original
                                                       || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
                                                       || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original
                                                       select c).ToList();
-
-            foreach (TVModel tvModelLocal in tvModelLocalList)
+            
+            foreach (TVItemModel tvItemModelLocal in tvItemModelLocalList)
             {
-                TVModel tvModelOriginal = webAllCountries.TVModelList.Where(c => c.TVItem.TVItemID == tvModelLocal.TVItem.TVItemID).FirstOrDefault();
-                if (tvModelOriginal == null)
+                TVItemModel tvItemModelOriginal = webAllCountries.TVItemModelList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
+                if (tvItemModelOriginal == null)
                 {
-                    webAllCountries.TVModelList.Add(tvModelLocal);
+                    webAllCountries.TVItemModelList.Add(tvItemModelLocal);
                 }
                 else
                 {
-                    SyncTVModel(tvModelOriginal, tvModelLocal);
+                    SyncTVModel(tvItemModelOriginal, tvItemModelLocal);
                 }
             }
         }

@@ -38,6 +38,7 @@ namespace CSSPDBLocalServices
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
+            #region Check Address
             if (addressLocalModel.Address.AddressID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AddressID", "0"));
@@ -100,6 +101,7 @@ namespace CSSPDBLocalServices
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "GoogleAddressText"));
             //}
+            #endregion Check Address
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -124,111 +126,72 @@ namespace CSSPDBLocalServices
             WebAllProvinces webAllProvinces = await CSSPReadGzFileService.GetUncompressJSON<WebAllProvinces>(WebTypeEnum.WebAllProvinces, 0);
             WebAllMunicipalities webAllMunicipalities = await CSSPReadGzFileService.GetUncompressJSON<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities, 0);
 
-            TVModel tvModelCountry = (from c in webAllCountries.TVModelList
-                                      where c.TVItem.TVItemID == addressLocalModel.Address.CountryTVItemID
-                                      select c).FirstOrDefault();
+            TVItemModel tvItemModelCountry = (from c in webAllCountries.TVItemModelList
+                                              where c.TVItem.TVItemID == addressLocalModel.Address.CountryTVItemID
+                                              select c).FirstOrDefault();
 
-            if (tvModelCountry == null)
+            if (tvItemModelCountry == null)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Country", "CountryTVItemID", addressLocalModel.Address.CountryTVItemID.ToString()));
             }
 
-            TVModel tvModelProvince = (from c in webAllProvinces.TVModelList
+            TVItemModel tvItemModelProvince = (from c in webAllProvinces.TVItemModelList
                                        where c.TVItem.TVItemID == addressLocalModel.Address.ProvinceTVItemID
                                        select c).FirstOrDefault();
 
-            if (tvModelProvince == null)
+            if (tvItemModelProvince == null)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Province", "ProvinceTVItemID", addressLocalModel.Address.ProvinceTVItemID.ToString()));
             }
 
-            TVModel tvModelMunicipality = (from c in webAllMunicipalities.TVModelList
+            TVItemModel tvItemModelMunicipality = (from c in webAllMunicipalities.TVItemModelList
                                            where c.TVItem.TVItemID == addressLocalModel.Address.MunicipalityTVItemID
                                            select c).FirstOrDefault();
 
-            if (tvModelMunicipality == null)
+            if (tvItemModelMunicipality == null)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Municipality", "MunicipalityTVItemID", addressLocalModel.Address.MunicipalityTVItemID.ToString()));
             }
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            foreach (TVItemModel tvItemModel in webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel))
-            {
-                if (!(from c in dbLocal.TVItems
-                      where c.TVItemID == tvItemModel.TVItem.TVItemID
-                      select c).Any())
-                {
-                    try
-                    {
-                        dbLocal.TVItems.Add(tvItemModel.TVItem);
-                        dbLocal.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Address_TVItem_Parents", ex.Message));
-                    }
+            await TVItemLocalService.AddTVItemParentLocal(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
 
-                    if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-                    foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
-                    {
-                        if (!(from c in dbLocal.TVItemLanguages
-                              where c.TVItemID == tvItemModel.TVItem.TVItemID
-                              && c.Language == lang
-                              select c).Any())
-                        {
-
-                            try
-                            {
-                                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang - 1]);
-                                dbLocal.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Address_TVItemLanguage_Parents", ex.Message));
-                            }
-
-                            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-                        }
-                    }
-                }
-            }
-
-            TVItem tvItemNew = await AddAddressTVItemLocal(webRoot.TVItemModel.TVItem);
-            if (tvItemNew == null) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             string TVTextEN = $"{ addressLocalModel.Address.StreetNumber } { addressLocalModel.Address.StreetName } " +
                 $"{ enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), (int)addressLocalModel.Address.StreetType) }, " +
-                $"{ tvModelMunicipality.TVItemLanguageList[0].TVText } " +
-                $"{ tvModelProvince.TVItemLanguageList[0].TVText } { tvModelCountry.TVItemLanguageList[0].TVText }";
-
-            TVItemLanguage tvItemLanguageNewEN = await AddAddressTVItemLanguageLocal(tvItemNew, LanguageEnum.en, TVTextEN);
-            if (tvItemLanguageNewEN == null) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                $"{ tvItemModelMunicipality.TVItemLanguageList[0].TVText } " +
+                $"{ tvItemModelProvince.TVItemLanguageList[0].TVText } { tvItemModelCountry.TVItemLanguageList[0].TVText }";
 
             string TVTextFR = $"{ addressLocalModel.Address.StreetNumber } { addressLocalModel.Address.StreetName } " +
                 $"{ enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), (int)addressLocalModel.Address.StreetType) }, " +
-                $"{ tvModelMunicipality.TVItemLanguageList[1].TVText } " +
-                $"{ tvModelProvince.TVItemLanguageList[1].TVText } { tvModelCountry.TVItemLanguageList[1].TVText }";
+                $"{ tvItemModelMunicipality.TVItemLanguageList[1].TVText } " +
+                $"{ tvItemModelProvince.TVItemLanguageList[1].TVText } { tvItemModelCountry.TVItemLanguageList[1].TVText }";
 
-            TVItemLanguage tvItemLanguageNewFR = await AddAddressTVItemLanguageLocal(tvItemNew, LanguageEnum.fr, TVTextFR);
-            if (tvItemLanguageNewFR == null) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Address, TVTextEN, TVTextFR);
 
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             int AddressIDNew = (from c in dbLocal.Addresses
                                 where c.AddressID < 0
                                 orderby c.AddressID descending
                                 select c.AddressID).FirstOrDefault() - 1;
 
-            addressLocalModel.Address.DBCommand = DBCommandEnum.Created;
-            addressLocalModel.Address.AddressID = AddressIDNew;
-            addressLocalModel.Address.AddressTVItemID = tvItemNew.TVItemID;
-            addressLocalModel.Address.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-            addressLocalModel.Address.LastUpdateDate_UTC = DateTime.UtcNow;
 
-            dbLocal.Addresses.Add(addressLocalModel.Address);
             try
             {
+                addressLocalModel.Address.DBCommand = DBCommandEnum.Created;
+                addressLocalModel.Address.AddressID = AddressIDNew;
+                addressLocalModel.Address.AddressTVItemID = tvItemModel.TVItem.TVItemID;
+                addressLocalModel.Address.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                addressLocalModel.Address.LastUpdateDate_UTC = DateTime.UtcNow;
+
+                dbLocal.Addresses.Add(addressLocalModel.Address);
                 dbLocal.SaveChanges();
             }
             catch (Exception ex)

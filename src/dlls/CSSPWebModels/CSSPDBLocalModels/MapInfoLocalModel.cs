@@ -12,8 +12,6 @@ namespace CSSPWebModels
     [NotMapped]
     public partial class MapInfoLocalModel
     {
-        public TVItem TVItem { get; set; }
-        public TVItem ParentTVItem { get; set; }
         public MapInfo MapInfo { get; set; }
         public List<MapInfoPoint> MapInfoPointList { get; set; }
 

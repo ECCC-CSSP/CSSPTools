@@ -17,7 +17,7 @@ namespace CSSPCreateGzFileServices
 {
     public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> FillAllSearchTVItemModelList(List<TVModel> TVSearchList)
+        private async Task<bool> FillAllSearchTVItemModelList(List<TVItemModel> TVItemSearchList)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<TVItemModel> TVItemSearchList)";
             CSSPLogService.FunctionLog(FunctionName);
@@ -27,17 +27,17 @@ namespace CSSPCreateGzFileServices
 
             foreach (TVItem tvItem in TVItemList)
             {
-                TVModel tvModel = new TVModel();
-                tvModel.TVItem = tvItem;
-                tvModel.TVItemLanguageList = (from c in TVItemLanguageList
+                TVItemModel tvItemModel = new TVItemModel();
+                tvItemModel.TVItem = tvItem;
+                tvItemModel.TVItemLanguageList = (from c in TVItemLanguageList
                                                   where c.TVItemID == tvItem.TVItemID
                                                   orderby c.Language
                                                   select c).ToList();
 
-                TVSearchList.Add(tvModel);
+                TVItemSearchList.Add(tvItemModel);
             }
 
-            TVSearchList = (from c in TVSearchList
+            TVItemSearchList = (from c in TVItemSearchList
                                 orderby c.TVItem.TVLevel
                                 select c).ToList();
 

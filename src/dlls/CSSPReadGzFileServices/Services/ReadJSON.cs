@@ -225,8 +225,14 @@ namespace CSSPReadGzFileServices
                                 case WebTypeEnum.WebAllMunicipalities:
                                     await DoMergeJsonWebAllMunicipalities(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
                                     break;
+                                case WebTypeEnum.WebAllMWQMAnalysisReportParameters:
+                                    await DoMergeJsonWebAllMWQMAnalysisReportParameters(FromAzureStore as WebAllMWQMAnalysisReportParameters, FromLocal as WebAllMWQMAnalysisReportParameters);
+                                    break;
                                 case WebTypeEnum.WebAllMWQMLookupMPNs:
                                     await DoMergeJsonWebAllMWQMLookupMPNs(FromAzureStore as WebAllMWQMLookupMPNs, FromLocal as WebAllMWQMLookupMPNs);
+                                    break;
+                                case WebTypeEnum.WebAllMWQMSubsectors:
+                                    await DoMergeJsonWebAllMWQMSubsectors(FromAzureStore as WebAllMWQMSubsectors, FromLocal as WebAllMWQMSubsectors);
                                     break;
                                 case WebTypeEnum.WebAllPolSourceGroupings:
                                     await DoMergeJsonWebAllPolSourceGroupings(FromAzureStore as WebAllPolSourceGroupings, FromLocal as WebAllPolSourceGroupings);
@@ -240,11 +246,17 @@ namespace CSSPReadGzFileServices
                                 case WebTypeEnum.WebAllReportTypes:
                                     await DoMergeJsonWebAllReportTypes(FromAzureStore as WebAllReportTypes, FromLocal as WebAllReportTypes);
                                     break;
+                                case WebTypeEnum.WebAllSearch:
+                                    await DoMergeJsonWebAllSearch(FromAzureStore as WebAllSearch, FromLocal as WebAllSearch);
+                                    break;
                                 case WebTypeEnum.WebAllTels:
                                     await DoMergeJsonWebAllTels(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
                                     break;
                                 case WebTypeEnum.WebAllTideLocations:
                                     await DoMergeJsonWebAllTideLocations(FromAzureStore as WebAllTideLocations, FromLocal as WebAllTideLocations); ;
+                                    break;
+                                case WebTypeEnum.WebAllUseOfSites:
+                                    await DoMergeJsonWebAllUseOfSites(FromAzureStore as WebAllUseOfSites, FromLocal as WebAllUseOfSites);
                                     break;
                                 case WebTypeEnum.WebArea:
                                     await DoMergeJsonWebArea(FromAzureStore as WebArea, FromLocal as WebArea);
@@ -302,9 +314,6 @@ namespace CSSPReadGzFileServices
                                     break;
                                 case WebTypeEnum.WebRoot:
                                     await DoMergeJsonWebRoot(FromAzureStore as WebRoot, FromLocal as WebRoot);
-                                    break;
-                                case WebTypeEnum.WebAllSearch:
-                                    await DoMergeJsonWebAllSearch(FromAzureStore as WebAllSearch, FromLocal as WebAllSearch);
                                     break;
                                 case WebTypeEnum.WebSector:
                                     await DoMergeJsonWebSector(FromAzureStore as WebSector, FromLocal as WebSector);

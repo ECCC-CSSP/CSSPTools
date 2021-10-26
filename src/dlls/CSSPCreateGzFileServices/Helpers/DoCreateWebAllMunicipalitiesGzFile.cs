@@ -35,7 +35,7 @@ namespace CSSPCreateGzFileServices
 
             try
             {
-                if (!await FillAllMunicipalityModelList(webAllMunicipalities.TVModelList, TVItemRoot)) return await Task.FromResult(false);
+                if (!await FillAllMunicipalityModelList(webAllMunicipalities.TVItemModelList, TVItemRoot)) return await Task.FromResult(false);
 
                 if (dbLocal != null)
                 {

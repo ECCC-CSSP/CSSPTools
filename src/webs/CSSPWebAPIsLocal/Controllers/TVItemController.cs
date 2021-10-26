@@ -55,7 +55,9 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await TVItemService.DeleteTVItemLocal(postTVItemModel);
+            return await Task.FromResult(Ok(false));
+
+            //return await TVItemService.DeleteTVItemLocal(postTVItemModel);
         }
         [HttpPost]
         public async Task<ActionResult<bool>> Add(TVItemLocalModel postTVItemModel)
@@ -63,7 +65,8 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await TVItemService.AddTVItemLocal(postTVItemModel);
+            return await Task.FromResult(Ok(false));
+            //return await TVItemService.AddTVItemLocal(postTVItemModel);
         }
         [HttpPut]
         public async Task<ActionResult<bool>> Modify(TVItemLocalModel postTVItemModel)
@@ -71,7 +74,8 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await TVItemService.ModifyTVItemLocal(postTVItemModel);
+            return await Task.FromResult(Ok(false));
+            //return await TVItemService.ModifyTVItemLocal(postTVItemModel);
         }
         #endregion Functions public
 

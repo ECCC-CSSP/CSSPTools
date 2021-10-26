@@ -51,9 +51,10 @@ namespace CSSPCreateGzFileServices
             List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
             List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
 
+            List<TVItem> TVItemFileList = await GetTVItemAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
+
             foreach (TVItem tvItemMikeScenario in TVItemListMikeScenario)
             {
-
                 MikeScenarioModel MikeScenarioModel = new MikeScenarioModel();
 
                 MikeScenarioModel.MikeScenario = MIKEScenarioList.Where(c => c.MikeScenarioTVItemID == tvItemMikeScenario.TVItemID).FirstOrDefault();
@@ -93,16 +94,20 @@ namespace CSSPCreateGzFileServices
                 MikeScenarioModel.TVItemModel = tvItemModel;
 
                 // doing MikeScenarioModel.TVItemFileList
-                foreach (TVFile tvFile in TVFileListAll.Where(c => c.TVFileTVItemID == tvItemMikeScenario.TVItemID))
+                foreach (TVItem tvItemFile in TVItemFileList.Where(c => c.TVPath.StartsWith(tvItemMikeScenario.TVPath + "p")))
                 {
-                    TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVFile = tvFile;
-                    tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
-                                                      where c.TVFileID == tvFile.TVFileID
-                                                      orderby c.Language
-                                                      select c).ToList();
+                    TVFile tvFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItemFile.TVItemID).FirstOrDefault();
+                    if (tvFile != null)
+                    {
+                        TVFileModel tvFileModel = new TVFileModel();
+                        tvFileModel.TVFile = tvFile;
+                        tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
+                                                          where c.TVFileID == tvFileModel.TVFile.TVFileID
+                                                          orderby c.Language
+                                                          select c).ToList();
 
-                    MikeScenarioModel.TVFileModelList.Add(tvFileModel);
+                        MikeScenarioModel.TVFileModelList.Add(tvFileModel);
+                    }
                 }
 
                 // doing MikeScenarioModel.MikeSourceModelList

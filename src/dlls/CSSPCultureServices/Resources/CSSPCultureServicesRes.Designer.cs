@@ -196,6 +196,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not a parent type of {1}.
+        /// </summary>
+        public static string _IsNotAParentTypeOf_ {
+            get {
+                return ResourceManager.GetString("_IsNotAParentTypeOf_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is not a valid email.
         /// </summary>
         public static string _IsNotAValidEmail {
@@ -840,6 +849,24 @@ namespace CSSPCultureServices.Resources {
         public static string CouldNotCreateTemp_FileError_ {
             get {
                 return ResourceManager.GetString("CouldNotCreateTemp_FileError_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete {0} because {1} children exist.
+        /// </summary>
+        public static string CouldNotDelete_Because_ChildrenExist {
+            get {
+                return ResourceManager.GetString("CouldNotDelete_Because_ChildrenExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete {0} because it it being used in {1}.
+        /// </summary>
+        public static string CouldNotDelete_BecauseItIsBeingUsedIn_ {
+            get {
+                return ResourceManager.GetString("CouldNotDelete_BecauseItIsBeingUsedIn_", resourceCulture);
             }
         }
         
@@ -2199,6 +2226,15 @@ namespace CSSPCultureServices.Resources {
         public static string NotAllowedToChangeContactInformation {
             get {
                 return ResourceManager.GetString("NotAllowedToChangeContactInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not allowed to remove {0}.
+        /// </summary>
+        public static string NotAllowedToRemove_ {
+            get {
+                return ResourceManager.GetString("NotAllowedToRemove_", resourceCulture);
             }
         }
         

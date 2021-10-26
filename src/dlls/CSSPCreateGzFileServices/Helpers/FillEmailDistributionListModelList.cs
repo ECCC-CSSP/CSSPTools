@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CSSPWebModels;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace CSSPCreateGzFileServices
 {

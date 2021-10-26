@@ -15,17 +15,17 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
     {
-        private void SyncTVModel(TVModel tvModelOriginal, TVModel tvModelLocal)
+        private void SyncTVModel(TVItemModel tvItemModelOriginal, TVItemModel tvItemModelLocal)
         {
-            if (tvModelLocal != null)
+            if (tvItemModelLocal != null)
             {
-                if (tvModelLocal.TVItem != null)
+                if (tvItemModelLocal.TVItem != null)
                 {
-                    tvModelOriginal.TVItem = tvModelLocal.TVItem;
+                    tvItemModelOriginal.TVItem = tvItemModelLocal.TVItem;
                 }
-                if (tvModelLocal.TVItemLanguageList != null)
+                if (tvItemModelLocal.TVItemLanguageList != null)
                 {
-                    tvModelOriginal.TVItemLanguageList = tvModelLocal.TVItemLanguageList;
+                    tvItemModelOriginal.TVItemLanguageList = tvItemModelLocal.TVItemLanguageList;
                 }
             }
         }

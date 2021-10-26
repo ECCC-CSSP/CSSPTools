@@ -28,23 +28,23 @@ namespace CSSPReadGzFileServices
         }
         private void DoMergeJsonWebAllSearchTVItemModelList(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
         {
-            List<TVModel> TVModelList = (from c in webAllSearchLocal.TVModelList
-                                         where c.TVItem.TVItemID != 0
-                                         && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                         || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                         || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                         select c).ToList();
+            List<TVItemModel> TVItemModelList = (from c in webAllSearchLocal.TVItemModelList
+                                                 where c.TVItem.TVItemID != 0
+                                                 && (c.TVItem.DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                 || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                 select c).ToList();
 
-            foreach (TVModel tvModel in TVModelList)
+            foreach (TVItemModel tvItemModel in TVItemModelList)
             {
-                TVModel TVModelOriginal = webAllSearch.TVModelList.Where(c => c.TVItem.TVItemID == tvModel.TVItem.TVItemID).FirstOrDefault();
-                if (TVModelOriginal == null)
+                TVItemModel TVItemModelOriginal = webAllSearch.TVItemModelList.Where(c => c.TVItem.TVItemID == tvItemModel.TVItem.TVItemID).FirstOrDefault();
+                if (TVItemModelOriginal == null)
                 {
-                    webAllSearch.TVModelList.Add(tvModel);
+                    webAllSearch.TVItemModelList.Add(tvItemModel);
                 }
                 else
                 {
-                    SyncTVModel(TVModelOriginal, tvModel);
+                    SyncTVModel(TVItemModelOriginal, tvItemModel);
                 }
             }
         }

@@ -39,6 +39,8 @@ namespace CSSPCreateGzFileServices
             List<TVFile> TVFileListAll = await GetAllTVFileListUnder(TVItem);
             List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
 
+            List<TVItem> TVItemFileList = await GetTVItemAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
+
             foreach (TVItem tvItem in TVItemList)
             {
 
@@ -73,17 +75,20 @@ namespace CSSPCreateGzFileServices
 
                 polSourceSiteModel.TVItemModel = TVItemModel;
 
-                // doing PolSourceSiteModel.TVItemFileList
-                foreach (TVFile tvFile in TVFileListAll.Where(c => c.TVFileTVItemID == tvItem.TVItemID))
+                foreach (TVItem tvItemFile in TVItemFileList.Where(c => c.TVPath.StartsWith(tvItem.TVPath + "p")))
                 {
-                    TVFileModel tvFileModel = new TVFileModel();
-                    tvFileModel.TVFile = tvFile;
-                    tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
-                                                      where c.TVFileID == tvFile.TVFileID
-                                                      orderby c.Language 
-                                                      select c).ToList();
+                    TVFile tvFile = TVFileListAll.Where(c => c.TVFileTVItemID == tvItemFile.TVItemID).FirstOrDefault();
+                    if (tvFile != null)
+                    {
+                        TVFileModel tvFileModel = new TVFileModel();
+                        tvFileModel.TVFile = tvFile;
+                        tvFileModel.TVFileLanguageList = (from c in TVFileLanguageListAll
+                                                          where c.TVFileID == tvFileModel.TVFile.TVFileID
+                                                          orderby c.Language
+                                                          select c).ToList();
 
-                    polSourceSiteModel.TVFileModelList.Add(tvFileModel);
+                        polSourceSiteModel.TVFileModelList.Add(tvFileModel);
+                    }
                 }
 
                 polSourceSiteModel.PolSourceSite = PolSourceSiteList.Where(c => c.PolSourceSiteTVItemID == tvItem.TVItemID).FirstOrDefault();

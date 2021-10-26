@@ -264,6 +264,47 @@ namespace CSSPCreateGzFileServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task CreateGzFile_DeleteGzFile_WebAllMWQMAnalysisReportParameters_Good_Test(string culture)
+        {
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+            CheckVar(actionRes, WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+            actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+            CheckVar(actionRes, WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+            actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+            CheckVar(actionRes, WebTypeEnum.WebAllMWQMAnalysisReportParameters);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task CreateGzFile_DeleteGzFile_WebAllMWQMLookupMPNs_Good_Test(string culture)
         {
             Assert.True(await CSSPCreateGzFileServiceSetup(culture));
@@ -300,6 +341,47 @@ namespace CSSPCreateGzFileServices.Tests
 
             await CSSPLogService.Save();
             
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFile_DeleteGzFile_DoCreateWebAllMWQMSubsectors_Good_Test(string culture)
+        {
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllMWQMSubsectors);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMSubsectors);
+            CheckVar(actionRes, WebTypeEnum.WebAllMWQMSubsectors);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllMWQMSubsectors);
+            actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllMWQMSubsectors);
+            CheckVar(actionRes, WebTypeEnum.WebAllMWQMSubsectors);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllMWQMSubsectors);
+            actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMSubsectors);
+            CheckVar(actionRes, WebTypeEnum.WebAllMWQMSubsectors);
+
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
@@ -546,6 +628,47 @@ namespace CSSPCreateGzFileServices.Tests
 
             await CSSPLogService.Save();
             
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task CreateGzFile_DeleteGzFile_WebAllUseOfSites_Good_Test(string culture)
+        {
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllUseOfSites);
+            var actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllUseOfSites);
+            CheckVar(actionRes, WebTypeEnum.WebAllUseOfSites);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllUseOfSites);
+            actionRes = await CreateGzFileService.DeleteGzFile(WebTypeEnum.WebAllUseOfSites);
+            CheckVar(actionRes, WebTypeEnum.WebAllUseOfSites);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+
+            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
+
+            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+            SetVar(WebTypeEnum.WebAllUseOfSites);
+            actionRes = await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllUseOfSites);
+            CheckVar(actionRes, WebTypeEnum.WebAllUseOfSites);
+
+            await CSSPLogService.Save();
+
             Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]

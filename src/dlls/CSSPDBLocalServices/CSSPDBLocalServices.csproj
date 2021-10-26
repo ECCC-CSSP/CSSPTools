@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Services\Generated\" />
+    <Folder Include="Services\HelpDocLocal\Helpers\" />
   </ItemGroup>
 
 </Project>

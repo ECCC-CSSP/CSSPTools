@@ -35,7 +35,12 @@ namespace CSSPDBLocalServices.Tests
         protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
         protected IAddressLocalService AddressLocalService { get; set; }
         protected IAppTaskLocalService AppTaskLocalService { get; set; }
+        protected ICountryLocalService CountryLocalService { get; set; }
+        protected IEmailLocalService EmailLocalService { get; set; }
+        protected IHelpDocLocalService HelpDocLocalService { get; set; }
         protected IMapInfoLocalService MapInfoLocalService { get; set; }
+        protected IMWQMLookupMPNLocalService MWQMLookupMPNLocalService { get; set; }
+        protected ITelLocalService TelLocalService { get; set; }
         protected ITVItemLocalService TVItemLocalService { get; set; }
         protected CSSPDBManageContext dbManage { get; set; }
         protected ICSSPLogService CSSPLogService { get; set; }
@@ -106,7 +111,12 @@ namespace CSSPDBLocalServices.Tests
 
             Services.AddSingleton<IAddressLocalService, AddressLocalService>();
             Services.AddSingleton<IAppTaskLocalService, AppTaskLocalService>();
+            Services.AddSingleton<ICountryLocalService, CountryLocalService>();
+            Services.AddSingleton<IEmailLocalService, EmailLocalService>();
+            Services.AddSingleton<IHelpDocLocalService, HelpDocLocalService>();
             Services.AddSingleton<IMapInfoLocalService, MapInfoLocalService>();
+            Services.AddSingleton<IMWQMLookupMPNLocalService, MWQMLookupMPNLocalService>();
+            Services.AddSingleton<ITelLocalService, TelLocalService>();
             Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
             Assert.True(await DirectoryAndDBSetup());
@@ -151,8 +161,23 @@ namespace CSSPDBLocalServices.Tests
             AppTaskLocalService = Provider.GetService<IAppTaskLocalService>();
             Assert.NotNull(AppTaskLocalService);
 
+            CountryLocalService = Provider.GetService<ICountryLocalService>();
+            Assert.NotNull(CountryLocalService);
+
+            EmailLocalService = Provider.GetService<IEmailLocalService>();
+            Assert.NotNull(EmailLocalService);
+
+            HelpDocLocalService = Provider.GetService<IHelpDocLocalService>();
+            Assert.NotNull(HelpDocLocalService);
+
             MapInfoLocalService = Provider.GetService<IMapInfoLocalService>();
             Assert.NotNull(MapInfoLocalService);
+
+            MWQMLookupMPNLocalService = Provider.GetService<IMWQMLookupMPNLocalService>();
+            Assert.NotNull(MWQMLookupMPNLocalService);
+
+            TelLocalService = Provider.GetService<ITelLocalService>();
+            Assert.NotNull(TelLocalService);
 
             TVItemLocalService = Provider.GetService<ITVItemLocalService>();
             Assert.NotNull(TVItemLocalService);

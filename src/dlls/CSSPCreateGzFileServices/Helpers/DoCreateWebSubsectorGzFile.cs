@@ -41,11 +41,6 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillFileModelList(webSubsector.TVFileModelList, TVItemSubsector)) return await Task.FromResult(false);
 
-                webSubsector.MWQMAnalysisReportParameterList = await GetMWQMAnalysisReportParameterListUnderSubsector(SubsectorTVItemID);
-                webSubsector.MWQMSubsector = await GetMWQMSubsector(SubsectorTVItemID);
-                webSubsector.MWQMSubsectorLanguageList = await GetMWQMSubsectorLanguageList(SubsectorTVItemID);
-                webSubsector.UseOfSiteList = await GetUseOfSiteList(SubsectorTVItemID);
-
                 if (dbLocal != null)
                 {
                     if (!await DoStoreLocal<WebSubsector>(webSubsector, $"{ WebTypeEnum.WebSubsector }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);

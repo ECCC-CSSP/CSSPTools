@@ -25,7 +25,7 @@ namespace CSSPCreateGzFileServices
 
             if (TVItemRoot == null || TVItemRoot.TVType != TVTypeEnum.Root)
             {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_, 
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_,
                     "TVItem", "TVType", TVTypeEnum.Root.ToString()));
                 CSSPLogService.EndFunctionLog(FunctionName);
                 return await Task.FromResult(false);
@@ -35,7 +35,7 @@ namespace CSSPCreateGzFileServices
 
             try
             {
-                if (!await FillCountryTVItemModelList(webAllCountries.TVModelList, TVItemRoot)) return await Task.FromResult(false);
+                if (!await FillAllCountryTVItemModelList(webAllCountries.TVItemModelList, TVItemRoot)) return await Task.FromResult(false);
 
                 if (dbLocal != null)
                 {
