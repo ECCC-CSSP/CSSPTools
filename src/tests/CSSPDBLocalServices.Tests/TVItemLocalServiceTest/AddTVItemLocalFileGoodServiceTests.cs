@@ -44,6 +44,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -68,6 +75,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -92,6 +106,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -116,6 +137,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -146,6 +174,14 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
+
+            tvItemModelParentList.Add(infrastructureModel.TVItemModel);
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -176,6 +212,14 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+
+            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -203,6 +247,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webArea.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -230,6 +281,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webSector.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -257,6 +315,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -287,6 +352,14 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webMWQMSites.TVItemModelParentList;
+
+            tvItemModelParentList.Add(mwqmSiteModel.TVItemModel);
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -317,6 +390,14 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(tvItemModel);
 
             CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+
+            List<TVItemModel> tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
+
+            tvItemModelParentList.Add(polSourceSiteModel.TVItemModel);
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+            CheckLocalJsonFileCreated(tvItemModelParentList);
         }
     }
 }

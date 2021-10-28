@@ -25,9 +25,6 @@ namespace CSSPDBLocalServices.Tests
     {
         private void CheckCreatedTVItemAndTVItemLanguageList(TVItemModel tvItemModel, string TVTextEN, string TVTextFR)
         {
-            Assert.Equal(1, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(2, (from c in dbLocal.TVItemLanguages select c).Count());
-
             TVItem tvItemDB = (from c in dbLocal.TVItems
                                where c.TVItemID == tvItemModel.TVItem.TVItemID
                                select c).FirstOrDefault();
@@ -41,8 +38,8 @@ namespace CSSPDBLocalServices.Tests
             Assert.Equal(tvItemDB.TVPath, tvItemModel.TVItem.TVPath);
             Assert.Equal(tvItemDB.TVType, tvItemModel.TVItem.TVType);
             Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, tvItemModel.TVItem.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < tvItemModel.TVItem.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > tvItemModel.TVItem.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < tvItemModel.TVItem.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > tvItemModel.TVItem.LastUpdateDate_UTC);
 
             List<TVItemLanguage> tvItemLanguageListDB = (from c in dbLocal.TVItemLanguages
                                                          where c.TVItemID == tvItemModel.TVItem.TVItemID
@@ -56,8 +53,8 @@ namespace CSSPDBLocalServices.Tests
             Assert.Equal(TranslationStatusEnum.Translated, tvItemModel.TVItemLanguageList[0].TranslationStatus);
             Assert.Equal(TVTextEN, tvItemModel.TVItemLanguageList[0].TVText);
             Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, tvItemModel.TVItemLanguageList[0].LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < tvItemModel.TVItemLanguageList[0].LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > tvItemModel.TVItemLanguageList[0].LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < tvItemModel.TVItemLanguageList[0].LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > tvItemModel.TVItemLanguageList[0].LastUpdateDate_UTC);
 
             Assert.Equal(DBCommandEnum.Created, tvItemModel.TVItemLanguageList[1].DBCommand);
             Assert.Equal(-1, tvItemModel.TVItemLanguageList[1].TVItemID);
@@ -65,8 +62,8 @@ namespace CSSPDBLocalServices.Tests
             Assert.Equal(TranslationStatusEnum.Translated, tvItemModel.TVItemLanguageList[1].TranslationStatus);
             Assert.Equal(TVTextFR, tvItemModel.TVItemLanguageList[1].TVText);
             Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, tvItemModel.TVItemLanguageList[1].LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < tvItemModel.TVItemLanguageList[1].LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > tvItemModel.TVItemLanguageList[1].LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < tvItemModel.TVItemLanguageList[1].LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > tvItemModel.TVItemLanguageList[1].LastUpdateDate_UTC);
         }
     }
 }

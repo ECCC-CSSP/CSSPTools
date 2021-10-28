@@ -2302,6 +2302,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent TVItemModel not found for {0}.
+        /// </summary>
+        public static string ParentTVItemModelNotFoundFor_ {
+            get {
+                return ResourceManager.GetString("ParentTVItemModelNotFoundFor_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {

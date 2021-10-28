@@ -84,6 +84,10 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
+            List<TVItemModel> tvItemModelParentList = await GetTVItemModelParentList(tvItemParent, tvType);
+
+            await AddTVItemParentLocal(tvItemModelParentList);
+
             #region TVItem
             int TVItemIDNew = (from c in dbLocal.TVItems
                                where c.TVItemID < 0
@@ -187,6 +191,12 @@ namespace CSSPDBLocalServices
                     tvItemLanguageNewFR,
                 }
             };
+
+            tvItemModelParentList.Add(tvItemModel);
+            
+            await RecreateLocalGzFiles(tvItemModelParentList);
+             
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             CSSPLogService.EndFunctionLog(FunctionName);
 

@@ -300,7 +300,7 @@ namespace CSSPDBLocalServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "appTaskModel.AppTaskLanguageList.Count", "2"), errRes.ErrList);
+            Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageList.Count", "2"), errRes.ErrList);
         }
         [Theory]
         [InlineData("en-CA")]

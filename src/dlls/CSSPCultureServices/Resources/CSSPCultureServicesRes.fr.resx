@@ -1083,4 +1083,7 @@
   <data name="CouldNotDelete_BecauseItIsBeingUsedIn_" xml:space="preserve">
     <value>Dans l'impossibilité d'effacer {0} puisque il est utilisé par {1}</value>
   </data>
+  <data name="ParentTVItemModelNotFoundFor_" xml:space="preserve">
+    <value>Le parent TVItemModel {0} est introuvable</value>
+  </data>
 </root>

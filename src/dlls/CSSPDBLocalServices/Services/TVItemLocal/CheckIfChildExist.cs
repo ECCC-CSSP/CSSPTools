@@ -59,31 +59,42 @@ namespace CSSPDBLocalServices
                         }
                     }
                     break;
+                case TVTypeEnum.Classification:
+                    {
+                        // there are no child of anything possible for Classification
+                    }
+                    break;
                 case TVTypeEnum.ClimateSite:
                     {
-                        WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
+                        WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webClimateSites.ClimateSiteModelList
-                                           where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
-                                           && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        ClimateSiteModel climateSiteModel = (from c in webClimateSites.ClimateSiteModelList
+                                                             where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                             select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (climateSiteModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem ClimateSite", "ClimateSite"));
+                            if (climateSiteModel.ClimateSite != null && climateSiteModel.ClimateSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem ClimateSite", "ClimateSite"));
+                            }
                         }
+
+                        if (CSSPLogService.ErrRes.ErrList.Count > 0) return;
 
                         WebAllUseOfSites webAllUseOfSites = await CSSPReadGzFileService.GetUncompressJSON<WebAllUseOfSites>(WebTypeEnum.WebAllUseOfSites, tvItem.TVItemID);
 
-                        childExist = (from c in webAllUseOfSites.UseOfSiteList
-                                      where c.SiteTVItemID == tvItem.TVItemID
-                                      && c.TVType == TVTypeEnum.ClimateSite
-                                      && c.DBCommand != DBCommandEnum.Deleted
-                                      select c).Any();
+                        List<UseOfSite> useOfSiteList = (from c in webAllUseOfSites.UseOfSiteList
+                                                         where c.SiteTVItemID == tvItem.TVItemID
+                                                         && c.TVType == TVTypeEnum.ClimateSite
+                                                         select c).ToList();
 
-                        if (childExist)
+                        foreach (UseOfSite useOfSite in useOfSiteList)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem ClimateSite", "UseOfSite"));
+                            if (useOfSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem ClimateSite", "UseOfSite"));
+                            }
                         }
                     }
                     break;
@@ -332,141 +343,170 @@ namespace CSSPDBLocalServices
                     break;
                 case TVTypeEnum.Infrastructure:
                     {
-                        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItem.TVItemID);
+                        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)tvItem.ParentID);
 
                         InfrastructureModel infrastructureModel = (from c in webMunicipality.InfrastructureModelList
                                                                    where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
                                                                    select c).FirstOrDefault();
 
-                        bool childExist = (from c in infrastructureModel.BoxModelModelList
-                                           where c.BoxModel.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        bool childExist = false;
 
-                        if (childExist)
+                        if (infrastructureModel.BoxModelModelList != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Infrastructure", "BoxModel"));
+                            childExist = (from c in infrastructureModel.BoxModelModelList
+                                          where c.BoxModel.DBCommand != DBCommandEnum.Deleted
+                                          select c).Any();
+
+                            if (childExist)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Infrastructure", "BoxModel"));
+                            }
                         }
 
-                        childExist = (from c in infrastructureModel.VPScenarioModelList
-                                      where c.VPScenario.DBCommand != DBCommandEnum.Deleted
-                                      select c).Any();
-
-                        if (childExist)
+                        if (infrastructureModel.VPScenarioModelList != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Infrastructure", "BoxModel"));
+                            childExist = (from c in infrastructureModel.VPScenarioModelList
+                                          where c.VPScenario.DBCommand != DBCommandEnum.Deleted
+                                          select c).Any();
+
+                            if (childExist)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Infrastructure", "VPScenario"));
+                            }
                         }
 
-                        childExist = (from c in infrastructureModel.TVFileModelList
-                                      where c.TVFile.DBCommand != DBCommandEnum.Deleted
-                                      select c).Any();
-
-                        if (childExist)
+                        if (infrastructureModel.TVFileModelList != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Infrastructure", "BoxModel"));
+                            childExist = (from c in infrastructureModel.TVFileModelList
+                                          where c.TVFile.DBCommand != DBCommandEnum.Deleted
+                                          select c).Any();
+
+                            if (childExist)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Infrastructure", "File"));
+                            }
                         }
                     }
                     break;
                 case TVTypeEnum.HydrometricSite:
                     {
-                        WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
+                        WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webHydrometricSites.HydrometricSiteModelList
-                                           where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
-                                           && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        HydrometricSiteModel climateSiteModel = (from c in webHydrometricSites.HydrometricSiteModelList
+                                                                 where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                                 select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (climateSiteModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem HydrometricSite", "HydrometricSite"));
+                            if (climateSiteModel.HydrometricSite != null && climateSiteModel.HydrometricSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem HydrometricSite", "HydrometricSite"));
+                            }
                         }
+
+                        if (CSSPLogService.ErrRes.ErrList.Count > 0) return;
 
                         WebAllUseOfSites webAllUseOfSites = await CSSPReadGzFileService.GetUncompressJSON<WebAllUseOfSites>(WebTypeEnum.WebAllUseOfSites, tvItem.TVItemID);
 
-                        childExist = (from c in webAllUseOfSites.UseOfSiteList
-                                      where c.SiteTVItemID == tvItem.TVItemID
-                                      && c.TVType == TVTypeEnum.HydrometricSite
-                                      && c.DBCommand != DBCommandEnum.Deleted
-                                      select c).Any();
+                        List<UseOfSite> useOfSiteList = (from c in webAllUseOfSites.UseOfSiteList
+                                                         where c.SiteTVItemID == tvItem.TVItemID
+                                                         && c.TVType == TVTypeEnum.HydrometricSite
+                                                         select c).ToList();
 
-                        if (childExist)
+                        foreach (UseOfSite useOfSite in useOfSiteList)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem HydrometricSite", "UseOfSite"));
+                            if (useOfSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem HydrometricSite", "UseOfSite"));
+                            }
                         }
                     }
                     break;
                 case TVTypeEnum.MikeBoundaryConditionMesh:
                     {
-                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
+                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                         MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                                where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                select c).FirstOrDefault();
 
-                        if (mikeScenarioModel == null)
+                        if (mikeScenarioModel != null)
                         {
-                            bool childExist = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
-                                               where c.MikeBoundaryCondition.DBCommand != DBCommandEnum.Deleted
-                                               select c).Any();
+                            MikeBoundaryConditionModel mikeBoundaryConditionModel = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
+                                                                                     where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                                                     select c).FirstOrDefault();
 
-                            if (childExist)
+                            if (mikeBoundaryConditionModel != null)
                             {
-                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeBoundaryCondition", "MikeBoundaryCondition"));
+                                if (mikeBoundaryConditionModel.MikeBoundaryCondition != null && mikeBoundaryConditionModel.MikeBoundaryCondition.DBCommand != DBCommandEnum.Deleted)
+                                {
+                                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeSource", "MikeSource"));
+                                }
                             }
                         }
                     }
                     break;
                 case TVTypeEnum.MikeBoundaryConditionWebTide:
                     {
-                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
+                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                         MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                                where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                select c).FirstOrDefault();
 
-                        if (mikeScenarioModel == null)
+                        if (mikeScenarioModel != null)
                         {
-                            bool childExist = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
-                                               where c.MikeBoundaryCondition.DBCommand != DBCommandEnum.Deleted
-                                               select c).Any();
+                            MikeBoundaryConditionModel mikeBoundaryConditionModel = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
+                                                                                     where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                                                     select c).FirstOrDefault();
 
-                            if (childExist)
+                            if (mikeBoundaryConditionModel != null)
                             {
-                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeBoundaryCondition", "MikeBoundaryCondition"));
+                                if (mikeBoundaryConditionModel.MikeBoundaryCondition != null && mikeBoundaryConditionModel.MikeBoundaryCondition.DBCommand != DBCommandEnum.Deleted)
+                                {
+                                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeSource", "MikeSource"));
+                                }
                             }
                         }
                     }
                     break;
                 case TVTypeEnum.MikeScenario:
                     {
-                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
+                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webMikeScenarios.MikeScenarioModelList
-                                           where c.MikeScenario.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
+                                                               where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                               select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (mikeScenarioModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeScenario", "MikeScenario"));
+                            if (mikeScenarioModel.MikeScenario != null && mikeScenarioModel.MikeScenario.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeScenario", "MikeScenario"));
+                            }
                         }
                     }
                     break;
                 case TVTypeEnum.MikeSource:
                     {
-                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
+                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                         MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                                where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                select c).FirstOrDefault();
 
-                        if (mikeScenarioModel == null)
+                        if (mikeScenarioModel != null)
                         {
-                            bool childExist = (from c in mikeScenarioModel.MikeSourceModelList
-                                               where c.MikeSource.DBCommand != DBCommandEnum.Deleted
-                                               select c).Any();
+                            MikeSourceModel mikeSourceModel = (from c in mikeScenarioModel.MikeSourceModelList
+                                                               where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                               select c).FirstOrDefault();
 
-                            if (childExist)
+                            if (mikeSourceModel != null)
                             {
-                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeSource", "MikeSource"));
+                                if (mikeSourceModel.MikeSource != null && mikeSourceModel.MikeSource.DBCommand != DBCommandEnum.Deleted)
+                                {
+                                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MikeSource", "MikeSource"));
+                                }
                             }
                         }
                     }
@@ -500,45 +540,66 @@ namespace CSSPDBLocalServices
                     break;
                 case TVTypeEnum.MWQMRun:
                     {
-                        WebMWQMRuns webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, tvItem.TVItemID);
+                        WebMWQMRuns webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webMWQMRuns.MWQMRunModelList
-                                           where c.MWQMRun.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        MWQMRunModel mwqmRunModel = (from c in webMWQMRuns.MWQMRunModelList
+                                                     where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                     select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (mwqmRunModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MWQMRun", "MWQMRun"));
+                            bool showError = false;
+                            if (mwqmRunModel.MWQMRun != null && mwqmRunModel.MWQMRun.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                showError = true;
+                            }
+                            if (mwqmRunModel.MWQMRunLanguageList.Count > 0 && mwqmRunModel.MWQMRunLanguageList[0].DBCommand != DBCommandEnum.Deleted)
+                            {
+                                showError = true;
+                            }
+                            if (mwqmRunModel.MWQMRunLanguageList.Count > 1 && mwqmRunModel.MWQMRunLanguageList[1].DBCommand != DBCommandEnum.Deleted)
+                            {
+                                showError = true;
+                            }
+                            if (showError)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MWQMRun", "MWQMRun"));
+                            }
                         }
                     }
                     break;
                 case TVTypeEnum.MWQMSite:
                     {
-                        WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, tvItem.TVItemID);
+                        WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webMWQMSites.MWQMSiteModelList
-                                           where c.MWQMSite.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        MWQMSiteModel mwqmSiteModel = (from c in webMWQMSites.MWQMSiteModelList
+                                                       where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                       select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (mwqmSiteModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MWQMSite", "MWQMSite"));
+                            if (mwqmSiteModel.MWQMSite != null && mwqmSiteModel.MWQMSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MWQMSite", "MWQMSite"));
+                            }
                         }
                     }
                     break;
                 case TVTypeEnum.PolSourceSite:
                     {
-                        WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, tvItem.TVItemID);
+                        WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webPolSourceSites.PolSourceSiteModelList
-                                           where c.PolSourceSite.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        PolSourceSiteModel mwqmRunModel = (from c in webPolSourceSites.PolSourceSiteModelList
+                                                           where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                           select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (mwqmRunModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem MWQMSite", "MWQMSite"));
+                            if (mwqmRunModel.PolSourceSite != null && mwqmRunModel.PolSourceSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem PolSourceSite", "PolSourceSite"));
+                            }
                         }
-
                     }
                     break;
                 case TVTypeEnum.Province:
@@ -629,13 +690,16 @@ namespace CSSPDBLocalServices
                     {
                         WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webCountry.RainExceedanceModelList
-                                           where c.RainExceedance.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        RainExceedanceModel rainExceedanceModel = (from c in webCountry.RainExceedanceModelList
+                                                                   where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                                   select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (rainExceedanceModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem RainExceedance", "RainExceedance"));
+                            if (rainExceedanceModel.RainExceedance != null && rainExceedanceModel.RainExceedance.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem RainExceedance", "RainExceedance"));
+                            }
                         }
                     }
                     break;
@@ -690,8 +754,8 @@ namespace CSSPDBLocalServices
                         WebMWQMRuns webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, tvItem.TVItemID);
 
                         childExist = (from c in webMWQMRuns.MWQMRunModelList
-                                           where c.MWQMRun.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                                      where c.MWQMRun.DBCommand != DBCommandEnum.Deleted
+                                      select c).Any();
 
                         if (childExist)
                         {
@@ -732,29 +796,35 @@ namespace CSSPDBLocalServices
                     break;
                 case TVTypeEnum.TideSite:
                     {
-                        WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, tvItem.TVItemID);
+                        WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, (int)tvItem.ParentID);
 
-                        bool childExist = (from c in webTideSites.TideSiteModelList
-                                           where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
-                                           && c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Deleted
-                                           select c).Any();
+                        TideSiteModel climateSiteModel = (from c in webTideSites.TideSiteModelList
+                                                          where c.TVItemModel.TVItem.TVItemID == tvItem.TVItemID
+                                                          select c).FirstOrDefault();
 
-                        if (childExist)
+                        if (climateSiteModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem TideSite", "TideSite"));
+                            if (climateSiteModel.TideSite != null && climateSiteModel.TideSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem TideSite", "TideSite"));
+                            }
                         }
+
+                        if (CSSPLogService.ErrRes.ErrList.Count > 0) return;
 
                         WebAllUseOfSites webAllUseOfSites = await CSSPReadGzFileService.GetUncompressJSON<WebAllUseOfSites>(WebTypeEnum.WebAllUseOfSites, tvItem.TVItemID);
 
-                        childExist = (from c in webAllUseOfSites.UseOfSiteList
-                                      where c.SiteTVItemID == tvItem.TVItemID
-                                      && c.TVType == TVTypeEnum.TideSite
-                                      && c.DBCommand != DBCommandEnum.Deleted
-                                      select c).Any();
+                        List<UseOfSite> useOfSiteList = (from c in webAllUseOfSites.UseOfSiteList
+                                                         where c.SiteTVItemID == tvItem.TVItemID
+                                                         && c.TVType == TVTypeEnum.TideSite
+                                                         select c).ToList();
 
-                        if (childExist)
+                        foreach (UseOfSite useOfSite in useOfSiteList)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem TideSite", "UseOfSite"));
+                            if (useOfSite.DBCommand != DBCommandEnum.Deleted)
+                            {
+                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem TideSite", "UseOfSite"));
+                            }
                         }
                     }
                     break;

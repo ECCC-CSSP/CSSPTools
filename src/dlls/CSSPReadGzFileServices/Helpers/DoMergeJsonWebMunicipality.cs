@@ -163,7 +163,7 @@ namespace CSSPReadGzFileServices
 
                 if (needSync)
                 {
-                    InfrastructureModel infrastructureModelOriginal = webMunicipality.InfrastructureModelList.Where(c => c.Infrastructure.InfrastructureID == infrastructureModelLocal.Infrastructure.InfrastructureID).FirstOrDefault();
+                    InfrastructureModel infrastructureModelOriginal = webMunicipality.InfrastructureModelList.Where(c => c.TVItemModel.TVItem.TVItemID == infrastructureModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                     if (infrastructureModelOriginal == null)
                     {
                         webMunicipality.InfrastructureModelList.Add(infrastructureModelLocal);
@@ -182,7 +182,7 @@ namespace CSSPReadGzFileServices
 
             foreach (InfrastructureModel infrastructureModelLocal in InfrastructureModelLocalList)
             {
-                InfrastructureModel infrastructureModelOriginal = webMunicipality.InfrastructureModelList.Where(c => c.Infrastructure.InfrastructureID == infrastructureModelLocal.Infrastructure.InfrastructureID).FirstOrDefault();
+                InfrastructureModel infrastructureModelOriginal = webMunicipality.InfrastructureModelList.Where(c => c.TVItemModel.TVItem.TVItemID == infrastructureModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 if (infrastructureModelOriginal == null)
                 {
                     webMunicipality.InfrastructureModelList.Add(infrastructureModelLocal);
