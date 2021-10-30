@@ -30,13 +30,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await TelLocalServiceSetup(culture));
 
-            TelLocalModel telLocalModel = FillTelLocalModel();
+            Tel telLocal = FillTel();
 
-            var actionPostTVItemModelRes = await TelLocalService.AddTelLocal(telLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            TelLocalModel telLocalModelRet = (TelLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.NotNull(telLocalModelRet);
+            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            Assert.Equal(200, ((ObjectResult)actionTelRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionTelRes.Result).Value);
+            Tel telLocalRet = (Tel)((OkObjectResult)actionTelRes.Result).Value;
+            Assert.NotNull(telLocalRet);
 
             Assert.Equal(1, (from c in dbLocal.Tels select c).Count());
             Assert.Equal(2, (from c in dbLocal.TVItems select c).Count());
@@ -47,12 +47,7 @@ namespace CSSPDBLocalServices.Tests
                              select c).FirstOrDefault();
             Assert.NotNull(telDB);
 
-            TelLocalModel telLocalModelDB = new TelLocalModel()
-            {
-                Tel = telDB,
-            };
-
-            Assert.Equal(JsonSerializer.Serialize(telLocalModelDB), JsonSerializer.Serialize(telLocalModelRet));
+            Assert.Equal(JsonSerializer.Serialize(telDB), JsonSerializer.Serialize(telLocalRet));
 
             WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, 0);
 
@@ -66,7 +61,7 @@ namespace CSSPDBLocalServices.Tests
                                                select c).ToList();
 
             Assert.Single(commandLogList);
-            Assert.Contains("TelLocalService.AddTelLocal(TelLocalModel telLocalModel)", commandLogList[0].Log);
+            Assert.Contains("TelLocalService.AddTelLocal(Tel tel)", commandLogList[0].Log);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -75,13 +70,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await TelLocalServiceSetup(culture));
 
-            TelLocalModel telLocalModel = FillTelLocalModel();
+            Tel telLocal = FillTel();
 
-            telLocalModel.Tel.TelID = 10;
+            telLocal.TelID = 10;
 
-            var actionPostTVItemModelRes = await TelLocalService.AddTelLocal(telLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "TelID", "0"), errRes.ErrList[0]);
@@ -93,13 +88,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await TelLocalServiceSetup(culture));
 
-            TelLocalModel telLocalModel = FillTelLocalModel();
+            Tel telLocal = FillTel();
 
-            telLocalModel.Tel.TelNumber = "";
+            telLocal.TelNumber = "";
 
-            var actionPostTVItemModelRes = await TelLocalService.AddTelLocal(telLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TelNumber"), errRes.ErrList[0]);
@@ -111,13 +106,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await TelLocalServiceSetup(culture));
 
-            TelLocalModel telLocalModel = FillTelLocalModel();
+            Tel telLocal = FillTel();
 
-            telLocalModel.Tel.TelType = (TelTypeEnum)10000;
+            telLocal.TelType = (TelTypeEnum)10000;
 
-            var actionPostTVItemModelRes = await TelLocalService.AddTelLocal(telLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TelType"), errRes.ErrList[0]);
@@ -133,19 +128,19 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.True(webAllTels.TelList.Count > 10);
 
-            TelLocalModel telLocalModel = FillTelLocalModel();
+            Tel telLocal = FillTel();
 
-            telLocalModel.Tel = webAllTels.TelList[7];
+            telLocal = webAllTels.TelList[7];
 
-            int TelID = telLocalModel.Tel.TelID;
+            int TelID = telLocal.TelID;
 
-            telLocalModel.Tel.TelID = 0;
+            telLocal.TelID = 0;
 
-            var actionPostTVItemModelRes = await TelLocalService.AddTelLocal(telLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            TelLocalModel telLocalModelRet = (TelLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            telLocalModel.Tel.TelID = TelID;
-            Assert.Equal(JsonSerializer.Serialize(telLocalModel), JsonSerializer.Serialize(telLocalModelRet));
+            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            Assert.Equal(200, ((ObjectResult)actionTelRes.Result).StatusCode);
+            Tel telLocalRet = (Tel)((OkObjectResult)actionTelRes.Result).Value;
+            telLocal.TelID = TelID;
+            Assert.Equal(JsonSerializer.Serialize(telLocal), JsonSerializer.Serialize(telLocalRet));
         }
     }
 }

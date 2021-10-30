@@ -26,7 +26,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Root_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Root_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -43,7 +43,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -55,7 +57,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Country_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Country_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -74,7 +76,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -86,7 +90,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Province_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Province_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -105,7 +109,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -117,7 +123,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Municipality_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Municipality_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -136,7 +142,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
@@ -148,7 +156,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Infrastructure_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Infrastructure_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -173,7 +181,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
@@ -186,7 +196,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_MikeScenario_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_MikeScenario_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -211,7 +221,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -224,7 +236,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Area_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Area_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -246,7 +258,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webArea.TVItemModelParentList;
 
@@ -258,7 +272,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Sector_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Sector_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -280,7 +294,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSector.TVItemModelParentList;
 
@@ -292,7 +308,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Subsector_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_Subsector_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -314,7 +330,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 
@@ -326,7 +344,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_MWQMSite_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_MWQMSite_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -351,7 +369,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMWQMSites.TVItemModelParentList;
 
@@ -364,7 +384,7 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_PolSourceSite_File_Good_Test(string culture)
+        public async Task AddTVItemLocal_File_PolSourceSite_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -389,7 +409,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
 

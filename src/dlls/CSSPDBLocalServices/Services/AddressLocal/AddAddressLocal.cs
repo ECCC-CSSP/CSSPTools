@@ -31,73 +31,80 @@ namespace CSSPDBLocalServices
 {
     public partial class AddressLocalService : ControllerBase, IAddressLocalService
     {
-        public async Task<ActionResult<AddressLocalModel>> AddAddressLocal(AddressLocalModel addressLocalModel)
+        public async Task<ActionResult<Address>> AddAddressLocal(Address address)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(AddressLocalModel addressLocalModel)";
+            string parameters = $" --  StreetNumber = { address.StreetNumber ?? "--" } " +
+                $"StreetName = { address.StreetName ?? "--" } " +
+                $"StreetType  = { address.StreetType.ToString() ?? "--" } " +
+                $"MunicipalityTVItemID = { address.MunicipalityTVItemID  } " +
+                $"ProvinceTVItemID = { address.ProvinceTVItemID } " +
+                $"CountryTVItemID = { address.CountryTVItemID }";
+
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(Address address) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Address
-            if (addressLocalModel.Address.AddressID != 0)
+            if (address.AddressID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AddressID", "0"));
             }
 
-            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)AddressModel.Address.DBCommand);
+            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)AddressModel.DBCommand);
             //if (!string.IsNullOrWhiteSpace(retStr))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
             //}
 
-            //if (AddressModel.Address.AddressTVItemID == 0)
+            //if (AddressModel.AddressTVItemID == 0)
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AddressTVItemID"));
             //}
 
-            string retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), (int?)addressLocalModel.Address.AddressType);
+            string retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), (int?)address.AddressType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AddressType"));
             }
 
-            if (addressLocalModel.Address.CountryTVItemID == 0)
+            if (address.CountryTVItemID == 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "CountryTVItemID"));
             }
 
-            if (addressLocalModel.Address.ProvinceTVItemID == 0)
+            if (address.ProvinceTVItemID == 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ProvinceTVItemID "));
             }
 
-            if (addressLocalModel.Address.MunicipalityTVItemID == 0)
+            if (address.MunicipalityTVItemID == 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MunicipalityTVItemID"));
             }
 
-            if (string.IsNullOrWhiteSpace(addressLocalModel.Address.StreetName))
+            if (string.IsNullOrWhiteSpace(address.StreetName))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "StreetName"));
             }
 
-            if (string.IsNullOrWhiteSpace(addressLocalModel.Address.StreetNumber))
+            if (string.IsNullOrWhiteSpace(address.StreetNumber))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "StreetNumber"));
             }
 
-            retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), (int?)addressLocalModel.Address.StreetType);
+            retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), (int?)address.StreetType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "StreetType"));
             }
 
-            //if (string.IsNullOrWhiteSpace(AddressModel.Address.PostalCode))
+            //if (string.IsNullOrWhiteSpace(AddressModel.PostalCode))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "PostalCode"));
             //}
 
-            //if (string.IsNullOrWhiteSpace(AddressModel.Address.GoogleAddressText))
+            //if (string.IsNullOrWhiteSpace(AddressModel.GoogleAddressText))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "GoogleAddressText"));
             //}
@@ -108,17 +115,17 @@ namespace CSSPDBLocalServices
             WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
             Address addressJSON = (from c in webAllAddresses.AddressList
-                                   where c.StreetName == addressLocalModel.Address.StreetName
-                                   && c.StreetNumber == addressLocalModel.Address.StreetNumber
-                                   && c.StreetType == addressLocalModel.Address.StreetType
-                                   && c.CountryTVItemID == addressLocalModel.Address.CountryTVItemID
-                                   && c.ProvinceTVItemID == addressLocalModel.Address.ProvinceTVItemID
-                                   && c.MunicipalityTVItemID == addressLocalModel.Address.MunicipalityTVItemID
+                                   where c.StreetName == address.StreetName
+                                   && c.StreetNumber == address.StreetNumber
+                                   && c.StreetType == address.StreetType
+                                   && c.CountryTVItemID == address.CountryTVItemID
+                                   && c.ProvinceTVItemID == address.ProvinceTVItemID
+                                   && c.MunicipalityTVItemID == address.MunicipalityTVItemID
                                    select c).FirstOrDefault();
 
             if (addressJSON != null)
             {
-                return await Task.FromResult(Ok(new AddressLocalModel() { Address = addressJSON }));
+                return await Task.FromResult(Ok(addressJSON));
             }
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
@@ -127,30 +134,30 @@ namespace CSSPDBLocalServices
             WebAllMunicipalities webAllMunicipalities = await CSSPReadGzFileService.GetUncompressJSON<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities, 0);
 
             TVItemModel tvItemModelCountry = (from c in webAllCountries.TVItemModelList
-                                              where c.TVItem.TVItemID == addressLocalModel.Address.CountryTVItemID
+                                              where c.TVItem.TVItemID == address.CountryTVItemID
                                               select c).FirstOrDefault();
 
             if (tvItemModelCountry == null)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Country", "CountryTVItemID", addressLocalModel.Address.CountryTVItemID.ToString()));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Country", "CountryTVItemID", address.CountryTVItemID.ToString()));
             }
 
             TVItemModel tvItemModelProvince = (from c in webAllProvinces.TVItemModelList
-                                       where c.TVItem.TVItemID == addressLocalModel.Address.ProvinceTVItemID
+                                       where c.TVItem.TVItemID == address.ProvinceTVItemID
                                        select c).FirstOrDefault();
 
             if (tvItemModelProvince == null)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Province", "ProvinceTVItemID", addressLocalModel.Address.ProvinceTVItemID.ToString()));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Province", "ProvinceTVItemID", address.ProvinceTVItemID.ToString()));
             }
 
             TVItemModel tvItemModelMunicipality = (from c in webAllMunicipalities.TVItemModelList
-                                           where c.TVItem.TVItemID == addressLocalModel.Address.MunicipalityTVItemID
+                                           where c.TVItem.TVItemID == address.MunicipalityTVItemID
                                            select c).FirstOrDefault();
 
             if (tvItemModelMunicipality == null)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Municipality", "MunicipalityTVItemID", addressLocalModel.Address.MunicipalityTVItemID.ToString()));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Municipality", "MunicipalityTVItemID", address.MunicipalityTVItemID.ToString()));
             }
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -159,13 +166,13 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            string TVTextEN = $"{ addressLocalModel.Address.StreetNumber } { addressLocalModel.Address.StreetName } " +
-                $"{ enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), (int)addressLocalModel.Address.StreetType) }, " +
+            string TVTextEN = $"{ address.StreetNumber } { address.StreetName } " +
+                $"{ enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), (int)address.StreetType) }, " +
                 $"{ tvItemModelMunicipality.TVItemLanguageList[0].TVText } " +
                 $"{ tvItemModelProvince.TVItemLanguageList[0].TVText } { tvItemModelCountry.TVItemLanguageList[0].TVText }";
 
-            string TVTextFR = $"{ addressLocalModel.Address.StreetNumber } { addressLocalModel.Address.StreetName } " +
-                $"{ enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), (int)addressLocalModel.Address.StreetType) }, " +
+            string TVTextFR = $"{ address.StreetNumber } { address.StreetName } " +
+                $"{ enums.GetResValueForTypeAndID(typeof(StreetTypeEnum), (int)address.StreetType) }, " +
                 $"{ tvItemModelMunicipality.TVItemLanguageList[1].TVText } " +
                 $"{ tvItemModelProvince.TVItemLanguageList[1].TVText } { tvItemModelCountry.TVItemLanguageList[1].TVText }";
 
@@ -185,13 +192,13 @@ namespace CSSPDBLocalServices
 
             try
             {
-                addressLocalModel.Address.DBCommand = DBCommandEnum.Created;
-                addressLocalModel.Address.AddressID = AddressIDNew;
-                addressLocalModel.Address.AddressTVItemID = tvItemModel.TVItem.TVItemID;
-                addressLocalModel.Address.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                addressLocalModel.Address.LastUpdateDate_UTC = DateTime.UtcNow;
+                address.DBCommand = DBCommandEnum.Created;
+                address.AddressID = AddressIDNew;
+                address.AddressTVItemID = tvItemModel.TVItem.TVItemID;
+                address.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                address.LastUpdateDate_UTC = DateTime.UtcNow;
 
-                dbLocal.Addresses.Add(addressLocalModel.Address);
+                dbLocal.Addresses.Add(address);
                 dbLocal.SaveChanges();
             }
             catch (Exception ex)
@@ -212,7 +219,7 @@ namespace CSSPDBLocalServices
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(addressLocalModel));
+            return await Task.FromResult(Ok(address));
         }
     }
 }

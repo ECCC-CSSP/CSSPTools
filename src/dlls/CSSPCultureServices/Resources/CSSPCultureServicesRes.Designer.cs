@@ -2167,6 +2167,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modify of {0} is not allowed.
+        /// </summary>
+        public static string ModifyOf_IsNotAllowed {
+            get {
+                return ResourceManager.GetString("ModifyOf_IsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to municipality contacts.
         /// </summary>
         public static string MunicipalityContacts {

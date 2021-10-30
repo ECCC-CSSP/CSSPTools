@@ -293,6 +293,11 @@ namespace CSSPDBLocalServices
                         WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
                         return await Task.FromResult(webCountry.TVItemModelParentList);
                     }
+                case TVTypeEnum.Root:
+                    {
+                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+                        return await Task.FromResult(webRoot.TVItemModelParentList);
+                    }
                 case TVTypeEnum.SamplingPlan:
                     {
                         WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);

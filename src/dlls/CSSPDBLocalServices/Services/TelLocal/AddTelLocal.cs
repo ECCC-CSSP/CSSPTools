@@ -31,36 +31,39 @@ namespace CSSPDBLocalServices
 {
     public partial class TelLocalService : ControllerBase, ITelLocalService
     {
-        public async Task<ActionResult<TelLocalModel>> AddTelLocal(TelLocalModel telLocalModel)
+        public async Task<ActionResult<Tel>> AddTelLocal(Tel tel)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TelLocalModel telLocalModel)";
+            string parameters = $" --  TelNumber = { tel.TelNumber ?? "--" } " +
+                $"TelType = { tel.TelType.ToString() ?? "--" }";
+
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(Tel tel) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Tel
-            if (telLocalModel.Tel.TelID != 0)
+            if (tel.TelID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "TelID", "0"));
             }
 
-            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)TelModel.Tel.DBCommand);
+            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)TelModel.DBCommand);
             //if (!string.IsNullOrWhiteSpace(retStr))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
             //}
 
-            //if (TelModel.Tel.TelTVItemID == 0)
+            //if (TelModel.TelTVItemID == 0)
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelTVItemID"));
             //}
 
-            if (string.IsNullOrWhiteSpace(telLocalModel.Tel.TelNumber))
+            if (string.IsNullOrWhiteSpace(tel.TelNumber))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelNumber"));
             }
 
-            string retStr = enums.EnumTypeOK(typeof(TelTypeEnum), (int?)telLocalModel.Tel.TelType);
+            string retStr = enums.EnumTypeOK(typeof(TelTypeEnum), (int?)tel.TelType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelType"));
@@ -72,12 +75,12 @@ namespace CSSPDBLocalServices
             WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, 0);
 
             Tel telJSON = (from c in webAllTels.TelList
-                                   where c.TelNumber == telLocalModel.Tel.TelNumber
+                                   where c.TelNumber == tel.TelNumber
                                    select c).FirstOrDefault();
 
             if (telJSON != null)
             {
-                return await Task.FromResult(Ok(new TelLocalModel() { Tel = telJSON }));
+                return await Task.FromResult(Ok(telJSON));
             }
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
@@ -86,8 +89,8 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            string TVTextEN = $"{ telLocalModel.Tel.TelNumber }";
-            string TVTextFR = $"{ telLocalModel.Tel.TelNumber }";
+            string TVTextEN = $"{ tel.TelNumber }";
+            string TVTextFR = $"{ tel.TelNumber }";
 
             var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Tel, TVTextEN, TVTextFR);
 
@@ -102,13 +105,13 @@ namespace CSSPDBLocalServices
                                 orderby c.TelID descending
                                 select c.TelID).FirstOrDefault() - 1;
 
-            telLocalModel.Tel.DBCommand = DBCommandEnum.Created;
-            telLocalModel.Tel.TelID = TelIDNew;
-            telLocalModel.Tel.TelTVItemID = tvItemModel.TVItem.TVItemID;
-            telLocalModel.Tel.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-            telLocalModel.Tel.LastUpdateDate_UTC = DateTime.UtcNow;
+            tel.DBCommand = DBCommandEnum.Created;
+            tel.TelID = TelIDNew;
+            tel.TelTVItemID = tvItemModel.TVItem.TVItemID;
+            tel.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+            tel.LastUpdateDate_UTC = DateTime.UtcNow;
 
-            dbLocal.Tels.Add(telLocalModel.Tel);
+            dbLocal.Tels.Add(tel);
             try
             {
                 dbLocal.SaveChanges();
@@ -131,7 +134,7 @@ namespace CSSPDBLocalServices
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(telLocalModel));
+            return await Task.FromResult(Ok(tel));
         }
     }
 }

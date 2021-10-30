@@ -46,7 +46,7 @@ namespace CSSPReadGzFileServices
                     }
                     else
                     {
-                        tvFileModelOriginal = tvFileModelLocal;
+                        SyncTVFileModel(tvFileModelOriginal, tvFileModelLocal);
                     }
                 }
 

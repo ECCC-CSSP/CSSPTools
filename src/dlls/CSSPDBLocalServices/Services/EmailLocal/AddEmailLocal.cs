@@ -31,36 +31,39 @@ namespace CSSPDBLocalServices
 {
     public partial class EmailLocalService : ControllerBase, IEmailLocalService
     {
-        public async Task<ActionResult<EmailLocalModel>> AddEmailLocal(EmailLocalModel emailLocalModel)
+        public async Task<ActionResult<Email>> AddEmailLocal(Email email)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(EmailLocalModel emailLocalModel)";
+            string parameters = $" --  EmailAddress = { email.EmailAddress ?? "--" } " +
+                $"EmailType = { email.EmailType.ToString() ?? "--" }";
+
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(Email email) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Email
-            if (emailLocalModel.Email.EmailID != 0)
+            if (email.EmailID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "EmailID", "0"));
             }
 
-            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)EmailModel.Email.DBCommand);
+            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)EmailModel.DBCommand);
             //if (!string.IsNullOrWhiteSpace(retStr))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
             //}
 
-            //if (EmailModel.Email.EmailTVItemID == 0)
+            //if (EmailModel.EmailTVItemID == 0)
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "EmailTVItemID"));
             //}
 
-            if (string.IsNullOrWhiteSpace(emailLocalModel.Email.EmailAddress))
+            if (string.IsNullOrWhiteSpace(email.EmailAddress))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "EmailAddress"));
             }
 
-            string retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), (int?)emailLocalModel.Email.EmailType);
+            string retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), (int?)email.EmailType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "EmailType"));
@@ -72,12 +75,12 @@ namespace CSSPDBLocalServices
             WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 
             Email emailJSON = (from c in webAllEmails.EmailList
-                                   where c.EmailAddress == emailLocalModel.Email.EmailAddress
+                                   where c.EmailAddress == email.EmailAddress
                                    select c).FirstOrDefault();
 
             if (emailJSON != null)
             {
-                return await Task.FromResult(Ok(new EmailLocalModel() { Email = emailJSON }));
+                return await Task.FromResult(Ok(emailJSON));
             }
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
@@ -86,8 +89,8 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            string TVTextEN = $"{ emailLocalModel.Email.EmailAddress }";
-            string TVTextFR = $"{ emailLocalModel.Email.EmailAddress }";
+            string TVTextEN = $"{ email.EmailAddress }";
+            string TVTextFR = $"{ email.EmailAddress }";
 
             var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Email, TVTextEN, TVTextFR);
 
@@ -104,13 +107,13 @@ namespace CSSPDBLocalServices
 
             try
             {
-                emailLocalModel.Email.DBCommand = DBCommandEnum.Created;
-                emailLocalModel.Email.EmailID = EmailIDNew;
-                emailLocalModel.Email.EmailTVItemID = tvItemModel.TVItem.TVItemID;
-                emailLocalModel.Email.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                emailLocalModel.Email.LastUpdateDate_UTC = DateTime.UtcNow;
+                email.DBCommand = DBCommandEnum.Created;
+                email.EmailID = EmailIDNew;
+                email.EmailTVItemID = tvItemModel.TVItem.TVItemID;
+                email.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                email.LastUpdateDate_UTC = DateTime.UtcNow;
 
-                dbLocal.Emails.Add(emailLocalModel.Email);
+                dbLocal.Emails.Add(email);
                 dbLocal.SaveChanges();
             }
             catch (Exception ex)
@@ -131,7 +134,7 @@ namespace CSSPDBLocalServices
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(emailLocalModel));
+            return await Task.FromResult(Ok(email));
         }
     }
 }

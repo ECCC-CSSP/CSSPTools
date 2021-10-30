@@ -13,11 +13,10 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class TelLocalServiceTest
     {
-        private TelLocalModel FillTelLocalModel()
+        private Tel FillTel()
         {
-            TelLocalModel telModel = new TelLocalModel();
 
-            Tel tel = new Tel()
+            return new Tel()
             {
                 TelID = 0,
                 DBCommand = DBCommandEnum.Created,
@@ -27,10 +26,6 @@ namespace CSSPDBLocalServices.Tests
                 LastUpdateDate_UTC = DateTime.UtcNow,
                 LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
             };
-
-            telModel.Tel = tel;
-
-            return telModel;
         }
     }
 }

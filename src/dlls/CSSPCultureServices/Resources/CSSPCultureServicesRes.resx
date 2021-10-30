@@ -1089,4 +1089,7 @@
   <data name="ParentTVItemModelNotFoundFor_" xml:space="preserve">
     <value>Parent TVItemModel not found for {0}</value>
   </data>
+  <data name="ModifyOf_IsNotAllowed" xml:space="preserve">
+    <value>Modify of {0} is not allowed</value>
+  </data>
 </root>

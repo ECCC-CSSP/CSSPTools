@@ -26,6 +26,15 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task DeleteTVItemLocal_Root_Good_Test(string culture)
+        {
+            Assert.True(await TVItemLocalServiceSetup(culture));
+
+            // not allowed to delete a Root type
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task DeleteTVItemLocal_Country_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
@@ -38,14 +47,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webRoot.TVItemModelCountryList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -53,8 +61,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webRoot.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Country;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -62,7 +70,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
@@ -72,7 +82,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -125,14 +137,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webCountry.TVItemModelProvinceList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -140,8 +151,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webCountry.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Province;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -149,7 +160,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
@@ -159,7 +172,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -187,14 +202,13 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = tvItemModelExist.TVItem;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -202,8 +216,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webCountry.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.RainExceedance;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -211,7 +225,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
@@ -223,7 +239,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -254,7 +272,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
@@ -266,7 +286,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -292,14 +314,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webProvince.TVItemModelAreaList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -307,8 +328,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webProvince.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Area;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -316,7 +337,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
@@ -326,7 +349,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -357,7 +382,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
@@ -367,7 +394,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -393,14 +422,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webProvince.TVItemModelMunicipalityList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -408,8 +436,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webProvince.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Municipality;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -417,7 +445,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
@@ -427,7 +457,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -453,14 +485,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webClimateSites.ClimateSiteModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -468,8 +499,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webClimateSites.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.ClimateSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -477,7 +508,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
 
@@ -487,7 +520,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webClimateSites.TVItemModelParentList;
 
@@ -513,14 +548,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webHydrometricSites.HydrometricSiteModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -528,8 +562,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webHydrometricSites.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.HydrometricSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -537,7 +571,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
 
@@ -547,7 +583,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webHydrometricSites.TVItemModelParentList;
 
@@ -573,14 +611,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webTideSites.TideSiteModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -588,8 +625,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webTideSites.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.TideSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -597,7 +634,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
 
@@ -607,7 +646,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webTideSites.TVItemModelParentList;
 
@@ -633,14 +674,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webMunicipality.InfrastructureModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -648,8 +688,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMunicipality.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Infrastructure;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -657,7 +697,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
@@ -667,7 +709,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
@@ -693,14 +737,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webMikeScenarios.MikeScenarioModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -708,8 +751,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMikeScenarios.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.MikeScenario;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -717,7 +760,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
@@ -727,7 +772,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -760,14 +807,13 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -775,8 +821,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMikeScenarios.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.MikeSource;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
@@ -786,7 +832,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
@@ -796,7 +844,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -830,14 +880,13 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -845,8 +894,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMikeScenarios.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionMesh;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
@@ -856,7 +905,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
@@ -866,7 +917,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -900,14 +953,13 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -915,8 +967,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMikeScenarios.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionWebTide;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
@@ -926,7 +978,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
@@ -936,7 +990,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -963,14 +1019,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webArea.TVItemModelSectorList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -978,8 +1033,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webArea.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Sector;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -987,7 +1042,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
 
@@ -997,7 +1054,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webArea.TVItemModelParentList;
 
@@ -1023,14 +1082,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webSector.TVItemModelSubsectorList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -1038,8 +1096,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webSector.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Subsector;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -1047,7 +1105,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
 
@@ -1057,7 +1117,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSector.TVItemModelParentList;
 
@@ -1083,14 +1145,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webMWQMRuns.MWQMRunModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -1098,8 +1159,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMWQMRuns.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.MWQMRun;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -1107,7 +1168,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
 
@@ -1117,7 +1180,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMWQMRuns.TVItemModelParentList;
 
@@ -1143,14 +1208,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webMWQMSites.MWQMSiteModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -1158,8 +1222,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webMWQMSites.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.MWQMSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -1167,7 +1231,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
 
@@ -1177,7 +1243,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMWQMSites.TVItemModelParentList;
 
@@ -1203,14 +1271,13 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webPolSourceSites.PolSourceSiteModelList[0].TVItemModel;
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             var actionTVItemModelExist = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
             Assert.Equal(400, ((ObjectResult)actionTVItemModelExist.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModelExist.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModelExist.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            //-----------------------------------------------------------------------------------------
 
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -1218,8 +1285,8 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent = webPolSourceSites.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.PolSourceSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -1227,7 +1294,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
 
@@ -1237,7 +1306,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
 
@@ -1263,15 +1334,12 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelExist = webSubsector.TVItemModelClassificationList[0];
 
-            string TVTextEN = tvItemModelExist.TVItemLanguageList[0].TVText;
-            string TVTextFR = tvItemModelExist.TVItemLanguageList[1].TVText;
-
             webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
             tvItemParent = webSubsector.TVItemModel.TVItem;
             TVTypeEnum tvType = TVTypeEnum.Classification;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+            string TVTextEN = "New Item";
+            string TVTextFR = "Nouveau Item";
 
             var actionTVItemModelAdded = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelAdded.Result).StatusCode);
@@ -1279,7 +1347,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModelAdded = (TVItemModel)((OkObjectResult)actionTVItemModelAdded.Result).Value;
             Assert.NotNull(tvItemModelAdded);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModelAdded, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
@@ -1289,7 +1359,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckDeletedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Deleted);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Deleted, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 

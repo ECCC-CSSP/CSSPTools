@@ -30,45 +30,40 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address address = FillAddress();
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            AddressLocalModel addressLocalModelRet = (AddressLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.NotNull(addressLocalModelRet);
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(address);
+            Assert.Equal(200, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressRes.Result).Value);
+            Address addressRet = (Address)((OkObjectResult)actionAddressRes.Result).Value;
+            Assert.NotNull(addressRet);
 
             Assert.Equal(1, (from c in dbLocal.Addresses select c).Count());
             Assert.Equal(2, (from c in dbLocal.TVItems select c).Count());
             Assert.Equal(4, (from c in dbLocal.TVItemLanguages select c).Count());
 
-            Assert.Equal(-1, addressLocalModelRet.Address.AddressID);
-            Assert.Equal(DBCommandEnum.Created, addressLocalModelRet.Address.DBCommand);
-            Assert.Equal(-1, addressLocalModelRet.Address.AddressTVItemID);
-            Assert.Equal(addressLocalModel.Address.AddressType, addressLocalModelRet.Address.AddressType);
-            Assert.Equal(addressLocalModel.Address.CountryTVItemID, addressLocalModelRet.Address.CountryTVItemID);
-            Assert.Equal(addressLocalModel.Address.GoogleAddressText, addressLocalModelRet.Address.GoogleAddressText);
-            Assert.Equal(addressLocalModel.Address.MunicipalityTVItemID, addressLocalModelRet.Address.MunicipalityTVItemID);
-            Assert.Equal(addressLocalModel.Address.PostalCode, addressLocalModelRet.Address.PostalCode);
-            Assert.Equal(addressLocalModel.Address.ProvinceTVItemID, addressLocalModelRet.Address.ProvinceTVItemID);
-            Assert.Equal(addressLocalModel.Address.StreetName, addressLocalModelRet.Address.StreetName);
-            Assert.Equal(addressLocalModel.Address.StreetNumber, addressLocalModelRet.Address.StreetNumber);
-            Assert.Equal(addressLocalModel.Address.StreetType, addressLocalModelRet.Address.StreetType);
-            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, addressLocalModelRet.Address.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < addressLocalModelRet.Address.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > addressLocalModelRet.Address.LastUpdateDate_UTC);
+            Assert.Equal(-1, addressRet.AddressID);
+            Assert.Equal(DBCommandEnum.Created, addressRet.DBCommand);
+            Assert.Equal(-1, addressRet.AddressTVItemID);
+            Assert.Equal(address.AddressType, addressRet.AddressType);
+            Assert.Equal(address.CountryTVItemID, addressRet.CountryTVItemID);
+            Assert.Equal(address.GoogleAddressText, addressRet.GoogleAddressText);
+            Assert.Equal(address.MunicipalityTVItemID, addressRet.MunicipalityTVItemID);
+            Assert.Equal(address.PostalCode, addressRet.PostalCode);
+            Assert.Equal(address.ProvinceTVItemID, addressRet.ProvinceTVItemID);
+            Assert.Equal(address.StreetName, addressRet.StreetName);
+            Assert.Equal(address.StreetNumber, addressRet.StreetNumber);
+            Assert.Equal(address.StreetType, addressRet.StreetType);
+            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, addressRet.LastUpdateContactTVItemID);
+            Assert.True(DateTime.UtcNow.AddSeconds(-1) < addressRet.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddSeconds(1) > addressRet.LastUpdateDate_UTC);
 
             Address addressDB = (from c in dbLocal.Addresses
                                where c.AddressID == -1
                                select c).FirstOrDefault();
             Assert.NotNull(addressDB);
 
-            AddressLocalModel addressLocalModelDB = new AddressLocalModel()
-            {
-                Address = addressDB,
-            };
-
-            Assert.Equal(JsonSerializer.Serialize(addressLocalModelDB), JsonSerializer.Serialize(addressLocalModelRet));
+            Assert.Equal(JsonSerializer.Serialize(addressDB), JsonSerializer.Serialize(addressRet));
 
             WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
@@ -83,7 +78,7 @@ namespace CSSPDBLocalServices.Tests
                                                select c).ToList();
 
             Assert.Single(commandLogList);
-            Assert.Contains("AddressLocalService.AddAddressLocal(AddressLocalModel addressLocalModel)", commandLogList[0].Log);
+            Assert.Contains("AddressLocalService.AddAddressLocal(Address address)", commandLogList[0].Log);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -92,13 +87,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.AddressID = 10;
+            addressLocalModel.AddressID = 10;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AddressID", "0"), errRes.ErrList[0]);
@@ -110,13 +105,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.AddressType = (AddressTypeEnum)10000;
+            addressLocalModel.AddressType = (AddressTypeEnum)10000;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "AddressType"), errRes.ErrList[0]);
@@ -128,13 +123,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.CountryTVItemID = 0;
+            addressLocalModel.CountryTVItemID = 0;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "CountryTVItemID"), errRes.ErrList[0]);
@@ -146,13 +141,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.ProvinceTVItemID = 0;
+            addressLocalModel.ProvinceTVItemID = 0;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "ProvinceTVItemID "), errRes.ErrList[0]);
@@ -164,13 +159,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.MunicipalityTVItemID = 0;
+            addressLocalModel.MunicipalityTVItemID = 0;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "MunicipalityTVItemID"), errRes.ErrList[0]);
@@ -182,13 +177,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.StreetName = "";
+            addressLocalModel.StreetName = "";
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "StreetName"), errRes.ErrList[0]);
@@ -200,13 +195,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.StreetNumber = "";
+            addressLocalModel.StreetNumber = "";
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "StreetNumber"), errRes.ErrList[0]);
@@ -218,13 +213,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.StreetType = (StreetTypeEnum)1000;
+            addressLocalModel.StreetType = (StreetTypeEnum)1000;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "StreetType"), errRes.ErrList[0]);
@@ -240,19 +235,19 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.True(webAllAddresses.AddressList.Count > 10);
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address address = FillAddress();
 
-            addressLocalModel.Address = webAllAddresses.AddressList[7];
+            address = webAllAddresses.AddressList[7];
 
-            int AddressID = addressLocalModel.Address.AddressID;
+            int AddressID = address.AddressID;
 
-            addressLocalModel.Address.AddressID = 0;
+            address.AddressID = 0;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            AddressLocalModel addressLocalModelRet = (AddressLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            addressLocalModel.Address.AddressID = AddressID;
-            Assert.Equal(JsonSerializer.Serialize(addressLocalModel), JsonSerializer.Serialize(addressLocalModelRet));
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(address);
+            Assert.Equal(200, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            Address addressRet = (Address)((OkObjectResult)actionAddressRes.Result).Value;
+            address.AddressID = AddressID;
+            Assert.Equal(JsonSerializer.Serialize(address), JsonSerializer.Serialize(addressRet));
         }
         [Theory]
         [InlineData("en-CA")]
@@ -261,16 +256,16 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.CountryTVItemID = 1;
+            addressLocalModel.CountryTVItemID = 1;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Country", "CountryTVItemID", addressLocalModel.Address.CountryTVItemID.ToString()), errRes.ErrList[0]);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Country", "CountryTVItemID", addressLocalModel.CountryTVItemID.ToString()), errRes.ErrList[0]);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -279,16 +274,16 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.ProvinceTVItemID = 1;
+            addressLocalModel.ProvinceTVItemID = 1;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Province", "ProvinceTVItemID", addressLocalModel.Address.ProvinceTVItemID.ToString()), errRes.ErrList[0]);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Province", "ProvinceTVItemID", addressLocalModel.ProvinceTVItemID.ToString()), errRes.ErrList[0]);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -297,16 +292,16 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await AddressLocalServiceSetup(culture));
 
-            AddressLocalModel addressLocalModel = FillAddressLocalModel();
+            Address addressLocalModel = FillAddress();
 
-            addressLocalModel.Address.MunicipalityTVItemID = 1;
+            addressLocalModel.MunicipalityTVItemID = 1;
 
-            var actionPostTVItemModelRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Municipality", "MunicipalityTVItemID", addressLocalModel.Address.MunicipalityTVItemID.ToString()), errRes.ErrList[0]);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "Municipality", "MunicipalityTVItemID", addressLocalModel.MunicipalityTVItemID.ToString()), errRes.ErrList[0]);
         }
     }
 }

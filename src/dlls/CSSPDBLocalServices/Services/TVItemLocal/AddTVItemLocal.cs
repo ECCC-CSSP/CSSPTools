@@ -78,7 +78,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await CheckIfSiblingsExistWithSameTVText(tvItemParent, tvType, TVTextEN, TVTextFR);
+            await CheckIfSiblingsExistWithSameTVText(tvItemParent, tvType, TVTextEN, TVTextFR, 0);
 
             #endregion Check Input
 

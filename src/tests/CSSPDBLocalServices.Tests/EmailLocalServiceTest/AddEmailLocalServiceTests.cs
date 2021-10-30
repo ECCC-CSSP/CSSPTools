@@ -30,38 +30,33 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await EmailLocalServiceSetup(culture));
 
-            EmailLocalModel emailLocalModel = FillEmailLocalModel();
+            Email email = FillEmail();
 
-            var actionPostTVItemModelRes = await EmailLocalService.AddEmailLocal(emailLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            EmailLocalModel emailLocalModelRet = (EmailLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.NotNull(emailLocalModelRet);
+            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            Assert.Equal(200, ((ObjectResult)actionEmailRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionEmailRes.Result).Value);
+            Email emailRet = (Email)((OkObjectResult)actionEmailRes.Result).Value;
+            Assert.NotNull(emailRet);
 
             Assert.Equal(1, (from c in dbLocal.Emails select c).Count());
             Assert.Equal(2, (from c in dbLocal.TVItems select c).Count());
             Assert.Equal(4, (from c in dbLocal.TVItemLanguages select c).Count());
 
-            Assert.Equal(-1, emailLocalModelRet.Email.EmailID);
-            Assert.Equal(DBCommandEnum.Created, emailLocalModelRet.Email.DBCommand);
-            Assert.Equal(-1, emailLocalModelRet.Email.EmailTVItemID);
-            Assert.Equal(emailLocalModel.Email.EmailAddress, emailLocalModelRet.Email.EmailAddress);
-            Assert.Equal(emailLocalModel.Email.EmailType, emailLocalModelRet.Email.EmailType);
-            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, emailLocalModelRet.Email.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < emailLocalModelRet.Email.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > emailLocalModelRet.Email.LastUpdateDate_UTC);
+            Assert.Equal(-1, emailRet.EmailID);
+            Assert.Equal(DBCommandEnum.Created, emailRet.DBCommand);
+            Assert.Equal(-1, emailRet.EmailTVItemID);
+            Assert.Equal(email.EmailAddress, emailRet.EmailAddress);
+            Assert.Equal(email.EmailType, emailRet.EmailType);
+            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, emailRet.LastUpdateContactTVItemID);
+            Assert.True(DateTime.UtcNow.AddSeconds(-1) < emailRet.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddSeconds(1) > emailRet.LastUpdateDate_UTC);
 
             Email emailDB = (from c in dbLocal.Emails
                                  where c.EmailID == -1
                                  select c).FirstOrDefault();
             Assert.NotNull(emailDB);
 
-            EmailLocalModel emailLocalModelDB = new EmailLocalModel()
-            {
-                Email = emailDB,
-            };
-
-            Assert.Equal(JsonSerializer.Serialize(emailLocalModelDB), JsonSerializer.Serialize(emailLocalModelRet));
+            Assert.Equal(JsonSerializer.Serialize(emailDB), JsonSerializer.Serialize(emailRet));
 
             WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 
@@ -76,7 +71,7 @@ namespace CSSPDBLocalServices.Tests
                                                select c).ToList();
 
             Assert.Single(commandLogList);
-            Assert.Contains("EmailLocalService.AddEmailLocal(EmailLocalModel emailLocalModel)", commandLogList[0].Log);
+            Assert.Contains("EmailLocalService.AddEmailLocal(Email email)", commandLogList[0].Log);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -85,13 +80,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await EmailLocalServiceSetup(culture));
 
-            EmailLocalModel emailLocalModel = FillEmailLocalModel();
+            Email email = FillEmail();
 
-            emailLocalModel.Email.EmailID = 10;
+            email.EmailID = 10;
 
-            var actionPostTVItemModelRes = await EmailLocalService.AddEmailLocal(emailLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "EmailID", "0"), errRes.ErrList[0]);
@@ -103,13 +98,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await EmailLocalServiceSetup(culture));
 
-            EmailLocalModel emailLocalModel = FillEmailLocalModel();
+            Email email = FillEmail();
 
-            emailLocalModel.Email.EmailAddress = "";
+            email.EmailAddress = "";
 
-            var actionPostTVItemModelRes = await EmailLocalService.AddEmailLocal(emailLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "EmailAddress"), errRes.ErrList[0]);
@@ -121,13 +116,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await EmailLocalServiceSetup(culture));
 
-            EmailLocalModel emailLocalModel = FillEmailLocalModel();
+            Email email = FillEmail();
 
-            emailLocalModel.Email.EmailType = (EmailTypeEnum)10000;
+            email.EmailType = (EmailTypeEnum)10000;
 
-            var actionPostTVItemModelRes = await EmailLocalService.AddEmailLocal(emailLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "EmailType"), errRes.ErrList[0]);
@@ -143,19 +138,19 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.True(webAllEmails.EmailList.Count > 10);
 
-            EmailLocalModel emailLocalModel = FillEmailLocalModel();
+            Email email = FillEmail();
 
-            emailLocalModel.Email = webAllEmails.EmailList[7];
+            email = webAllEmails.EmailList[7];
 
-            int EmailID = emailLocalModel.Email.EmailID;
+            int EmailID = email.EmailID;
 
-            emailLocalModel.Email.EmailID = 0;
+            email.EmailID = 0;
 
-            var actionPostTVItemModelRes = await EmailLocalService.AddEmailLocal(emailLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            EmailLocalModel emailLocalModelRet = (EmailLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            emailLocalModel.Email.EmailID = EmailID;
-            Assert.Equal(JsonSerializer.Serialize(emailLocalModel), JsonSerializer.Serialize(emailLocalModelRet));
+            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            Assert.Equal(200, ((ObjectResult)actionEmailRes.Result).StatusCode);
+            Email emailRet = (Email)((OkObjectResult)actionEmailRes.Result).Value;
+            email.EmailID = EmailID;
+            Assert.Equal(JsonSerializer.Serialize(email), JsonSerializer.Serialize(emailRet));
         }
     }
 }

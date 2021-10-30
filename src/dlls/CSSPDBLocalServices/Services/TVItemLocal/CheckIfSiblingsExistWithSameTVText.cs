@@ -24,7 +24,7 @@ namespace CSSPDBLocalServices
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        private async Task CheckIfSiblingsExistWithSameTVText(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR)
+        private async Task CheckIfSiblingsExistWithSameTVText(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR, int TVItemIDOrTVFileID)
         {
             List<TVItemModel> tvItemModelList = new List<TVItemModel>();
             List<TVFileModel> tvFileModelList = new List<TVFileModel>();
@@ -220,7 +220,6 @@ namespace CSSPDBLocalServices
                         }
 
                         tvItemModelList = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
-                                           where c.MikeBoundaryCondition.TVType == TVTypeEnum.MikeBoundaryConditionMesh
                                            select c.TVItemModel).ToList();
                     }
                     break;
@@ -239,7 +238,6 @@ namespace CSSPDBLocalServices
                         }
 
                         tvItemModelList = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
-                                           where c.MikeBoundaryCondition.TVType == TVTypeEnum.MikeBoundaryConditionWebTide
                                            select c.TVItemModel).ToList();
                     }
                     break;
@@ -311,6 +309,12 @@ namespace CSSPDBLocalServices
                                            select c.TVItemModel).ToList();
                     }
                     break;
+                case TVTypeEnum.Root:
+                    {
+                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, tvItemParent.TVItemID);
+                        tvItemModelList = new List<TVItemModel>() { webRoot.TVItemModel };
+                    }
+                    break;
                 case TVTypeEnum.SamplingPlan:
                     {
                         // no checking required
@@ -349,7 +353,8 @@ namespace CSSPDBLocalServices
             if (tvType == TVTypeEnum.File)
             {
                 TVFileModel tvFileModelJSON = (from c in tvFileModelList
-                                               where c.TVFile.ServerFileName == TVTextEN
+                                               where c.TVFile.TVFileID != TVItemIDOrTVFileID
+                                               && c.TVFile.ServerFileName == TVTextEN
                                                || c.TVFile.ServerFileName == TVTextFR
                                                select c).FirstOrDefault();
 
@@ -372,8 +377,9 @@ namespace CSSPDBLocalServices
             else
             {
                 TVItemModel tvItemModelJSON = (from c in tvItemModelList
-                                               where c.TVItemLanguageList[0].TVText == TVTextEN
-                                               || c.TVItemLanguageList[1].TVText == TVTextFR
+                                               where c.TVItem.TVItemID != TVItemIDOrTVFileID
+                                               && (c.TVItemLanguageList[0].TVText == TVTextEN
+                                               || c.TVItemLanguageList[1].TVText == TVTextFR)
                                                select c).FirstOrDefault();
 
                 if (tvItemModelJSON != null)

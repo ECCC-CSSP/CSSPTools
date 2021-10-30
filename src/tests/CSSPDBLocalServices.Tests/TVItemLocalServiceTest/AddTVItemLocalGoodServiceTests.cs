@@ -26,6 +26,15 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
+        public async Task AddTVItemLocal_Root_Good_Test(string culture)
+        {
+            Assert.True(await TVItemLocalServiceSetup(culture));
+
+            // not allowed to add a Root type
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
         public async Task AddTVItemLocal_Country_Good_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
@@ -43,7 +52,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -72,7 +83,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -101,7 +114,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -130,7 +145,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -161,7 +178,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -192,7 +211,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -223,7 +244,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
@@ -254,7 +277,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -285,7 +310,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -316,7 +343,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -347,7 +376,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -378,7 +409,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -409,7 +442,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
@@ -440,7 +475,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
@@ -471,7 +508,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
@@ -508,7 +547,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -546,7 +587,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -584,7 +627,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
@@ -619,7 +664,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webArea.TVItemModelParentList;
 
@@ -653,7 +700,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSector.TVItemModelParentList;
 
@@ -687,7 +736,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 
@@ -721,7 +772,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 
@@ -755,7 +808,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 
@@ -789,7 +844,9 @@ namespace CSSPDBLocalServices.Tests
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            CheckCreatedTVItemAndTVItemLanguageList(tvItemModel, TVTextEN, TVTextFR);
+            CheckTVItem(tvItemModel, DBCommandEnum.Created);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
             List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 

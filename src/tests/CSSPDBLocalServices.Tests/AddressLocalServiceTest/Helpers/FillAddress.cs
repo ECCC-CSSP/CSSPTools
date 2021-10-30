@@ -13,11 +13,9 @@ namespace CSSPDBLocalServices.Tests
 {
     public partial class AddressLocalServiceTest
     {
-        private AddressLocalModel FillAddressLocalModel()
+        private Address FillAddress()
         {
-            AddressLocalModel addressModel = new AddressLocalModel();
-
-            Address address = new Address()
+            return new Address()
             {
                 AddressID = 0,
                 //DBCommand = DBCommandEnum.Created,
@@ -34,10 +32,6 @@ namespace CSSPDBLocalServices.Tests
                 //LastUpdateDate_UTC = DateTime.UtcNow,
                 //LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
             };
-
-            addressModel.Address = address;
-
-            return addressModel;
         }
     }
 }

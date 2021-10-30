@@ -32,7 +32,7 @@ namespace CSSPDBLocalServices
 
     public partial interface IAddressLocalService
     {
-        Task<ActionResult<AddressLocalModel>> AddAddressLocal(AddressLocalModel AddressModel);
+        Task<ActionResult<Address>> AddAddressLocal(Address address);
     }
     public partial class AddressLocalService : ControllerBase, IAddressLocalService
     {

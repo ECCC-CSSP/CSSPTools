@@ -33,6 +33,7 @@ namespace CSSPDBLocalServices
                     TVTypeParent = TVTypeEnum.Root,
                     TVTypeChildList = new List<TVTypeEnum>()
                     {
+                        TVTypeEnum.Root,
                         TVTypeEnum.Country,
                         TVTypeEnum.Address,
                         TVTypeEnum.Email,

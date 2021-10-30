@@ -25,8 +25,6 @@ namespace CSSPDBLocalServices.Tests
     {
         private void CheckDBLocal(List<TVItemModel> tvItemModelParentList)
         {
-            Assert.Equal(tvItemModelParentList.Count, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(tvItemModelParentList.Count * 2, (from c in dbLocal.TVItemLanguages select c).Count());
 
             foreach (TVItemModel tvItemModel in tvItemModelParentList)
             {

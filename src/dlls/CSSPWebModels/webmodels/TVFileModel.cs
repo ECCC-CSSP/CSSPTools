@@ -11,6 +11,7 @@ namespace CSSPWebModels
     [NotMapped]
     public partial class TVFileModel
     {
+        public TVItemModel TVItemModel { get; set; }
         public TVFile TVFile { get; set; }
         public List<TVFileLanguage> TVFileLanguageList { get; set; }
         public bool IsLocalized { get; set; }

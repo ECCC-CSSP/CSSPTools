@@ -75,26 +75,6 @@ namespace CSSPReadGzFileServices
                 {
                     SyncPolSourceSiteModel(mwqmPolSourceSiteModelOriginal, mwqmPolSourceSiteModelLocal);
                 }
-
-                List<TVFileModel> TVFileModelList = (from c in mwqmPolSourceSiteModelLocal.TVFileModelList
-                                                     where c.TVFile.TVFileID != 0
-                                                     && (c.TVFile.DBCommand != DBCommandEnum.Original
-                                                     || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                     || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                     select c).ToList();
-
-                foreach (TVFileModel tvFileModel in TVFileModelList)
-                {
-                    TVFileModel tvFileModelOriginal = mwqmPolSourceSiteModelLocal.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModel.TVFile.TVFileID).FirstOrDefault();
-                    if (tvFileModelOriginal == null)
-                    {
-                        mwqmPolSourceSiteModelLocal.TVFileModelList.Add(tvFileModel);
-                    }
-                    else
-                    {
-                        tvFileModelOriginal = tvFileModel;
-                    }
-                }
             }
         }
         private void DoMergeJsonWebPolSourceSitesIsLocalized(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)

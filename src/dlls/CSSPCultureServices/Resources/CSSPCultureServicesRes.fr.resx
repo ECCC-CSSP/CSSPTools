@@ -1086,4 +1086,7 @@
   <data name="ParentTVItemModelNotFoundFor_" xml:space="preserve">
     <value>Le parent TVItemModel {0} est introuvable</value>
   </data>
+  <data name="ModifyOf_IsNotAllowed" xml:space="preserve">
+    <value>Modifier {0} n'est pas permit</value>
+  </data>
 </root>
