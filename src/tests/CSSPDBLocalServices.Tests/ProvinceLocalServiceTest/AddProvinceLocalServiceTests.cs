@@ -127,10 +127,11 @@ namespace CSSPDBLocalServices.Tests
 
             fiList = di.GetFiles().ToList();
 
-            Assert.Equal(3, fiList.Count);
+            Assert.Equal(4, fiList.Count);
 
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebAllProvinces }.gz").Any());
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebProvince }_{ tvItemModelRet.TVItem.TVItemID }.gz").Any());
+            Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebProvince }_{ tvItemModelRet2.TVItem.TVItemID }.gz").Any());
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebCountry }_{ ParentTVItemID }.gz").Any());
         }
         [Theory]
@@ -140,7 +141,7 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await ProvinceLocalServiceSetup(culture));
 
-            int ParentTVItemID = 5;
+            int ParentTVItemID = 0;
 
             var actionProvinceRes = await ProvinceLocalService.AddProvinceLocal(ParentTVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);

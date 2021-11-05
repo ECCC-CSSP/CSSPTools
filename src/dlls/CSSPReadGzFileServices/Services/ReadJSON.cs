@@ -95,7 +95,11 @@ namespace CSSPReadGzFileServices
                                         {
                                             return await CSSPLogService.EndFunctionReturnUnauthorized(FunctionName, CSSPCultureServicesRes.YouDoNotHaveAuthorization);
                                         }
-                                        else if ((int)response.Result.StatusCode == 500)
+                                        else if ((int)response.Result.StatusCode == 404)
+                                        {
+                                            return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.FileNotFound_, fileName));
+                                        }
+                                        else
                                         {
                                             return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection);
                                         }

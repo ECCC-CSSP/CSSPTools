@@ -139,12 +139,14 @@ namespace CSSPDBLocalServices.Tests
             int ParentTVItemID = 10000;
             int TVItemID = 7;
 
+            string fileName = await BaseGzFileService.GetFileName(WebTypeEnum.WebCountry, ParentTVItemID);
+
             var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocal(ParentTVItemID, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemModel", "TVItemID", $"{ TVItemID }"), errRes.ErrList[0]);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.FileNotFound_, fileName), errRes.ErrList[0]);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -183,7 +185,7 @@ namespace CSSPDBLocalServices.Tests
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotDelete_Because_ChildrenExist, "TVItem Province", "Province"), errRes.ErrList[0]);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem Province", "Area"), errRes.ErrList[0]);
         }
     }
 }

@@ -64,7 +64,6 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-
             var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocal(webRoot.TVItemModel.TVItem, tvItemModelToDelete);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -75,6 +74,18 @@ namespace CSSPDBLocalServices
             tvItemModelToDelete.TVItemLanguageList = tvItemModelDeleted.TVItemLanguageList;
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            foreach (MapInfoModel mapInfoModel in tvItemModelToDelete.MapInfoModelList)
+            {
+                var actionMapInfoModelRes = await MapInfoLocalService.DeleteMapInfoLocal(webRoot.TVItemModel.TVItem, tvItemModelToDelete.TVItem, TVTypeEnum.Country, mapInfoModel.MapInfo.MapInfoDrawType);
+
+                if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+                MapInfoModel mapInfoModelDeleted = (MapInfoModel)((OkObjectResult)actionMapInfoModelRes.Result).Value;
+
+                mapInfoModel.MapInfo = mapInfoModelDeleted.MapInfo;
+                mapInfoModel.MapInfoPointList = mapInfoModelDeleted.MapInfoPointList;
+            }
 
             List<ToRecreate> ToRecreateList = new List<ToRecreate>()
             {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace CSSPReadGzFileServices
 {
@@ -28,6 +29,11 @@ namespace CSSPReadGzFileServices
             var actionRes = await ReadJSON<T>(webType, TVItemID);
 
             CSSPLogService.EndFunctionLog(FunctionName);
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0)
+            {
+                return await Task.FromResult(JsonSerializer.Deserialize<T>("{}"));
+            }
 
             return (T)((OkObjectResult)actionRes.Result).Value;
         }

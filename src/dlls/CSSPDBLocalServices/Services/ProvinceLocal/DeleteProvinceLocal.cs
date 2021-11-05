@@ -54,6 +54,8 @@ namespace CSSPDBLocalServices
 
             WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
             TVItemModel tvItemModelToDelete = (from c in webCountry.TVItemModelProvinceList
                                                where c.TVItem.TVItemID == TVItemID
                                                select c).FirstOrDefault();
