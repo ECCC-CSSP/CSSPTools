@@ -15,7 +15,7 @@ namespace CSSPWebModels
         public TVItemModel TVItemModel { get; set; }
         public List<TVItemModel> TVItemModelParentList { get; set; }
         public List<TVFileModel> TVFileModelList { get; set; }
-        public List<TVItemModel> TVItemModelClassificationList { get; set; }
+        public List<ClassificationModel> ClassificationModelList { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -24,7 +24,7 @@ namespace CSSPWebModels
             TVItemModel = new TVItemModel();
             TVItemModelParentList = new List<TVItemModel>();
             TVFileModelList = new List<TVFileModel>();
-            TVItemModelClassificationList = new List<TVItemModel>();
+            ClassificationModelList = new List<ClassificationModel>();
         }
         #endregion Constructors
     }

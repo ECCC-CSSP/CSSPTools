@@ -44,12 +44,14 @@ namespace CSSPDBLocalServices
         private CSSPDBLocalContext dbLocal { get; }
         private ICSSPReadGzFileService CSSPReadGzFileService { get; }
         private ICSSPCreateGzFileService CSSPCreateGzFileService { get; }
+        private IHelperLocalService HelperLocalService { get; }
         private List<ToRecreate> ToRecreateList { get; set; }
         #endregion Properties
 
         #region Constructors
         public TVItemLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
-           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, ICSSPReadGzFileService CSSPReadGzFileService, ICSSPCreateGzFileService CSSPCreateGzFileService)
+           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, ICSSPReadGzFileService CSSPReadGzFileService, ICSSPCreateGzFileService CSSPCreateGzFileService,
+           IHelperLocalService HelperLocalService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
@@ -59,6 +61,7 @@ namespace CSSPDBLocalServices
             if (dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbLocal") }");
             if (CSSPReadGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "ReadGzFileService") }");
             if (CSSPCreateGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CreateGzFileService") }");
+            if (HelperLocalService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "HelperLocalService") }");
 
             if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDBLocalService") }");
             if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "CSSPDBLocalService") }");
@@ -84,6 +87,7 @@ namespace CSSPDBLocalServices
             this.dbLocal = dbLocal;
             this.CSSPReadGzFileService = CSSPReadGzFileService;
             this.CSSPCreateGzFileService = CSSPCreateGzFileService;
+            this.HelperLocalService = HelperLocalService;
 
             ToRecreateList = new List<ToRecreate>();
         }

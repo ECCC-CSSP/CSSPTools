@@ -20,18 +20,20 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CSSPHelperModels;
 
 namespace CSSPDBLocalServices
 {
 
     public partial interface IMapInfoLocalService
     {
-        //Task<ActionResult<MapInfoLocalModel>> AddMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
-        Task<ActionResult<List<MapInfoLocalModel>>> AddMapInfoLocalFromAverage(TVItem tvItemParent, TVItem tvItem);
-        //Task<ActionResult<MapInfoLocalModel>> DeleteMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
+        Task<ActionResult<MapInfoModel>> AddMapInfoLocal(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList);
+        Task<ActionResult<MapInfoModel>> AddMapInfoLocalFromAverage(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType);
+        Task<ActionResult<MapInfoModel>> DeleteMapInfoLocal(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType);
         //Task<ActionResult<MapInfoLocalModel>> ModifyMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
         Task<double> CalculateAreaOfPolygon(List<Coord> NodeList);
         Task<double> CalculateDistance(double lat1, double long1, double lat2, double long2, double EarthRadius);
+
     }
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
@@ -47,6 +49,7 @@ namespace CSSPDBLocalServices
         private CSSPDBLocalContext dbLocal { get; }
         private ICSSPReadGzFileService CSSPReadGzFileService { get; }
         private ICSSPCreateGzFileService CSSPCreateGzFileService { get; }
+        private IHelperLocalService HelperLocalService { get; }
         private List<ToRecreate> ToRecreateList { get; set; }
         private double R = 6378137.0;
         private double d2r = Math.PI / 180;
@@ -56,7 +59,8 @@ namespace CSSPDBLocalServices
 
         #region Constructors
         public MapInfoLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
-           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, ICSSPReadGzFileService CSSPReadGzFileService, ICSSPCreateGzFileService CSSPCreateGzFileService)
+           ICSSPLogService CSSPLogService, CSSPDBLocalContext dbLocal, ICSSPReadGzFileService CSSPReadGzFileService, ICSSPCreateGzFileService CSSPCreateGzFileService,
+           IHelperLocalService HelperLocalService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
@@ -66,6 +70,7 @@ namespace CSSPDBLocalServices
             if (dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbLocal") }");
             if (CSSPReadGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPReadGzFileService") }");
             if (CSSPCreateGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCreateGzFileService") }");
+            if (HelperLocalService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "HelperLocalService") }");
 
             if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDBLocalService") }");
             if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "CSSPDBLocalService") }");
@@ -91,6 +96,7 @@ namespace CSSPDBLocalServices
             this.dbLocal = dbLocal;
             this.CSSPReadGzFileService = CSSPReadGzFileService;
             this.CSSPCreateGzFileService = CSSPCreateGzFileService;
+            this.HelperLocalService = HelperLocalService;
 
             ToRecreateList = new List<ToRecreate>();
 

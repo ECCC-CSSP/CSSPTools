@@ -30,34 +30,29 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await HelpDocLocalServiceSetup(culture));
 
-            HelpDocLocalModel helpDocLocalModel = FillHelpDocLocalModel();
+            HelpDoc helpDoc = FillHelpDoc();
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.AddHelpDocLocal(helpDocLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            HelpDocLocalModel helpDocLocalModelRet = (HelpDocLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.NotNull(helpDocLocalModelRet);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            Assert.Equal(200, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionHelpDocRes.Result).Value);
+            HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionHelpDocRes.Result).Value;
+            Assert.NotNull(helpDocRet);
 
-            Assert.Equal(-1, helpDocLocalModelRet.HelpDoc.HelpDocID);
-            Assert.Equal(DBCommandEnum.Created, helpDocLocalModelRet.HelpDoc.DBCommand);
-            Assert.Equal(helpDocLocalModel.HelpDoc.DocHTMLText, helpDocLocalModelRet.HelpDoc.DocHTMLText);
-            Assert.Equal(helpDocLocalModel.HelpDoc.DocKey, helpDocLocalModelRet.HelpDoc.DocKey);
-            Assert.Equal(helpDocLocalModel.HelpDoc.Language, helpDocLocalModelRet.HelpDoc.Language);
-            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, helpDocLocalModelRet.HelpDoc.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < helpDocLocalModelRet.HelpDoc.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > helpDocLocalModelRet.HelpDoc.LastUpdateDate_UTC);
+            Assert.Equal(-1, helpDocRet.HelpDocID);
+            Assert.Equal(DBCommandEnum.Created, helpDocRet.DBCommand);
+            Assert.Equal(helpDoc.DocHTMLText, helpDocRet.DocHTMLText);
+            Assert.Equal(helpDoc.DocKey, helpDocRet.DocKey);
+            Assert.Equal(helpDoc.Language, helpDocRet.Language);
+            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, helpDocRet.LastUpdateContactTVItemID);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < helpDocRet.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > helpDocRet.LastUpdateDate_UTC);
 
             HelpDoc helpDocDB = (from c in dbLocal.HelpDocs
                              where c.HelpDocID == -1
                              select c).FirstOrDefault();
             Assert.NotNull(helpDocDB);
 
-            HelpDocLocalModel helpDocLocalModelDB = new HelpDocLocalModel()
-            {
-                HelpDoc = helpDocDB,
-            };
-
-            Assert.Equal(JsonSerializer.Serialize(helpDocLocalModelDB), JsonSerializer.Serialize(helpDocLocalModelRet));
+            Assert.Equal(JsonSerializer.Serialize(helpDocDB), JsonSerializer.Serialize(helpDocRet));
 
             WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
@@ -72,7 +67,7 @@ namespace CSSPDBLocalServices.Tests
                                                select c).ToList();
 
             Assert.Single(commandLogList);
-            Assert.Contains("HelpDocLocalService.AddHelpDocLocal(HelpDocLocalModel helpDocLocalModel)", commandLogList[0].Log);
+            Assert.Contains("HelpDocLocalService.AddHelpDocLocal(HelpDoc helpDoc)", commandLogList[0].Log);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -81,13 +76,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await HelpDocLocalServiceSetup(culture));
 
-            HelpDocLocalModel helpDocLocalModel = FillHelpDocLocalModel();
+            HelpDoc helpDoc = FillHelpDoc();
 
-            helpDocLocalModel.HelpDoc.HelpDocID = 10;
+            helpDoc.HelpDocID = 10;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.AddHelpDocLocal(helpDocLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "HelpDocID", "0"), errRes.ErrList[0]);
@@ -99,13 +94,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await HelpDocLocalServiceSetup(culture));
 
-            HelpDocLocalModel helpDocLocalModel = FillHelpDocLocalModel();
+            HelpDoc helpDoc = FillHelpDoc();
 
-            helpDocLocalModel.HelpDoc.DocKey = "";
+            helpDoc.DocKey = "";
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.AddHelpDocLocal(helpDocLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "DocKey"), errRes.ErrList[0]);
@@ -117,13 +112,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await HelpDocLocalServiceSetup(culture));
 
-            HelpDocLocalModel helpDocLocalModel = FillHelpDocLocalModel();
+            HelpDoc helpDoc = FillHelpDoc();
 
-            helpDocLocalModel.HelpDoc.Language = (LanguageEnum)10000;
+            helpDoc.Language = (LanguageEnum)10000;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.AddHelpDocLocal(helpDocLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), errRes.ErrList[0]);
@@ -135,13 +130,13 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await HelpDocLocalServiceSetup(culture));
 
-            HelpDocLocalModel helpDocLocalModel = FillHelpDocLocalModel();
+            HelpDoc helpDoc = FillHelpDoc();
 
-            helpDocLocalModel.HelpDoc.DocHTMLText = "";
+            helpDoc.DocHTMLText = "";
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.AddHelpDocLocal(helpDocLocalModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
             Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "DocHTMLText"), errRes.ErrList[0]);
@@ -157,19 +152,19 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.True(webAllHelpDocs.HelpDocList.Count > 10);
 
-            HelpDocLocalModel helpDocLocalModel = FillHelpDocLocalModel();
+            HelpDoc helpDoc = FillHelpDoc();
 
-            helpDocLocalModel.HelpDoc = webAllHelpDocs.HelpDocList[7];
+            helpDoc = webAllHelpDocs.HelpDocList[7];
 
-            int HelpDocID = helpDocLocalModel.HelpDoc.HelpDocID;
+            int HelpDocID = helpDoc.HelpDocID;
 
-            helpDocLocalModel.HelpDoc.HelpDocID = 0;
+            helpDoc.HelpDocID = 0;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.AddHelpDocLocal(helpDocLocalModel);
-            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            HelpDocLocalModel helpDocLocalModelRet = (HelpDocLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            helpDocLocalModel.HelpDoc.HelpDocID = HelpDocID;
-            Assert.Equal(JsonSerializer.Serialize(helpDocLocalModel), JsonSerializer.Serialize(helpDocLocalModelRet));
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            Assert.Equal(200, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
+            HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionHelpDocRes.Result).Value;
+            helpDoc.HelpDocID = HelpDocID;
+            Assert.Equal(JsonSerializer.Serialize(helpDoc), JsonSerializer.Serialize(helpDocRet));
         }
     }
 }

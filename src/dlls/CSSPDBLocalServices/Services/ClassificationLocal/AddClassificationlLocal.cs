@@ -1,137 +1,164 @@
-///*
-// * Manually edited
-// *
-// */
+/*
+ * Manually edited
+ *
+ */
 
-//using CSSPEnums;
-//using CSSPDBModels;
-//using CSSPCultureServices.Resources;
-//using CSSPCultureServices.Services;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using System;
-//using System.Collections.Generic;
-//using System.ComponentModel.DataAnnotations;
-//using System.Linq;
-//using System.Text.RegularExpressions;
-//using System.Threading.Tasks;
-//using CSSPLocalLoggedInServices;
-//using Microsoft.Extensions.Configuration;
-//using CSSPWebModels;
-//using System.Text.Json;
-//using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-//using CSSPHelperModels;
-//using CSSPLogServices;
-//using System.Reflection;
-//using System.Security.Cryptography;
-//using CSSPReadGzFileServices;
-//using CSSPCreateGzFileServices;
+using CSSPEnums;
+using CSSPDBModels;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using CSSPLocalLoggedInServices;
+using Microsoft.Extensions.Configuration;
+using CSSPWebModels;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using CSSPHelperModels;
+using CSSPLogServices;
+using System.Reflection;
+using System.Security.Cryptography;
+using CSSPReadGzFileServices;
+using CSSPCreateGzFileServices;
 
-//namespace CSSPDBLocalServices
-//{
-//    public partial class ClassificationLocalService : ControllerBase, IClassificationLocalService
-//    {
-//        public async Task<ActionResult<ClassificationLocalModel>> AddClassificationLocal(ClassificationLocalModel classificationLocalModel)
-//        {
-//            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(ClassificationLocalModel classificationLocalModel)";
-//            CSSPLogService.FunctionLog(FunctionName);
+namespace CSSPDBLocalServices
+{
+    public partial class ClassificationLocalService : ControllerBase, IClassificationLocalService
+    {
+        public async Task<ActionResult<ClassificationModel>> AddClassificationLocal(int SubsectorTVItemID, ClassificationTypeEnum classificationType, List<Coord> coordList)
+        {
+            string parameters = $" --  SubsectorTVItemID = { SubsectorTVItemID } " +
+                $"classificationType = { classificationType }";
 
-//            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int SubsectorTVItemID, ClassificationTypeEnum classificationType, List<Coord> coordList) { parameters }";
+            CSSPLogService.FunctionLog(FunctionName);
 
-//            #region Check Classification
-//            if (classificationLocalModel.Classification.ClassificationID != 0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "ClassificationID", "0"));
-//            }
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-//            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)ClassificationModel.Classification.DBCommand);
-//            //if (!string.IsNullOrWhiteSpace(retStr))
-//            //{
-//            //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-//            //}
+            #region Check Classification
+            if (SubsectorTVItemID == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorTVItemID"));
+            }
 
-//            //if (ClassificationModel.Classification.ClassificationTVItemID == 0)
-//            //{
-//            //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ClassificationTVItemID"));
-//            //}
+            string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)classificationType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "classificationType"));
+            }
 
-//            if (string.IsNullOrWhiteSpace(classificationLocalModel.Classification.ClassificationAddress))
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ClassificationAddress"));
-//            }
+            if (coordList == null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "coordList"));
+            }
 
-//            string retStr = enums.EnumTypeOK(typeof(ClassificationTypeEnum), (int?)classificationLocalModel.Classification.ClassificationType);
-//            if (!string.IsNullOrWhiteSpace(retStr))
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ClassificationType"));
-//            }
-//            #endregion Check Classification
+            if (coordList.Count == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "coordList"));
+            }
+            #endregion Check Classification
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            WebAllClassifications webAllClassifications = await CSSPReadGzFileService.GetUncompressJSON<WebAllClassifications>(WebTypeEnum.WebAllClassifications, 0);
+            WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
 
-//            Classification classificationJSON = (from c in webAllClassifications.ClassificationList
-//                                   where c.ClassificationAddress == classificationLocalModel.Classification.ClassificationAddress
-//                                   select c).FirstOrDefault();
+            int LastOrdinal = (from c in webSubsector.ClassificationModelList
+                               orderby c.Classification.Ordinal ascending
+                               select c.Classification.Ordinal).FirstOrDefault();
 
-//            if (classificationJSON != null)
-//            {
-//                return await Task.FromResult(Ok(new ClassificationLocalModel() { Classification = classificationJSON }));
-//            }
+            string TVText = "ERROR";
+            switch (classificationType)
+            {
+                case ClassificationTypeEnum.Approved:
+                    {
+                        TVText = "A " + LastOrdinal;
+                    }
+                    break;
+                case ClassificationTypeEnum.ConditionallyApproved:
+                    {
+                        TVText = "CA " + LastOrdinal;
+                    }
+                    break;
+                case ClassificationTypeEnum.ConditionallyRestricted:
+                    {
+                        TVText = "CR " + LastOrdinal;
+                    }
+                    break;
+                case ClassificationTypeEnum.Prohibited:
+                    {
+                        TVText = "P " + LastOrdinal;
+                    }
+                    break;
+                case ClassificationTypeEnum.Restricted:
+                    {
+                        TVText = "R " + LastOrdinal;
+                    }
+                    break;
+                default:
+                    break;
+            }
 
-//            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webSubsector.TVItemModel.TVItem, TVTypeEnum.Classification, TVText, TVText);
 
-//            await TVItemLocalService.AddTVItemParentLocal(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
 
-//            string TVTextEN = $"{ classificationLocalModel.Classification.ClassificationAddress }";
-//            string TVTextFR = $"{ classificationLocalModel.Classification.ClassificationAddress }";
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Classification, TVTextEN, TVTextFR);
+            int ClassificationIDNew = (from c in dbLocal.Classifications
+                               where c.ClassificationID < 0
+                               orderby c.ClassificationID ascending
+                               select c.ClassificationID).FirstOrDefault() - 1;
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            Classification classification = new Classification()
+            {
+                ClassificationID = ClassificationIDNew,
+                ClassificationTVItemID = tvItemModel.TVItem.TVItemID,
+                ClassificationType = classificationType,
+                Ordinal = LastOrdinal + 1,
+                DBCommand = DBCommandEnum.Created,
+                LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                LastUpdateDate_UTC = DateTime.UtcNow,
+            };
 
-//            TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
+            try
+            {
+                dbLocal.Classifications.Add(classification);
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Classification", ex.Message));
+            }
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            int ClassificationIDNew = (from c in dbLocal.Classifications
-//                                where c.ClassificationID < 0
-//                                orderby c.ClassificationID descending
-//                                select c.ClassificationID).FirstOrDefault() - 1;
+            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebSubsector, SubsectorTVItemID);
+            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+            {
+                ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
+            }
 
-//            try
-//            {
-//                classificationLocalModel.Classification.DBCommand = DBCommandEnum.Created;
-//                classificationLocalModel.Classification.ClassificationID = ClassificationIDNew;
-//                classificationLocalModel.Classification.ClassificationTVItemID = tvItemModel.TVItem.TVItemID;
-//                classificationLocalModel.Classification.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-//                classificationLocalModel.Classification.LastUpdateDate_UTC = DateTime.UtcNow;
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//                dbLocal.Classifications.Add(classificationLocalModel.Classification);
-//                dbLocal.SaveChanges();
-//            }
-//            catch (Exception ex)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "Classification", ex.Message));
-//            }
+            CSSPLogService.EndFunctionLog(FunctionName);
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            ClassificationLocalModel classificationLocalModel = new ClassificationLocalModel()
+            {
+                TVItemParent = webSubsector.TVItemModel.TVItem,
+                TVItemModel = tvItemModel,
+                Classification = classification,
+            };
 
-//            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebAllClassifications, 0);
-//            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
-//            {
-//                ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
-//                CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
-//            }
-
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-//            CSSPLogService.EndFunctionLog(FunctionName);
-
-//            return await Task.FromResult(Ok(classificationLocalModel));
-//        }
-//    }
-//}
+            return await Task.FromResult(Ok(classificationLocalModel));
+        }
+    }
+}

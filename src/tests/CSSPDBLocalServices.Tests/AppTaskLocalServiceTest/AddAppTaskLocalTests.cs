@@ -53,8 +53,8 @@ namespace CSSPDBLocalServices.Tests
             Assert.Equal(appTaskLocalModel.AppTask.EstimatedLength_second, appTaskModelRet.AppTask.EstimatedLength_second);
             Assert.Equal(appTaskLocalModel.AppTask.RemainingTime_second, appTaskModelRet.AppTask.RemainingTime_second);
             Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, appTaskModelRet.AppTask.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < appTaskModelRet.AppTask.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > appTaskModelRet.AppTask.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < appTaskModelRet.AppTask.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > appTaskModelRet.AppTask.LastUpdateDate_UTC);
 
             Assert.Equal(-1, appTaskModelRet.AppTaskLanguageList[0].AppTaskLanguageID);
             Assert.Equal(DBCommandEnum.Created, appTaskModelRet.AppTaskLanguageList[0].DBCommand);

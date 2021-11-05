@@ -33,8 +33,12 @@ namespace CSSPDBLocalServices
     {
         public async Task<ActionResult<Email>> AddEmailLocal(Email email)
         {
-            string parameters = $" --  EmailAddress = { email.EmailAddress ?? "--" } " +
-                $"EmailType = { email.EmailType.ToString() ?? "--" }";
+            string parameters = "";
+            if (email != null)
+            {
+                parameters = $" --  EmailAddress = { email.EmailAddress ?? "--" } " +
+                    $"EmailType = { email.EmailType.ToString() ?? "--" }";
+            }
 
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(Email email) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
@@ -42,6 +46,13 @@ namespace CSSPDBLocalServices
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Email
+            if (email == null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Email"));
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
             if (email.EmailID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "EmailID", "0"));
@@ -63,6 +74,11 @@ namespace CSSPDBLocalServices
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "EmailAddress"));
             }
 
+            if (!IsValidEmail(email.EmailAddress))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNotAValidEmail, email.EmailAddress));
+            }
+
             string retStr = enums.EnumTypeOK(typeof(EmailTypeEnum), (int?)email.EmailType);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
@@ -75,8 +91,8 @@ namespace CSSPDBLocalServices
             WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 
             Email emailJSON = (from c in webAllEmails.EmailList
-                                   where c.EmailAddress == email.EmailAddress
-                                   select c).FirstOrDefault();
+                               where c.EmailAddress == email.EmailAddress
+                               select c).FirstOrDefault();
 
             if (emailJSON != null)
             {
@@ -101,9 +117,9 @@ namespace CSSPDBLocalServices
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             int EmailIDNew = (from c in dbLocal.Emails
-                                where c.EmailID < 0
-                                orderby c.EmailID descending
-                                select c.EmailID).FirstOrDefault() - 1;
+                              where c.EmailID < 0
+                              orderby c.EmailID ascending
+                              select c.EmailID).FirstOrDefault() - 1;
 
             try
             {
@@ -123,14 +139,24 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebAllEmails, 0);
-            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
-            {
-                ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
-                CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
-            }
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+            {
+                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+                new ToRecreate() { WebType = WebTypeEnum.WebAllEmails, TVItemID = 0 },
+            };
+
+            foreach (ToRecreate toRecreate in ToRecreateList)
+            {
+                var actionRes = await CSSPCreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
+                if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+                {
+                    ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                    CSSPLogService.ErrRes.ErrList.AddRange(errRes.ErrList);
+                }
+
+                if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
 
             CSSPLogService.EndFunctionLog(FunctionName);
 

@@ -44,7 +44,7 @@ namespace CSSPDBLocalServices.Tests
         #region Functions private
         private async Task<bool> CountryLocalServiceSetup(string culture)
         {
-            List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages" };
+            List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
             Assert.True(await CSSPDBLocalServiceSetup(culture));
             Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));

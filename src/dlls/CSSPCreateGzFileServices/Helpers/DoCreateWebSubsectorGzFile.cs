@@ -37,7 +37,7 @@ namespace CSSPCreateGzFileServices
             {
                 if (!await FillTVItemModelAndParentTVItemModelList(webSubsector.TVItemModel, webSubsector.TVItemModelParentList, TVItemSubsector)) return await Task.FromResult(false);
 
-                if (!await FillChildListTVItemModelList(webSubsector.TVItemModelClassificationList, TVItemSubsector, TVTypeEnum.Classification)) return await Task.FromResult(false);
+                if (!await FillClassificationModelList(webSubsector.ClassificationModelList, TVItemSubsector, TVTypeEnum.Classification)) return await Task.FromResult(false);
 
                 if (!await FillFileModelList(webSubsector.TVFileModelList, TVItemSubsector)) return await Task.FromResult(false);
 

@@ -2342,6 +2342,33 @@ namespace CSSPCreateGzFileServices
                           orderby c.IsActive, cl.TVText
                           select s).AsNoTracking().ToListAsync();
         }
+        private async Task<List<Classification>> GetClassificationListFromSubsector(TVItem TVItemSubsector)
+        {
+            if (dbLocal != null)
+            {
+                return await (from c in dbLocal.TVItems
+                              from cl in dbLocal.TVItemLanguages
+                              from s in dbLocal.Classifications
+                              where c.TVItemID == cl.TVItemID
+                              && c.TVItemID == s.ClassificationTVItemID
+                              && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                              && c.TVType == TVTypeEnum.Classification
+                              && cl.Language == LanguageEnum.en
+                              orderby c.IsActive, cl.TVText
+                              select s).AsNoTracking().ToListAsync();
+            }
+
+            return await (from c in db.TVItems
+                          from cl in db.TVItemLanguages
+                          from s in db.Classifications
+                          where c.TVItemID == cl.TVItemID
+                          && c.TVItemID == s.ClassificationTVItemID
+                          && c.TVPath.Contains(TVItemSubsector.TVPath + "p")
+                          && c.TVType == TVTypeEnum.Classification
+                          && cl.Language == LanguageEnum.en
+                          orderby c.IsActive, cl.TVText
+                          select s).AsNoTracking().ToListAsync();
+        }
         private async Task<List<Contact>> GetAllContact()
         {
             if (dbLocal != null)

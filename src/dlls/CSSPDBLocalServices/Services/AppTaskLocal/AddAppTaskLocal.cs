@@ -232,7 +232,7 @@ namespace CSSPDBLocalServices
 
             int AppTaskIDNew = (from c in dbLocal.AppTasks
                                 where c.AppTaskID < 0
-                                orderby c.AppTaskID descending
+                                orderby c.AppTaskID ascending
                                 select c.AppTaskID).FirstOrDefault() - 1;
 
             appTaskModel.AppTask.AppTaskID = AppTaskIDNew;
@@ -257,7 +257,7 @@ namespace CSSPDBLocalServices
             #region Adding AppTaskLanguage EN
             int AppTaskLanguageIDNewEN = (from c in dbLocal.AppTaskLanguages
                                           where c.AppTaskLanguageID < 0
-                                          orderby c.AppTaskLanguageID descending
+                                          orderby c.AppTaskLanguageID ascending
                                           select c.AppTaskLanguageID).FirstOrDefault() - 1;
 
             appTaskModel.AppTaskLanguageList[0].AppTaskLanguageID = AppTaskLanguageIDNewEN;
@@ -284,7 +284,7 @@ namespace CSSPDBLocalServices
             #region Adding AppTaskLanguage FR
             int AppTaskLanguageIDNewFR = (from c in dbLocal.AppTaskLanguages
                                           where c.AppTaskLanguageID < 0
-                                          orderby c.AppTaskLanguageID descending
+                                          orderby c.AppTaskLanguageID ascending
                                           select c.AppTaskLanguageID).FirstOrDefault() - 1;
 
             appTaskModel.AppTaskLanguageList[1].AppTaskLanguageID = AppTaskLanguageIDNewFR;

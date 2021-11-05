@@ -48,13 +48,14 @@ namespace CSSPDBLocalServices
         private ICSSPLogService CSSPLogService { get; }
         private ICSSPCreateGzFileService CSSPCreateGzFileService { get; }
         private ICSSPReadGzFileService CSSPReadGzFileService { get; }
+        private IHelperLocalService HelperLocalService { get; }
         private ITVItemLocalService TVItemLocalService { get; }
         #endregion Properties
 
         #region Constructors
         public EmailLocalService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
            ICSSPLogService CSSPLogService, ICSSPCreateGzFileService CSSPCreateGzFileService, ICSSPReadGzFileService CSSPReadGzFileService, 
-           CSSPDBLocalContext dbLocal, ITVItemLocalService TVItemLocalService)
+           CSSPDBLocalContext dbLocal, IHelperLocalService HelperLocalService, ITVItemLocalService TVItemLocalService)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
@@ -64,6 +65,7 @@ namespace CSSPDBLocalServices
             if (CSSPCreateGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCreateGzFileService") }");
             if (CSSPReadGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPReadGzFileService") }");
             if (dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbLocal") }");
+            if (HelperLocalService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "HelperLocalService") }");
             if (TVItemLocalService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "TVItemLocalService") }");
 
             if (string.IsNullOrEmpty(Configuration["APISecret"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "APISecret", "CSSPDBLocalService") }");
@@ -90,6 +92,7 @@ namespace CSSPDBLocalServices
             this.CSSPCreateGzFileService = CSSPCreateGzFileService;
             this.CSSPReadGzFileService = CSSPReadGzFileService;
             this.dbLocal = dbLocal;
+            this.HelperLocalService = HelperLocalService;
             this.TVItemLocalService = TVItemLocalService;
         }
         #endregion Constructors

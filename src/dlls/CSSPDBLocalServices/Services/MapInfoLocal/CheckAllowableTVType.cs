@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 {
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        public void CheckAllowableTVType(MapInfoLocalModel mapInfoLocalModel)
+        public void CheckAllowableTVType(MapInfoModel mapInfoModel)
         {
             List<TVTypeEnum> AllowableTVTypes = new List<TVTypeEnum>()
             {
@@ -62,7 +62,7 @@ namespace CSSPDBLocalServices
                 TVTypeEnum.WasteWaterTreatmentPlant,
             };
 
-            if (!AllowableTVTypes.Contains(mapInfoLocalModel.MapInfo.TVType))
+            if (!AllowableTVTypes.Contains(mapInfoModel.MapInfo.TVType))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNotOfType_, "TVType", string.Join(",", AllowableTVTypes)));
             }

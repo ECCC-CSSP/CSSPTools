@@ -33,8 +33,12 @@ namespace CSSPDBLocalServices
     {
         public async Task<ActionResult<Tel>> AddTelLocal(Tel tel)
         {
-            string parameters = $" --  TelNumber = { tel.TelNumber ?? "--" } " +
-                $"TelType = { tel.TelType.ToString() ?? "--" }";
+            string parameters = "";
+            if (tel != null)
+            {
+                parameters = $" --  TelNumber = { tel.TelNumber ?? "--" } " +
+                    $"TelType = { tel.TelType.ToString() ?? "--" }";
+            }
 
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(Tel tel) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
@@ -42,6 +46,13 @@ namespace CSSPDBLocalServices
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Tel
+            if (tel == null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tel"));
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
             if (tel.TelID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "TelID", "0"));
@@ -75,8 +86,8 @@ namespace CSSPDBLocalServices
             WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, 0);
 
             Tel telJSON = (from c in webAllTels.TelList
-                                   where c.TelNumber == tel.TelNumber
-                                   select c).FirstOrDefault();
+                           where c.TelNumber == tel.TelNumber
+                           select c).FirstOrDefault();
 
             if (telJSON != null)
             {
@@ -101,9 +112,9 @@ namespace CSSPDBLocalServices
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             int TelIDNew = (from c in dbLocal.Tels
-                                where c.TelID < 0
-                                orderby c.TelID descending
-                                select c.TelID).FirstOrDefault() - 1;
+                            where c.TelID < 0
+                            orderby c.TelID ascending
+                            select c.TelID).FirstOrDefault() - 1;
 
             tel.DBCommand = DBCommandEnum.Created;
             tel.TelID = TelIDNew;
@@ -123,14 +134,23 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTels, 0);
-            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+            List<ToRecreate> ToRecreateList = new List<ToRecreate>()
             {
-                ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
-                CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
-            }
+                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+                new ToRecreate() { WebType = WebTypeEnum.WebAllTels, TVItemID = 0 },
+            };
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            foreach (ToRecreate toRecreate in ToRecreateList)
+            {
+                var actionRes = await CSSPCreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
+                if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+                {
+                    ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                    CSSPLogService.ErrRes.ErrList.AddRange(errRes.ErrList);
+                }
+
+                if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
 
             CSSPLogService.EndFunctionLog(FunctionName);
 

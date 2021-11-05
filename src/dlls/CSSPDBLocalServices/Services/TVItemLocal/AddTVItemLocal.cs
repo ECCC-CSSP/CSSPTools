@@ -27,35 +27,53 @@ namespace CSSPDBLocalServices
     {
         public async Task<ActionResult<TVItemModel>> AddTVItemLocal(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR) -- tvItemParent.TVItemID = { tvItemParent.TVItemID } tvType = { tvType } TVTextEN = { TVTextEN } TVTextFR = { TVTextFR }";
+            string parameters = "";
+            if (tvItemParent != null)
+            {
+                parameters += $" --  tvItemParent.TVItemID = { tvItemParent.TVItemID } " +
+                    $"tvItemParent.TVType = { tvItemParent.TVType }";
+            }
+
+            parameters += $"tvType = { tvType } " +
+            $"TVTextEN = { TVTextEN } " +
+            $"TVTextFR = { TVTextFR }";
+
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR) -- { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Input
+            if (tvItemParent == null)
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent"));
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
             if (tvItemParent.TVItemID == 0)
             {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID"));
             }
 
             if (tvItemParent.TVType == TVTypeEnum.Root)
             {
                 if (tvItemParent.TVLevel != 0)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVLevel"));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVLevel"));
                 }
             }
             else
             {
                 if (tvItemParent.TVLevel == 0)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVLevel"));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVLevel"));
                 }
             }
 
             if (string.IsNullOrWhiteSpace(tvItemParent.TVPath))
             {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"));
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVPath"));
             }
 
             string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvType);
@@ -64,7 +82,7 @@ namespace CSSPDBLocalServices
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvType"));
             }
 
-            CheckTVTypeParentAndTVType(tvItemParent.TVType, tvType);
+            HelperLocalService.CheckTVTypeParentAndTVType(tvItemParent.TVType, tvType);
 
             if (string.IsNullOrWhiteSpace(TVTextEN))
             {
@@ -78,20 +96,20 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await CheckIfSiblingsExistWithSameTVText(tvItemParent, tvType, TVTextEN, TVTextFR, 0);
+            await HelperLocalService.CheckIfSiblingsExistWithSameTVText(tvItemParent, tvType, TVTextEN, TVTextFR, 0);
 
             #endregion Check Input
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            List<TVItemModel> tvItemModelParentList = await GetTVItemModelParentList(tvItemParent, tvType);
+            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentList(tvItemParent, tvType);
 
             await AddTVItemParentLocal(tvItemModelParentList);
 
             #region TVItem
             int TVItemIDNew = (from c in dbLocal.TVItems
                                where c.TVItemID < 0
-                               orderby c.TVItemID descending
+                               orderby c.TVItemID ascending
                                select c.TVItemID).FirstOrDefault() - 1;
 
             TVItem tvItemNew = new TVItem()
@@ -123,7 +141,7 @@ namespace CSSPDBLocalServices
             #region TVItemLanguage EN
             int TVItemLanguageIDNewEN = (from c in dbLocal.TVItemLanguages
                                          where c.TVItemLanguageID < 0
-                                         orderby c.TVItemLanguageID descending
+                                         orderby c.TVItemLanguageID ascending
                                          select c.TVItemLanguageID).FirstOrDefault() - 1;
 
             TVItemLanguage tvItemLanguageNewEN = new TVItemLanguage()
@@ -154,7 +172,7 @@ namespace CSSPDBLocalServices
             #region TVItemLanguage FR
             int TVItemLanguageIDNewFR = (from c in dbLocal.TVItemLanguages
                                          where c.TVItemLanguageID < 0
-                                         orderby c.TVItemLanguageID descending
+                                         orderby c.TVItemLanguageID ascending
                                          select c.TVItemLanguageID).FirstOrDefault() - 1;
 
             TVItemLanguage tvItemLanguageNewFR = new TVItemLanguage()
@@ -182,7 +200,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            TVItemModel tvItemModel = new TVItemModel()
+            TVItemModel tvItemModelRet = new TVItemModel()
             {
                 TVItem = tvItemNew,
                 TVItemLanguageList = new List<TVItemLanguage>()
@@ -192,15 +210,15 @@ namespace CSSPDBLocalServices
                 }
             };
 
-            tvItemModelParentList.Add(tvItemModel);
-            
-            await RecreateLocalGzFiles(tvItemModelParentList);
-             
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            //tvItemModelParentList.Add(tvItemModel);
+
+            //await HelperLocalService.RecreateLocalGzFiles(tvItemModelParentList);
+
+            //if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(tvItemModel));
+            return await Task.FromResult(Ok(tvItemModelRet));
         }
     }
 }

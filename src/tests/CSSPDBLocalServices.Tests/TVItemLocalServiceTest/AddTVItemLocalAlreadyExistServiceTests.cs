@@ -744,10 +744,10 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = webSubsector.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            Assert.NotEmpty(webSubsector.TVItemModelClassificationList);
+            Assert.NotEmpty(webSubsector.ClassificationModelList);
 
-            TVTextEN = webSubsector.TVItemModelClassificationList[0].TVItemLanguageList[0].TVText;
-            TVTextFR = webSubsector.TVItemModelClassificationList[0].TVItemLanguageList[1].TVText;
+            TVTextEN = webSubsector.ClassificationModelList[0].TVItemModel.TVItemLanguageList[0].TVText;
+            TVTextFR = webSubsector.ClassificationModelList[0].TVItemModel.TVItemLanguageList[1].TVText;
 
             string message = "";
             message = $"{ TVTextEN } (en)";

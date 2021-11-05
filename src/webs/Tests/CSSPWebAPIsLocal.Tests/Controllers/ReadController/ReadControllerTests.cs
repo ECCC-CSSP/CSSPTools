@@ -694,7 +694,7 @@ namespace CSSPWebAPIsLocal.ReadController.Tests
                 string responseContent = await response.Content.ReadAsStringAsync();
                 WebSubsector webSubsector = JsonSerializer.Deserialize<WebSubsector>(responseContent);
                 Assert.NotNull(webSubsector);
-                Assert.NotNull(webSubsector.TVItemModelClassificationList);
+                Assert.NotNull(webSubsector.ClassificationModelList);
             }
         }
         [Theory(Skip = "not implemented yet")]

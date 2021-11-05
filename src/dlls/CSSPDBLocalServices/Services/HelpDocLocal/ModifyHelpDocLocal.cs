@@ -31,36 +31,39 @@ namespace CSSPDBLocalServices
 {
     public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
     {
-        public async Task<ActionResult<HelpDocLocalModel>> ModifyHelpDocLocal(HelpDocLocalModel helpDocLocalModel)
+        public async Task<ActionResult<HelpDoc>> ModifyHelpDocLocal(HelpDoc helpDoc)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(HelpDocLocalModel helpDocLocalModel)";
+            string parameters = $" --  DocKey = { helpDoc.DocKey ?? "--" } " +
+            $"Language = { helpDoc.Language.ToString() ?? "--" }";
+
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(HelpDoc helpDoc) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (helpDocLocalModel.HelpDoc.HelpDocID == 0)
+            if (helpDoc.HelpDocID == 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "HelpDocID", "0"));
             }
 
-            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)HelpDocModel.HelpDoc.DBCommand);
+            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)HelpDocModel.DBCommand);
             //if (!string.IsNullOrWhiteSpace(retStr))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
             //}
 
-            if (string.IsNullOrWhiteSpace(helpDocLocalModel.HelpDoc.DocKey))
+            if (string.IsNullOrWhiteSpace(helpDoc.DocKey))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DocKey"));
             }
 
-            string retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)helpDocLocalModel.HelpDoc.Language);
+            string retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)helpDoc.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
             }
 
-            if (string.IsNullOrWhiteSpace(helpDocLocalModel.HelpDoc.DocHTMLText))
+            if (string.IsNullOrWhiteSpace(helpDoc.DocHTMLText))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DocHTMLText"));
             }
@@ -70,12 +73,12 @@ namespace CSSPDBLocalServices
             WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
             HelpDoc helpDocJSON = (from c in webAllHelpDocs.HelpDocList
-                                   where c.HelpDocID == helpDocLocalModel.HelpDoc.HelpDocID
+                                   where c.HelpDocID == helpDoc.HelpDocID
                                    select c).FirstOrDefault();
 
             if (helpDocJSON == null)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDocLocalModel.HelpDoc.HelpDocID.ToString()));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()));
             }
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -83,26 +86,26 @@ namespace CSSPDBLocalServices
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
             HelpDoc HelpDocExist = (from c in dbLocal.HelpDocs
-                                    where c.HelpDocID == helpDocLocalModel.HelpDoc.HelpDocID
+                                    where c.HelpDocID == helpDoc.HelpDocID
                                     select c).FirstOrDefault();
             if (HelpDocExist == null)
             {
                 int HelpDocIDNew = (from c in dbLocal.HelpDocs
                                     where c.HelpDocID < 0
-                                    orderby c.HelpDocID descending
+                                    orderby c.HelpDocID ascending
                                     select c.HelpDocID).FirstOrDefault() - 1;
 
-                helpDocLocalModel.HelpDoc.DBCommand = DBCommandEnum.Modified;
-                helpDocLocalModel.HelpDoc.HelpDocID = HelpDocIDNew;
-                helpDocLocalModel.HelpDoc.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                helpDocLocalModel.HelpDoc.LastUpdateDate_UTC = DateTime.UtcNow;
+                helpDoc.DBCommand = DBCommandEnum.Modified;
+                helpDoc.HelpDocID = HelpDocIDNew;
+                helpDoc.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                helpDoc.LastUpdateDate_UTC = DateTime.UtcNow;
 
-                dbLocal.HelpDocs.Add(helpDocLocalModel.HelpDoc);
+                dbLocal.HelpDocs.Add(helpDoc);
             }
             else
             {
                 HelpDocExist.DBCommand = DBCommandEnum.Modified;
-                HelpDocExist.DocHTMLText = helpDocLocalModel.HelpDoc.DocHTMLText;
+                HelpDocExist.DocHTMLText = helpDoc.DocHTMLText;
             }
 
             try
@@ -127,7 +130,7 @@ namespace CSSPDBLocalServices
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(helpDocLocalModel));
+            return await Task.FromResult(Ok(helpDoc));
         }
     }
 }

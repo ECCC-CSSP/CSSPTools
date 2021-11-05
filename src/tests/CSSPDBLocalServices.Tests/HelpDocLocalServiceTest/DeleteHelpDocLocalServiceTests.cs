@@ -35,40 +35,35 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotEmpty(webAllHelpDocs.HelpDocList);
             Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
 
-            HelpDocLocalModel helpDocLocalModel = new HelpDocLocalModel() { HelpDoc = webAllHelpDocs.HelpDocList[3] };
+            HelpDoc helpDoc = webAllHelpDocs.HelpDocList[3];
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDocLocalModel);
+            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDoc);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            HelpDocLocalModel helpDocLocalModelRet = (HelpDocLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.NotNull(helpDocLocalModelRet);
+            HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(helpDocRet);
 
-            Assert.Equal(-1, helpDocLocalModelRet.HelpDoc.HelpDocID);
-            Assert.Equal(DBCommandEnum.Deleted, helpDocLocalModelRet.HelpDoc.DBCommand);
-            Assert.Equal(helpDocLocalModel.HelpDoc.DocHTMLText, helpDocLocalModelRet.HelpDoc.DocHTMLText);
-            Assert.Equal(helpDocLocalModel.HelpDoc.DocKey, helpDocLocalModelRet.HelpDoc.DocKey);
-            Assert.Equal(helpDocLocalModel.HelpDoc.Language, helpDocLocalModelRet.HelpDoc.Language);
-            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, helpDocLocalModelRet.HelpDoc.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < helpDocLocalModelRet.HelpDoc.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > helpDocLocalModelRet.HelpDoc.LastUpdateDate_UTC);
+            Assert.Equal(-1, helpDocRet.HelpDocID);
+            Assert.Equal(DBCommandEnum.Deleted, helpDocRet.DBCommand);
+            Assert.Equal(helpDoc.DocHTMLText, helpDocRet.DocHTMLText);
+            Assert.Equal(helpDoc.DocKey, helpDocRet.DocKey);
+            Assert.Equal(helpDoc.Language, helpDocRet.Language);
+            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, helpDocRet.LastUpdateContactTVItemID);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < helpDocRet.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > helpDocRet.LastUpdateDate_UTC);
 
             HelpDoc helpDocDB = (from c in dbLocal.HelpDocs
                                  where c.HelpDocID == -1
                                  select c).FirstOrDefault();
             Assert.NotNull(helpDocDB);
 
-            HelpDocLocalModel helpDocLocalModelDB = new HelpDocLocalModel()
-            {
-                HelpDoc = helpDocDB,
-            };
-
-            Assert.Equal(JsonSerializer.Serialize(helpDocLocalModelDB), JsonSerializer.Serialize(helpDocLocalModelRet));
+            Assert.Equal(JsonSerializer.Serialize(helpDocDB), JsonSerializer.Serialize(helpDocRet));
 
             webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
-            HelpDoc helpDoc = webAllHelpDocs.HelpDocList.Where(c => c.HelpDocID == -1).FirstOrDefault();
-            Assert.NotNull(helpDoc);
-            Assert.Equal(DBCommandEnum.Deleted, helpDoc.DBCommand);
+            HelpDoc helpDocDeleted = webAllHelpDocs.HelpDocList.Where(c => c.HelpDocID == -1).FirstOrDefault();
+            Assert.NotNull(helpDocDeleted);
+            Assert.Equal(DBCommandEnum.Deleted, helpDocDeleted.DBCommand);
 
             await CSSPLogService.Save();
 
@@ -76,7 +71,7 @@ namespace CSSPDBLocalServices.Tests
                                                select c).ToList();
 
             Assert.Single(commandLogList);
-            Assert.Contains("HelpDocLocalService.DeleteHelpDocLocal(HelpDocLocalModel helpDocLocalModel)", commandLogList[0].Log);
+            Assert.Contains("HelpDocLocalService.DeleteHelpDocLocal(HelpDoc helpDoc)", commandLogList[0].Log);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -90,11 +85,11 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotEmpty(webAllHelpDocs.HelpDocList);
             Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
 
-            HelpDocLocalModel helpDocLocalModel = new HelpDocLocalModel() { HelpDoc = webAllHelpDocs.HelpDocList[3] };
+            HelpDoc helpDoc = webAllHelpDocs.HelpDocList[3];
 
-            helpDocLocalModel.HelpDoc.HelpDocID = 0;
+            helpDoc.HelpDocID = 0;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDocLocalModel);
+            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -113,16 +108,16 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotEmpty(webAllHelpDocs.HelpDocList);
             Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
 
-            HelpDocLocalModel helpDocLocalModel = new HelpDocLocalModel() { HelpDoc = webAllHelpDocs.HelpDocList[3] };
+            HelpDoc helpDoc = webAllHelpDocs.HelpDocList[3];
 
-            helpDocLocalModel.HelpDoc.HelpDocID = 100000;
+            helpDoc.HelpDocID = 100000;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDocLocalModel);
+            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
             Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDocLocalModel.HelpDoc.HelpDocID.ToString()), errRes.ErrList[0]);
+            Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()), errRes.ErrList[0]);
         }
     }
 }

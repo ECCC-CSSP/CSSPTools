@@ -26,7 +26,27 @@ namespace CSSPDBLocalServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVItemParent_TVItemID_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_tvItemParent_null_Error_Test(string culture)
+        {
+            Assert.True(await TVItemLocalServiceSetup(culture));
+
+            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+
+            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+            TVTypeEnum tvType = TVTypeEnum.Country;
+            string TVTextEN = "New Country";
+            string TVTextFR = "Nouveau Pays";
+
+            tvItemParent = null;
+
+            string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task Properties_AddTVItemLocal_tvItemParent_TVItemID_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -39,19 +59,14 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent.TVItemID = 0;
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVItemParent_TVLevel_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_TVItemParent_TVLevel_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -64,19 +79,14 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent.TVLevel = -1;
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVLevel"), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVLevel");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVItemParent_TVPath_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_TVItemParent_TVPath_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -89,19 +99,14 @@ namespace CSSPDBLocalServices.Tests
 
             tvItemParent.TVPath = "";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVPath"), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVPath");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVType_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_TVType_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -114,19 +119,14 @@ namespace CSSPDBLocalServices.Tests
 
             tvType = (TVTypeEnum)10000;
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "tvType"), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvType");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVTypeParent_Is_Truly_A_Parent_of_TVType_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_tvItemParent_TVType_Is_Truly_A_Parent_of_tvItemModel_TVItem_TVType_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -139,19 +139,14 @@ namespace CSSPDBLocalServices.Tests
 
             tvType = TVTypeEnum.MWQMSite;
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsNotAParentTypeOf_, tvItemParent.TVType.ToString(), tvType.ToString()), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsNotAParentTypeOf_, tvItemParent.TVType.ToString(), tvType.ToString());
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVTypeParent_Is_not_implemented_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_tvItemParent_TVType_Is_not_implemented_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -165,19 +160,14 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent.TVType = TVTypeEnum.BoxModel;
             tvItemParent.TVLevel = 1;
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._NotImplementedYet, tvItemParent.TVType.ToString()) + " --- CSSPDBLocalServices.TVItemLocalService.CheckTVTypeParentAndTVType", CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._NotImplementedYet, tvItemParent.TVType.ToString()) + " --- HelperLocalService.CheckTVTypeParentAndTVType";
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVTextEN_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_TVTextEN_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -190,19 +180,14 @@ namespace CSSPDBLocalServices.Tests
 
             TVTextEN = "";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task AddTVItemLocal_Properties_TVTextFR_Error_Test(string culture)
+        public async Task Properties_AddTVItemLocal_TVTextFR_Error_Test(string culture)
         {
             Assert.True(await TVItemLocalServiceSetup(culture));
 
@@ -215,14 +200,9 @@ namespace CSSPDBLocalServices.Tests
 
             TVTextFR = "";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.Equal(0, (from c in dbLocal.TVItems select c).Count());
-            Assert.Equal(0, (from c in dbLocal.TVItemLanguages select c).Count());
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"), CSSPLogService.ErrRes.ErrList[0]);
+            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR");
+
+            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
         }
     }
 }

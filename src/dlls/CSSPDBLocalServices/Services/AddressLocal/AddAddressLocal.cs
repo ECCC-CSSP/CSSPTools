@@ -33,19 +33,29 @@ namespace CSSPDBLocalServices
     {
         public async Task<ActionResult<Address>> AddAddressLocal(Address address)
         {
-            string parameters = $" --  StreetNumber = { address.StreetNumber ?? "--" } " +
-                $"StreetName = { address.StreetName ?? "--" } " +
-                $"StreetType  = { address.StreetType.ToString() ?? "--" } " +
-                $"MunicipalityTVItemID = { address.MunicipalityTVItemID  } " +
-                $"ProvinceTVItemID = { address.ProvinceTVItemID } " +
-                $"CountryTVItemID = { address.CountryTVItemID }";
-
+            string parameters = "";
+            if (address != null)
+            {
+                parameters += $" --  StreetNumber = { address.StreetNumber ?? "--" } " +
+                    $"StreetName = { address.StreetName ?? "--" } " +
+                    $"StreetType  = { address.StreetType.ToString() ?? "--" } " +
+                    $"MunicipalityTVItemID = { address.MunicipalityTVItemID  } " +
+                    $"ProvinceTVItemID = { address.ProvinceTVItemID } " +
+                    $"CountryTVItemID = { address.CountryTVItemID }";
+            }
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(Address address) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
             #region Check Address
+            if (address == null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "address"));
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
             if (address.AddressID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AddressID", "0"));
@@ -143,8 +153,8 @@ namespace CSSPDBLocalServices
             }
 
             TVItemModel tvItemModelProvince = (from c in webAllProvinces.TVItemModelList
-                                       where c.TVItem.TVItemID == address.ProvinceTVItemID
-                                       select c).FirstOrDefault();
+                                               where c.TVItem.TVItemID == address.ProvinceTVItemID
+                                               select c).FirstOrDefault();
 
             if (tvItemModelProvince == null)
             {
@@ -152,8 +162,8 @@ namespace CSSPDBLocalServices
             }
 
             TVItemModel tvItemModelMunicipality = (from c in webAllMunicipalities.TVItemModelList
-                                           where c.TVItem.TVItemID == address.MunicipalityTVItemID
-                                           select c).FirstOrDefault();
+                                                   where c.TVItem.TVItemID == address.MunicipalityTVItemID
+                                                   select c).FirstOrDefault();
 
             if (tvItemModelMunicipality == null)
             {
@@ -186,7 +196,7 @@ namespace CSSPDBLocalServices
 
             int AddressIDNew = (from c in dbLocal.Addresses
                                 where c.AddressID < 0
-                                orderby c.AddressID descending
+                                orderby c.AddressID ascending
                                 select c.AddressID).FirstOrDefault() - 1;
 
 
@@ -208,14 +218,23 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
-            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+            List<ToRecreate> ToRecreateList = new List<ToRecreate>()
             {
-                ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
-                CSSPLogService.ErrRes.ErrList.AddRange(errRes2.ErrList);
-            }
+                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+                new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+            };
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            foreach(ToRecreate toRecreate in ToRecreateList)
+            {
+                var actionRes = await CSSPCreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
+                if (400 == ((ObjectResult)actionRes.Result).StatusCode)
+                {
+                    ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                    CSSPLogService.ErrRes.ErrList.AddRange(errRes.ErrList);
+                }
+
+                if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            }
 
             CSSPLogService.EndFunctionLog(FunctionName);
 

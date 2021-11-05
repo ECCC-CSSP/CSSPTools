@@ -35,11 +35,15 @@ namespace CSSPDBLocalServices.Tests
         protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
         protected IAddressLocalService AddressLocalService { get; set; }
         protected IAppTaskLocalService AppTaskLocalService { get; set; }
+        protected IClassificationLocalService ClassificationLocalService { get; set; }
         protected ICountryLocalService CountryLocalService { get; set; }
         protected IEmailLocalService EmailLocalService { get; set; }
         protected IHelpDocLocalService HelpDocLocalService { get; set; }
+        protected IHelperLocalService HelperLocalService { get; set; }
         protected IMapInfoLocalService MapInfoLocalService { get; set; }
         protected IMWQMLookupMPNLocalService MWQMLookupMPNLocalService { get; set; }
+        protected IProvinceLocalService ProvinceLocalService { get; set; }
+        protected IRootLocalService RootLocalService { get; set; }
         protected ITelLocalService TelLocalService { get; set; }
         protected ITVItemLocalService TVItemLocalService { get; set; }
         protected CSSPDBManageContext dbManage { get; set; }
@@ -112,10 +116,14 @@ namespace CSSPDBLocalServices.Tests
             Services.AddSingleton<IAddressLocalService, AddressLocalService>();
             Services.AddSingleton<IAppTaskLocalService, AppTaskLocalService>();
             Services.AddSingleton<ICountryLocalService, CountryLocalService>();
+            Services.AddSingleton<IClassificationLocalService, ClassificationLocalService>();
             Services.AddSingleton<IEmailLocalService, EmailLocalService>();
             Services.AddSingleton<IHelpDocLocalService, HelpDocLocalService>();
+            Services.AddSingleton<IHelperLocalService, HelperLocalService>();
             Services.AddSingleton<IMapInfoLocalService, MapInfoLocalService>();
             Services.AddSingleton<IMWQMLookupMPNLocalService, MWQMLookupMPNLocalService>();
+            Services.AddSingleton<IProvinceLocalService, ProvinceLocalService>();
+            Services.AddSingleton<IRootLocalService, RootLocalService>();
             Services.AddSingleton<ITelLocalService, TelLocalService>();
             Services.AddSingleton<ITVItemLocalService, TVItemLocalService>();
 
@@ -161,6 +169,9 @@ namespace CSSPDBLocalServices.Tests
             AppTaskLocalService = Provider.GetService<IAppTaskLocalService>();
             Assert.NotNull(AppTaskLocalService);
 
+            ClassificationLocalService = Provider.GetService<IClassificationLocalService>();
+            Assert.NotNull(ClassificationLocalService);
+
             CountryLocalService = Provider.GetService<ICountryLocalService>();
             Assert.NotNull(CountryLocalService);
 
@@ -170,11 +181,20 @@ namespace CSSPDBLocalServices.Tests
             HelpDocLocalService = Provider.GetService<IHelpDocLocalService>();
             Assert.NotNull(HelpDocLocalService);
 
+            HelperLocalService = Provider.GetService<IHelperLocalService>();
+            Assert.NotNull(HelperLocalService);
+
             MapInfoLocalService = Provider.GetService<IMapInfoLocalService>();
             Assert.NotNull(MapInfoLocalService);
 
             MWQMLookupMPNLocalService = Provider.GetService<IMWQMLookupMPNLocalService>();
             Assert.NotNull(MWQMLookupMPNLocalService);
+
+            ProvinceLocalService = Provider.GetService<IProvinceLocalService>();
+            Assert.NotNull(ProvinceLocalService);
+
+            RootLocalService = Provider.GetService<IRootLocalService>();
+            Assert.NotNull(RootLocalService);
 
             TelLocalService = Provider.GetService<ITelLocalService>();
             Assert.NotNull(TelLocalService);

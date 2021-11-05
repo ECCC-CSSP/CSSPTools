@@ -31,36 +31,39 @@ namespace CSSPDBLocalServices
 {
     public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
     {
-        public async Task<ActionResult<HelpDocLocalModel>> AddHelpDocLocal(HelpDocLocalModel helpDocLocalModel)
+        public async Task<ActionResult<HelpDoc>> AddHelpDocLocal(HelpDoc helpDoc)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(HelpDocLocalModel helpDocLocalModel)";
+            string parameters = $" --  DocKey = { helpDoc.DocKey ?? "--" } " +
+            $"Language = { helpDoc.Language.ToString() ?? "--" }";
+
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(HelpDoc helpDoc) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (helpDocLocalModel.HelpDoc.HelpDocID != 0)
+            if (helpDoc.HelpDocID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "HelpDocID", "0"));
             }
 
-            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)HelpDocModel.HelpDoc.DBCommand);
+            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)HelpDocModel.DBCommand);
             //if (!string.IsNullOrWhiteSpace(retStr))
             //{
             //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
             //}
 
-            if (string.IsNullOrWhiteSpace(helpDocLocalModel.HelpDoc.DocKey))
+            if (string.IsNullOrWhiteSpace(helpDoc.DocKey))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DocKey"));
             }
 
-            string retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)helpDocLocalModel.HelpDoc.Language);
+            string retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)helpDoc.Language);
             if (!string.IsNullOrWhiteSpace(retStr))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
             }
 
-            if (string.IsNullOrWhiteSpace(helpDocLocalModel.HelpDoc.DocHTMLText))
+            if (string.IsNullOrWhiteSpace(helpDoc.DocHTMLText))
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DocHTMLText"));
             }
@@ -70,25 +73,25 @@ namespace CSSPDBLocalServices
             WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
             HelpDoc helpDocJSON = (from c in webAllHelpDocs.HelpDocList
-                                   where c.DocKey == helpDocLocalModel.HelpDoc.DocKey
+                                   where c.DocKey == helpDoc.DocKey
                                    select c).FirstOrDefault();
 
             if (helpDocJSON != null)
             {
-                return await Task.FromResult(Ok(new HelpDocLocalModel() { HelpDoc = helpDocJSON }));
+                return await Task.FromResult(Ok(helpDocJSON));
             }
 
             int HelpDocIDNew = (from c in dbLocal.HelpDocs
                                 where c.HelpDocID < 0
-                                orderby c.HelpDocID descending
+                                orderby c.HelpDocID ascending
                                 select c.HelpDocID).FirstOrDefault() - 1;
 
-            helpDocLocalModel.HelpDoc.DBCommand = DBCommandEnum.Created;
-            helpDocLocalModel.HelpDoc.HelpDocID = HelpDocIDNew;
-            helpDocLocalModel.HelpDoc.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-            helpDocLocalModel.HelpDoc.LastUpdateDate_UTC = DateTime.UtcNow;
+            helpDoc.DBCommand = DBCommandEnum.Created;
+            helpDoc.HelpDocID = HelpDocIDNew;
+            helpDoc.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+            helpDoc.LastUpdateDate_UTC = DateTime.UtcNow;
 
-            dbLocal.HelpDocs.Add(helpDocLocalModel.HelpDoc);
+            dbLocal.HelpDocs.Add(helpDoc);
             try
             {
                 dbLocal.SaveChanges();
@@ -111,7 +114,7 @@ namespace CSSPDBLocalServices
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(helpDocLocalModel));
+            return await Task.FromResult(Ok(helpDoc));
         }
     }
 }

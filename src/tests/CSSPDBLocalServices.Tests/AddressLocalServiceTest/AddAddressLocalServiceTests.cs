@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Text.Json;
 using ManageServices;
+using System.IO;
 
 namespace CSSPDBLocalServices.Tests
 {
@@ -55,22 +56,118 @@ namespace CSSPDBLocalServices.Tests
             Assert.Equal(address.StreetNumber, addressRet.StreetNumber);
             Assert.Equal(address.StreetType, addressRet.StreetType);
             Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, addressRet.LastUpdateContactTVItemID);
-            Assert.True(DateTime.UtcNow.AddSeconds(-1) < addressRet.LastUpdateDate_UTC);
-            Assert.True(DateTime.UtcNow.AddSeconds(1) > addressRet.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < addressRet.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > addressRet.LastUpdateDate_UTC);
 
             Address addressDB = (from c in dbLocal.Addresses
-                               where c.AddressID == -1
-                               select c).FirstOrDefault();
+                                 where c.AddressID == -1
+                                 select c).FirstOrDefault();
             Assert.NotNull(addressDB);
+            Assert.Equal(-1, addressDB.AddressTVItemID);
 
             Assert.Equal(JsonSerializer.Serialize(addressDB), JsonSerializer.Serialize(addressRet));
+
+            TVItem tvItemDB = (from c in dbLocal.TVItems
+                               where c.TVItemID == -1
+                               select c).FirstOrDefault();
+            Assert.NotNull(tvItemDB);
+            Assert.Equal(TVTypeEnum.Address, tvItemDB.TVType);
+
+            List<TVItemLanguage> tvItemLanguageListDB = (from c in dbLocal.TVItemLanguages
+                                                         where c.TVItemID == -1
+                                                         select c).ToList();
+            Assert.NotNull(tvItemLanguageListDB);
+            Assert.NotEmpty(tvItemLanguageListDB);
+            Assert.Equal(2, tvItemLanguageListDB.Count);
+
+            address = FillAddress();
+
+            address.StreetName = "next street name";
+
+            var actionAddressRes2 = await AddressLocalService.AddAddressLocal(address);
+            Assert.Equal(200, ((ObjectResult)actionAddressRes2.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionAddressRes2.Result).Value);
+            Address addressRet2 = (Address)((OkObjectResult)actionAddressRes2.Result).Value;
+            Assert.NotNull(addressRet2);
+
+            Assert.Equal(2, (from c in dbLocal.Addresses select c).Count());
+            Assert.Equal(3, (from c in dbLocal.TVItems select c).Count());
+            Assert.Equal(6, (from c in dbLocal.TVItemLanguages select c).Count());
+
+            Assert.Equal(-2, addressRet2.AddressID);
+            Assert.Equal(DBCommandEnum.Created, addressRet2.DBCommand);
+            Assert.Equal(-2, addressRet2.AddressTVItemID);
+            Assert.Equal(address.AddressType, addressRet2.AddressType);
+            Assert.Equal(address.CountryTVItemID, addressRet2.CountryTVItemID);
+            Assert.Equal(address.GoogleAddressText, addressRet2.GoogleAddressText);
+            Assert.Equal(address.MunicipalityTVItemID, addressRet2.MunicipalityTVItemID);
+            Assert.Equal(address.PostalCode, addressRet2.PostalCode);
+            Assert.Equal(address.ProvinceTVItemID, addressRet2.ProvinceTVItemID);
+            Assert.Equal(address.StreetName, addressRet2.StreetName);
+            Assert.Equal(address.StreetNumber, addressRet2.StreetNumber);
+            Assert.Equal(address.StreetType, addressRet2.StreetType);
+            Assert.Equal(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID, addressRet2.LastUpdateContactTVItemID);
+            Assert.True(DateTime.UtcNow.AddMinutes(-1) < addressRet2.LastUpdateDate_UTC);
+            Assert.True(DateTime.UtcNow.AddMinutes(1) > addressRet2.LastUpdateDate_UTC);
+
+            Address addressDB2 = (from c in dbLocal.Addresses
+                                 where c.AddressID == -2
+                                 select c).FirstOrDefault();
+            Assert.NotNull(addressDB2);
+            Assert.Equal(-2, addressDB2.AddressTVItemID);
+
+            Assert.Equal(JsonSerializer.Serialize(addressDB), JsonSerializer.Serialize(addressRet));
+
+            TVItem tvItemDB2 = (from c in dbLocal.TVItems
+                               where c.TVItemID == -2
+                               select c).FirstOrDefault();
+            Assert.NotNull(tvItemDB2);
+
+            List<TVItemLanguage> tvItemLanguageListDB2 = (from c in dbLocal.TVItemLanguages
+                                                         where c.TVItemID == -2
+                                                         select c).ToList();
+            Assert.NotNull(tvItemLanguageListDB2);
+            Assert.NotEmpty(tvItemLanguageListDB2);
+            Assert.Equal(2, tvItemLanguageListDB2.Count);
 
             WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
             Address addressWeb = (from c in webAllAddresses.AddressList
-                               where c.AddressID == -1
-                               select c).FirstOrDefault();
+                                  where c.AddressID == -1
+                                  select c).FirstOrDefault();
             Assert.NotNull(addressWeb);
+            Assert.Equal(-1, addressWeb.AddressTVItemID);
+
+            Address addressWeb2 = (from c in webAllAddresses.AddressList
+                                  where c.AddressID == -2
+                                  select c).FirstOrDefault();
+            Assert.NotNull(addressWeb2);
+            Assert.Equal(-2, addressWeb2.AddressTVItemID);
+
+            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+
+            List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
+
+            TVItemModel tvItemModel = new TVItemModel()
+            {
+                 TVItem = tvItemDB,
+                 TVItemLanguageList = tvItemLanguageListDB,
+            };
+
+            tvItemModelParentList.Add(tvItemModel);
+
+            CheckDBLocal(tvItemModelParentList);
+
+            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
+
+            Assert.True(di.Exists);
+
+            List<FileInfo> fiList = di.GetFiles().ToList();
+
+            Assert.Equal(2, fiList.Count);
+
+            Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebAllAddresses }.gz").Any());
+            Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
 
             await CSSPLogService.Save();
 
@@ -79,6 +176,24 @@ namespace CSSPDBLocalServices.Tests
 
             Assert.Single(commandLogList);
             Assert.Contains("AddressLocalService.AddAddressLocal(Address address)", commandLogList[0].Log);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task AddAddressLocal_Address_null_Error_Test(string culture)
+        {
+            Assert.True(await AddressLocalServiceSetup(culture));
+
+            Address address = FillAddress();
+
+            address = null;
+
+            var actionAddressRes = await AddressLocalService.AddAddressLocal(address);
+            Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
+            Assert.NotNull(errRes);
+            Assert.NotEmpty(errRes.ErrList);
+            Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "address"), errRes.ErrList[0]);
         }
         [Theory]
         [InlineData("en-CA")]

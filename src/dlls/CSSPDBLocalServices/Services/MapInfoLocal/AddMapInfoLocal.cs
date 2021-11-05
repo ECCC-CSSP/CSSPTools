@@ -1,159 +1,238 @@
-///*
-// * Manually edited
-// *
-// */
+/*
+ * Manually edited
+ *
+ */
 
-//using CSSPCreateGzFileServices;
-//using CSSPCultureServices.Resources;
-//using CSSPCultureServices.Services;
-//using CSSPDBModels;
-//using CSSPEnums;
-//using CSSPLogServices;
-//using CSSPWebModels;
-//using CSSPLocalLoggedInServices;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Configuration;
-//using CSSPReadGzFileServices;
-//using System;
-//using System.Collections.Generic;
-//using System.ComponentModel.DataAnnotations;
-//using System.Linq;
-//using System.Reflection;
-//using System.Threading.Tasks;
+using CSSPCreateGzFileServices;
+using CSSPCultureServices.Resources;
+using CSSPCultureServices.Services;
+using CSSPDBModels;
+using CSSPEnums;
+using CSSPLogServices;
+using CSSPWebModels;
+using CSSPLocalLoggedInServices;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using CSSPReadGzFileServices;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using CSSPHelperModels;
 
-//namespace CSSPDBLocalServices
-//{
-//    public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
-//    {
-//        public async Task<ActionResult<MapInfoLocalModel>> AddMapInfoLocal(MapInfoLocalModel mapInfoLocalModel)
-//        {
-//            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostMapInfoModel mapInfoLocalModel)";
-//            CSSPLogService.FunctionLog(FunctionName);
+namespace CSSPDBLocalServices
+{
+    public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
+    {
+        public async Task<ActionResult<MapInfoModel>> AddMapInfoLocal(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList)
+        {
+            string parameters = "";
+            if (tvItemParent != null)
+            {
+                parameters += $" --  tvItemParent.TVItemID = { tvItemParent.TVItemID } " +
+                    $"tvItemParent.TVType = { tvItemParent.TVType }";
+            }
+            if (tvItem != null)
+            {
+                parameters += $" --  tvItem.TVItemID = { tvItem.TVItemID } " +
+                    $"tvItem.TVType = { tvItem.TVType }";
+            }
 
-//            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+            parameters += $"tvType = { tvType } " +
+            $"mapInfoDrawType = { mapInfoDrawType }";
 
-//            if (mapInfoLocalModel.MapInfo.MapInfoID != 0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "MapInfoID", "0"));
-//            }
+            if (coordList != null)
+            {
+                parameters += $"coordList.Count = { coordList.Count }";
+            }
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList) { parameters }";
+            CSSPLogService.FunctionLog(FunctionName);
 
-//            //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)mapInfoLocalModel.MapInfo.DBCommand);
-//            //if (!string.IsNullOrWhiteSpace(retStr))
-//            //{
-//            //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-//            //}
+            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-//            if (mapInfoLocalModel.MapInfo.TVItemID == 0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
-//            }
+            #region Checking Input Parameters
+            // Checking tvItemParent
+            if (tvItemParent == null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent"));
+            }
 
-//            string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)mapInfoLocalModel.MapInfo.TVType);
-//            if (!string.IsNullOrWhiteSpace(retStr))
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVType"));
-//            }
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            CheckAllowableTVType(mapInfoLocalModel);
+            if (tvItem == null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItem"));
+            }
 
-//            if (mapInfoLocalModel.MapInfo.LatMin < -90.0 || mapInfoLocalModel.MapInfo.LatMin > 90.0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LatMin", "-90.0", "90.0"));
-//            }
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            if (mapInfoLocalModel.MapInfo.LatMax < -90.0 || mapInfoLocalModel.MapInfo.LatMax > 90.0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LatMax", "-90.0", "90.0"));
-//            }
+            if (tvItemParent.TVItemID == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID"));
+            }
 
-//            if (mapInfoLocalModel.MapInfo.LngMin < -90.0 || mapInfoLocalModel.MapInfo.LngMin > 90.0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LngMin", "-90.0", "90.0"));
-//            }
+            if (tvItemParent.ParentID == null || tvItemParent.ParentID == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.ParentID"));
+            }
 
-//            if (mapInfoLocalModel.MapInfo.LngMax < -90.0 || mapInfoLocalModel.MapInfo.LngMax > 90.0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "LngMax", "-90.0", "90.0"));
-//            }
+            string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItemParent.TVType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVType"));
+            }
 
-//            retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), (int?)mapInfoLocalModel.MapInfo.MapInfoDrawType);
-//            if (!string.IsNullOrWhiteSpace(retStr))
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoDrawType"));
-//            }
+            // Checking tvItem
+            if (tvItem.TVItemID == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItem.TVItemID"));
+            }
 
-//            if (mapInfoLocalModel.MapInfoPointList.Count == 0)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MapInfoPointList"));
-//            }
+            if (tvItem.ParentID == null || tvItem.ParentID == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItem.ParentID"));
+            }
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItem.TVType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItem.TVType"));
+            }
 
-//            foreach (MapInfoPoint mapInfoPoint in mapInfoLocalModel.MapInfoPointList)
-//            {
-//                if (mapInfoPoint.MapInfoPointID != 0)
-//                {
-//                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "MapInfoPointID", "0"));
-//                }
+            // Checking tvType
+            retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvType"));
+            }
 
-//                //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)mapInfoLocalModel.MapInfoPoint.DBCommand);
-//                //if (!string.IsNullOrWhiteSpace(retStr))
-//                //{
-//                //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-//                //}
+            // Checking mapInfoDrawType
+            retStr = enums.EnumTypeOK(typeof(MapInfoDrawTypeEnum), (int?)mapInfoDrawType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "mapInfoDrawType"));
+            }
 
-//                if (mapInfoPoint.MapInfoID != 0)
-//                {
-//                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "MapInfoID", "0"));
-//                }
+            // checking coordList
+            if (coordList.Count == 0)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "coordList"));
+            }
+            #endregion Checking Input Parameters
 
-//                if (mapInfoPoint.Ordinal < 0 || mapInfoPoint.Ordinal > 100000)
-//                {
-//                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Ordinal", 0, 10000));
-//                }
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//                if (mapInfoPoint.Lat < -90.0 || mapInfoPoint.Lng > 90.0)
-//                {
-//                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lat", "-90.0", "90.0"));
-//                }
+            HelperLocalService.CheckTVTypeParentAndTVType(tvItemParent.TVType, tvType);
 
-//                if (mapInfoPoint.Lat < -180.0 || mapInfoPoint.Lng > 180.0)
-//                {
-//                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Lng", "-180.0", "180.0"));
-//                }
-//            }
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            List<MapInfoModel> mapInfoModelSiblingList = await GetMapInfoModelSiblingList(tvItemParent, tvItem);
 
-//            #region MapInfo
-//            int MapInfoIDNew = (from c in dbLocal.MapInfos
-//                               where c.MapInfoID < 0
-//                               orderby c.MapInfoID descending
-//                               select c.MapInfoID).FirstOrDefault() - 1;
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            mapInfoLocalModel.MapInfo.DBCommand = DBCommandEnum.Created;
-//            mapInfoLocalModel.MapInfo.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-//            mapInfoLocalModel.MapInfo.LastUpdateDate_UTC = DateTime.UtcNow;
+            MapInfoModel mapInfoModelExist = (from c in mapInfoModelSiblingList
+                                              where c.MapInfo.TVItemID == tvItem.TVItemID
+                                              && c.MapInfo.TVType == tvType
+                                              && c.MapInfo.MapInfoDrawType == mapInfoDrawType
+                                              select c).FirstOrDefault();
 
-//            try
-//            {
-//                dbLocal.MapInfos.Add(mapInfoLocalModel.MapInfo);
-//                dbLocal.SaveChanges();
-//            }
-//            catch (Exception ex)
-//            {
-//                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfo", ex.Message));
-//            }
-//            #endregion MapInfo
+            if (mapInfoModelExist != null)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "MapInfo"));
+            }
 
-//            #region MapInfoPointList
-//            #endregion MapInfoPointList
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-//            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            #region MapInfo
+            double PolygonSize = await HelperLocalService.GetPolygonSize(tvType);
 
-//            CSSPLogService.EndFunctionLog(FunctionName);
+            int MapInfoIDNew = (from c in dbLocal.MapInfos
+                                where c.MapInfoID < 0
+                                orderby c.MapInfoID ascending
+                                select c.MapInfoID).FirstOrDefault() - 1;
 
-//            return await Task.FromResult(Ok(true));
-//        }
-//    }
-//}
+            MapInfo mapInfoNew = new MapInfo()
+            {
+                DBCommand = DBCommandEnum.Created,
+                LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                LastUpdateDate_UTC = DateTime.UtcNow,
+                LatMax = (from c in coordList select c.Lat).Max() + PolygonSize,
+                LatMin = (from c in coordList select c.Lat).Min() - PolygonSize,
+                LngMax = (from c in coordList select c.Lng).Max() + PolygonSize,
+                LngMin = (from c in coordList select c.Lng).Min() - PolygonSize,
+                MapInfoDrawType = mapInfoDrawType,
+                MapInfoID = MapInfoIDNew,
+                TVItemID = tvItem.TVItemID,
+                TVType = tvType,
+            };
+
+            try
+            {
+                dbLocal.MapInfos.Add(mapInfoNew);
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfo", ex.Message));
+            }
+            #endregion MapInfo
+
+            #region MapInfoPointList
+
+            List<MapInfoPoint> MapInfoPointList = new List<MapInfoPoint>();
+
+            int MapInfoPointIDNew = (from c in dbLocal.MapInfoPoints
+                                     where c.MapInfoPointID < 0
+                                     orderby c.MapInfoPointID ascending
+                                     select c.MapInfoPointID).FirstOrDefault() - 1;
+
+            int ordinal = 0;
+            foreach (Coord coord in coordList)
+            {
+                MapInfoPoint mapInfoPointNew = new MapInfoPoint()
+                {
+                    DBCommand = DBCommandEnum.Created,
+                    LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                    LastUpdateDate_UTC = DateTime.UtcNow,
+                    Lat = coord.Lat,
+                    Lng = coord.Lng,
+                    MapInfoID = mapInfoNew.MapInfoID,
+                    MapInfoPointID = MapInfoPointIDNew,
+                    Ordinal = ordinal,
+                };
+
+                try
+                {
+                    dbLocal.MapInfoPoints.Add(mapInfoPointNew);
+                    dbLocal.SaveChanges();
+
+                    MapInfoPointList.Add(mapInfoPointNew);
+                }
+                catch (Exception ex)
+                {
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfoPoint", ex.Message));
+                }
+
+                ordinal += 1;
+                MapInfoPointIDNew -= 1;
+            }
+            #endregion MapInfoPointList
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            MapInfoModel mapInfoModel = new MapInfoModel()
+            {
+                MapInfo = mapInfoNew,
+                MapInfoPointList = MapInfoPointList,
+            };
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            CSSPLogService.EndFunctionLog(FunctionName);
+
+            return await Task.FromResult(Ok(mapInfoModel));
+        }
+    }
+}

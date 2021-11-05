@@ -30,7 +30,7 @@ namespace CSSPReadGzFileServices
 
             DoMergeJsonWebSubsectorIsLocalized(webSubsector, webSubsectorLocal);
 
-            DoMergeJsonWebSubsectorTVItemModelClassificationList(webSubsector, webSubsectorLocal);
+            DoMergeJsonWebSubsectorClassificationModelList(webSubsector, webSubsectorLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
@@ -103,25 +103,25 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebSubsectorTVItemModelClassificationList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private void DoMergeJsonWebSubsectorClassificationModelList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
-            List<TVItemModel> TVItemModelLocalList = (from c in webSubsectorLocal.TVItemModelClassificationList
-                                                      where c.TVItem.TVItemID != 0
-                                                      && (c.TVItem.DBCommand != DBCommandEnum.Original
-                                                      || c.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                      || c.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                      select c).ToList();
+            List<ClassificationModel> ClassificationModelLocalList = (from c in webSubsectorLocal.ClassificationModelList
+                                                                      where c.TVItemModel.TVItem.TVItemID != 0
+                                                                      && (c.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
+                                                                      || c.TVItemModel.TVItemLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                                      || c.TVItemModel.TVItemLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                                      select c).ToList();
 
-            foreach (TVItemModel tvItemModelLocal in TVItemModelLocalList)
+            foreach (ClassificationModel classificationModelLocal in ClassificationModelLocalList)
             {
-                TVItemModel tvItemModelOriginal = webSubsector.TVItemModelClassificationList.Where(c => c.TVItem.TVItemID == tvItemModelLocal.TVItem.TVItemID).FirstOrDefault();
-                if (tvItemModelOriginal == null)
+                ClassificationModel classificationModelOriginal = webSubsector.ClassificationModelList.Where(c => c.TVItemModel.TVItem.TVItemID == classificationModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
+                if (classificationModelOriginal == null)
                 {
-                    webSubsector.TVItemModelClassificationList.Add(tvItemModelLocal);
+                    webSubsector.ClassificationModelList.Add(classificationModelLocal);
                 }
                 else
                 {
-                    SyncTVItemModel(tvItemModelOriginal, tvItemModelLocal);
+                    SyncClassificationModel(classificationModelOriginal, classificationModelLocal);
                 }
             }
         }

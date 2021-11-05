@@ -32,7 +32,7 @@ namespace CSSPDBLocalServices
 
     public partial interface IMWQMLookupMPNLocalService
     {
-        Task<ActionResult<MWQMLookupMPNLocalModel>> ModifyMWQMLookupMPNLocal(MWQMLookupMPNLocalModel MWQMLookupMPNModel);
+        Task<ActionResult<MWQMLookupMPN>> ModifyMWQMLookupMPNLocal(MWQMLookupMPN mwqmLookupMPN);
     }
     public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNLocalService
     {
