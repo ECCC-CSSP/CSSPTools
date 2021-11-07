@@ -1672,11 +1672,11 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tError deleting national directory --&gt; {0}.
+        ///   Looks up a localized string similar to \tError deleting national directory --&gt; {0}. Error: {1}.
         /// </summary>
-        public static string ErrorDeletingNationalDirectory_ {
+        public static string ErrorDeletingNationalDirectory_Error_ {
             get {
-                return ResourceManager.GetString("ErrorDeletingNationalDirectory_", resourceCulture);
+                return ResourceManager.GetString("ErrorDeletingNationalDirectory_Error_", resourceCulture);
             }
         }
         

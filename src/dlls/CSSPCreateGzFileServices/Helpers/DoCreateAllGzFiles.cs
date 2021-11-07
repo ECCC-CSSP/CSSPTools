@@ -21,49 +21,49 @@ namespace CSSPCreateGzFileServices
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
             CSSPLogService.FunctionLog(FunctionName);
 
-            //await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllMWQMAnalysisReportParameters, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllMWQMSubsectors, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllTels, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
-            //await CreateGzFile(WebTypeEnum.WebAllUseOfSites, 0);
+            await CreateGzFile(WebTypeEnum.WebAllAddresses, 0);
+            await CreateGzFile(WebTypeEnum.WebAllContacts, 0);
+            await CreateGzFile(WebTypeEnum.WebAllCountries, 0);
+            await CreateGzFile(WebTypeEnum.WebAllEmails, 0);
+            await CreateGzFile(WebTypeEnum.WebAllHelpDocs, 0);
+            await CreateGzFile(WebTypeEnum.WebAllMunicipalities, 0);
+            await CreateGzFile(WebTypeEnum.WebAllMWQMAnalysisReportParameters, 0);
+            await CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+            await CreateGzFile(WebTypeEnum.WebAllMWQMSubsectors, 0);
+            await CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings, 0);
+            await CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms, 0);
+            await CreateGzFile(WebTypeEnum.WebAllProvinces, 0);
+            await CreateGzFile(WebTypeEnum.WebAllReportTypes, 0);
+            await CreateGzFile(WebTypeEnum.WebAllTels, 0);
+            await CreateGzFile(WebTypeEnum.WebAllTideLocations, 0);
+            await CreateGzFile(WebTypeEnum.WebAllSearch, 0);
+            await CreateGzFile(WebTypeEnum.WebAllUseOfSites, 0);
 
-            //await CreateGzFile(WebTypeEnum.WebRoot, 0);
+            await CreateGzFile(WebTypeEnum.WebRoot, 0);
 
-            //foreach (TVItem tvItem in (from c in db.TVItems
-            //                           where c.TVType == TVTypeEnum.Country
-            //                           select c).ToList())
-            //{
-            //    await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
-            //    await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
-            //}
+            foreach (TVItem tvItem in (from c in db.TVItems
+                                       where c.TVType == TVTypeEnum.Country
+                                       select c).ToList())
+            {
+                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
+                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
+            }
 
-            //foreach (TVItem tvItem in (from c in db.TVItems
-            //                           where c.TVType == TVTypeEnum.Province
-            //                           select c).ToList())
-            //{
-            //    await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
-            //    await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
-            //}
+            foreach (TVItem tvItem in (from c in db.TVItems
+                                       where c.TVType == TVTypeEnum.Province
+                                       select c).ToList())
+            {
+                await CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
+                await CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
+            }
 
             List<TVTypeEnum> tvTypeEnumList = new List<TVTypeEnum>()
             {
-                //TVTypeEnum.Country,
-                //TVTypeEnum.Province,
-                //TVTypeEnum.Area,
-                //TVTypeEnum.Sector,
-                //TVTypeEnum.Subsector,
+                TVTypeEnum.Country,
+                TVTypeEnum.Province,
+                TVTypeEnum.Area,
+                TVTypeEnum.Sector,
+                TVTypeEnum.Subsector,
                 TVTypeEnum.Municipality,
             };
 

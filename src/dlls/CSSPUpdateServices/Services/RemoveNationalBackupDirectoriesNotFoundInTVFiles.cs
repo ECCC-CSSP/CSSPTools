@@ -77,9 +77,9 @@ namespace CSSPUpdateServices
                     {
                         diSub.Delete(true);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalDirectory_, diSub.Name) }");
+                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalDirectory_Error_, diSub.Name, ex.Message) }");
 
                         CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                        
 

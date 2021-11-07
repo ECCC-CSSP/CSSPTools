@@ -110,7 +110,7 @@ namespace CSSPUpdateServices
                     {
                         string DirNat = $@"{ParentID}\{fileInfoNat.Name}";
 
-                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingNationalFile_, DirNat) }");
+                        CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingLocalFile_, DirNat) }");
 
                         try
                         {
@@ -118,7 +118,7 @@ namespace CSSPUpdateServices
                         }
                         catch (Exception ex)
                         {
-                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalFile_Error_, DirNat, ex.Message) }");
+                            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingLocalFile_Error_, DirNat, ex.Message) }");
 
                             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);                            
 

@@ -1008,8 +1008,8 @@
   <data name="ErrorDeletingLocalFile_Error_" xml:space="preserve">
     <value>\tErreur lors de la suppression de la filière local --&gt; {0}. Erreur: {1}</value>
   </data>
-  <data name="ErrorDeletingNationalDirectory_" xml:space="preserve">
-    <value>\tErreur lors de la suppression du directoire national --&gt; {0}</value>
+  <data name="ErrorDeletingNationalDirectory_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du directoire national --&gt; {0}. Erreur: {1}</value>
   </data>
   <data name="ErrorDeletingNationalFile_Error_" xml:space="preserve">
     <value>\tErreur lors de la suppression de la filière national --&gt; {0}. Erreur {1}</value>

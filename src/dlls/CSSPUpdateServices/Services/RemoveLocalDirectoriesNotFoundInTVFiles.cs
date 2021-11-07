@@ -54,7 +54,7 @@ namespace CSSPUpdateServices
                                       select (int)c.ParentID).Distinct().ToList();
 
             // ---------------------------------------------
-            // Cleaning National drive
+            // Cleaning Local drive
             //----------------------------------------------
 
             List<DirectoryInfo> diLocalSubList = diLocal.GetDirectories().OrderBy(c => c.Name).ToList();
@@ -72,15 +72,15 @@ namespace CSSPUpdateServices
                         continue;
                     }
 
-                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingNationalDirectory_, diSub.Name) }");
+                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingLocalDirectory_, diSub.FullName) }");
 
                     try
                     {
                         diSub.Delete(true);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalDirectory_, diSub.Name) }");
+                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingLocalDirectory_Error_, diSub.FullName, ex.Message) }");
 
                         CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
                         

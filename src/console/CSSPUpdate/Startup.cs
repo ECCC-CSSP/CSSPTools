@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CSSPScrambleServices;
 
 namespace CSSPUpdate
 {
@@ -69,6 +70,7 @@ namespace CSSPUpdate
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();

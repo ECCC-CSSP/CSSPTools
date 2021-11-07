@@ -1011,8 +1011,8 @@
   <data name="ErrorDeletingLocalFile_Error_" xml:space="preserve">
     <value>\tError deleting local file --&gt; {0}. Error: {1}</value>
   </data>
-  <data name="ErrorDeletingNationalDirectory_" xml:space="preserve">
-    <value>\tError deleting national directory --&gt; {0}</value>
+  <data name="ErrorDeletingNationalDirectory_Error_" xml:space="preserve">
+    <value>\tError deleting national directory --&gt; {0}. Error: {1}</value>
   </data>
   <data name="ErrorDeletingNationalFile_Error_" xml:space="preserve">
     <value>\tError deleting national file --&gt; {0}. Error: {1}</value>
