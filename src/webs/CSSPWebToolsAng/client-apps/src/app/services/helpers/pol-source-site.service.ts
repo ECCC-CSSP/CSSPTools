@@ -41,6 +41,20 @@ export class PolSourceSiteService {
     private sortMWQMSiteSampleModelListService: SortMWQMSiteSampleModelListService) {
   }
 
+  GetPolSourceSiteTVItemModelList(polSourceSiteModelList: PolSourceSiteModel[]): TVItemModel[] {
+    let language: number = <number>this.appLanguageService.Language;
+
+    if (!polSourceSiteModelList || polSourceSiteModelList?.length == 0) return <TVItemModel[]>[];
+
+    let tvItemModelList: TVItemModel[] = [];
+
+    for (let i = 0; i < polSourceSiteModelList?.length; i++) {
+        tvItemModelList.push(polSourceSiteModelList[i].TVItemModel);
+    }
+
+    return tvItemModelList;
+  }
+
   GetRiskColor(tvItemModel: TVItemModel): string {
     let className: string = 'unknownRisk';
 
@@ -78,7 +92,7 @@ export class PolSourceSiteService {
     if (this.appLoadedService.WebAllContacts == undefined) {
       return <ContactModel>{};
     }
-    let contactModelList: ContactModel[] = this.appLoadedService.WebAllContacts.ContactModelList.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemID);
+    let contactModelList: ContactModel[] = this.appLoadedService.WebAllContacts.ContactModelList.filter(c => c.Contact.ContactTVItemID == tvItemID);
     if (contactModelList == null || contactModelList == undefined || contactModelList.length == 0) {
       return <ContactModel>{};
     }

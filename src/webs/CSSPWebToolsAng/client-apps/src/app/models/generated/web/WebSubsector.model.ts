@@ -5,23 +5,13 @@
  *
  */
 
-import { MWQMAnalysisReportParameter } from 'src/app/models/generated/db/MWQMAnalysisReportParameter.model';
-import { MWQMSubsector } from 'src/app/models/generated/db/MWQMSubsector.model';
-import { MWQMSubsectorLanguage } from 'src/app/models/generated/db/MWQMSubsectorLanguage.model';
+import { ClassificationModel } from 'src/app/models/generated/web/ClassificationModel.model';
 import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { UseOfSite } from 'src/app/models/generated/db/UseOfSite.model';
 
 export class WebSubsector {
-    MWQMAnalysisReportParameterList: MWQMAnalysisReportParameter[];
-    MWQMSubsector: MWQMSubsector;
-    MWQMSubsectorLanguageList: MWQMSubsectorLanguage[];
+    ClassificationModelList: ClassificationModel[];
     TVFileModelList: TVFileModel[];
     TVItemModel: TVItemModel;
-    TVItemModelClassificationList: TVItemModel[];
-    TVItemModelMWQMRunList: TVItemModel[];
-    TVItemModelMWQMSiteList: TVItemModel[];
     TVItemModelParentList: TVItemModel[];
-    TVItemModelPolSourceSiteList: TVItemModel[];
-    UseOfSiteList: UseOfSite[];
 }

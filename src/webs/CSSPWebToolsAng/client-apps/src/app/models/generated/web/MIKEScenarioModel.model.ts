@@ -17,5 +17,4 @@ export class MikeScenarioModel {
     MikeSourceModelList: MikeSourceModel[];
     TVFileModelList: TVFileModel[];
     TVItemModel: TVItemModel;
-    TVItemModelParentList: TVItemModel[];
 }

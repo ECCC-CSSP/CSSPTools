@@ -17,7 +17,5 @@ export class WebMunicipality {
     MunicipalityTVItemLinkList: TVItemLink[];
     TVFileModelList: TVFileModel[];
     TVItemModel: TVItemModel;
-    TVItemModelInfrastructureList: TVItemModel[];
-    TVItemModelMikeScenarioList: TVItemModel[];
     TVItemModelParentList: TVItemModel[];
 }

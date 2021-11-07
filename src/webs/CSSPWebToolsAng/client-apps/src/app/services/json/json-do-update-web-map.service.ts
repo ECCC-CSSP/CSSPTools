@@ -15,6 +15,10 @@ import { FilterService } from '../tvitem/filter.service';
 import { SortTVItemMunicipalityListService } from '../helpers/sort-tvitem-municipality-list.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
+import { ClassificationService } from '../helpers/classification.service';
+import { MWQMSiteService } from '../helpers/mwqm-site.service';
+import { MWQMRunService } from '../helpers/mwqm-run.service';
+import { PolSourceSiteService } from '../helpers/pol-source-site.service';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +30,11 @@ export class JsonDoUpdateWebMapService {
         private mapService: MapService,
         private sortTVItemListService: SortTVItemListService,
         private sortTVItemMunicipalityListService: SortTVItemMunicipalityListService,
-        private filterService: FilterService) {
+        private filterService: FilterService,
+        private classificationService: ClassificationService,
+        private mwqmSiteService: MWQMSiteService,
+        private mwqmRunService: MWQMRunService,
+        private polSourceSiteService: PolSourceSiteService) {
     }
 
     DoUpdateWebMap(WebType) {
@@ -247,56 +255,56 @@ export class JsonDoUpdateWebMapService {
     private DoUpdateWebSubsectorMap() {
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMSites) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.mwqmSiteService.GetMWQMSiteTVItemModelList(this.appLoadedService.WebMWQMSites?.MWQMSiteModelList))),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
             ]);
         }
 
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Analysis) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.mwqmSiteService.GetMWQMSiteTVItemModelList(this.appLoadedService.WebMWQMSites?.MWQMSiteModelList))),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
             ]);
         }
 
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.MWQMRuns) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMRunList)),
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.mwqmRunService.GetMWQMRunTVItemModelList(this.appLoadedService.WebMWQMRuns?.MWQMRunModelList))),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
             ]);
         }
 
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.PollutionSourceSites) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelPolSourceSiteList)),
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.polSourceSiteService.GetPolSourceSiteTVItemModelList(this.appLoadedService.WebPolSourceSites?.PolSourceSiteModelList))),
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
             ]);
         }
 
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.Files) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.mwqmSiteService.GetMWQMSiteTVItemModelList(this.appLoadedService.WebMWQMSites?.MWQMSiteModelList))),
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
             ]);
         }
 
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.SubsectorTools) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.mwqmSiteService.GetMWQMSiteTVItemModelList(this.appLoadedService.WebMWQMSites?.MWQMSiteModelList))),
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
             ]);
         }
 
         if (this.appStateService.UserPreference.SubsectorSubComponent == SubsectorSubComponentEnum.LogBook) {
             this.mapService.DrawObjects([
-                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.appLoadedService.WebSubsector?.TVItemModelMWQMSiteList)),
-                ...this.appLoadedService.WebSubsector?.TVItemModelClassificationList,
+                ...this.sortTVItemListService.SortTVItemList(this.filterService.FilterTVItemModelList(this.mwqmSiteService.GetMWQMSiteTVItemModelList(this.appLoadedService.WebMWQMSites?.MWQMSiteModelList))),
+                ...this.classificationService.GetClassificationTVItemModelList(this.appLoadedService.WebSubsector?.ClassificationModelList),
                 ...[this.appLoadedService.WebSubsector?.TVItemModel],
             ]);
         }

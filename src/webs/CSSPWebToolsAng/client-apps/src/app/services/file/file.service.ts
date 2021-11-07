@@ -17,7 +17,7 @@ export class FileService {
     }
 
     GetURL(tvFileModel: TVFileModel): string {
-        let ParentTVItemID = tvFileModel.TVItem.ParentID;
+        let ParentTVItemID = tvFileModel.TVItemModel.TVItem.ParentID;
         let FileName = encodeURI(tvFileModel.TVFile?.ServerFileName).replace('#', '%23');
 
         let url: string = `${this.appLoadedService.BaseApiUrl}${LanguageEnum[this.appLanguageService.Language]}-CA/Download/${ParentTVItemID}/${FileName}`;

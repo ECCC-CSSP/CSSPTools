@@ -46,6 +46,9 @@ export enum WebTypeEnum {
     WebMonitoringOtherStatsCountry = 34,
     WebMonitoringRoutineStatsProvince = 35,
     WebMonitoringOtherStatsProvince = 36,
+    WebAllMWQMAnalysisReportParameters = 37,
+    WebAllMWQMSubsectors = 38,
+    WebAllUseOfSites = 39,
 }
 
 export function GetWebTypeEnum(): typeof WebTypeEnum
@@ -92,6 +95,9 @@ export function WebTypeEnum_GetOrderedText(appLanguageService: AppLanguageServic
         enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebMonitoringOtherStatsCountry' });
         enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebMonitoringRoutineStatsProvince' });
         enumTextOrderedList.push({ EnumID: 36, EnumText: 'WebMonitoringOtherStatsProvince' });
+        enumTextOrderedList.push({ EnumID: 37, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 38, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 39, EnumText: 'Empty (fr)' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'WebAllAddresses' });
@@ -130,6 +136,9 @@ export function WebTypeEnum_GetOrderedText(appLanguageService: AppLanguageServic
         enumTextOrderedList.push({ EnumID: 34, EnumText: 'WebMonitoringOtherStatsCountry' });
         enumTextOrderedList.push({ EnumID: 35, EnumText: 'WebMonitoringRoutineStatsProvince' });
         enumTextOrderedList.push({ EnumID: 36, EnumText: 'WebMonitoringOtherStatsProvince' });
+        enumTextOrderedList.push({ EnumID: 37, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 38, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 39, EnumText: 'Empty' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

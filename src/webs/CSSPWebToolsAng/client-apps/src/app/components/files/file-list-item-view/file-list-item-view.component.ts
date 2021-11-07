@@ -41,7 +41,7 @@ export class FileListItemViewComponent implements OnInit, OnDestroy {
 
   Download(tvFileModel: TVFileModel)
   {
-    const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.Language]}-CA/Download/${tvFileModel?.TVItem?.ParentID}/${tvFileModel?.TVFile?.ServerFileName}`;
+    const url: string = `${this.appLoadedService.BaseApiUrl}${this.languageEnum[this.appLanguageService.Language]}-CA/Download/${tvFileModel?.TVItemModel?.TVItem?.ParentID}/${tvFileModel?.TVFile?.ServerFileName}`;
 
     let a = document.createElement('a');
     a.href = url;

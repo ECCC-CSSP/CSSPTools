@@ -1,4 +1,4 @@
-﻿using CreateGzFileServices;
+﻿using CSSPCreateGzFileServices;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPDBServices;
@@ -24,7 +24,7 @@ namespace UploadAllJsonFilesToAzure
         private IConfiguration Configuration { get; set; }
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
-        public ICreateGzFileService CreateGzFileService { get; set; }
+        public ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
         public ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         public string AzureStore { get; set; }
         public string AzureStoreCSSPJSONPath { get; set; }
@@ -78,7 +78,7 @@ namespace UploadAllJsonFilesToAzure
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<IContactDBService, ContactDBService>();
-            Services.AddSingleton<ICreateGzFileService, CreateGzFileService>();
+            Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
             Services.AddSingleton<ITVItemDBService, TVItemDBService>();
 
             Provider = Services.BuildServiceProvider();
@@ -102,8 +102,8 @@ namespace UploadAllJsonFilesToAzure
                 return false;
             }
 
-            CreateGzFileService = Provider.GetService<ICreateGzFileService>();
-            if (CreateGzFileService == null)
+            CSSPCreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
+            if (CSSPCreateGzFileService == null)
             {
                 Console.WriteLine("CreateGzFileService should not be null");
                 return false;

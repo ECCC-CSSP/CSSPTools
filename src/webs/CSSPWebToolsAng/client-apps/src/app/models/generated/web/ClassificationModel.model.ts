@@ -5,10 +5,10 @@
  *
  */
 
-import { Tel } from 'src/app/models/generated/db/Tel.model';
+import { Classification } from 'src/app/models/generated/db/Classification.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
-export class TelModel {
-    Tel: Tel;
+export class ClassificationModel {
+    Classification: Classification;
     TVItemModel: TVItemModel;
 }

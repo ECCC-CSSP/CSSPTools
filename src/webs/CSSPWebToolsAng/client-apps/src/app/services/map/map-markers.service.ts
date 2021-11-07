@@ -190,7 +190,7 @@ export class MapMarkersService {
           mark = new google.maps.Marker(options);
 
           if (this.appStateService.EditMapVisible) {
-            google.maps.event.addListener(mark, "mousemove", (evt: google.maps.MouseEvent) => {
+            google.maps.event.addListener(mark, "mousemove", (evt: google.maps.MapMouseEvent) => {
               if (!this.appStateService.EditMapChanged) {
                 (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
                   ' ' + evt.latLng.lng().toString().substring(0, 8));

@@ -15,7 +15,7 @@ namespace CSSPWebModels
         public SamplingPlan SamplingPlan { get; set; }
         public List<SamplingPlanSubsectorModel> SamplingPlanSubsectorModelList { get; set; }
         public List<SamplingPlanEmail> SamplingPlanEmailList { get; set; }
-        public IEnumerable<object> ClimateDataValueList { get; set; }
+        //public IEnumerable<object> ClimateDataValueList { get; set; }
         #endregion Properties
 
         #region Constructors

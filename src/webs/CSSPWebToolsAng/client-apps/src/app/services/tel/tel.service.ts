@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TelModel } from 'src/app/models/generated/web/TelModel.model';
+import { Tel } from 'src/app/models/generated/db/Tel.model';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';
 
@@ -13,16 +13,16 @@ export class TelService {
   ) {
   }
 
-  GetTelModel(tvItemID: number): TelModel {
+  GetTel(tvItemID: number): Tel {
     if (this.appLoadedService.WebAllTels == undefined)
     {
-      return <TelModel>{};
+      return <Tel>{};
     }
-    let telModelList: TelModel[] = this.appLoadedService.WebAllTels.TelModelList.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemID);
-    if (telModelList == null || telModelList == undefined || telModelList.length == 0) {
-      return <TelModel>{};
+    let telList: Tel[] = this.appLoadedService.WebAllTels.TelList.filter(c => c.TelTVItemID == tvItemID);
+    if (telList == null || telList == undefined || telList.length == 0) {
+      return <Tel>{};
     }
-    return telModelList[0];
+    return telList[0];
   }
 
 }

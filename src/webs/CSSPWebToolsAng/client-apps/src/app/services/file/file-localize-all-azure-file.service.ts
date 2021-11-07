@@ -55,7 +55,7 @@ export class FileLocalizeAllAzureFileService {
     AddTVFileModelList(tvFileModelList: TVFileModel[]) {
         let TempTotalFileSize: number = 0;
         for (let i = 0, count = tvFileModelList.length; i < count; i++) {
-            let tvFileModelListExist: TVFileModel[] = this.TVFileModelList.filter(c => c.TVItem.TVItemID == tvFileModelList[i].TVItem.TVItemID);
+            let tvFileModelListExist: TVFileModel[] = this.TVFileModelList.filter(c => c.TVItemModel.TVItem.TVItemID == tvFileModelList[i].TVItemModel.TVItem.TVItemID);
 
             if (tvFileModelListExist == undefined || tvFileModelListExist.length == 0) {
                 this.TVFileModelList.push(tvFileModelList[i]);
@@ -80,7 +80,7 @@ export class FileLocalizeAllAzureFileService {
 
     private DoLocalizeAzureFile() {
         let languageEnum = GetLanguageEnum();
-        let ParentTVItemID = this.TVFileModelList[0].TVItem.ParentID;
+        let ParentTVItemID = this.TVFileModelList[0].TVItemModel.TVItem.ParentID;
         let FileName = encodeURI(this.TVFileModelList[0].TVFile?.ServerFileName).replace('#', '%23');
         let FileSize_kb = this.TVFileModelList[0].TVFile?.FileSize_kb;
 

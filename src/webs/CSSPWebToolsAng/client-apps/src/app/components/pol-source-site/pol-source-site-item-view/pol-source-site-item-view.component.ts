@@ -6,7 +6,6 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { PolSourceSiteService } from 'src/app/services/helpers/pol-source-site.service';
-import { flattenDiagnosticMessageText } from 'typescript';
 
 @Component({
   selector: 'app-pol-source-site-item-view',

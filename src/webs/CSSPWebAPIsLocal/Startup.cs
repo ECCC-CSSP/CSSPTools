@@ -102,7 +102,7 @@ namespace CSSPWebAPIsLocal
             services.AddScoped<ICSSPFileService, CSSPFileService>();
             services.AddScoped<ICSSPReadGzFileService, CSSPReadGzFileService>();
             services.AddScoped<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
-            services.AddScoped<ITVItemLocalService, TVItemLocalService>();
+            //services.AddScoped<ITVItemLocalService, TVItemLocalService>();
             services.AddScoped<ICSSPFileService, CSSPFileService>();
 
             services.AddSpaStaticFiles(configuration =>

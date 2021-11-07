@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AddressModel } from 'src/app/models/generated/web/AddressModel.model';
+import { Address } from 'src/app/models/generated/db/Address.model';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';
@@ -14,16 +14,16 @@ export class AddressService {
   ) {
   }
 
-  GetAddressModel(tvItemID: number): AddressModel {
+  GetAddress(tvItemID: number): Address {
     if (this.appLoadedService.WebAllAddresses == undefined)
     {
-      return <AddressModel>{};
+      return <Address>{};
     }
-    let addressModelList: AddressModel[] = this.appLoadedService.WebAllAddresses.AddressModelList.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemID);
-    if (addressModelList == null || addressModelList == undefined || addressModelList.length == 0) {
-      return <AddressModel>{};
+    let addressList: Address[] = this.appLoadedService.WebAllAddresses.AddressList.filter(c => c.AddressTVItemID == tvItemID);
+    if (addressList == null || addressList == undefined || addressList.length == 0) {
+      return <Address>{};
     }
-    return addressModelList[0];
+    return addressList[0];
   }
 
   GetCountryTVItemModel(tvItemID: number): TVItemModel {

@@ -14,6 +14,9 @@ import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { JsonLoadListService } from 'src/app/services/json/json-loading-list.service';
 import { JsonLoadAllService } from 'src/app/services/json';
 import { TVFileModelByPurposeService } from 'src/app/services/file';
+import { MWQMSiteService } from 'src/app/services/helpers/mwqm-site.service';
+import { MWQMRunService } from 'src/app/services/helpers/mwqm-run.service';
+import { PolSourceSiteService } from 'src/app/services/helpers/pol-source-site.service';
 
 @Component({
   selector: 'app-subsector-item',
@@ -36,7 +39,10 @@ export class SubsectorItemComponent implements OnInit, OnDestroy {
     public sortTVItemListService: SortTVItemListService,
     public filterService: FilterService,
     public componentShowService: ComponentShowService,
-    public tvFileModelByPurposeService: TVFileModelByPurposeService) { }
+    public tvFileModelByPurposeService: TVFileModelByPurposeService,
+    public mwqmSiteService: MWQMSiteService,
+    public mwqmRunService: MWQMRunService,
+    public polSourceSiteService: PolSourceSiteService) { }
 
   ngOnInit(): void {
     this.jsonLoadListService.SetToLoadList(TVTypeEnum.Subsector, this.appStateService.UserPreference.CurrentSubsectorTVItemID, false);

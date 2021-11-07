@@ -99,7 +99,7 @@ export class MapService {
 
     this.appLoadedService.Map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById("MapTopCenterID"));
 
-    google.maps.event.addListener(this.appLoadedService.Map, "mousemove", (evt: google.maps.MouseEvent) => {
+    google.maps.event.addListener(this.appLoadedService.Map, "mousemove", (evt: google.maps.MapMouseEvent) => {
       if (!this.appStateService.EditMapChanged) {
         (<HTMLInputElement>document.getElementById("CurrentLatLng")).value = (evt.latLng.lat().toString().substring(0, 8) +
           ' ' + evt.latLng.lng().toString().substring(0, 8));

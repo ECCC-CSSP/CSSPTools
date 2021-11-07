@@ -99,22 +99,22 @@
 </button>
 
 <app-mwqm-site-tvitem-list-item *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.MWQMSites"
-    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelMWQMSiteList))">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(mwqmSiteService.GetMWQMSiteTVItemModelList(appLoadedService.WebMWQMSites?.MWQMSiteModelList)))">
 </app-mwqm-site-tvitem-list-item>
 
 <div *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.Analysis">
-    <app-analysis-item [TVItemModelList]="appLoadedService.WebSubsector?.TVItemModelMWQMSiteList"
+    <app-analysis-item [TVItemModelList]="mwqmSiteService.GetMWQMSiteTVItemModelList(appLoadedService.WebMWQMSites?.MWQMSiteModelList)"
         [StatMWQMSiteList]="appLoadedService.StatMWQMSiteList" [StatMWQMRunList]="appLoadedService.StatMWQMRunList">
     </app-analysis-item>
 </div>
 
 <app-mwqm-run-tvitem-list-item *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.MWQMRuns"
-    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelMWQMRunList))">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(mwqmRunService.GetMWQMRunTVItemModelList(appLoadedService.WebMWQMRuns?.MWQMRunModelList)))">
 </app-mwqm-run-tvitem-list-item>
 
 <app-pol-source-site-tvitem-list-item
     *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.PollutionSourceSites"
-    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebSubsector?.TVItemModelPolSourceSiteList))">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(polSourceSiteService.GetPolSourceSiteTVItemModelList(appLoadedService.WebPolSourceSites?.PolSourceSiteModelList)))">
 </app-pol-source-site-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.SubsectorSubComponent == subsectorSubComponentEnum.Files"

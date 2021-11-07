@@ -17,7 +17,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Area:
                 {
                     for (let i = 0, count = this.appLoadedService.WebArea?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebArea?.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebArea?.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebArea.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebArea.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;
@@ -28,7 +28,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Country:
                 {
                     for (let i = 0, count = this.appLoadedService.WebCountry?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebCountry.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebCountry.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebCountry.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebCountry.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;
@@ -40,7 +40,7 @@ export class FileLocalizeSwitchService {
                 {
                     for (let i = 0, countI = this.appLoadedService.WebMunicipality?.InfrastructureModelList.length; i < countI; i++) {
                         for (let j = 0, countJ = this.appLoadedService.WebMunicipality?.InfrastructureModelList[i]?.TVFileModelList.length; j < countJ; j++) {
-                            if (this.appLoadedService.WebMunicipality?.InfrastructureModelList[i]?.TVFileModelList[j]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                            if (this.appLoadedService.WebMunicipality?.InfrastructureModelList[i]?.TVFileModelList[j]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                                 this.appLoadedService.WebMunicipality.InfrastructureModelList[i].TVFileModelList[j].IsLocalized = localizedOK;
                                 this.appLoadedService.WebMunicipality.InfrastructureModelList[i].TVFileModelList[j].ErrorLocalizing = !localizedOK;
                                 break;
@@ -53,7 +53,7 @@ export class FileLocalizeSwitchService {
                 {
                     for (let i = 0, countI = this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList.length; i < countI; i++) {
                         for (let j = 0, countJ = this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList[i]?.TVFileModelList.length; j < countJ; j++) {
-                            if (this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList[i]?.TVFileModelList[j]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                            if (this.appLoadedService.WebMikeScenarios?.MikeScenarioModelList[i]?.TVFileModelList[j]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                                 this.appLoadedService.WebMikeScenarios.MikeScenarioModelList[i].TVFileModelList[j].IsLocalized = localizedOK;
                                 this.appLoadedService.WebMikeScenarios.MikeScenarioModelList[i].TVFileModelList[j].ErrorLocalizing = !localizedOK;
                                 break;
@@ -65,7 +65,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Municipality:
                 {
                     for (let i = 0, count = this.appLoadedService.WebMunicipality?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebMunicipality?.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebMunicipality?.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebMunicipality.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebMunicipality.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;
@@ -77,7 +77,7 @@ export class FileLocalizeSwitchService {
                 {
                     for (let i = 0, countI = this.appLoadedService.WebMWQMSites?.MWQMSiteModelList.length; i < countI; i++) {
                         for (let j = 0, countJ = this.appLoadedService.WebMWQMSites?.MWQMSiteModelList[i]?.TVFileModelList.length; j < countJ; j++) {
-                            if (this.appLoadedService.WebMWQMSites?.MWQMSiteModelList[i]?.TVFileModelList[j]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                            if (this.appLoadedService.WebMWQMSites?.MWQMSiteModelList[i]?.TVFileModelList[j]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                                 this.appLoadedService.WebMWQMSites.MWQMSiteModelList[i].TVFileModelList[j].IsLocalized = localizedOK;
                                 this.appLoadedService.WebMWQMSites.MWQMSiteModelList[i].TVFileModelList[j].ErrorLocalizing = !localizedOK;
                                 break;
@@ -90,7 +90,7 @@ export class FileLocalizeSwitchService {
                 {
                     for (let i = 0, countI = this.appLoadedService.WebPolSourceSites?.PolSourceSiteModelList.length; i < countI; i++) {
                         for (let j = 0, countJ = this.appLoadedService.WebPolSourceSites?.PolSourceSiteModelList[i]?.TVFileModelList.length; j < countJ; j++) {
-                            if (this.appLoadedService.WebPolSourceSites?.PolSourceSiteModelList[i]?.TVFileModelList[j]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                            if (this.appLoadedService.WebPolSourceSites?.PolSourceSiteModelList[i]?.TVFileModelList[j]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                                 this.appLoadedService.WebPolSourceSites.PolSourceSiteModelList[i].TVFileModelList[j].IsLocalized = localizedOK;
                                 this.appLoadedService.WebPolSourceSites.PolSourceSiteModelList[i].TVFileModelList[j].ErrorLocalizing = !localizedOK;
                                 break;
@@ -102,7 +102,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Province:
                 {
                     for (let i = 0, count = this.appLoadedService.WebProvince?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebProvince?.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebProvince?.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebProvince.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebProvince.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;
@@ -113,7 +113,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Root:
                 {
                     for (let i = 0, count = this.appLoadedService.WebRoot?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebRoot?.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebRoot?.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebRoot.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebRoot.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;
@@ -124,7 +124,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Sector:
                 {
                     for (let i = 0, count = this.appLoadedService.WebSector?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebSector?.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebSector?.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebSector.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebSector.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;
@@ -135,7 +135,7 @@ export class FileLocalizeSwitchService {
             case TVTypeEnum.Subsector:
                 {
                     for (let i = 0, count = this.appLoadedService.WebSubsector?.TVFileModelList.length; i < count; i++) {
-                        if (this.appLoadedService.WebSubsector?.TVFileModelList[i]?.TVItem?.TVItemID == tvFileModel?.TVItem?.TVItemID) {
+                        if (this.appLoadedService.WebSubsector?.TVFileModelList[i]?.TVItemModel?.TVItem?.TVItemID == tvFileModel?.TVItemModel?.TVItem?.TVItemID) {
                             this.appLoadedService.WebSubsector.TVFileModelList[i].IsLocalized = localizedOK;
                             this.appLoadedService.WebSubsector.TVFileModelList[i].ErrorLocalizing = !localizedOK;
                             break;

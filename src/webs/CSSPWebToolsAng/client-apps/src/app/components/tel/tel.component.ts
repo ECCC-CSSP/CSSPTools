@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
-import { TelModel } from 'src/app/models/generated/web/TelModel.model';
 import { GetTelTypeEnum } from 'src/app/enums/generated/TelTypeEnum';
 import { TelService } from 'src/app/services/tel/tel.service';
+import { Tel } from 'src/app/models/generated/db/Tel.model';
 
 @Component({
   selector: 'app-tel',
@@ -14,7 +14,7 @@ import { TelService } from 'src/app/services/tel/tel.service';
 export class TelComponent implements OnInit, OnDestroy {
   @Input() TVItemID: number;
 
-  telModel: TelModel;
+  tel: Tel;
 
   telType = GetTelTypeEnum();
   
@@ -25,7 +25,7 @@ export class TelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.telModel = this.telService.GetTelModel(this.TVItemID);
+    this.tel = this.telService.GetTel(this.TVItemID);
   }
 
   ngOnDestroy() {

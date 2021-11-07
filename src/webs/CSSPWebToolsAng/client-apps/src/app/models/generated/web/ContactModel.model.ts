@@ -6,12 +6,10 @@
  */
 
 import { Contact } from 'src/app/models/generated/db/Contact.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class ContactModel {
     Contact: Contact;
     ContactAddressTVItemIDList: number[];
     ContactEmailTVItemIDList: number[];
     ContactTelTVItemIDList: number[];
-    TVItemModel: TVItemModel;
 }

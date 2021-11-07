@@ -9,4 +9,5 @@
 export class AzureFileInfo {
     FileName: string;
     Length: number;
+    ParentTVItemID: number;
 }

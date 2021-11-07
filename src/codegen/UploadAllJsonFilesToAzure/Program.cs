@@ -1,5 +1,4 @@
 ﻿using Azure;
-using CreateGzFileServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,7 @@ namespace UploadAllJsonFilesToAzure
 
             if (!startup.Setup()) return;
 
-            await startup.CreateGzFileService.CreateAllGzFiles();
+            await startup.CSSPCreateGzFileService.CreateAllGzFiles();
         }
     }
 }

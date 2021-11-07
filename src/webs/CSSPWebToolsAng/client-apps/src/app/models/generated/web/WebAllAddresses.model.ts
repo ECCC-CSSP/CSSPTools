@@ -5,8 +5,8 @@
  *
  */
 
-import { AddressModel } from 'src/app/models/generated/web/AddressModel.model';
+import { Address } from 'src/app/models/generated/db/Address.model';
 
 export class WebAllAddresses {
-    AddressModelList: AddressModel[];
+    AddressList: Address[];
 }

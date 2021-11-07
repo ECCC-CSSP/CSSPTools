@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EmailModel } from 'src/app/models/generated/web/EmailModel.model';
+import { Email } from 'src/app/models/generated/db/Email.model';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';
 
@@ -13,16 +13,16 @@ export class EmailService {
   ) {
   }
 
-  GetEmailModel(tvItemID: number): EmailModel {
+  GetEmail(tvItemID: number): Email {
     if (this.appLoadedService.WebAllEmails == undefined)
     {
-      return <EmailModel>{};
+      return <Email>{};
     }
-    let emailModelList: EmailModel[] = this.appLoadedService.WebAllEmails.EmailModelList.filter(c => c.TVItemModel.TVItem.TVItemID == tvItemID);
-    if (emailModelList == null || emailModelList == undefined || emailModelList.length == 0) {
-      return <EmailModel>{};
+    let emailList: Email[] = this.appLoadedService.WebAllEmails.EmailList.filter(c => c.EmailTVItemID == tvItemID);
+    if (emailList == null || emailList == undefined || emailList.length == 0) {
+      return <Email>{};
     }
-    return emailModelList[0];
+    return emailList[0];
   }
 
 }

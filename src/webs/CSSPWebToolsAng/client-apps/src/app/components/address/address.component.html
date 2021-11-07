@@ -1,30 +1,30 @@
 <mat-list-item *ngIf="appLanguageService.LangID == 0">
-    {{ addressModel.Address.StreetNumber }}&nbsp;
-    {{ streetType[addressModel.Address.StreetType] }},&nbsp;
-    {{ addressModel.Address.StreetName }},&nbsp;
+    {{ address?.StreetNumber }}&nbsp;
+    {{ streetType[address?.StreetType] }},&nbsp;
+    {{ address?.StreetName }},&nbsp;
     {{
-    addressService.GetMunicipalityTVItemModel(addressModel.Address.MunicipalityTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
+    addressService.GetMunicipalityTVItemModel(address?.MunicipalityTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
     }}&nbsp;
     {{
-    addressService.GetProvinceTVItemModel(addressModel.Address.ProvinceTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
+    addressService.GetProvinceTVItemModel(address?.ProvinceTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
     }},&nbsp;
-    {{ addressModel.Address.PostalCode }},&nbsp;
+    {{ address?.PostalCode }},&nbsp;
     {{
-    addressService.GetCountryTVItemModel(addressModel.Address.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
+    addressService.GetCountryTVItemModel(address?.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
     }}
 </mat-list-item>
 <mat-list-item *ngIf="appLanguageService.LangID == 1">
-    {{ addressModel.Address.StreetNumber }}&nbsp;
-    {{ streetType[addressModel.Address.StreetType] }}&nbsp;
-    {{ addressModel.Address.StreetName }},&nbsp;
+    {{ address?.StreetNumber }}&nbsp;
+    {{ streetType[address?.StreetType] }}&nbsp;
+    {{ address?.StreetName }},&nbsp;
     {{
-    addressService.GetMunicipalityTVItemModel(addressModel.Address.MunicipalityTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
+    addressService.GetMunicipalityTVItemModel(address?.MunicipalityTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
     }}&nbsp;
     {{
-    addressService.GetProvinceTVItemModel(addressModel.Address.ProvinceTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
+    addressService.GetProvinceTVItemModel(address?.ProvinceTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
     }},&nbsp;
-    {{ addressModel.Address.PostalCode }},&nbsp;
+    {{ address?.PostalCode }},&nbsp;
     {{
-    addressService.GetCountryTVItemModel(addressModel.Address.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
+    addressService.GetCountryTVItemModel(address?.CountryTVItemID).TVItemLanguageList[appLanguageService.LangID]?.TVText
     }}
 </mat-list-item>

@@ -1,6 +1,8 @@
 ﻿using Azure.Storage.Blobs;
+using CSSPCultureServices.Services;
 using CSSPLocalLoggedInServices;
 using CSSPScrambleServices;
+using ManageServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,7 +30,9 @@ namespace CSSPDesktopInstallPostBuild
             IServiceProvider Provider;
             IServiceCollection Services;
             ICSSPScrambleService CSSPScrambleService;
-            ICSSPLocalLoggedInService CSSPLocalLoggedInService;
+            //ICSSPCultureService CSSPCultureService;
+            //IManageFileService ManageFileService;
+            //ICSSPLocalLoggedInService CSSPLocalLoggedInService;
 
             Configuration = new ConfigurationBuilder()
                               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
@@ -40,7 +44,9 @@ namespace CSSPDesktopInstallPostBuild
 
             Services.AddSingleton<IConfiguration>(Configuration);
             Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
-            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+            //Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            //Services.AddSingleton<IManageFileService, ManageFileService>();
+            //Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null) return await Task.FromResult(1);
@@ -48,11 +54,18 @@ namespace CSSPDesktopInstallPostBuild
             CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
             if (CSSPScrambleService == null) return await Task.FromResult(1);
 
-            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-            if (CSSPLocalLoggedInService == null) return await Task.FromResult(1);
+            //CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            //if (CSSPCultureService == null) return await Task.FromResult(1);
 
+            //ManageFileService = Provider.GetService<IManageFileService>();
+            //if (ManageFileService == null) return await Task.FromResult(1);
 
-            Startup startup = new Startup(Configuration, CSSPScrambleService, CSSPLocalLoggedInService);
+            //CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            //if (CSSPLocalLoggedInService == null) return await Task.FromResult(1);
+
+            //Startup startup = new Startup(Configuration, CSSPScrambleService, CSSPLocalLoggedInService);
+
+            Startup startup = new Startup(Configuration, CSSPScrambleService);
 
             if (!await startup.Run()) return await Task.FromResult(1);
 

@@ -5,8 +5,8 @@
  *
  */
 
-import { EmailModel } from 'src/app/models/generated/web/EmailModel.model';
+import { Email } from 'src/app/models/generated/db/Email.model';
 
 export class WebAllEmails {
-    EmailModelList: EmailModel[];
+    EmailList: Email[];
 }

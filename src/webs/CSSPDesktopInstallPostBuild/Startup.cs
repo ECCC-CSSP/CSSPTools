@@ -13,17 +13,17 @@ namespace CSSPDesktopInstallPostBuild
         #region Properties
         private IConfiguration Configuration { get; }
         private ICSSPScrambleService CSSPScrambleService { get; }
-        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
+        //private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private string AzureStore { get; set; }
         private string AzureStoreCSSPWebAPIsLocalPath { get; set; }
         #endregion Properties
 
         #region Constructors
-        public Startup(IConfiguration Configuration, ICSSPScrambleService CSSPScrambleService, ICSSPLocalLoggedInService CSSPLocalLoggedInService)
+        public Startup(IConfiguration Configuration, ICSSPScrambleService CSSPScrambleService/*, ICSSPLocalLoggedInService CSSPLocalLoggedInService*/)
         {
             this.Configuration = Configuration;
             this.CSSPScrambleService = CSSPScrambleService;
-            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
+            //this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
         }
         #endregion Constructors
 

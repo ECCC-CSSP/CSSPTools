@@ -5,20 +5,14 @@
  *
  */
 
-import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
 import { TVFile } from 'src/app/models/generated/db/TVFile.model';
 import { TVFileLanguage } from 'src/app/models/generated/db/TVFileLanguage.model';
-import { TVItem } from 'src/app/models/generated/db/TVItem.model';
-import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
-import { TVItemStat } from 'src/app/models/generated/db/TVItemStat.model';
+import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
 
 export class TVFileModel {
     ErrorLocalizing: boolean;
     IsLocalized: boolean;
-    MapInfoModelList: MapInfoModel[];
     TVFile: TVFile;
     TVFileLanguageList: TVFileLanguage[];
-    TVItem: TVItem;
-    TVItemLanguageList: TVItemLanguage[];
-    TVItemStatList: TVItemStat[];
+    TVItemModel: TVItemModel;
 }

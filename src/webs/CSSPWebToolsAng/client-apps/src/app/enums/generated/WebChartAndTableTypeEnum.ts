@@ -34,8 +34,8 @@ export function WebChartAndTableTypeEnum_GetOrderedText(appLanguageService: AppL
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'MWQMSiteFCSalTempData' });
         enumTextOrderedList.push({ EnumID: 5, EnumText: 'MWQMSiteFCStats' });
         enumTextOrderedList.push({ EnumID: 6, EnumText: 'MWQMRunData' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Empty (fr)' });
-        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Empty (fr)' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'InfrastructureSingle' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'InfrastructureUnderMunicipality' });
     }
     else {
         enumTextOrderedList.push({ EnumID: 1, EnumText: 'MonitoringStatsByYear' });
@@ -44,8 +44,8 @@ export function WebChartAndTableTypeEnum_GetOrderedText(appLanguageService: AppL
         enumTextOrderedList.push({ EnumID: 4, EnumText: 'MWQMSiteFCSalTempData' });
         enumTextOrderedList.push({ EnumID: 5, EnumText: 'MWQMSiteFCStats' });
         enumTextOrderedList.push({ EnumID: 6, EnumText: 'MWQMRunData' });
-        enumTextOrderedList.push({ EnumID: 7, EnumText: 'Empty' });
-        enumTextOrderedList.push({ EnumID: 8, EnumText: 'Empty' });
+        enumTextOrderedList.push({ EnumID: 7, EnumText: 'InfrastructureSingle' });
+        enumTextOrderedList.push({ EnumID: 8, EnumText: 'InfrastructureUnderMunicipality' });
     }
 
     return enumTextOrderedList.sort((a, b) => a.EnumText.localeCompare(b.EnumText));

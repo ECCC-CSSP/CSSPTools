@@ -6,11 +6,11 @@
                 <p *ngIf="polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID">
                     <app-address [TVItemID]="polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID"></app-address>
                     <span
-                        *ngIf="addressService.GetAddressModel(polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID).Address?.GoogleAddressText">
+                        *ngIf="addressService.GetAddress(polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID)?.GoogleAddressText">
                         <br />
                         {{ appLanguageService.Google[appLanguageService.LangID] }}:&nbsp;
                         {{
-                        addressService.GetAddressModel(polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID).Address?.GoogleAddressText
+                        addressService.GetAddress(polSourceSiteModel.PolSourceSite?.CivicAddressTVItemID)?.GoogleAddressText
                         }}
                     </span>
                 </p>
