@@ -48,7 +48,7 @@ export class TVFileModelByPurposeService {
       TVFileModelList = this.GetTVFileModelList(tvType);
     }
 
-    for (let i = 0; i < enumIDAndTextList?.length; i++) {
+    for (let i = 0, count = enumIDAndTextList?.length; i < count; i++) {
       let tvFileModelList: TVFileModel[] = [];
       let tvFileModelSortedList: TVFileModel[] = [];
       for (let j = 0; j < TVFileModelList?.length; j++) {

@@ -76,7 +76,7 @@
 
 <app-mike-scenario-tvitem-list-item
     *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.MIKEScenarios"
-    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebMikeScenarios?.MikeScenarioModelList?.TVItemModelMikeScenarioList))">
+    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(mikeScenarioService.GetMikeScenarioTVItemModelList(appLoadedService.WebMikeScenarios?.MikeScenarioModelList)))">
 </app-mike-scenario-tvitem-list-item>
 
 <app-file-list *ngIf="appStateService.UserPreference.MunicipalitySubComponent == municipalitySubComponentEnum.Files"

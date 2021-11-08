@@ -35,6 +35,7 @@ namespace CSSPCreateGzFileServices
             List<TVFileLanguage> TVFileLanguageListAll = await GetAllTVFileLanguageListUnder(TVItem);
 
             List<TVItem> TVItemFileList = await GetTVItemAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
+            List<TVItemLanguage> TVItemLanguageFileList = await GetTVItemLanguageAllChildrenListWithTVItemID(TVItem, TVTypeEnum.File);
 
             foreach (TVItem tvItem in TVItemList)
             {
@@ -81,6 +82,24 @@ namespace CSSPCreateGzFileServices
                                                           where c.TVFileID == tvFileModel.TVFile.TVFileID
                                                           orderby c.Language
                                                           select c).ToList();
+
+                        TVItemModel TVItemModel2 = new TVItemModel();
+                        TVItemModel2.TVItem = tvItemFile;
+                        TVItemModel2.TVItemLanguageList = (from c in TVItemLanguageFileList
+                                                           where c.TVItemID == tvItemFile.TVItemID
+                                                           orderby c.Language
+                                                           select c).ToList();
+
+                        foreach (TVItemLanguage tvItemLanguage in TVItemModel2.TVItemLanguageList)
+                        {
+                            tvItemLanguage.TVText = tvItemLanguage.TVText.Replace(Convert.ToChar(160), ' ');
+
+                            RegexOptions options = RegexOptions.None;
+                            Regex regex = new Regex("[ ]{2,}", options);
+                            tvItemLanguage.TVText = regex.Replace(tvItemLanguage.TVText, " ");
+                        }
+
+                        tvFileModel.TVItemModel = TVItemModel2;
 
                         mwqmSiteModel.TVFileModelList.Add(tvFileModel);
                     }

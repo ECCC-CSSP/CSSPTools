@@ -17,7 +17,7 @@ export class MWQMRunService {
 
         let tvItemModelList: TVItemModel[] = [];
 
-        for (let i = 0; i < mwqmRunModelList?.length; i++) {
+        for (let i = 0, count = mwqmRunModelList?.length; i < count; i++) {
             tvItemModelList.push(mwqmRunModelList[i].TVItemModel);
         }
 

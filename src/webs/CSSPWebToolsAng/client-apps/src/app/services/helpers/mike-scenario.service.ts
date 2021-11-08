@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
 import { AppLanguageService } from '../app/app-language.service';
 import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { MikeScenarioModel } from 'src/app/models/generated/web/MikeScenarioModel.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MWQMSiteService {
+export class MikeScenarioService {
     constructor(private appLanguageService: AppLanguageService) {
     }
 
-    GetMWQMSiteTVItemModelList(mwqmSiteModelList: MWQMSiteModel[]): TVItemModel[] {
+    GetMikeScenarioTVItemModelList(mikeScenarioModelList: MikeScenarioModel[]): TVItemModel[] {
         let language: number = <number>this.appLanguageService.Language;
 
-        if (!mwqmSiteModelList || mwqmSiteModelList?.length == 0) return <TVItemModel[]>[];
+        if (!mikeScenarioModelList || mikeScenarioModelList?.length == 0) return <TVItemModel[]>[];
 
         let tvItemModelList: TVItemModel[] = [];
 
-        for (let i = 0, count = mwqmSiteModelList?.length; i < count; i++) {
-            tvItemModelList.push(mwqmSiteModelList[i].TVItemModel);
+        for (let i = 0, count = mikeScenarioModelList?.length; i < count; i++) {
+            tvItemModelList.push(mikeScenarioModelList[i].TVItemModel);
         }
 
         return tvItemModelList;

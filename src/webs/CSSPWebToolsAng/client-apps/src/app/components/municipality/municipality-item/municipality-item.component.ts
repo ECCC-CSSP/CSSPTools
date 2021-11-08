@@ -13,6 +13,7 @@ import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
 import { TVFileModelByPurposeService } from 'src/app/services/file';
+import { MikeScenarioService } from 'src/app/services/helpers/mike-scenario.service';
 
 @Component({
   selector: 'app-municipality-item',
@@ -35,7 +36,8 @@ export class MunicipalityItemComponent implements OnInit, OnDestroy {
     public filterService: FilterService,
     public statCountService: StatCountService,
     public componentShowService: ComponentShowService,
-    public tvFileModelByPurposeService: TVFileModelByPurposeService) { }
+    public tvFileModelByPurposeService: TVFileModelByPurposeService,
+    public mikeScenarioService: MikeScenarioService) { }
 
   ngOnInit(): void {
     this.jsonLoadListService.SetToLoadList(TVTypeEnum.Municipality, this.appStateService.UserPreference.CurrentMunicipalityTVItemID, false);

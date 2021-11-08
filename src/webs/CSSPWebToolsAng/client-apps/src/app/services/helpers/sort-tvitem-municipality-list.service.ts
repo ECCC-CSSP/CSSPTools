@@ -64,7 +64,7 @@ export class SortTVItemMunicipalityListService {
         let TVItemModelWithInfrastructureList: TVItemModel[] = [];
         let TVItemModelWithoutInfrastructureList: TVItemModel[] = [];
 
-        for (let i = 0; i < tvItemModelSorted?.length; i++) {
+        for (let i = 0, count = tvItemModelSorted?.length; i < count; i++) {
             let existArr: number[] = this.appLoadedService.WebProvince?.MunicipalityWithInfrastructureTVItemIDList.filter(c => c == tvItemModelSorted[i].TVItem.TVItemID);
 
             if (existArr != null && existArr?.length > 0) {

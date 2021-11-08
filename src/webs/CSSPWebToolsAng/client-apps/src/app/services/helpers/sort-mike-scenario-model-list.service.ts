@@ -21,7 +21,7 @@ export class SortMikeScenarioModelListService {
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
-        for (let i = 0; i < arr?.length; i++) {
+        for (let i = 0, count = arr?.length; i < count; i++) {
             let pre: string = arr[i].MikeSource.Include ? (!arr[i].MikeSource.IsRiver ? 'a' : 'b') : 'c';
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItemModel.TVItem.TVItemID,
@@ -31,7 +31,7 @@ export class SortMikeScenarioModelListService {
 
         arr2 = sortable.sort(this.predicateAscByService.PredicateAscBy('TVText'));
 
-        for (let i = 0; i < sortable?.length; i++) {
+        for (let i = 0, count = sortable?.length; i < count; i++) {
             for (let j = 0; j < arr?.length; j++) {
                 if (arr2[i].TVItemID == arr[j].TVItemModel.TVItem.TVItemID) {
                     mikeSourceModelSorted.push(arr[j]);

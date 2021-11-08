@@ -48,7 +48,7 @@ export class PolSourceSiteService {
 
     let tvItemModelList: TVItemModel[] = [];
 
-    for (let i = 0; i < polSourceSiteModelList?.length; i++) {
+    for (let i = 0, count = polSourceSiteModelList?.length; i < count; i++) {
         tvItemModelList.push(polSourceSiteModelList[i].TVItemModel);
     }
 

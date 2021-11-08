@@ -15,7 +15,7 @@ export class AddressService {
   }
 
   GetAddress(tvItemID: number): Address {
-    if (this.appLoadedService.WebAllAddresses == undefined)
+    if (this.appLoadedService.WebAllAddresses == undefined || tvItemID == 0)
     {
       return <Address>{};
     }

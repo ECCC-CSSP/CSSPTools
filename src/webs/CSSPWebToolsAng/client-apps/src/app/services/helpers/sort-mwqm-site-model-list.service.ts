@@ -21,7 +21,7 @@ export class SortMWQMSiteModelListService {
         let arr2: TVItemID_TVText_Sort[] = [];
         let sortable: TVItemID_TVText_Sort[] = [];
 
-        for (let i = 0; i < arr?.length; i++) {
+        for (let i = 0, count = arr?.length; i < count; i++) {
             sortable.push(<TVItemID_TVText_Sort>{
                 TVItemID: arr[i].TVItemModel.TVItem.TVItemID,
                 TVText: arr[i].TVItemModel.TVItemLanguageList[language]?.TVText,
@@ -30,7 +30,7 @@ export class SortMWQMSiteModelListService {
 
         arr2 = sortable.sort(this.predicateAscByService.PredicateAscBy('TVText'));
 
-        for (let i = 0; i < sortable?.length; i++) {
+        for (let i = 0, count = sortable?.length; i < count; i++) {
             for (let j = 0; j < arr?.length; j++) {
                 if (arr2[i].TVItemID == arr[j].TVItemModel.TVItem.TVItemID) {
                     mwqmSiteModelSorted.push(arr[j]);
