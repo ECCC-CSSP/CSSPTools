@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNLocalService
     {
-        public async Task<ActionResult<MWQMLookupMPN>> ModifyMWQMLookupMPNLocal(MWQMLookupMPN mwqmLookupMPN)
+        public async Task<ActionResult<MWQMLookupMPN>> ModifyMWQMLookupMPNLocalAsync(MWQMLookupMPN mwqmLookupMPN)
         {
             string parameters = $" --  DocKey = { mwqmLookupMPN.MPN_100ml } " +
             $"Tubes10 = { mwqmLookupMPN.Tubes10 } " +

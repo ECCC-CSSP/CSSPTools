@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices.Tests
     {
         private async Task CheckPropertyDeleteTVItemLocalError(TVItem tvItemParent, TVItemModel tvItemModel, string errMessage)
         {
-            var actionTVItemModel = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModel);
+            var actionTVItemModel = await TVItemLocalService.DeleteTVItemLocalAsync(tvItemParent, tvItemModel);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;

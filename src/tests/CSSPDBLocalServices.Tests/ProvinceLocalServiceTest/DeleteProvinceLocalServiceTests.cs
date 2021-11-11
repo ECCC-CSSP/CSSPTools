@@ -35,7 +35,7 @@ namespace CSSPDBLocalServices.Tests
 
             WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-            var actionProvinceRes = await ProvinceLocalService.AddProvinceLocal(webCountry.TVItemModel.TVItem.TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionProvinceRes.Result).Value);
             TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionProvinceRes.Result).Value;
@@ -43,7 +43,7 @@ namespace CSSPDBLocalServices.Tests
 
             // see AddProvinceLocal test for more detail testing
 
-            var actionProvinceRes2 = await ProvinceLocalService.DeleteProvinceLocal(ParentTVItemID, tvItemModelRet.TVItem.TVItemID);
+            var actionProvinceRes2 = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, tvItemModelRet.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionProvinceRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionProvinceRes2.Result).Value);
             TVItemModel tvItemModelDeleteRet = (TVItemModel)((OkObjectResult)actionProvinceRes2.Result).Value;
@@ -105,7 +105,7 @@ namespace CSSPDBLocalServices.Tests
             int ParentTVItemID = 0;
             int TVItemID = 7;
 
-            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocal(ParentTVItemID, TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);
@@ -122,7 +122,7 @@ namespace CSSPDBLocalServices.Tests
             int ParentTVItemID = 5;
             int TVItemID = 0;
 
-            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocal(ParentTVItemID, TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);
@@ -141,7 +141,7 @@ namespace CSSPDBLocalServices.Tests
 
             string fileName = await BaseGzFileService.GetFileName(WebTypeEnum.WebCountry, ParentTVItemID);
 
-            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocal(ParentTVItemID, TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);
@@ -158,7 +158,7 @@ namespace CSSPDBLocalServices.Tests
             int ParentTVItemID = 5;
             int TVItemID = 10000;
 
-            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocal(ParentTVItemID, TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);
@@ -180,7 +180,7 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelProvinceToDelete = webCountry.TVItemModelProvinceList[0];
 
-            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocal(webCountry.TVItemModel.TVItem.TVItemID, tvItemModelProvinceToDelete.TVItem.TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID, tvItemModelProvinceToDelete.TVItem.TVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);

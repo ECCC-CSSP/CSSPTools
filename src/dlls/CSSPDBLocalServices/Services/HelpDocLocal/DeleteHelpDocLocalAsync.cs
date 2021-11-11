@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
     {
-        public async Task<ActionResult<HelpDoc>> DeleteHelpDocLocal(HelpDoc helpDoc)
+        public async Task<ActionResult<HelpDoc>> DeleteHelpDocLocalAsync(HelpDoc helpDoc)
         {
             string parameters = $" --  DocKey = { helpDoc.DocKey ?? "--" } " +
             $"Language = { helpDoc.Language.ToString() ?? "--" }";

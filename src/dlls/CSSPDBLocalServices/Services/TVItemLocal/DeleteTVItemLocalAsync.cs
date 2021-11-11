@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        public async Task<ActionResult<TVItemModel>> DeleteTVItemLocal(TVItem tvItemParent, TVItemModel tvItemModel)
+        public async Task<ActionResult<TVItemModel>> DeleteTVItemLocalAsync(TVItem tvItemParent, TVItemModel tvItemModel)
         {
             string parameters = "";
             if (tvItemParent != null)
@@ -84,15 +84,15 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await HelperLocalService.CheckIfChildExist(tvItemParent, tvItemModel.TVItem);
+            await HelperLocalService.CheckIfChildExistAsync(tvItemParent, tvItemModel.TVItem);
 
             #endregion Check Input
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentList(tvItemParent, tvItemModel.TVItem.TVType);
+            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentListAsync(tvItemParent, tvItemModel.TVItem.TVType);
 
-            await AddTVItemParentLocal(tvItemModelParentList);
+            await AddTVItemParentLocalAsync(tvItemModelParentList);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

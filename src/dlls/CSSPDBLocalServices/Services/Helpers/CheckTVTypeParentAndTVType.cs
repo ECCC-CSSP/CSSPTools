@@ -27,7 +27,7 @@ namespace CSSPDBLocalServices
     {
         public void CheckTVTypeParentAndTVType(TVTypeEnum tvTypeParent, TVTypeEnum tvType)
         {
-            TVTypeParentTVTypeRelation tvTypeParentTVTypeRelation = (from c in GetTVTypeParentTVTypeRelationList()
+            TVTypeParentTVTypeRelation tvTypeParentTVTypeRelation = (from c in GetTVTypeParentTVTypeRelationListAsync()
                                                                      where c.TVTypeParent == tvTypeParent
                                                                      select c).FirstOrDefault();
 

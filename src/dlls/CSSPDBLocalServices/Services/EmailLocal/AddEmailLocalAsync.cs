@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class EmailLocalService : ControllerBase, IEmailLocalService
     {
-        public async Task<ActionResult<Email>> AddEmailLocal(Email email)
+        public async Task<ActionResult<Email>> AddEmailLocalAsync(Email email)
         {
             string parameters = "";
             if (email != null)
@@ -101,14 +101,14 @@ namespace CSSPDBLocalServices
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            await TVItemLocalService.AddTVItemParentLocal(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
+            await TVItemLocalService.AddTVItemParentLocalAsync(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             string TVTextEN = $"{ email.EmailAddress }";
             string TVTextFR = $"{ email.EmailAddress }";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Email, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(webRoot.TVItemModel.TVItem, TVTypeEnum.Email, TVTextEN, TVTextFR);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class RootLocalService : ControllerBase, IRootLocalService
     {
-        public async Task<ActionResult<TVItemModel>> ModifyTVTextRootLocal(string TVTextEN, string TVTextFR)
+        public async Task<ActionResult<TVItemModel>> ModifyTVTextRootLocalAsync(string TVTextEN, string TVTextFR)
         {
             string parameters = $" --  TVTextEN = { TVTextEN } TVTextFR = { TVTextFR }";
 
@@ -68,7 +68,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionTVItemModelRes = await TVItemLocalService.ModifyTVTextLocal(webRoot.TVItemModel.TVItem, tvItemModelToModify);
+            var actionTVItemModelRes = await TVItemLocalService.ModifyTVTextLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToModify);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

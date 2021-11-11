@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices
 
     public partial interface ITelLocalService
     {
-        Task<ActionResult<Tel>> AddTelLocal(Tel tel);
+        Task<ActionResult<Tel>> AddTelLocalAsync(Tel tel);
     }
     public partial class TelLocalService : ControllerBase, ITelLocalService
     {

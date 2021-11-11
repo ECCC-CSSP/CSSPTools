@@ -40,7 +40,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "Changed Country";
             string TVTextFR = "Pays changé";
 
-            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocal(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
+            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionCountryRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes.Result).Value);
             TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionCountryRes.Result).Value;
@@ -91,7 +91,7 @@ namespace CSSPDBLocalServices.Tests
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            var actionCountryRes = await CountryLocalService.AddCountryLocal(webRoot.TVItemModel.TVItem.TVItemID);
+            var actionCountryRes = await CountryLocalService.AddCountryLocalAsync(webRoot.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionCountryRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes.Result).Value);
             TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionCountryRes.Result).Value;
@@ -102,7 +102,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "Modified Country";
             string TVTextFR = "Pays modifié";
 
-            var actionCountryRes2 = await CountryLocalService.ModifyTVTextCountryLocal(tvItemModelRet.TVItem.TVItemID, TVTextEN, TVTextFR);
+            var actionCountryRes2 = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelRet.TVItem.TVItemID, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionCountryRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes2.Result).Value);
             TVItemModel tvItemModelModifiedRet = (TVItemModel)((OkObjectResult)actionCountryRes2.Result).Value;
@@ -154,7 +154,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "Modified Country";
             string TVTextFR = "Pays modifié";
 
-            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocal(0, TVTextEN, TVTextFR);
+            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(0, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);
@@ -177,7 +177,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "";
             string TVTextFR = "Pays modifié";
 
-            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocal(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
+            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);
@@ -200,7 +200,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "Modified Country";
             string TVTextFR = "";
 
-            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocal(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
+            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);
@@ -225,7 +225,7 @@ namespace CSSPDBLocalServices.Tests
 
             int TVItemID = 100000;
 
-            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocal(TVItemID, TVTextEN, TVTextFR);
+            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);
@@ -252,7 +252,7 @@ namespace CSSPDBLocalServices.Tests
             string message = $"{ TVTextEN } (en)     { TVTextFR } (fr)";
 
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, message));
-            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocal(tvItemModelCountryToDelete.TVItem.TVItemID, TVTextEN, TVTextFR);
+            var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToDelete.TVItem.TVItemID, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);

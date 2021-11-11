@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 {
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        private async Task<MapInfoModel> GetMapInfoModelFromAverageSiblingList(List<MapInfoModel> mapInfoModelList, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, double PolygonSize)
+        private async Task<MapInfoModel> GetMapInfoModelFromAverageSiblingListAsync(List<MapInfoModel> mapInfoModelList, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, double PolygonSize)
         {
             MapInfoModel mapInfoModelNew = new MapInfoModel();
 

@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 {
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        public async Task<ActionResult<MapInfoModel>> DeleteMapInfoLocal(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType)
+        public async Task<ActionResult<MapInfoModel>> AddMapInfoLocalFromAverageAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType)
         {
             string parameters = "";
             if (tvItemParent != null)
@@ -117,117 +117,88 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            List<MapInfoModel> mapInfoModelSiblingList = await GetMapInfoModelSiblingList(tvItemParent, tvItem);
+            List<MapInfoModel> mapInfoModelSiblingList = await GetMapInfoModelSiblingListAsync(tvItemParent, tvItem);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             MapInfoModel mapInfoModelExist = (from c in mapInfoModelSiblingList
-                                              where c.MapInfo.TVItemID == tvItem.TVItemID
-                                              && c.MapInfo.TVType == tvType
-                                              && c.MapInfo.MapInfoDrawType == mapInfoDrawType
-                                              select c).FirstOrDefault();
+                                                   where c.MapInfo.TVItemID == tvItem.TVItemID
+                                                   && c.MapInfo.TVType == tvType
+                                                   && c.MapInfo.MapInfoDrawType == mapInfoDrawType
+                                                   select c).FirstOrDefault();
 
-            if (mapInfoModelExist == null)
+            if (mapInfoModelExist != null)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MapInfo", "TVItemID,TVType,MapInfoDrawType", tvItem.TVItemID.ToString() + "," + tvType.ToString() + "," + mapInfoDrawType.ToString()));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "MapInfo"));
             }
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            MapInfoModel mapInfoModel = new MapInfoModel();
+            MapInfoModel mapInfoModel = await GetMapInfoModelFromAverageSiblingListAsync(mapInfoModelSiblingList, tvItem, tvType, mapInfoDrawType, await HelperLocalService.GetPolygonSizeAsync(tvType));
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            if ((from c in mapInfoModelSiblingList
+                 where c.MapInfo.TVItemID == mapInfoModel.MapInfo.TVItemID
+                 && c.MapInfo.MapInfoDrawType == mapInfoModel.MapInfo.MapInfoDrawType
+                 select c).Any())
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, "MapInfo"));
+            }
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             #region MapInfo
-            MapInfo mapInfoLocal = (from c in dbLocal.MapInfos
-                                    where c.TVItemID == tvItem.TVItemID
-                                    && c.TVType == tvType
-                                    && c.MapInfoDrawType == mapInfoDrawType
-                                    select c).FirstOrDefault();
+            int MapInfoIDNew = (from c in dbLocal.MapInfos
+                                where c.MapInfoID < 0
+                                orderby c.MapInfoID ascending
+                                select c.MapInfoID).FirstOrDefault() - 1;
 
-            if (mapInfoLocal == null)
-            {
-                mapInfoLocal = mapInfoModelExist.MapInfo;
-                mapInfoLocal.DBCommand = DBCommandEnum.Deleted;
-                mapInfoLocal.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                mapInfoLocal.LastUpdateDate_UTC = DateTime.UtcNow;
-
-                dbLocal.MapInfos.Add(mapInfoLocal);
-            }
-            else
-            {
-                mapInfoLocal.DBCommand = DBCommandEnum.Deleted;
-                mapInfoLocal.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                mapInfoLocal.LastUpdateDate_UTC = DateTime.UtcNow;
-            }
+            mapInfoModel.MapInfo.MapInfoID = MapInfoIDNew;
+            mapInfoModel.MapInfo.DBCommand = DBCommandEnum.Created;
+            mapInfoModel.MapInfo.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+            mapInfoModel.MapInfo.LastUpdateDate_UTC = DateTime.UtcNow;
 
             try
             {
+                dbLocal.MapInfos.Add(mapInfoModel.MapInfo);
                 dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfoPointList", ex.Message));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfo", ex.Message));
             }
-
-            mapInfoModel.MapInfo = mapInfoLocal;
-
             #endregion MapInfo
 
-            #region MapInfoPoints List
-            foreach (MapInfoPoint mapInfoPoint in mapInfoModelExist.MapInfoPointList)
+            #region MapInfoPointList
+            int MapInfoPointIDNew = (from c in dbLocal.MapInfoPoints
+                                     where c.MapInfoPointID < 0
+                                     orderby c.MapInfoPointID ascending
+                                     select c.MapInfoPointID).FirstOrDefault() - 1;
+
+            foreach (MapInfoPoint mapInfoPoint in mapInfoModel.MapInfoPointList)
             {
-                MapInfoPoint mapInfoPointLocal = (from c in dbLocal.MapInfoPoints
-                                                  where c.MapInfoID == mapInfoLocal.MapInfoID
-                                                  && c.Ordinal == mapInfoPoint.Ordinal
-                                                  select c).FirstOrDefault();
-
-                if (mapInfoPointLocal == null)
-                {
-                    mapInfoPointLocal = mapInfoPoint;
-                    mapInfoPointLocal.DBCommand = DBCommandEnum.Deleted;
-                    mapInfoPointLocal.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                    mapInfoPointLocal.LastUpdateDate_UTC = DateTime.UtcNow;
-
-                    dbLocal.MapInfoPoints.Add(mapInfoPointLocal);
-                }
-                else
-                {
-                    mapInfoPointLocal.DBCommand = DBCommandEnum.Deleted;
-                    mapInfoPointLocal.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                    mapInfoPointLocal.LastUpdateDate_UTC = DateTime.UtcNow;
-                }
+                mapInfoPoint.MapInfoPointID = MapInfoPointIDNew;
+                mapInfoPoint.MapInfoID = mapInfoModel.MapInfo.MapInfoID;
+                mapInfoPoint.DBCommand = DBCommandEnum.Created;
+                mapInfoPoint.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                mapInfoPoint.LastUpdateDate_UTC = DateTime.UtcNow;
 
                 try
                 {
+                    dbLocal.MapInfoPoints.Add(mapInfoPoint);
                     dbLocal.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfoPointList", ex.Message));
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "MapInfoPoint", ex.Message));
                 }
 
-                mapInfoModel.MapInfoPointList.Add(mapInfoPointLocal);
+                MapInfoPointIDNew -= 1;
             }
-            #endregion MapInfoPoints List
+            #endregion MapInfoPointList
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-            //TVItemModel tvItemModel = new TVItemModel()
-            //{
-            //    TVItem = tvItem,
-            //    TVItemLanguageList = new List<TVItemLanguage>()
-            //    {
-            //        new TVItemLanguage(),
-            //        new TVItemLanguage(),
-            //    }
-            //};
-
-            //List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentList(tvItemParent, tvItem.TVType);
-
-            //tvItemModelParentList.Add(tvItemModel);
-
-            //await HelperLocalService.RecreateLocalGzFiles(tvItemModelParentList);
-
-            //if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             CSSPLogService.EndFunctionLog(FunctionName);
 

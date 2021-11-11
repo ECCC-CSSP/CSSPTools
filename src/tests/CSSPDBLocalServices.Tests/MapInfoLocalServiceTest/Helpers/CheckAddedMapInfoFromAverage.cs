@@ -28,13 +28,13 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
             Assert.NotNull(tvItemModel);
 
-            var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverage(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point);
+            var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point);
             Assert.Equal(200, ((ObjectResult)actionMapInfoModelPoint.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionMapInfoModelPoint.Result).Value);
             MapInfoModel mapInfoModelPoint = (MapInfoModel)((OkObjectResult)actionMapInfoModelPoint.Result).Value;
@@ -42,7 +42,7 @@ namespace CSSPDBLocalServices.Tests
 
             CheckCreatedMapInfoAndMapInfoPointList(mapInfoModelPoint);
 
-            var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverage(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Polygon);
+            var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Polygon);
             Assert.Equal(200, ((ObjectResult)actionMapInfoModelPolygon.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionMapInfoModelPolygon.Result).Value);
             MapInfoModel mapInfoModelPolygon = (MapInfoModel)((OkObjectResult)actionMapInfoModelPoint.Result).Value;
@@ -50,7 +50,7 @@ namespace CSSPDBLocalServices.Tests
 
             CheckCreatedMapInfoAndMapInfoPointList(mapInfoModelPolygon);
 
-            var actionMapInfoModelPolyline = await MapInfoLocalService.AddMapInfoLocalFromAverage(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Polyline);
+            var actionMapInfoModelPolyline = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Polyline);
             Assert.Equal(200, ((ObjectResult)actionMapInfoModelPolyline.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionMapInfoModelPolyline.Result).Value);
             MapInfoModel mapInfoModelPolyline = (MapInfoModel)((OkObjectResult)actionMapInfoModelPoint.Result).Value;

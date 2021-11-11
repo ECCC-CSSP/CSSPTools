@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices.Tests
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            var actionCountryRes = await CountryLocalService.AddCountryLocal(webRoot.TVItemModel.TVItem.TVItemID);
+            var actionCountryRes = await CountryLocalService.AddCountryLocalAsync(webRoot.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionCountryRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes.Result).Value);
             TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionCountryRes.Result).Value;
@@ -82,7 +82,7 @@ namespace CSSPDBLocalServices.Tests
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebCountry }_{ tvItemModelRet.TVItem.TVItemID }.gz").Any());
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
 
-            var actionCountryRes2 = await CountryLocalService.AddCountryLocal(webRoot.TVItemModel.TVItem.TVItemID);
+            var actionCountryRes2 = await CountryLocalService.AddCountryLocalAsync(webRoot.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionCountryRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes2.Result).Value);
             TVItemModel tvItemModelRet2 = (TVItemModel)((OkObjectResult)actionCountryRes2.Result).Value;
@@ -139,7 +139,7 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await CountryLocalServiceSetup(culture));
 
-            var actionCountryRes = await CountryLocalService.AddCountryLocal(0);
+            var actionCountryRes = await CountryLocalService.AddCountryLocalAsync(0);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);

@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 {
     public partial class HelperLocalService : ControllerBase, IHelperLocalService
     {
-        public async Task<double> GetPolygonSize(TVTypeEnum tvType)
+        public async Task<double> GetPolygonSizeAsync(TVTypeEnum tvType)
         {
             switch (tvType)
             {

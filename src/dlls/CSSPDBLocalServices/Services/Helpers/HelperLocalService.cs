@@ -26,14 +26,14 @@ namespace CSSPDBLocalServices
 
     public partial interface IHelperLocalService
     {
-        Task CheckIfChildExist(TVItem tvItemParent, TVItem tvItem);
-        Task CheckIfSiblingsExistWithSameTVText(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR, int TVItemIDOrTVFileID);
+        Task CheckIfChildExistAsync(TVItem tvItemParent, TVItem tvItem);
+        Task CheckIfSiblingsExistWithSameTVTextAsync(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR, int TVItemIDOrTVFileID);
         void CheckTVTypeParentAndTVType(TVTypeEnum tvTypeParent, TVTypeEnum tvType);
-        Task<List<TVItemModel>> GetTVItemModelParentList(TVItem tvItemParent, TVTypeEnum tvType);
-        List<TVTypeParentTVTypeRelation> GetTVTypeParentTVTypeRelationList();
+        Task<List<TVItemModel>> GetTVItemModelParentListAsync(TVItem tvItemParent, TVTypeEnum tvType);
+        List<TVTypeParentTVTypeRelation> GetTVTypeParentTVTypeRelationListAsync();
         //Task RecreateLocalGzFiles(List<TVItemModel> tvItemModelParentList);
-        Task<double> GetPolygonSize(TVTypeEnum tvType);
-        Task<string> GetUniqueTVText(List<TVItemModel> TVItemModelList, LanguageEnum language, string StartText);
+        Task<double> GetPolygonSizeAsync(TVTypeEnum tvType);
+        Task<string> GetUniqueTVTextAsync(List<TVItemModel> TVItemModelList, LanguageEnum language, string StartText);
     }
     public partial class HelperLocalService : ControllerBase, IHelperLocalService
     {

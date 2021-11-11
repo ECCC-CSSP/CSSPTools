@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        public async Task<ActionResult<TVItemModel>> AddTVItemLocal(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR)
+        public async Task<ActionResult<TVItemModel>> AddTVItemLocalAsync(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR)
         {
             string parameters = "";
             if (tvItemParent != null)
@@ -96,15 +96,15 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await HelperLocalService.CheckIfSiblingsExistWithSameTVText(tvItemParent, tvType, TVTextEN, TVTextFR, 0);
+            await HelperLocalService.CheckIfSiblingsExistWithSameTVTextAsync(tvItemParent, tvType, TVTextEN, TVTextFR, 0);
 
             #endregion Check Input
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentList(tvItemParent, tvType);
+            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentListAsync(tvItemParent, tvType);
 
-            await AddTVItemParentLocal(tvItemModelParentList);
+            await AddTVItemParentLocalAsync(tvItemModelParentList);
 
             #region TVItem
             int TVItemIDNew = (from c in dbLocal.TVItems

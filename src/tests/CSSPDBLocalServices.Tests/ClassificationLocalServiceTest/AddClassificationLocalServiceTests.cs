@@ -44,7 +44,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 24.0D, Lng = -57.0D, Ordinal = 0 },
             };
 
-            var actionClassificationRes = await ClassificationLocalService.AddClassificationLocal(SubsectorTVItemID, classificationType, coordList);
+            var actionClassificationRes = await ClassificationLocalService.AddClassificationLocalAsync(SubsectorTVItemID, classificationType, coordList);
             Assert.Equal(200, ((ObjectResult)actionClassificationRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionClassificationRes.Result).Value);
             ClassificationModel classificationModelRet = (ClassificationModel)((OkObjectResult)actionClassificationRes.Result).Value;
@@ -105,7 +105,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 24.0D, Lng = -57.0D, Ordinal = 0 },
             };
 
-            var actionClassificationRes = await ClassificationLocalService.AddClassificationLocal(SubsectorTVItemID, classificationType, coordList);
+            var actionClassificationRes = await ClassificationLocalService.AddClassificationLocalAsync(SubsectorTVItemID, classificationType, coordList);
             Assert.Equal(400, ((ObjectResult)actionClassificationRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionClassificationRes.Result).Value;
             Assert.NotNull(errRes);

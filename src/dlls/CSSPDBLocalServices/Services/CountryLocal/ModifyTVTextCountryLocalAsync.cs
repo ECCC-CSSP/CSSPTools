@@ -29,21 +29,16 @@ using CSSPCreateGzFileServices;
 
 namespace CSSPDBLocalServices
 {
-    public partial class ProvinceLocalService : ControllerBase, IProvinceLocalService
+    public partial class CountryLocalService : ControllerBase, ICountryLocalService
     {
-        public async Task<ActionResult<TVItemModel>> ModifyTVTextProvinceLocal(int ParentTVItemID, int TVItemID, string TVTextEN, string TVTextFR)
+        public async Task<ActionResult<TVItemModel>> ModifyTVTextCountryLocalAsync(int TVItemID, string TVTextEN, string TVTextFR)
         {
-            string parameters = $" --  ParentTVItemID = { ParentTVItemID } TVItemID = { TVItemID } TVTextEN = { TVTextEN } TVTextFR = { TVTextFR }";
+            string parameters = $" --  TVItemID = { TVItemID } TVTextEN = { TVTextEN } TVTextFR = { TVTextFR }";
 
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID, int TVItemID, string TVTextEN, string TVTextFR) { parameters }";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int TVItemID, string TVTextEN, string TVTextFR) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
-
-            if (ParentTVItemID == 0)
-            {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "ParentTVItemID"));
-            }
 
             if (TVItemID == 0)
             {
@@ -62,9 +57,9 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItemModel tvItemModelToModify = (from c in webCountry.TVItemModelProvinceList
+            TVItemModel tvItemModelToModify = (from c in webRoot.TVItemModelCountryList
                                                where c.TVItem.TVItemID == TVItemID
                                                select c).FirstOrDefault();
 
@@ -75,7 +70,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await HelperLocalService.CheckIfSiblingsExistWithSameTVText(webCountry.TVItemModel.TVItem, TVTypeEnum.Province, TVTextEN, TVTextFR, TVItemID);
+            await HelperLocalService.CheckIfSiblingsExistWithSameTVTextAsync(webRoot.TVItemModel.TVItem, TVTypeEnum.Country, TVTextEN, TVTextFR, TVItemID);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -84,7 +79,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionTVItemModelRes = await TVItemLocalService.ModifyTVTextLocal(webCountry.TVItemModel.TVItem, tvItemModelToModify);
+            var actionTVItemModelRes = await TVItemLocalService.ModifyTVTextLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToModify);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -97,9 +92,9 @@ namespace CSSPDBLocalServices
 
             List<ToRecreate> ToRecreateList = new List<ToRecreate>()
             {
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelToModify.TVItem.TVItemID },
+                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+                new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModelToModify.TVItem.TVItemID },
             };
 
             foreach (ToRecreate toRecreate in ToRecreateList)

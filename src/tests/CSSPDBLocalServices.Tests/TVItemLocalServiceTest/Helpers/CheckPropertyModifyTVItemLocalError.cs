@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices.Tests
     {
         private async Task CheckPropertyModifyTVTextLocalError(TVItem tvItemParent, TVItemModel tvItemModel, string errMessage)
         {
-            var actionTVItemModel = await TVItemLocalService.ModifyTVTextLocal(tvItemParent, tvItemModel);
+            var actionTVItemModel = await TVItemLocalService.ModifyTVTextLocalAsync(tvItemParent, tvItemModel);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;

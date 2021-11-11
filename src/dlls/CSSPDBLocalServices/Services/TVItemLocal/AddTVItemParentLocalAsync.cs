@@ -24,7 +24,7 @@ namespace CSSPDBLocalServices
 {
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        public async Task<bool> AddTVItemParentLocal(List<TVItemModel> tvItemModelParent)
+        public async Task<bool> AddTVItemParentLocalAsync(List<TVItemModel> tvItemModelParent)
         {
             foreach (TVItemModel tvItemModel in tvItemModelParent)
             {

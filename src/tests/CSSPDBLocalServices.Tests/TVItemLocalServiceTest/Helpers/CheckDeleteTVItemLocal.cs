@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices.Tests
     {
         private async Task<TVItemModel> CheckDeleteTVItemLocal(TVItem tvItemParent, TVItemModel tvItemModelExist)
         {
-            var actionTVItemModel = await TVItemLocalService.DeleteTVItemLocal(tvItemParent, tvItemModelExist);
+            var actionTVItemModel = await TVItemLocalService.DeleteTVItemLocalAsync(tvItemParent, tvItemModelExist);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;

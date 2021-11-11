@@ -32,7 +32,7 @@ namespace CSSPDBLocalServices.Tests
 
             HelpDoc helpDoc = FillHelpDoc();
 
-            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocalAsync(helpDoc);
             Assert.Equal(200, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionHelpDocRes.Result).Value);
             HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionHelpDocRes.Result).Value;
@@ -80,7 +80,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.HelpDocID = 10;
 
-            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
@@ -98,7 +98,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.DocKey = "";
 
-            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
@@ -116,7 +116,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.Language = (LanguageEnum)10000;
 
-            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
@@ -134,7 +134,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.DocHTMLText = "";
 
-            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionHelpDocRes.Result).Value;
             Assert.NotNull(errRes);
@@ -160,7 +160,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.HelpDocID = 0;
 
-            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocal(helpDoc);
+            var actionHelpDocRes = await HelpDocLocalService.AddHelpDocLocalAsync(helpDoc);
             Assert.Equal(200, ((ObjectResult)actionHelpDocRes.Result).StatusCode);
             HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionHelpDocRes.Result).Value;
             helpDoc.HelpDocID = HelpDocID;

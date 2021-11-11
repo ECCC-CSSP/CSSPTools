@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class ClassificationLocalService : ControllerBase, IClassificationLocalService
     {
-        public async Task<ActionResult<ClassificationModel>> AddClassificationLocal(int SubsectorTVItemID, ClassificationTypeEnum classificationType, List<Coord> coordList)
+        public async Task<ActionResult<ClassificationModel>> AddClassificationLocalAsync(int SubsectorTVItemID, ClassificationTypeEnum classificationType, List<Coord> coordList)
         {
             string parameters = $" --  SubsectorTVItemID = { SubsectorTVItemID } " +
                 $"classificationType = { classificationType }";
@@ -104,7 +104,7 @@ namespace CSSPDBLocalServices
                     break;
             }
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webSubsector.TVItemModel.TVItem, TVTypeEnum.Classification, TVText, TVText);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(webSubsector.TVItemModel.TVItem, TVTypeEnum.Classification, TVText, TVText);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

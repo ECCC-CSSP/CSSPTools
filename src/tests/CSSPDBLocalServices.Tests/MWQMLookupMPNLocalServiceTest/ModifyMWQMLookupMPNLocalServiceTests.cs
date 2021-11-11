@@ -39,7 +39,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.MPN_100ml = 5432;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             MWQMLookupMPN mwqmLookupMPNRet = (MWQMLookupMPN)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -83,7 +83,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.MWQMLookupMPNID = 0;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -106,7 +106,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.Tubes10 = -1;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -129,7 +129,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.Tubes1 = -1;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -152,7 +152,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.Tubes01 = -1;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -175,7 +175,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.MPN_100ml = -1;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -198,7 +198,7 @@ namespace CSSPDBLocalServices.Tests
 
             mwqmLookupMPN.MWQMLookupMPNID = 10000000;
 
-            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(mwqmLookupMPN);
+            var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);

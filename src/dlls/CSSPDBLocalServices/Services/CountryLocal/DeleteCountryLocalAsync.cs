@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class CountryLocalService : ControllerBase, ICountryLocalService
     {
-        public async Task<ActionResult<TVItemModel>> DeleteCountryLocal(int TVItemID)
+        public async Task<ActionResult<TVItemModel>> DeleteCountryLocalAsync(int TVItemID)
         {
             string parameters = $" --  TVItemID = { TVItemID }";
 
@@ -60,11 +60,11 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await HelperLocalService.CheckIfChildExist(webRoot.TVItemModel.TVItem, tvItemModelToDelete.TVItem);
+            await HelperLocalService.CheckIfChildExistAsync(webRoot.TVItemModel.TVItem, tvItemModelToDelete.TVItem);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocal(webRoot.TVItemModel.TVItem, tvItemModelToDelete);
+            var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToDelete);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -77,7 +77,7 @@ namespace CSSPDBLocalServices
 
             foreach (MapInfoModel mapInfoModel in tvItemModelToDelete.MapInfoModelList)
             {
-                var actionMapInfoModelRes = await MapInfoLocalService.DeleteMapInfoLocal(webRoot.TVItemModel.TVItem, tvItemModelToDelete.TVItem, TVTypeEnum.Country, mapInfoModel.MapInfo.MapInfoDrawType);
+                var actionMapInfoModelRes = await MapInfoLocalService.DeleteMapInfoLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToDelete.TVItem, TVTypeEnum.Country, mapInfoModel.MapInfo.MapInfoDrawType);
 
                 if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

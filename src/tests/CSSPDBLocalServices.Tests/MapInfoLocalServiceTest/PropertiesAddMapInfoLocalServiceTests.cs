@@ -40,7 +40,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -57,7 +57,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -80,7 +80,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -97,7 +97,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -120,7 +120,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -137,7 +137,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -160,7 +160,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -177,7 +177,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -200,7 +200,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -217,7 +217,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -240,7 +240,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -257,7 +257,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -280,7 +280,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -297,7 +297,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -320,7 +320,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -337,7 +337,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -360,7 +360,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -377,7 +377,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -400,7 +400,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -417,7 +417,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -440,7 +440,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -457,7 +457,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -480,7 +480,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -497,7 +497,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;
@@ -530,7 +530,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemAreaExist, tvItemAreaExist.TVType, MapInfoDrawTypeEnum.Point, coordList);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemAreaExist, tvItemAreaExist.TVType, MapInfoDrawTypeEnum.Point, coordList);
             Assert.Equal(400, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionMapInfoLocalModelPoint.Result).Value;

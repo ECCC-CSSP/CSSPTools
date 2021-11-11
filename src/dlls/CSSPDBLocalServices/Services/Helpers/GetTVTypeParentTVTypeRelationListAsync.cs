@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 
     public partial class HelperLocalService : ControllerBase, IHelperLocalService
     {
-        public List<TVTypeParentTVTypeRelation> GetTVTypeParentTVTypeRelationList()
+        public List<TVTypeParentTVTypeRelation> GetTVTypeParentTVTypeRelationListAsync()
         {
             return new List<TVTypeParentTVTypeRelation>()
             {

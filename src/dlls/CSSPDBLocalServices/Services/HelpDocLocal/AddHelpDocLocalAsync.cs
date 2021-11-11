@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
     {
-        public async Task<ActionResult<HelpDoc>> ModifyHelpDocLocal(HelpDoc helpDoc)
+        public async Task<ActionResult<HelpDoc>> AddHelpDocLocalAsync(HelpDoc helpDoc)
         {
             string parameters = $" --  DocKey = { helpDoc.DocKey ?? "--" } " +
             $"Language = { helpDoc.Language.ToString() ?? "--" }";
@@ -41,7 +41,7 @@ namespace CSSPDBLocalServices
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            if (helpDoc.HelpDocID == 0)
+            if (helpDoc.HelpDocID != 0)
             {
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "HelpDocID", "0"));
             }
@@ -73,48 +73,32 @@ namespace CSSPDBLocalServices
             WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
             HelpDoc helpDocJSON = (from c in webAllHelpDocs.HelpDocList
-                                   where c.HelpDocID == helpDoc.HelpDocID
+                                   where c.DocKey == helpDoc.DocKey
                                    select c).FirstOrDefault();
 
-            if (helpDocJSON == null)
+            if (helpDocJSON != null)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "HelpDoc", "HelpDocID", helpDoc.HelpDocID.ToString()));
+                return await Task.FromResult(Ok(helpDocJSON));
             }
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+            int HelpDocIDNew = (from c in dbLocal.HelpDocs
+                                where c.HelpDocID < 0
+                                orderby c.HelpDocID ascending
+                                select c.HelpDocID).FirstOrDefault() - 1;
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+            helpDoc.DBCommand = DBCommandEnum.Created;
+            helpDoc.HelpDocID = HelpDocIDNew;
+            helpDoc.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+            helpDoc.LastUpdateDate_UTC = DateTime.UtcNow;
 
-            HelpDoc HelpDocExist = (from c in dbLocal.HelpDocs
-                                    where c.HelpDocID == helpDoc.HelpDocID
-                                    select c).FirstOrDefault();
-            if (HelpDocExist == null)
-            {
-                int HelpDocIDNew = (from c in dbLocal.HelpDocs
-                                    where c.HelpDocID < 0
-                                    orderby c.HelpDocID ascending
-                                    select c.HelpDocID).FirstOrDefault() - 1;
-
-                helpDoc.DBCommand = DBCommandEnum.Modified;
-                helpDoc.HelpDocID = HelpDocIDNew;
-                helpDoc.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-                helpDoc.LastUpdateDate_UTC = DateTime.UtcNow;
-
-                dbLocal.HelpDocs.Add(helpDoc);
-            }
-            else
-            {
-                HelpDocExist.DBCommand = DBCommandEnum.Modified;
-                HelpDocExist.DocHTMLText = helpDoc.DocHTMLText;
-            }
-
+            dbLocal.HelpDocs.Add(helpDoc);
             try
             {
                 dbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
-                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotModify_Error_, "HelpDoc", ex.Message));
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "HelpDoc", ex.Message));
             }
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));

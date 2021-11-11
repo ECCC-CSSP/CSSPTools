@@ -40,7 +40,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "Changed Root";
             string TVTextFR = "Base changé";
 
-            var actionRootRes = await RootLocalService.ModifyTVTextRootLocal(TVTextEN, TVTextFR);
+            var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionRootRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRootRes.Result).Value);
             TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionRootRes.Result).Value;
@@ -89,7 +89,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "";
             string TVTextFR = "Base modifié";
 
-            var actionRootRes = await RootLocalService.ModifyTVTextRootLocal(TVTextEN, TVTextFR);
+            var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionRootRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRootRes.Result).Value;
             Assert.NotNull(errRes);
@@ -112,7 +112,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "Modified Root";
             string TVTextFR = "";
 
-            var actionRootRes = await RootLocalService.ModifyTVTextRootLocal(TVTextEN, TVTextFR);
+            var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionRootRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRootRes.Result).Value;
             Assert.NotNull(errRes);

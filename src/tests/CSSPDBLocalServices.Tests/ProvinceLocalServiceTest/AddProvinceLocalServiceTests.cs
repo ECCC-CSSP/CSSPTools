@@ -35,7 +35,7 @@ namespace CSSPDBLocalServices.Tests
              
             WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-            var actionProvinceRes = await ProvinceLocalService.AddProvinceLocal(webCountry.TVItemModel.TVItem.TVItemID);
+            var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionProvinceRes.Result).Value);
             TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionProvinceRes.Result).Value;
@@ -84,7 +84,7 @@ namespace CSSPDBLocalServices.Tests
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebProvince }_{ tvItemModelRet.TVItem.TVItemID }.gz").Any());
             Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebCountry }_{ ParentTVItemID }.gz").Any());
 
-            var actionProvinceRes2 = await ProvinceLocalService.AddProvinceLocal(webCountry.TVItemModel.TVItem.TVItemID);
+            var actionProvinceRes2 = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionProvinceRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionProvinceRes2.Result).Value);
             TVItemModel tvItemModelRet2 = (TVItemModel)((OkObjectResult)actionProvinceRes2.Result).Value;
@@ -143,7 +143,7 @@ namespace CSSPDBLocalServices.Tests
 
             int ParentTVItemID = 0;
 
-            var actionProvinceRes = await ProvinceLocalService.AddProvinceLocal(ParentTVItemID);
+            var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(ParentTVItemID);
             Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
             Assert.NotNull(errRes);

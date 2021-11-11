@@ -33,9 +33,9 @@ namespace CSSPDBLocalServices
 
     public partial interface IProvinceLocalService
     {
-        Task<ActionResult<TVItemModel>> AddProvinceLocal(int ParentTVItemID);
-        Task<ActionResult<TVItemModel>> DeleteProvinceLocal(int ParentTVItemID, int TVItemID);
-        Task<ActionResult<TVItemModel>> ModifyTVTextProvinceLocal(int ParentTVItemID, int TVItemID, string TVTextEN, string TVTextFR);
+        Task<ActionResult<TVItemModel>> AddProvinceLocalAsync(int ParentTVItemID);
+        Task<ActionResult<TVItemModel>> DeleteProvinceLocalAsync(int ParentTVItemID, int TVItemID);
+        Task<ActionResult<TVItemModel>> ModifyTVTextProvinceLocalAsync(int ParentTVItemID, int TVItemID, string TVTextEN, string TVTextFR);
     }
     public partial class ProvinceLocalService : ControllerBase, IProvinceLocalService
     {

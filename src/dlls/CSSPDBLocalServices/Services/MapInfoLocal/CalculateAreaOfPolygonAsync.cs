@@ -26,14 +26,14 @@ namespace CSSPDBLocalServices
 {
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        public async Task<double> CalculateAreaOfPolygon(List<Coord> CoordList)
+        public async Task<double> CalculateAreaOfPolygonAsync(List<Coord> CoordList)
         {
             double TotalArea = 0;
 
             double MinLat = CoordList.Min(e => e.Lat);
             double MinLong = CoordList.Min(e => e.Lng);
-            double DistOneLat = await CalculateDistance(MinLat * d2r, MinLong * d2r, (MinLat + 1) * d2r, MinLong * d2r, R);
-            double DistOneLong = await CalculateDistance(MinLat * d2r, MinLong * d2r, MinLat * d2r, (MinLong + 1) * d2r, R);
+            double DistOneLat = await CalculateDistanceAsync(MinLat * d2r, MinLong * d2r, (MinLat + 1) * d2r, MinLong * d2r, R);
+            double DistOneLong = await CalculateDistanceAsync(MinLat * d2r, MinLong * d2r, MinLat * d2r, (MinLong + 1) * d2r, R);
 
             double SumPositive = 0;
             double SumNegative = 0;

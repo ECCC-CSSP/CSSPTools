@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices.Tests
 
             Tel tel = FillTel();
 
-            var actionTelRes = await TelLocalService.AddTelLocal(tel);
+            var actionTelRes = await TelLocalService.AddTelLocalAsync(tel);
             Assert.Equal(200, ((ObjectResult)actionTelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTelRes.Result).Value);
             Tel telRet = (Tel)((OkObjectResult)actionTelRes.Result).Value;
@@ -76,7 +76,7 @@ namespace CSSPDBLocalServices.Tests
 
             tel.TelNumber = "123878423";
 
-            var actionTelRes2 = await TelLocalService.AddTelLocal(tel);
+            var actionTelRes2 = await TelLocalService.AddTelLocalAsync(tel);
             Assert.Equal(200, ((ObjectResult)actionTelRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTelRes2.Result).Value);
             Tel telRet2 = (Tel)((OkObjectResult)actionTelRes2.Result).Value;
@@ -173,7 +173,7 @@ namespace CSSPDBLocalServices.Tests
 
             tel = null;
 
-            var actionTelRes = await TelLocalService.AddTelLocal(tel);
+            var actionTelRes = await TelLocalService.AddTelLocalAsync(tel);
             Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -191,7 +191,7 @@ namespace CSSPDBLocalServices.Tests
 
             tel.TelID = 10;
 
-            var actionTelRes = await TelLocalService.AddTelLocal(tel);
+            var actionTelRes = await TelLocalService.AddTelLocalAsync(tel);
             Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -209,7 +209,7 @@ namespace CSSPDBLocalServices.Tests
 
             telLocal.TelNumber = "";
 
-            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            var actionTelRes = await TelLocalService.AddTelLocalAsync(telLocal);
             Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -227,7 +227,7 @@ namespace CSSPDBLocalServices.Tests
 
             telLocal.TelType = (TelTypeEnum)10000;
 
-            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            var actionTelRes = await TelLocalService.AddTelLocalAsync(telLocal);
             Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -253,7 +253,7 @@ namespace CSSPDBLocalServices.Tests
 
             telLocal.TelID = 0;
 
-            var actionTelRes = await TelLocalService.AddTelLocal(telLocal);
+            var actionTelRes = await TelLocalService.AddTelLocalAsync(telLocal);
             Assert.Equal(200, ((ObjectResult)actionTelRes.Result).StatusCode);
             Tel telLocalRet = (Tel)((OkObjectResult)actionTelRes.Result).Value;
             telLocal.TelID = TelID;

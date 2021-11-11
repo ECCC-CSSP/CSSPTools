@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices
 
     public partial interface IEmailLocalService
     {
-        Task<ActionResult<Email>> AddEmailLocal(Email email);
+        Task<ActionResult<Email>> AddEmailLocalAsync(Email email);
     }
     public partial class EmailLocalService : ControllerBase, IEmailLocalService
     {

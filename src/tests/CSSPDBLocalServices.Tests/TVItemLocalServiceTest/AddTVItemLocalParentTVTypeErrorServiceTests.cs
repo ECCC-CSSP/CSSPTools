@@ -37,7 +37,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -62,7 +62,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -87,7 +87,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -112,7 +112,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -143,7 +143,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = infrastructureModel.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -174,7 +174,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -202,7 +202,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = webArea.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -230,7 +230,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = webSector.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -258,7 +258,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = webSubsector.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -289,7 +289,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = mwqmSiteModel.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -320,7 +320,7 @@ namespace CSSPDBLocalServices.Tests
             tvItemParent = polSourceSiteModel.TVItemModel.TVItem;
             Assert.NotNull(tvItemParent);
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;

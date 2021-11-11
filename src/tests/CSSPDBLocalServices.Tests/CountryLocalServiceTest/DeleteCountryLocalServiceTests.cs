@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices.Tests
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            var actionCountryRes = await CountryLocalService.AddCountryLocal(webRoot.TVItemModel.TVItem.TVItemID);
+            var actionCountryRes = await CountryLocalService.AddCountryLocalAsync(webRoot.TVItemModel.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionCountryRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes.Result).Value);
             TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionCountryRes.Result).Value;
@@ -41,7 +41,7 @@ namespace CSSPDBLocalServices.Tests
 
             // see AddCountryLocal test for more detail testing
 
-            var actionCountryRes2 = await CountryLocalService.DeleteCountryLocal(tvItemModelRet.TVItem.TVItemID);
+            var actionCountryRes2 = await CountryLocalService.DeleteCountryLocalAsync(tvItemModelRet.TVItem.TVItemID);
             Assert.Equal(200, ((ObjectResult)actionCountryRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionCountryRes2.Result).Value);
             TVItemModel tvItemModelDeleteRet = (TVItemModel)((OkObjectResult)actionCountryRes2.Result).Value;
@@ -100,7 +100,7 @@ namespace CSSPDBLocalServices.Tests
         {
             Assert.True(await CountryLocalServiceSetup(culture));
 
-            var actionCountryRes = await CountryLocalService.DeleteCountryLocal(0);
+            var actionCountryRes = await CountryLocalService.DeleteCountryLocalAsync(0);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);
@@ -116,7 +116,7 @@ namespace CSSPDBLocalServices.Tests
 
             int TVItemID = 10000;
 
-            var actionCountryRes = await CountryLocalService.DeleteCountryLocal(TVItemID);
+            var actionCountryRes = await CountryLocalService.DeleteCountryLocalAsync(TVItemID);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);
@@ -136,7 +136,7 @@ namespace CSSPDBLocalServices.Tests
 
             TVItemModel tvItemModelCountryToDelete = webRoot.TVItemModelCountryList[0];
 
-            var actionCountryRes = await CountryLocalService.DeleteCountryLocal(tvItemModelCountryToDelete.TVItem.TVItemID);
+            var actionCountryRes = await CountryLocalService.DeleteCountryLocalAsync(tvItemModelCountryToDelete.TVItem.TVItemID);
             Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
             Assert.NotNull(errRes);

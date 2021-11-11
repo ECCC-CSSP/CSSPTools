@@ -26,10 +26,10 @@ namespace CSSPDBLocalServices
 
     public partial interface ITVItemLocalService
     {
-        Task<ActionResult<TVItemModel>> AddTVItemLocal(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR);
-        Task<bool> AddTVItemParentLocal(List<TVItemModel> tvItemModelParent);
-        Task<ActionResult<TVItemModel>> DeleteTVItemLocal(TVItem tvItemParent, TVItemModel tvItemModel);
-        Task<ActionResult<TVItemModel>> ModifyTVTextLocal(TVItem tvItemParent, TVItemModel tvItemModel);
+        Task<ActionResult<TVItemModel>> AddTVItemLocalAsync(TVItem tvItemParent, TVTypeEnum tvType, string TVTextEN, string TVTextFR);
+        Task<bool> AddTVItemParentLocalAsync(List<TVItemModel> tvItemModelParent);
+        Task<ActionResult<TVItemModel>> DeleteTVItemLocalAsync(TVItem tvItemParent, TVItemModel tvItemModel);
+        Task<ActionResult<TVItemModel>> ModifyTVTextLocalAsync(TVItem tvItemParent, TVItemModel tvItemModel);
     }
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {

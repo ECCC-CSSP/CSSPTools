@@ -39,7 +39,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.DocHTMLText = "<html><head><title>The Title</title></head><body><p>Bonjour</p></body></html>";
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocalAsync(helpDoc);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -94,7 +94,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.HelpDocID = 0;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -117,7 +117,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.DocKey = "";
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -140,7 +140,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.Language = (LanguageEnum)10000;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -163,7 +163,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.DocHTMLText = "";
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -186,7 +186,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.HelpDocID = 10000000;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.ModifyHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);

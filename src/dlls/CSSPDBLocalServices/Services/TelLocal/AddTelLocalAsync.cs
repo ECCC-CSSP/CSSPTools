@@ -31,7 +31,7 @@ namespace CSSPDBLocalServices
 {
     public partial class TelLocalService : ControllerBase, ITelLocalService
     {
-        public async Task<ActionResult<Tel>> AddTelLocal(Tel tel)
+        public async Task<ActionResult<Tel>> AddTelLocalAsync(Tel tel)
         {
             string parameters = "";
             if (tel != null)
@@ -96,14 +96,14 @@ namespace CSSPDBLocalServices
 
             WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            await TVItemLocalService.AddTVItemParentLocal(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
+            await TVItemLocalService.AddTVItemParentLocalAsync(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             string TVTextEN = $"{ tel.TelNumber }";
             string TVTextFR = $"{ tel.TelNumber }";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(webRoot.TVItemModel.TVItem, TVTypeEnum.Tel, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(webRoot.TVItemModel.TVItem, TVTypeEnum.Tel, TVTextEN, TVTextFR);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

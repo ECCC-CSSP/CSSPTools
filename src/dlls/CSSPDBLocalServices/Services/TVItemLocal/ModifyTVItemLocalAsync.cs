@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices
 
     public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
-        public async Task<ActionResult<TVItemModel>> ModifyTVTextLocal(TVItem tvItemParent, TVItemModel tvItemModel)
+        public async Task<ActionResult<TVItemModel>> ModifyTVTextLocalAsync(TVItem tvItemParent, TVItemModel tvItemModel)
         {
             string parameters = "";
             if (tvItemParent != null)
@@ -120,15 +120,15 @@ namespace CSSPDBLocalServices
             string TVTextEN = tvItemModel.TVItemLanguageList[0].TVText;
             string TVTextFR = tvItemModel.TVItemLanguageList[1].TVText;
 
-            await HelperLocalService.CheckIfSiblingsExistWithSameTVText(tvItemParent, tvItemModel.TVItem.TVType, TVTextEN, TVTextFR, tvItemModel.TVItem.TVItemID);
+            await HelperLocalService.CheckIfSiblingsExistWithSameTVTextAsync(tvItemParent, tvItemModel.TVItem.TVType, TVTextEN, TVTextFR, tvItemModel.TVItem.TVItemID);
 
             #endregion Check Input
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentList(tvItemParent, tvItemModel.TVItem.TVType);
+            List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentListAsync(tvItemParent, tvItemModel.TVItem.TVType);
 
-            await AddTVItemParentLocal(tvItemModelParentList);
+            await AddTVItemParentLocalAsync(tvItemModelParentList);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

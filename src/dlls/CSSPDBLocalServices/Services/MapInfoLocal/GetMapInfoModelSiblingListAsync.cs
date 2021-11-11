@@ -8,62 +8,70 @@ using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
-using CSSPLocalLoggedInServices;
 using CSSPLogServices;
 using CSSPWebModels;
+using CSSPLocalLoggedInServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using CSSPReadGzFileServices;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace CSSPDBLocalServices
 {
-
-    public partial class HelperLocalService : ControllerBase, IHelperLocalService
+    public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        public async Task<List<TVItemModel>> GetTVItemModelParentList(TVItem tvItemParent, TVTypeEnum tvType)
+        private async Task<List<MapInfoModel>> GetMapInfoModelSiblingListAsync(TVItem tvItemParent, TVItem tvItem)
         {
-            switch (tvType)
+            List<TVItemModel> tvItemModelList = new List<TVItemModel>();
+
+            switch (tvItem.TVType)
             {
                 case TVTypeEnum.Address:
                     {
-                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
-                        return await Task.FromResult(webRoot.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.Area:
                     {
                         WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
-                        return await Task.FromResult(webProvince.TVItemModelParentList);
+                        tvItemModelList = webProvince.TVItemModelAreaList;
                     }
+                    break;
                 case TVTypeEnum.Classification:
                     {
                         WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, tvItemParent.TVItemID);
-                        return await Task.FromResult(webSubsector.TVItemModelParentList);
+                        tvItemModelList = (from c in webSubsector.ClassificationModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 case TVTypeEnum.ClimateSite:
                     {
                         WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, tvItemParent.TVItemID);
-                        return await Task.FromResult(webClimateSites.TVItemModelParentList);
+                        tvItemModelList = (from c in webClimateSites.ClimateSiteModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 case TVTypeEnum.Country:
                     {
-                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, tvItemParent.TVItemID);
-                        return await Task.FromResult(webRoot.TVItemModelParentList);
+                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+                        tvItemModelList = webRoot.TVItemModelCountryList;
                     }
+                    break;
                 case TVTypeEnum.Email:
                     {
-                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
-                        return await Task.FromResult(webRoot.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.EmailDistributionList:
                     {
-                        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
-                        return await Task.FromResult(webCountry.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.File:
                     {
                         switch (tvItemParent.TVType)
@@ -71,118 +79,110 @@ namespace CSSPDBLocalServices
                             case TVTypeEnum.Area:
                                 {
                                     WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webArea.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webArea.TVItemModel };
                                 }
+                                break;
                             case TVTypeEnum.Country:
                                 {
                                     WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webCountry.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webCountry.TVItemModel };
                                 }
+                                break;
                             case TVTypeEnum.Infrastructure:
                                 {
                                     WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)tvItemParent.ParentID);
 
-                                    List<TVItemModel> tvItemModelList = webMunicipality.TVItemModelParentList;
-
                                     InfrastructureModel infrastructureModel = (from c in webMunicipality.InfrastructureModelList
-                                                                               where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                                               where c.TVItemModel != null
+                                                                               && c.TVItemModel.TVItem != null
+                                                                               && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                                select c).FirstOrDefault();
 
-                                    if (infrastructureModel == null)
+                                    if (infrastructureModel != null)
                                     {
-                                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "InfrastructureModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                                        return await Task.FromResult(new List<TVItemModel>());
+                                        tvItemModelList = new List<TVItemModel>() { infrastructureModel.TVItemModel };
                                     }
-
-                                    tvItemModelList.Add(infrastructureModel.TVItemModel);
-
-                                    return await Task.FromResult(tvItemModelList);
                                 }
+                                break;
                             case TVTypeEnum.Province:
                                 {
                                     WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webProvince.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webProvince.TVItemModel };
                                 }
+                                break;
                             case TVTypeEnum.MikeScenario:
                                 {
                                     WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
-                                    List<TVItemModel> tvItemModelList = webMikeScenarios.TVItemModelParentList;
-
                                     MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
-                                                                           where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                                           where c.TVItemModel != null
+                                                                           && c.TVItemModel.TVItem != null
+                                                                           && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                            select c).FirstOrDefault();
 
-                                    if (mikeScenarioModel == null)
+                                    if (mikeScenarioModel != null)
                                     {
-                                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenarioModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                                        return await Task.FromResult(new List<TVItemModel>());
+                                        tvItemModelList = (from c in mikeScenarioModel.MikeSourceModelList
+                                                           select c.TVItemModel).ToList();
                                     }
-
-                                    tvItemModelList.Add(mikeScenarioModel.TVItemModel);
-
-                                    return await Task.FromResult(tvItemModelList);
                                 }
+                                break;
                             case TVTypeEnum.Municipality:
                                 {
                                     WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webMunicipality.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webMunicipality.TVItemModel };
                                 }
+                                break;
                             case TVTypeEnum.MWQMSite:
                                 {
                                     WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, (int)tvItemParent.ParentID);
 
-                                    List<TVItemModel> tvItemModelList = webMWQMSites.TVItemModelParentList;
-
                                     MWQMSiteModel mwqmSiteModel = (from c in webMWQMSites.MWQMSiteModelList
-                                                                   where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                                   where c.TVItemModel != null
+                                                                   && c.TVItemModel.TVItem != null
+                                                                   && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                    select c).FirstOrDefault();
 
-                                    if (mwqmSiteModel == null)
+                                    if (mwqmSiteModel != null)
                                     {
-                                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMSiteModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                                        return await Task.FromResult(new List<TVItemModel>());
+                                        tvItemModelList = new List<TVItemModel>() { mwqmSiteModel.TVItemModel };
                                     }
-
-                                    tvItemModelList.Add(mwqmSiteModel.TVItemModel);
-
-                                    return await Task.FromResult(tvItemModelList);
                                 }
+                                break;
                             case TVTypeEnum.PolSourceSite:
                                 {
                                     WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, (int)tvItemParent.ParentID);
 
-                                    List<TVItemModel> tvItemModelList = webPolSourceSites.TVItemModelParentList;
-
                                     PolSourceSiteModel polSourceSiteModel = (from c in webPolSourceSites.PolSourceSiteModelList
-                                                                             where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                                             where c.TVItemModel != null
+                                                                             && c.TVItemModel.TVItem != null
+                                                                             && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                              select c).FirstOrDefault();
 
-                                    if (polSourceSiteModel == null)
+                                    if (polSourceSiteModel != null)
                                     {
-                                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "PolSourceModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                                        return await Task.FromResult(new List<TVItemModel>());
+                                        tvItemModelList = new List<TVItemModel>() { polSourceSiteModel.TVItemModel };
                                     }
-
-                                    tvItemModelList.Add(polSourceSiteModel.TVItemModel);
-
-                                    return await Task.FromResult(tvItemModelList);
                                 }
+                                break;
                             case TVTypeEnum.Root:
                                 {
                                     WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webRoot.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webRoot.TVItemModel };
                                 }
+                                break;
                             case TVTypeEnum.Sector:
                                 {
                                     WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webSector.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webSector.TVItemModel };
                                 }
+                                break;
                             case TVTypeEnum.Subsector:
                                 {
                                     WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, tvItemParent.TVItemID);
-                                    return await Task.FromResult(webSubsector.TVItemModelParentList);
+                                    tvItemModelList = new List<TVItemModel>() { webSubsector.TVItemModel };
                                 }
+                                break;
                             default:
                                 break;
                         }
@@ -191,146 +191,157 @@ namespace CSSPDBLocalServices
                 case TVTypeEnum.Infrastructure:
                     {
                         WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItemParent.TVItemID);
-                        return await Task.FromResult(webMunicipality.TVItemModelParentList);
+                        tvItemModelList = (from c in webMunicipality.InfrastructureModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 case TVTypeEnum.HydrometricSite:
                     {
                         WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, tvItemParent.TVItemID);
-                        return await Task.FromResult(webHydrometricSites.TVItemModelParentList);
+                        tvItemModelList = (from c in webHydrometricSites.HydrometricSiteModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 case TVTypeEnum.MikeBoundaryConditionMesh:
                     {
                         WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
-                        List<TVItemModel> tvItemModelList = webMikeScenarios.TVItemModelParentList;
-
                         MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
-                                                               where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                               where c.TVItemModel != null
+                                                               && c.TVItemModel.TVItem != null
+                                                               && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                select c).FirstOrDefault();
 
-                        if (mikeScenarioModel == null)
+                        if (mikeScenarioModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenarioModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                            return await Task.FromResult(new List<TVItemModel>());
+                            tvItemModelList = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
+                                               where c.MikeBoundaryCondition != null
+                                               && c.MikeBoundaryCondition.TVType == TVTypeEnum.MikeBoundaryConditionMesh
+                                               select c.TVItemModel).ToList();
                         }
-
-                        tvItemModelList.Add(mikeScenarioModel.TVItemModel);
-
-                        return await Task.FromResult(tvItemModelList);
                     }
+                    break;
                 case TVTypeEnum.MikeBoundaryConditionWebTide:
                     {
                         WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
-                        List<TVItemModel> tvItemModelList = webMikeScenarios.TVItemModelParentList;
-
                         MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
-                                                               where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                               where c.TVItemModel != null
+                                                               && c.TVItemModel.TVItem != null
+                                                               && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                select c).FirstOrDefault();
 
-                        if (mikeScenarioModel == null)
+                        if (mikeScenarioModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenarioModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                            return await Task.FromResult(new List<TVItemModel>());
+                            tvItemModelList = (from c in mikeScenarioModel.MikeBoundaryConditionModelList
+                                               where c.MikeBoundaryCondition != null
+                                               && c.MikeBoundaryCondition.TVType == TVTypeEnum.MikeBoundaryConditionWebTide
+                                               select c.TVItemModel).ToList();
                         }
-
-                        tvItemModelList.Add(mikeScenarioModel.TVItemModel);
-
-                        return await Task.FromResult(tvItemModelList);
                     }
+                    break;
                 case TVTypeEnum.MikeScenario:
                     {
-                        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, tvItemParent.TVItemID);
-                        return await Task.FromResult(webMikeScenarios.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.MikeSource:
                     {
                         WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
-                        List<TVItemModel> tvItemModelList = webMikeScenarios.TVItemModelParentList;
-
                         MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
-                                                               where c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
+                                                               where c.TVItemModel != null
+                                                               && c.TVItemModel.TVItem != null
+                                                               && c.TVItemModel.TVItem.TVItemID == tvItemParent.TVItemID
                                                                select c).FirstOrDefault();
 
-                        if (mikeScenarioModel == null)
+                        if (mikeScenarioModel != null)
                         {
-                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MikeScenarioModel", "TVItemID", tvItemParent.TVItemID.ToString()));
-                            return await Task.FromResult(new List<TVItemModel>());
+                            tvItemModelList = (from c in mikeScenarioModel.MikeSourceModelList
+                                               select c.TVItemModel).ToList();
                         }
-
-                        tvItemModelList.Add(mikeScenarioModel.TVItemModel);
-
-                        return await Task.FromResult(tvItemModelList);
                     }
+                    break;
                 case TVTypeEnum.Municipality:
                     {
                         WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
-                        return await Task.FromResult(webProvince.TVItemModelParentList);
+                        tvItemModelList = webProvince.TVItemModelMunicipalityList;
                     }
+                    break;
                 case TVTypeEnum.MWQMRun:
                     {
-                        WebMWQMRuns webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, tvItemParent.TVItemID);
-                        return await Task.FromResult(webMWQMRuns.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.MWQMSite:
                     {
                         WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, tvItemParent.TVItemID);
-                        return await Task.FromResult(webMWQMSites.TVItemModelParentList);
+                        tvItemModelList = (from c in webMWQMSites.MWQMSiteModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 case TVTypeEnum.PolSourceSite:
                     {
                         WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, tvItemParent.TVItemID);
-                        return await Task.FromResult(webPolSourceSites.TVItemModelParentList);
+                        tvItemModelList = (from c in webPolSourceSites.PolSourceSiteModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 case TVTypeEnum.Province:
                     {
                         WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
-                        return await Task.FromResult(webCountry.TVItemModelParentList);
+                        tvItemModelList = webCountry.TVItemModelProvinceList;
                     }
+                    break;
                 case TVTypeEnum.RainExceedance:
                     {
-                        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
-                        return await Task.FromResult(webCountry.TVItemModelParentList);
+                        // no checking required
                     }
-                case TVTypeEnum.Root:
-                    {
-                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
-                        return await Task.FromResult(webRoot.TVItemModelParentList);
-                    }
+                    break;
                 case TVTypeEnum.SamplingPlan:
                     {
-                        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
-                        return await Task.FromResult(webProvince.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.Sector:
                     {
                         WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, tvItemParent.TVItemID);
-                        return await Task.FromResult(webArea.TVItemModelParentList);
+                        tvItemModelList = (from c in webArea.TVItemModelSectorList
+                                           select c).ToList();
                     }
+                    break;
                 case TVTypeEnum.Subsector:
                     {
                         WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, tvItemParent.TVItemID);
-                        return await Task.FromResult(webSector.TVItemModelParentList);
+                        tvItemModelList = (from c in webSector.TVItemModelSubsectorList
+                                           select c).ToList();
                     }
+                    break;
                 case TVTypeEnum.Tel:
                     {
-                        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
-                        return await Task.FromResult(webRoot.TVItemModelParentList);
+                        // no checking required
                     }
+                    break;
                 case TVTypeEnum.TideSite:
                     {
                         WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, tvItemParent.TVItemID);
-                        return await Task.FromResult(webTideSites.TVItemModelParentList);
+                        tvItemModelList = (from c in webTideSites.TideSiteModelList
+                                           select c.TVItemModel).ToList();
                     }
+                    break;
                 default:
-                    {
-                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._NotImplementedYet, tvType.ToString()));
-                        return await Task.FromResult(new List<TVItemModel>());
-                    }
+                    break;
             }
 
-            return await Task.FromResult(new List<TVItemModel>());
+            List<MapInfoModel> mapInfoModelList = new List<MapInfoModel>();
+
+            foreach (TVItemModel tvItemModel in tvItemModelList)
+            {
+                mapInfoModelList.AddRange(tvItemModel.MapInfoModelList);
+            }
+
+            return await Task.FromResult(mapInfoModelList);
         }
+
     }
 }

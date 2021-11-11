@@ -28,7 +28,7 @@ namespace CSSPDBLocalServices.Tests
             string TVTextEN = "New Item";
             string TVTextFR = "Nouveau Item";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
@@ -43,7 +43,7 @@ namespace CSSPDBLocalServices.Tests
                 new Coord() { Lat = 44.0D, Lng = -62.0D, Ordinal = 4 },
             };
 
-            var actionMapInfoLocalModelPointNew = await MapInfoLocalService.AddMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType, coordList);
+            var actionMapInfoLocalModelPointNew = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType, coordList);
             Assert.Equal(200, ((ObjectResult)actionMapInfoLocalModelPointNew.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionMapInfoLocalModelPointNew.Result).Value);
             MapInfoModel mapInfoModelPoint = (MapInfoModel)((OkObjectResult)actionMapInfoLocalModelPointNew.Result).Value;
@@ -53,7 +53,7 @@ namespace CSSPDBLocalServices.Tests
 
             WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemModel.TVItem.TVItemID);
 
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.DeleteMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.DeleteMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
             Assert.Equal(200, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             bool boolRetPoint = (bool)((OkObjectResult)actionMapInfoLocalModelPoint.Result).Value;

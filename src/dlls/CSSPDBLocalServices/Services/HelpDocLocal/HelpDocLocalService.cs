@@ -33,9 +33,9 @@ namespace CSSPDBLocalServices
 
     public partial interface IHelpDocLocalService
     {
-        Task<ActionResult<HelpDoc>> AddHelpDocLocal(HelpDoc helpDoc);
-        Task<ActionResult<HelpDoc>> DeleteHelpDocLocal(HelpDoc helpDoc);
-        Task<ActionResult<HelpDoc>> ModifyHelpDocLocal(HelpDoc helpDoc);
+        Task<ActionResult<HelpDoc>> AddHelpDocLocalAsync(HelpDoc helpDoc);
+        Task<ActionResult<HelpDoc>> DeleteHelpDocLocalAsync(HelpDoc helpDoc);
+        Task<ActionResult<HelpDoc>> ModifyHelpDocLocalAsync(HelpDoc helpDoc);
     }
     public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
     {

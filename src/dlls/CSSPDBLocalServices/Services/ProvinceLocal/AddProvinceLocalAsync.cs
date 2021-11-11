@@ -29,9 +29,9 @@ using CSSPCreateGzFileServices;
 
 namespace CSSPDBLocalServices
 {
-    public partial class CountryLocalService : ControllerBase, ICountryLocalService
+    public partial class ProvinceLocalService : ControllerBase, IProvinceLocalService
     {
-        public async Task<ActionResult<TVItemModel>> AddCountryLocal(int ParentTVItemID)
+        public async Task<ActionResult<TVItemModel>> AddProvinceLocalAsync(int ParentTVItemID)
         {
             string parameters = $" --  ParentTVItemID = { ParentTVItemID }";
 
@@ -47,22 +47,22 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+            WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-            TVItemModel tvItemModelParent = webRoot.TVItemModel;
+            TVItemModel tvItemModelParent = webCountry.TVItemModel;
 
-            await TVItemLocalService.AddTVItemParentLocal(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
+            await TVItemLocalService.AddTVItemParentLocalAsync(webCountry.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             TVItemModel tvItemModelNew = new TVItemModel();
 
-            List<TVItemModel> tvItemModelCountryList = webRoot.TVItemModelCountryList;
+            List<TVItemModel> tvItemModelProvinceList = webCountry.TVItemModelProvinceList;
 
-            string TVTextEN = await HelperLocalService.GetUniqueTVText(tvItemModelCountryList, LanguageEnum.en, "New Country");
-            string TVTextFR = await HelperLocalService.GetUniqueTVText(tvItemModelCountryList, LanguageEnum.fr, "Nouveau Pays");
+            string TVTextEN = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelProvinceList, LanguageEnum.en, "New Province");
+            string TVTextFR = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelProvinceList, LanguageEnum.fr, "Nouvelle Province");
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemModelParent.TVItem, TVTypeEnum.Country, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemModelParent.TVItem, TVTypeEnum.Province, TVTextEN, TVTextFR);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -74,12 +74,12 @@ namespace CSSPDBLocalServices
 
             List<MapInfoModel> mapInfoModelList = new List<MapInfoModel>();
 
-            foreach (TVItemModel tvItemModelForMapInfo in tvItemModelCountryList)
+            foreach (TVItemModel tvItemModelForMapInfo in tvItemModelProvinceList)
             {
                 mapInfoModelList.AddRange(tvItemModelForMapInfo.MapInfoModelList);
             }
 
-            var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverage(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Country, MapInfoDrawTypeEnum.Point);
+            var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Point);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -89,7 +89,7 @@ namespace CSSPDBLocalServices
 
             tvItemModelNew.MapInfoModelList.Add(mapInfoModelPoint);
 
-            var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverage(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Country, MapInfoDrawTypeEnum.Polygon);
+            var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Polygon);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -101,9 +101,9 @@ namespace CSSPDBLocalServices
 
             List<ToRecreate> ToRecreateList = new List<ToRecreate>()
             {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModel.TVItem.TVItemID },
+                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+                new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+                new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelNew.TVItem.TVItemID },
             };
 
             foreach (ToRecreate toRecreate in ToRecreateList)

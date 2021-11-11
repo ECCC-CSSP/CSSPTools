@@ -55,7 +55,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await CountryLocalService.AddCountryLocal(ParentTVItemID);
+            return await CountryLocalService.AddCountryLocalAsync(ParentTVItemID);
         }
         [HttpDelete]
         public async Task<ActionResult<TVItemModel>> DeleteCountryLocal(int TVItemID)
@@ -63,7 +63,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await CountryLocalService.DeleteCountryLocal(TVItemID);
+            return await CountryLocalService.DeleteCountryLocalAsync(TVItemID);
         }
         [HttpPut]
         public async Task<ActionResult<TVItemModel>> ModifyTVTextCountryLocal(int TVItemID, string TVTextEN, string TVTextFR)
@@ -71,7 +71,7 @@ namespace CSSPWebAPIsLocal.Controllers
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            return await CountryLocalService.ModifyTVTextCountryLocal(TVItemID, TVTextEN, TVTextFR);
+            return await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
         }
         #endregion Functions public
 

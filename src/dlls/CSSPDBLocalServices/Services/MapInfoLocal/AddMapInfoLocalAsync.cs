@@ -26,7 +26,7 @@ namespace CSSPDBLocalServices
 {
     public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
     {
-        public async Task<ActionResult<MapInfoModel>> AddMapInfoLocal(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList)
+        public async Task<ActionResult<MapInfoModel>> AddMapInfoLocalAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList)
         {
             string parameters = "";
             if (tvItemParent != null)
@@ -128,7 +128,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            List<MapInfoModel> mapInfoModelSiblingList = await GetMapInfoModelSiblingList(tvItemParent, tvItem);
+            List<MapInfoModel> mapInfoModelSiblingList = await GetMapInfoModelSiblingListAsync(tvItemParent, tvItem);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -146,7 +146,7 @@ namespace CSSPDBLocalServices
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             #region MapInfo
-            double PolygonSize = await HelperLocalService.GetPolygonSize(tvType);
+            double PolygonSize = await HelperLocalService.GetPolygonSizeAsync(tvType);
 
             int MapInfoIDNew = (from c in dbLocal.MapInfos
                                 where c.MapInfoID < 0

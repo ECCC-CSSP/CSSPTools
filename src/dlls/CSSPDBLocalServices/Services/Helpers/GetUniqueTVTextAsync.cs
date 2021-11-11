@@ -24,7 +24,7 @@ namespace CSSPDBLocalServices
 
     public partial class HelperLocalService : ControllerBase, IHelperLocalService
     {
-        public async Task<string> GetUniqueTVText(List<TVItemModel> TVItemModelList, LanguageEnum language, string StartText)
+        public async Task<string> GetUniqueTVTextAsync(List<TVItemModel> TVItemModelList, LanguageEnum language, string StartText)
         {
             int LangID = language == LanguageEnum.fr ? 1 : 0;
 

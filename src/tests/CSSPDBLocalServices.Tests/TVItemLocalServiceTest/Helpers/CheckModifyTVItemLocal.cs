@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices.Tests
     {
         private async Task<TVItemModel> CheckModifyTVItemLocal(TVItem tvItemParent, TVItemModel tvItemModelToModify)
         {
-            var actionTVItemModel = await TVItemLocalService.ModifyTVTextLocal(tvItemParent, tvItemModelToModify);
+            var actionTVItemModel = await TVItemLocalService.ModifyTVTextLocalAsync(tvItemParent, tvItemModelToModify);
             Assert.Equal(200, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModel.Result).Value);
             TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;

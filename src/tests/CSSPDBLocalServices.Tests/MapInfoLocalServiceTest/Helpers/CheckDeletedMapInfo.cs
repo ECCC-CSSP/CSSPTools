@@ -25,7 +25,7 @@ namespace CSSPDBLocalServices.Tests
     {
         private async Task CheckDeletedMapInfo(TVItem tvItemParent, TVItemModel tvItemModel, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType)
         {
-            var actionMapInfoLocalModelPoint = await MapInfoLocalService.DeleteMapInfoLocal(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
+            var actionMapInfoLocalModelPoint = await MapInfoLocalService.DeleteMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
             Assert.Equal(200, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionMapInfoLocalModelPoint.Result).Value);
             bool boolRetPoint = (bool)((OkObjectResult)actionMapInfoLocalModelPoint.Result).Value;

@@ -46,7 +46,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -80,7 +80,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -114,7 +114,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -148,7 +148,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -190,7 +190,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -230,7 +230,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -267,7 +267,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -304,7 +304,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -341,7 +341,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -383,7 +383,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;
@@ -425,7 +425,7 @@ namespace CSSPDBLocalServices.Tests
             message = $"{ TVTextEN } (en)";
             message = message + $"     { TVTextFR } (fr)";
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemParent, tvType, TVTextEN, TVTextFR);
             Assert.Equal(400, ((ObjectResult)actionTVItemModel.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionTVItemModel.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTVItemModel.Result).Value;

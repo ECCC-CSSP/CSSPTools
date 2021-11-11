@@ -31,11 +31,11 @@ namespace CSSPDBLocalServices
 {
     public partial class ProvinceLocalService : ControllerBase, IProvinceLocalService
     {
-        public async Task<ActionResult<TVItemModel>> DeleteProvinceLocal(int ParentTVItemID, int TVItemID)
+        public async Task<ActionResult<TVItemModel>> ModifyTVTextProvinceLocalAsync(int ParentTVItemID, int TVItemID, string TVTextEN, string TVTextFR)
         {
-            string parameters = $" -- ParentTVItemID = { ParentTVItemID } TVItemID = { TVItemID }";
+            string parameters = $" --  ParentTVItemID = { ParentTVItemID } TVItemID = { TVItemID } TVTextEN = { TVTextEN } TVTextFR = { TVTextFR }";
 
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID, int TVItemID) { parameters }";
+            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID, int TVItemID, string TVTextEN, string TVTextFR) { parameters }";
             CSSPLogService.FunctionLog(FunctionName);
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
@@ -50,36 +50,48 @@ namespace CSSPDBLocalServices
                 CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
             }
 
+            if (string.IsNullOrWhiteSpace(TVTextEN))
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"));
+            }
+
+            if (string.IsNullOrWhiteSpace(TVTextFR))
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"));
+            }
+
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
             WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-            TVItemModel tvItemModelToDelete = (from c in webCountry.TVItemModelProvinceList
+            TVItemModel tvItemModelToModify = (from c in webCountry.TVItemModelProvinceList
                                                where c.TVItem.TVItemID == TVItemID
                                                select c).FirstOrDefault();
 
-            if (tvItemModelToDelete == null)
+            if (tvItemModelToModify == null)
             {
                 CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemModel", "TVItemID", $"{ TVItemID }"));
             }
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            await HelperLocalService.CheckIfChildExist(webCountry.TVItemModel.TVItem, tvItemModelToDelete.TVItem);
+            await HelperLocalService.CheckIfSiblingsExistWithSameTVTextAsync(webCountry.TVItemModel.TVItem, TVTypeEnum.Province, TVTextEN, TVTextFR, TVItemID);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-
-            var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocal(webCountry.TVItemModel.TVItem, tvItemModelToDelete);
+            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            TVItemModel tvItemModelDeleted = (TVItemModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
+            var actionTVItemModelRes = await TVItemLocalService.ModifyTVTextLocalAsync(webCountry.TVItemModel.TVItem, tvItemModelToModify);
 
-            tvItemModelToDelete.TVItem = tvItemModelDeleted.TVItem;
-            tvItemModelToDelete.TVItemLanguageList = tvItemModelDeleted.TVItemLanguageList;
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            TVItemModel tvItemModelModified = (TVItemModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
+
+            tvItemModelToModify.TVItem = tvItemModelModified.TVItem;
+            tvItemModelToModify.TVItemLanguageList = tvItemModelModified.TVItemLanguageList;
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -87,7 +99,7 @@ namespace CSSPDBLocalServices
             {
                 new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
                 new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelToDelete.TVItem.TVItemID },
+                new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelToModify.TVItem.TVItemID },
             };
 
             foreach (ToRecreate toRecreate in ToRecreateList)
@@ -104,7 +116,7 @@ namespace CSSPDBLocalServices
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
-            return await Task.FromResult(Ok(tvItemModelToDelete));
+            return await Task.FromResult(Ok(tvItemModelToModify));
         }
     }
 }

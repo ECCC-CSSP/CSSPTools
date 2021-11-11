@@ -24,7 +24,7 @@ namespace CSSPDBLocalServices
 
     public partial class HelperLocalService : ControllerBase, IHelperLocalService
     {
-        public async Task CheckIfChildExist(TVItem tvItemParent, TVItem tvItem)
+        public async Task CheckIfChildExistAsync(TVItem tvItemParent, TVItem tvItem)
         {
             List<TVItemModel> tvItemModelList = new List<TVItemModel>();
             List<TVFileModel> tvFileModelList = new List<TVFileModel>();

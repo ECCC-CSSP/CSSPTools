@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices.Tests
 
             Email email = FillEmail();
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(200, ((ObjectResult)actionEmailRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionEmailRes.Result).Value);
             Email emailRet = (Email)((OkObjectResult)actionEmailRes.Result).Value;
@@ -76,7 +76,7 @@ namespace CSSPDBLocalServices.Tests
 
             email.EmailAddress = "NewEmailAddress@gmail.com";
 
-            var actionEmailRes2 = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes2 = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(200, ((ObjectResult)actionEmailRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionEmailRes2.Result).Value);
             Email emailRet2 = (Email)((OkObjectResult)actionEmailRes2.Result).Value;
@@ -173,7 +173,7 @@ namespace CSSPDBLocalServices.Tests
 
             email = null;
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
@@ -191,7 +191,7 @@ namespace CSSPDBLocalServices.Tests
 
             email.EmailID = 10;
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
@@ -209,7 +209,7 @@ namespace CSSPDBLocalServices.Tests
 
             email.EmailAddress = "";
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
@@ -227,7 +227,7 @@ namespace CSSPDBLocalServices.Tests
 
             email.EmailAddress = "lasjlfiajslefij";
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
@@ -245,7 +245,7 @@ namespace CSSPDBLocalServices.Tests
 
             email.EmailType = (EmailTypeEnum)10000;
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
             Assert.NotNull(errRes);
@@ -271,7 +271,7 @@ namespace CSSPDBLocalServices.Tests
 
             email.EmailID = 0;
 
-            var actionEmailRes = await EmailLocalService.AddEmailLocal(email);
+            var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
             Assert.Equal(200, ((ObjectResult)actionEmailRes.Result).StatusCode);
             Email emailRet = (Email)((OkObjectResult)actionEmailRes.Result).Value;
             email.EmailID = EmailID;

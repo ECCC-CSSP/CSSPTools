@@ -37,7 +37,7 @@ namespace CSSPDBLocalServices.Tests
 
             HelpDoc helpDoc = webAllHelpDocs.HelpDocList[3];
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocalAsync(helpDoc);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             HelpDoc helpDocRet = (HelpDoc)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -89,7 +89,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.HelpDocID = 0;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);
@@ -112,7 +112,7 @@ namespace CSSPDBLocalServices.Tests
 
             helpDoc.HelpDocID = 100000;
 
-            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocal(helpDoc);
+            var actionPostTVItemModelRes = await HelpDocLocalService.DeleteHelpDocLocalAsync(helpDoc);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.NotNull(errRes);

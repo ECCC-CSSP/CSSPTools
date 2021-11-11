@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices
 
     public partial interface IRootLocalService
     {
-        Task<ActionResult<TVItemModel>> ModifyTVTextRootLocal(string TVTextEN, string TVTextFR);
+        Task<ActionResult<TVItemModel>> ModifyTVTextRootLocalAsync(string TVTextEN, string TVTextFR);
     }
     public partial class RootLocalService : ControllerBase, IRootLocalService
     {
