@@ -88,7 +88,7 @@ namespace CSSPUpdateServices
             total = ParentIDList.Count;
             foreach (int ParentID in ParentIDList)
             {
-                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
                 ShareDirectoryClient directory = shareClient.GetDirectoryClient(ParentID.ToString());
 
                 count += 1;

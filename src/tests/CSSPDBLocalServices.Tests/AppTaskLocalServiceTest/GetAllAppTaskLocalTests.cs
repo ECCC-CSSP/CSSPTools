@@ -29,7 +29,7 @@ namespace CSSPDBLocalServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.GetAllAppTaskLocal();
+            var actionPostTVItemModelRes = await AppTaskLocalService.GetAllAppTaskLocalAsync();
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;

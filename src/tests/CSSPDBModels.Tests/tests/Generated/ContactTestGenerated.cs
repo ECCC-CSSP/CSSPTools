@@ -38,7 +38,7 @@ namespace CSSPDBModels.Tests
         [Fact]
         public void Contact_Properties_Test()
         {
-            List<string> propNameList = new List<string>() { "ContactID", "DBCommand", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "CellNumber", "CellNumberConfirmed", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "PasswordHash", "Token", "HasInternetConnection", "IsLoggedIn", "GoogleMapKeyHash", "AccessFailedCount", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
+            List<string> propNameList = new List<string>() { "ContactID", "DBCommand", "Id", "ContactTVItemID", "LoginEmail", "FirstName", "LastName", "Initial", "CellNumber", "CellNumberConfirmed", "WebName", "ContactTitle", "IsAdmin", "EmailValidated", "Disabled", "IsNew", "SamplingPlanner_ProvincesTVItemID", "PasswordHash", "Token", "HasInternetConnection", "IsLoggedIn", "GoogleMapKeyHash", "AzureStoreHash", "AccessFailedCount", "LastUpdateDate_UTC", "LastUpdateContactTVItemID",  }.OrderBy(c => c).ToList();
 
             int index = 0;
             foreach (PropertyInfo propertyInfo in typeof(Contact).GetProperties().OrderBy(c => c.Name))

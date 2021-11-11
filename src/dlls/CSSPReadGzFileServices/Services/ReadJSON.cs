@@ -72,7 +72,7 @@ namespace CSSPReadGzFileServices
 
                     if (HasInternetConnection)
                     {
-                        BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], fileName);
+                        BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"], fileName);
                         BlobProperties blobProperties = null;
 
                         try

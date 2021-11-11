@@ -138,9 +138,6 @@ namespace CSSPFileServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            //Assert.NotNull(Configuration["APISecret"]);
-            //Assert.NotNull(Configuration["AzureCSSPDB"]);
-            Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);

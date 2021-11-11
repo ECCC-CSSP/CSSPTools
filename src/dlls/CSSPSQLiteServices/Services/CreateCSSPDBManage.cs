@@ -90,6 +90,7 @@ namespace CSSPSQLiteServices
                 "HasInternetConnection INTEGER   , " +
                 "IsLoggedIn INTEGER   , " +
                 "GoogleMapKeyHash TEXT   , " +
+                "AzureStoreHash TEXT   , " +
                 "AccessFailedCount INTEGER   , " +
                 "LastUpdateDate_UTC TEXT  NOT NULL  , " +
                 "LastUpdateContactTVItemID INTEGER  NOT NULL  )";

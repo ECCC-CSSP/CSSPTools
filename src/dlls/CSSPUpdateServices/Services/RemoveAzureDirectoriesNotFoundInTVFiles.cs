@@ -60,7 +60,7 @@ namespace CSSPUpdateServices
             // Cleaning Azure drive
             //----------------------------------------------
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
             Pageable<ShareFileItem> shareFileItemList = directory.GetFilesAndDirectories();
@@ -82,7 +82,7 @@ namespace CSSPUpdateServices
 
                     if (shareFileItem.IsDirectory)
                     {
-                        ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPFilesPath"]);
+                        ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
                         ShareDirectoryClient directorySub = shareClientSub.GetDirectoryClient(shareFileItem.Name);
 
                         if (directorySub.Exists())

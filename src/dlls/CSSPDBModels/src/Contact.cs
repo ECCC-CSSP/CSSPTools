@@ -65,6 +65,9 @@ namespace CSSPDBModels
         [CSSPMaxLength(255)]
         [CSSPAllowNull]
         public string GoogleMapKeyHash { get; set; }
+        [CSSPMaxLength(255)]
+        [CSSPAllowNull]
+        public string AzureStoreHash { get; set; }
         [CSSPRange(0, 10)]
         [CSSPAllowNull]
         public int? AccessFailedCount { get; set; }

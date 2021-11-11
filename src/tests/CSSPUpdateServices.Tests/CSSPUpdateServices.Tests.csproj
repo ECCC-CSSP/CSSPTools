@@ -5,8 +5,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>21b1f6db-3c41-4f8f-89a0-d5753256e968</UserSecretsId>
-
   </PropertyGroup>
 
   <ItemGroup>

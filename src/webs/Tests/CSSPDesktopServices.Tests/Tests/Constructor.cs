@@ -26,10 +26,6 @@ namespace CSSPDesktopServices.Tests
         public async Task CSSPDesktopService_Constructor_Good_Test(string culture)
         {
             Assert.True(await CSSPDesktopServiceSetup(culture));
-
-            Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(CSSPDesktopService);
-            Assert.NotNull(CSSPSQLiteService);
         }
     }
 }

@@ -420,8 +420,8 @@
   <data name="AlreadyLoggedIn" xml:space="preserve">
     <value>Already logged in</value>
   </data>
-  <data name="CouldNotGetGoogleMapKey" xml:space="preserve">
-    <value>Could not get GoogleMapKey</value>
+  <data name="CouldNotGet_" xml:space="preserve">
+    <value>Could not get {0}</value>
   </data>
   <data name="Created_SQLiteDatabase" xml:space="preserve">
     <value>Created {0} SQLite database</value>

@@ -96,7 +96,7 @@ namespace CSSPDBLocalServices
 
             foreach (ToRecreate toRecreate in ToRecreateList)
             {
-                var actionRes = await CSSPCreateGzFileService.CreateGzFile(toRecreate.WebType, toRecreate.TVItemID);
+                var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(toRecreate.WebType, toRecreate.TVItemID);
                 if (400 == ((ObjectResult)actionRes.Result).StatusCode)
                 {
                     ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;

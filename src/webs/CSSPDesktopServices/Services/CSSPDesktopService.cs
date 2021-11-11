@@ -15,6 +15,7 @@ using CSSPLocalLoggedInServices;
 using CSSPCultureServices.Resources;
 using CSSPScrambleServices;
 using CSSPLogServices;
+using System.Linq;
 
 namespace CSSPDesktopServices.Services
 {
@@ -71,6 +72,7 @@ namespace CSSPDesktopServices.Services
         private ErrRes errRes { get; set; } = new ErrRes();
         private Process processCSSPWebAPIsLocal { get; set; }
         private Process processBrowser { get; set; }
+        private string AzureStoreHash { get; set; }
         #endregion Properties private
 
         #region Constructors
@@ -86,7 +88,6 @@ namespace CSSPDesktopServices.Services
             if (ReadGzFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "ReadGzFileService") }");
             if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
 
-            if (string.IsNullOrEmpty(Configuration["AzureStore"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStore", "CSSPDesktopService") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPDesktopService") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPDesktopService") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPWebAPIsLocalPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPWebAPIsLocalPath", "CSSPDesktopService") }");
@@ -112,6 +113,19 @@ namespace CSSPDesktopServices.Services
             this.dbManage = dbManage;
             this.ReadGzFileService = ReadGzFileService;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
+
+            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+                return;
+            }
+
+            AzureStoreHash = (from c in dbManage.Contacts
+                              where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
+                              select c.AzureStoreHash).FirstOrDefault();
+
 
             contact = new Contact();
         }

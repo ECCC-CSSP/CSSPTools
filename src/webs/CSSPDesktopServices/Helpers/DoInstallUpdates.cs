@@ -1,6 +1,8 @@
 ﻿using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Models;
 using CSSPCultureServices.Resources;
 using CSSPDesktopServices.Models;
 using CSSPEnums;
@@ -99,17 +101,21 @@ namespace CSSPDesktopServices.Services
 
             FileInfo fi = new FileInfo($"{ Configuration["CSSPJSONPath"] }{ jsonFileName }");
 
-            if (string.IsNullOrWhiteSpace(Configuration["AzureStore"]))
-            {
-                return await Task.FromResult(true);
-            }
 
-            BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
-            BlobProperties blobProperties = null;
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+            ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
+
+            ShareFileClient shareFileClient = directory.GetFileClient(jsonFileName);
+
+            ShareFileProperties shareFileProperties = null;
+
+            //BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
+            //BlobProperties blobProperties = null;
 
             try
             {
-                blobProperties = blobClient.GetProperties();
+                shareFileProperties = shareFileClient.GetProperties();
+                //blobProperties = blobClient.GetProperties();
             }
             catch (RequestFailedException)
             {
@@ -122,9 +128,15 @@ namespace CSSPDesktopServices.Services
                                      && c.AzureFileName == jsonFileName
                                      select c).FirstOrDefault();
 
-            if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+            //if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+            if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             {
-                Response response = blobClient.DownloadTo(fi.FullName);
+                //Response response = blobClient.DownloadTo(fi.FullName);
+                ShareFileDownloadInfo download = shareFileClient.Download();
+                using (FileStream stream = File.OpenWrite(fi.FullName))
+                {
+                    download.Content.CopyTo(stream);
+                }
 
                 if (manageFile == null)
                 {
@@ -137,8 +149,8 @@ namespace CSSPDesktopServices.Services
                         ManageFileID = LastID + 1,
                         AzureStorage = Configuration["AzureStoreCSSPJSONPath"],
                         AzureFileName = jsonFileName,
-                        AzureETag = response.Headers.ETag.ToString(),
-                        AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
+                        AzureETag = shareFileProperties.ETag.ToString(),
+                        AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
                         LoadedOnce = true,
                     };
 
@@ -146,7 +158,7 @@ namespace CSSPDesktopServices.Services
                 }
                 else
                 {
-                    manageFile.AzureETag = response.Headers.ETag.ToString();
+                    manageFile.AzureETag = shareFileProperties.ETag.ToString();
                     manageFile.LoadedOnce = true;
                 }
 
@@ -168,17 +180,20 @@ namespace CSSPDesktopServices.Services
 
             FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 
-            if (string.IsNullOrWhiteSpace(Configuration["AzureStore"]))
-            {
-                return await Task.FromResult(true);
-            }
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+            ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
-            BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
-            BlobProperties blobProperties = null;
+            ShareFileClient shareFileClient = directory.GetFileClient(zipFileName);
+
+            ShareFileProperties shareFileProperties = null;
+            //BlobProperties blobProperties = null;
+            //BlobClient blobClient = null;
 
             try
             {
-                blobProperties = blobClient.GetProperties();
+                shareFileProperties = shareFileClient.GetProperties();
+                //blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
+                //blobProperties = blobClient.GetProperties();
             }
             catch (RequestFailedException ex)
             {
@@ -194,7 +209,8 @@ namespace CSSPDesktopServices.Services
                 }
             }
 
-            if (blobProperties == null)
+            //if (blobProperties == null)
+            if (shareFileProperties == null)
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName)));
                 return await Task.FromResult(false);
@@ -205,17 +221,23 @@ namespace CSSPDesktopServices.Services
                                      && c.AzureFileName == zipFileName
                                      select c).FirstOrDefault();
 
-            if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+            if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             {
-                Response response = blobClient.DownloadTo(fi.FullName);
+                //Response response = blobClient.DownloadTo(fi.FullName);
+                ShareFileDownloadInfo download = shareFileClient.Download();
+                using (FileStream stream = File.OpenWrite(fi.FullName))
+                {
+                    download.Content.CopyTo(stream);
+                }
 
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Unzipping_, zipFileName)));
-                if (!await UnzipDownloadedFile(zipFileName, response)) return await Task.FromResult(false);
+                //if (!await UnzipDownloadedFile(zipFileName, response)) return await Task.FromResult(false);
+                if (!await UnzipDownloadedFile(zipFileName, shareFileProperties)) return await Task.FromResult(false);
             }
 
             return await Task.FromResult(true);
         }
-        private async Task<bool> UnzipDownloadedFile(string zipFileName, Response response)
+        private async Task<bool> UnzipDownloadedFile(string zipFileName, ShareFileProperties shareFileProperties)
         {
             FileInfo fiLocal = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 
@@ -309,8 +331,8 @@ namespace CSSPDesktopServices.Services
                     ManageFileID = LastID + 1,
                     AzureStorage = Configuration["AzureStoreCSSPWebAPIsLocalPath"],
                     AzureFileName = zipFileName,
-                    AzureETag = response.Headers.ETag.ToString(),
-                    AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString()),
+                    AzureETag = shareFileProperties.ETag.ToString(),
+                    AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
                     LoadedOnce = true,
                 };
 
@@ -318,7 +340,7 @@ namespace CSSPDesktopServices.Services
             }
             else
             {
-                manageFile.AzureETag = response.Headers.ETag.ToString();
+                manageFile.AzureETag = shareFileProperties.ETag.ToString();
                 manageFile.LoadedOnce = true;
             }
 

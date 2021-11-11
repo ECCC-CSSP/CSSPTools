@@ -25,7 +25,7 @@ namespace CSSPFileServices.Tests
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
 
-            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
+            FileInfo fi = new FileInfo($@"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\{FileName}");
             Assert.True(fi.Exists);
 
             var actionRes2 = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);

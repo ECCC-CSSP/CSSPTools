@@ -34,7 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\dlls\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Update="appsettings_csspazureapptaskservicestests.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

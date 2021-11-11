@@ -55,7 +55,6 @@ namespace CSSPReadGzFileServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["CSSPDatabasesPath"]);

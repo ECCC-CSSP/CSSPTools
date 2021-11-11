@@ -37,7 +37,7 @@ namespace CSSPFileServices
 
             try
             {
-                BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], FileName);
+                BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"], FileName);
 
                 Response response = blobClient.DownloadTo($"{ Configuration["CSSPJSONPath"] }{ FileName }");
                 if (response.Status == 206)

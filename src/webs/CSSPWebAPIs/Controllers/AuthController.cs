@@ -30,7 +30,8 @@ namespace CSSPWebAPIs.Controllers
     public partial interface IAuthController
     {
         Task<ActionResult<Contact>> Token(LoginModel loginModel);
-        Task<ActionResult<string>> GoogleMapKey();
+        Task<ActionResult<string>> AzureStoreHash();
+        Task<ActionResult<string>> GoogleMapKeyHash();
     }
 
     [Route("api/{culture}/[controller]")]
@@ -70,14 +71,23 @@ namespace CSSPWebAPIs.Controllers
 
             return await ContactDBService.Login(loginModel);
         }
-        [Route("GoogleMapKey")]
+        [Route("GoogleMapKeyHash")]
         [HttpGet]
-        public async Task<ActionResult<string>> GoogleMapKey()
+        public async Task<ActionResult<string>> GoogleMapKeyHash()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await ContactDBService.GoogleMapKey();
+            return await ContactDBService.GoogleMapKeyHash();
+        }
+        [Route("AzureStoreHash")]
+        [HttpGet]
+        public async Task<ActionResult<string>> AzureStoreHash()
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await ContactDBService.AzureStoreHash();
         }
         #endregion Functions public
 

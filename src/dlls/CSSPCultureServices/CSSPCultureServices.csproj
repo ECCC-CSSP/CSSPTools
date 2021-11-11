@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\CSSPCultureDesktopRes - Copy.Designer.cs">
-      <DependentUpon>CSSPCultureDesktopRes.resx</DependentUpon>
+    <Compile Update="Resources\CSSPCultureDesktopRes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>CSSPCultureDesktopRes.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\CSSPCultureEnumsRes.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -44,7 +44,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureDesktopRes.resx">
-      <LastGenOutput>CSSPCultureUpdateRes.Designer.cs</LastGenOutput>
+      <LastGenOutput>CSSPCultureDesktopRes.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\CSSPCultureModelsRes.resx">

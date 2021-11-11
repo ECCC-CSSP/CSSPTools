@@ -33,7 +33,7 @@ namespace CSSPDBLocalServices.Tests
 
             Address address = FillAddress();
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(address);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(address);
             Assert.Equal(200, ((ObjectResult)actionAddressRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionAddressRes.Result).Value);
             Address addressRet = (Address)((OkObjectResult)actionAddressRes.Result).Value;
@@ -84,7 +84,7 @@ namespace CSSPDBLocalServices.Tests
 
             address.StreetName = "next street name";
 
-            var actionAddressRes2 = await AddressLocalService.AddAddressLocal(address);
+            var actionAddressRes2 = await AddressLocalService.AddAddressLocalAsync(address);
             Assert.Equal(200, ((ObjectResult)actionAddressRes2.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionAddressRes2.Result).Value);
             Address addressRet2 = (Address)((OkObjectResult)actionAddressRes2.Result).Value;
@@ -188,7 +188,7 @@ namespace CSSPDBLocalServices.Tests
 
             address = null;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(address);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(address);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -206,7 +206,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.AddressID = 10;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -224,7 +224,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.AddressType = (AddressTypeEnum)10000;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -242,7 +242,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.CountryTVItemID = 0;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -260,7 +260,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.ProvinceTVItemID = 0;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -278,7 +278,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.MunicipalityTVItemID = 0;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -296,7 +296,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.StreetName = "";
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -314,7 +314,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.StreetNumber = "";
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -332,7 +332,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.StreetType = (StreetTypeEnum)1000;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -358,7 +358,7 @@ namespace CSSPDBLocalServices.Tests
 
             address.AddressID = 0;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(address);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(address);
             Assert.Equal(200, ((ObjectResult)actionAddressRes.Result).StatusCode);
             Address addressRet = (Address)((OkObjectResult)actionAddressRes.Result).Value;
             address.AddressID = AddressID;
@@ -375,7 +375,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.CountryTVItemID = 1;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -393,7 +393,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.ProvinceTVItemID = 1;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);
@@ -411,7 +411,7 @@ namespace CSSPDBLocalServices.Tests
 
             addressLocalModel.MunicipalityTVItemID = 1;
 
-            var actionAddressRes = await AddressLocalService.AddAddressLocal(addressLocalModel);
+            var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
             Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
             Assert.NotNull(errRes);

@@ -20,9 +20,9 @@ namespace CSSPDesktopServices.Services
 
             using (HttpClient httpClient = new HttpClient())
             {
-                // Getting googleMapKey
+                // Getting googleMapKeyHash
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/GoogleMapKey").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/GoogleMapKeyHash").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
@@ -37,20 +37,65 @@ namespace CSSPDesktopServices.Services
                     }
                 }
 
-                string GoogleMapKey = "";
+                string GoogleMapKeyHash = "";
                 try
                 {
-                    GoogleMapKey = response.Content.ReadAsStringAsync().Result;
+                    GoogleMapKeyHash = response.Content.ReadAsStringAsync().Result;
                 }
                 catch (Exception)
                 {
-                    AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CouldNotGetGoogleMapKey));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGet_, "GoogleMapKeyHash")));
                     return await Task.FromResult(false);
                 }
 
                 contact.HasInternetConnection = true;
                 contact.IsLoggedIn = true;
-                contact.GoogleMapKeyHash = CSSPScrambleService.Scramble(GoogleMapKey);
+                contact.GoogleMapKeyHash = GoogleMapKeyHash;
+
+                try
+                {
+                    dbManage.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnmanagedServerError_, ex.Message)));
+                    return await Task.FromResult(true);
+                }
+            }
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                // Getting googleMapKeyHash
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/AzureStoreHash").Result;
+                if ((int)response.StatusCode != 200)
+                {
+                    if ((int)response.StatusCode == 401)
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
+                        return await Task.FromResult(false);
+                    }
+                    else
+                    {
+                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
+                        return await Task.FromResult(false);
+                    }
+                }
+
+                string AzureStoreHash = "";
+                try
+                {
+                    AzureStoreHash = response.Content.ReadAsStringAsync().Result;
+                }
+                catch (Exception)
+                {
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGet_, "AzureStoreHash")));
+                    return await Task.FromResult(false);
+                }
+
+                contact.HasInternetConnection = true;
+                contact.IsLoggedIn = true;
+                contact.AzureStoreHash = AzureStoreHash;
 
                 try
                 {

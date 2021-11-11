@@ -30,7 +30,7 @@ namespace CSSPDBLocalServices.Tests
 
             AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -104,7 +104,7 @@ namespace CSSPDBLocalServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.ModifyAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.ModifyAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -123,7 +123,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.AppTaskID = 10;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -142,7 +142,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.TVItemID = 0;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -161,7 +161,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.TVItemID2 = 0;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -180,7 +180,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.AppTaskCommand = (AppTaskCommandEnum)10000;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -199,7 +199,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.AppTaskStatus = (AppTaskStatusEnum)10000;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -218,7 +218,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.Language = (LanguageEnum)10000;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -237,7 +237,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.StartDateTime_UTC = new DateTime(1970, 1, 1);
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -256,7 +256,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.EndDateTime_UTC = new DateTime(1970, 1, 1);
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -275,7 +275,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTask.EndDateTime_UTC = appTaskLocalModel.AppTask.StartDateTime_UTC.AddDays(-1);
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -294,7 +294,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList.Remove(appTaskLocalModel.AppTaskLanguageList[appTaskLocalModel.AppTaskLanguageList.Count - 1]);
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -313,7 +313,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList[0].AppTaskLanguageID = 1;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -332,7 +332,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList[0].StatusText = "".PadLeft(251, 'a');
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -351,7 +351,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList[0].ErrorText = "".PadLeft(251, 'a');
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -370,7 +370,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList[1].AppTaskLanguageID = 1;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -389,7 +389,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList[1].StatusText = "".PadLeft(251, 'a');
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -408,7 +408,7 @@ namespace CSSPDBLocalServices.Tests
 
             appTaskLocalModel.AppTaskLanguageList[1].ErrorText = "".PadLeft(251, 'a');
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -427,7 +427,7 @@ namespace CSSPDBLocalServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -444,7 +444,7 @@ namespace CSSPDBLocalServices.Tests
 
             AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
 
-            var actionTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(200, ((ObjectResult)actionTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionTVItemModelRes.Result).Value);
             AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
@@ -452,7 +452,7 @@ namespace CSSPDBLocalServices.Tests
 
             AppTaskLocalModel appTaskModel2 = FillAppTaskLocalModel();
 
-            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocal(appTaskLocalModel);
+            var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;

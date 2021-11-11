@@ -7,11 +7,9 @@ using CSSPDBModels;
 using CSSPEnums;
 using CSSPHelperModels;
 using CSSPWebModels;
-using ManageServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -65,9 +63,9 @@ namespace CSSPAzureAppTaskServices.Tests
 
             return postAppTaskModel;
         }
-        private async Task<AppTaskLocalModel> TestAddOrModify(AppTaskLocalModel appTaskModel)
+        private async Task<AppTaskLocalModel> TestAddAsync(AppTaskLocalModel appTaskModel)
         {
-            var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
+            var actionPostTVItemModelRes = await AzureAppTaskService.AddAzureAppTaskAsync(appTaskModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -75,51 +73,77 @@ namespace CSSPAzureAppTaskServices.Tests
 
             return await Task.FromResult(appTaskModelRet);
         }
-        private async Task TestAddOrModifyError(AppTaskLocalModel appTaskModel, string errorMessage)
+        private async Task<AppTaskLocalModel> TestModifyAsync(AppTaskLocalModel appTaskModel)
         {
-            var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
-            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
-        }
-        private async Task TestAddOrModifyUnauthorized(AppTaskLocalModel appTaskModel, string errorMessage)
-        {
-            var actionPostTVItemModelRes = await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
-            Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-            Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
-        }
-        private async Task<bool> TestDelete(int appTaskID)
-        {
-            var actionPostTVItemModelRes = await AzureAppTaskService.DeleteAzureAppTask(appTaskID);
+            var actionPostTVItemModelRes = await AzureAppTaskService.ModifyAzureAppTaskAsync(appTaskModel);
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-            bool boolRet = (bool)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
-            Assert.True(boolRet);
+            AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(appTaskModelRet);
 
-            return boolRet;
+            return await Task.FromResult(appTaskModelRet);
         }
-        private async Task TestDeleteError(int AppTaskID, string errorMessage)
+        private async Task TestAddErrorAsync(AppTaskLocalModel appTaskModel, string errorMessage)
         {
-            var actionPostTVItemModelRes = await AzureAppTaskService.DeleteAzureAppTask(AppTaskID);
+            var actionPostTVItemModelRes = await AzureAppTaskService.AddAzureAppTaskAsync(appTaskModel);
             Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
         }
-        private async Task TestDeleteUnauthorized(int AppTaskID, string errorMessage)
+        private async Task TestModifyErrorAsync(AppTaskLocalModel appTaskModel, string errorMessage)
         {
-            var actionPostTVItemModelRes = await AzureAppTaskService.DeleteAzureAppTask(AppTaskID);
+            var actionPostTVItemModelRes = await AzureAppTaskService.ModifyAzureAppTaskAsync(appTaskModel);
+            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
+        }
+        private async Task TestAddUnauthorizedAsync(AppTaskLocalModel appTaskModel, string errorMessage)
+        {
+            var actionPostTVItemModelRes = await AzureAppTaskService.AddAzureAppTaskAsync(appTaskModel);
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
             Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
         }
-        private async Task<List<AppTaskLocalModel>> TestGetAll()
+        private async Task TestModifyUnauthorizedAsync(AppTaskLocalModel appTaskModel, string errorMessage)
         {
-            var actionPostTVItemModelRes = await AzureAppTaskService.GetAllAzureAppTask();
+            var actionPostTVItemModelRes = await AzureAppTaskService.AddAzureAppTaskAsync(appTaskModel);
+            Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
+            Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
+        }
+        private async Task<AppTaskLocalModel> TestDeleteAsync(int appTaskID)
+        {
+            var actionPostTVItemModelRes = await AzureAppTaskService.DeleteAzureAppTaskAsync(appTaskID);
+            Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
+            Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
+            AppTaskLocalModel appTaskLocalModel = (AppTaskLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.NotNull(appTaskLocalModel);
+
+            return appTaskLocalModel;
+        }
+        private async Task TestDeleteErrorAsync(int AppTaskID, string errorMessage)
+        {
+            var actionPostTVItemModelRes = await AzureAppTaskService.DeleteAzureAppTaskAsync(AppTaskID);
+            Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
+            Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
+            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
+        }
+        private async Task TestDeleteUnauthorizedAsync(int AppTaskID, string errorMessage)
+        {
+            var actionPostTVItemModelRes = await AzureAppTaskService.DeleteAzureAppTaskAsync(AppTaskID);
+            Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
+            Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
+            Assert.True(errRes.ErrList.Where(c => c.Contains(errorMessage)).Any());
+        }
+        private async Task<List<AppTaskLocalModel>> TestGetAllAsync()
+        {
+            var actionPostTVItemModelRes = await AzureAppTaskService.GetAllAzureAppTaskAsync();
             Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
             List<AppTaskLocalModel> appTaskModelListRet = (List<AppTaskLocalModel>)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
@@ -127,9 +151,9 @@ namespace CSSPAzureAppTaskServices.Tests
 
             return await Task.FromResult(appTaskModelListRet);
         }
-        private async Task TestGetAllUnauthorized(string errorMessage)
+        private async Task TestGetAllUnauthorizedAsync(string errorMessage)
         {
-            var actionPostTVItemModelRes = await AzureAppTaskService.GetAllAzureAppTask();
+            var actionPostTVItemModelRes = await AzureAppTaskService.GetAllAzureAppTaskAsync();
             Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
             Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;

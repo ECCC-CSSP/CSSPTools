@@ -9723,11 +9723,29 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WebAllMWQMAnalysisReportParameters.
+        /// </summary>
+        public static string WebTypeEnumWebAllMWQMAnalysisReportParameters {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllMWQMAnalysisReportParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WebAllMWQMLookupMPNs.
         /// </summary>
         public static string WebTypeEnumWebAllMWQMLookupMPNs {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebAllMWQMLookupMPNs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllMWQMSubsectors.
+        /// </summary>
+        public static string WebTypeEnumWebAllMWQMSubsectors {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllMWQMSubsectors", resourceCulture);
             }
         }
         
@@ -9791,6 +9809,15 @@ namespace CSSPCultureServices.Resources {
         public static string WebTypeEnumWebAllTideLocations {
             get {
                 return ResourceManager.GetString("WebTypeEnumWebAllTideLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebAllUseOfSites.
+        /// </summary>
+        public static string WebTypeEnumWebAllUseOfSites {
+            get {
+                return ResourceManager.GetString("WebTypeEnumWebAllUseOfSites", resourceCulture);
             }
         }
         

@@ -29,7 +29,7 @@ namespace CSSPUpdateServices
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            var actionRes = await CreateGzFileService.CreateAllGzFiles();
+            var actionRes = await CreateGzFileService.CreateAllGzFilesAsync();
             if (((ObjectResult)actionRes.Result).StatusCode != 200)
             {
                 CSSPLogService.AppendError($"{ CSSPCultureServicesRes.ErrorWhileCreateAllGzFiles  }");

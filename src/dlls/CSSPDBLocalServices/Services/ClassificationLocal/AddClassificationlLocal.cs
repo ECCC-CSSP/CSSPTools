@@ -140,7 +140,7 @@ namespace CSSPDBLocalServices
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            var actionRes = await CSSPCreateGzFileService.CreateGzFile(WebTypeEnum.WebSubsector, SubsectorTVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebSubsector, SubsectorTVItemID);
             if (400 == ((ObjectResult)actionRes.Result).StatusCode)
             {
                 ErrRes errRes2 = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;

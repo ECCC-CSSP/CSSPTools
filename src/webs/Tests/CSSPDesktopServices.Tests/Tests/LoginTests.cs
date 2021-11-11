@@ -26,8 +26,8 @@ namespace CSSPDesktopServices.Tests
 
             LoginModel loginModel = new LoginModel()
             {
-                LoginEmail = Configuration.GetValue<string>("LoginEmail"),
-                Password = Configuration.GetValue<string>("Password"),
+                LoginEmail = Configuration["LoginEmail"],
+                Password = Configuration["Password"],
             };
 
             bool retBool = await CSSPDesktopService.Login(loginModel);

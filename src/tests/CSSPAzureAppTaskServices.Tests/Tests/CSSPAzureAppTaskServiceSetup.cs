@@ -6,26 +6,25 @@
 using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
+using CSSPHelperModels;
 using CSSPServerLoggedInServices;
-using ManageServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using Xunit;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Internal;
-using CSSPHelperModels;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace CSSPAzureAppTaskServices.Tests
 {
+    [Collection("Sequential")]
     public partial class AzureAppTaskServiceTest
     {
         #region Properties
@@ -64,7 +63,6 @@ namespace CSSPAzureAppTaskServices.Tests
             Assert.NotNull(Configuration["AzureCSSPDB"]);
             Assert.Contains("CSSPTemporaryDBTest", Configuration["AzureCSSPDB"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);
-            Assert.Contains("localhost:", Configuration["CSSPAzureUrl"]);
             Assert.NotNull(Configuration["LoginEmail"]);
             Assert.NotNull(Configuration["Password"]);
 
@@ -97,8 +95,6 @@ namespace CSSPAzureAppTaskServices.Tests
 
             await CSSPServerLoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail"]);
             Assert.NotNull(CSSPServerLoggedInService.LoggedInContactInfo);
-
-            //config.AzureStore = CSSPServerLoggedInService.Descramble(config.AzureStore);
 
             AzureAppTaskService = Provider.GetService<IAzureAppTaskService>();
             Assert.NotNull(AzureAppTaskService);

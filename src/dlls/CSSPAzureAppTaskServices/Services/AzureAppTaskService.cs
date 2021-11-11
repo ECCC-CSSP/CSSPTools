@@ -4,19 +4,15 @@
  */
 
 using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
 using CSSPDBModels;
 using CSSPEnums;
 using CSSPHelperModels;
-using CSSPWebModels;
 using CSSPServerLoggedInServices;
+using CSSPWebModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CSSPAzureAppTaskServices
@@ -24,9 +20,10 @@ namespace CSSPAzureAppTaskServices
 
     public partial interface IAzureAppTaskService
     {
-        Task<ActionResult<AppTaskLocalModel>> AddOrModifyAzureAppTask(AppTaskLocalModel postAppTaskModel);
-        Task<ActionResult<bool>> DeleteAzureAppTask(int appTaskID);
-        Task<ActionResult<List<AppTaskLocalModel>>> GetAllAzureAppTask();
+        Task<ActionResult<AppTaskLocalModel>> AddAzureAppTaskAsync(AppTaskLocalModel postAppTaskModel);
+        Task<ActionResult<AppTaskLocalModel>> DeleteAzureAppTaskAsync(int appTaskID);
+        Task<ActionResult<List<AppTaskLocalModel>>> GetAllAzureAppTaskAsync();
+        Task<ActionResult<AppTaskLocalModel>> ModifyAzureAppTaskAsync(AppTaskLocalModel postAppTaskModel);
     }
     public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
     {

@@ -59,6 +59,7 @@ namespace CSSPWebAPIsLocal.Controllers
 
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.PasswordHash = "";
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash = CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash);
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash = CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash);
             return await Task.FromResult(Ok(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact));
         }
         #endregion Functions public

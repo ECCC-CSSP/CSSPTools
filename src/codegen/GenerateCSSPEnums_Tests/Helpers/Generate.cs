@@ -54,7 +54,7 @@ namespace GenerateCSSPEnums_Tests
                     sb.AppendLine(@"        [InlineData(""fr-CA"")]");
                     sb.AppendLine($@"        public async Task GetResValueForTypeAndID_ForEnum_{ enumName }_Test(string culture)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            Assert.True(await Setup(culture));");
+                    sb.AppendLine(@"            Assert.True(await EnumsSetup(culture));");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            string retStr = enums.GetResValueForTypeAndID(typeof({ enumName }), -100);");
                     sb.AppendLine(@"            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);");
@@ -113,7 +113,7 @@ namespace GenerateCSSPEnums_Tests
             sb.AppendLine(@"        [InlineData(""fr-CA"")]");
             sb.AppendLine(@"        public async Task Enums_EnumTypeListOK_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Assert.True(await Setup(culture));");
+            sb.AppendLine(@"            Assert.True(await EnumsSetup(culture));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            List<int?> intList = new List<int?>() { (int)PolSourceObsInfoEnum.AgriculturalSourceCrop, (int)PolSourceObsInfoEnum.AgricultureSourcePasture };");
             sb.AppendLine(@"            Assert.Equal((int)PolSourceObsInfoEnum.AgriculturalSourceCrop, intList[0]);");
@@ -143,7 +143,7 @@ namespace GenerateCSSPEnums_Tests
                     sb.AppendLine(@"        [InlineData(""fr-CA"")]");
                     sb.AppendLine($@"        public async Task Enums_{ enumName.Substring(0, enumName.Length - 4) }OK_Test(string culture)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            Assert.True(await Setup(culture));");
+                    sb.AppendLine(@"            Assert.True(await EnumsSetup(culture));");
                     sb.AppendLine(@"");
                     sb.AppendLine($@"            string retStr = enums.EnumTypeOK(typeof({ enumName }), null);");
                     sb.AppendLine(@"            Assert.Equal("""", retStr);");
@@ -199,7 +199,7 @@ namespace GenerateCSSPEnums_Tests
                     sb.AppendLine(@"        [InlineData(""fr-CA"")]");
                     sb.AppendLine($@"        public async Task Enums_{ enumName }TextOrdered_Test(string culture)");
                     sb.AppendLine(@"        {");
-                    sb.AppendLine(@"            Assert.True(await Setup(culture));");
+                    sb.AppendLine(@"            Assert.True(await EnumsSetup(culture));");
                     sb.AppendLine(@"");
                     sb.AppendLine(@"            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();");
                     sb.AppendLine($@"            foreach (int i in Enum.GetValues(typeof({ enumName })))");

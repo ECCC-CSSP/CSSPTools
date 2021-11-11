@@ -3429,4 +3429,13 @@
   <data name="CSSPCommandNameEnumUnknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
+  <data name="WebTypeEnumWebAllMWQMAnalysisReportParameters" xml:space="preserve">
+    <value>WebAllMWQMAnalysisReportParameters</value>
+  </data>
+  <data name="WebTypeEnumWebAllMWQMSubsectors" xml:space="preserve">
+    <value>WebAllMWQMSubsectors</value>
+  </data>
+  <data name="WebTypeEnumWebAllUseOfSites" xml:space="preserve">
+    <value>WebAllUseOfSites</value>
+  </data>
 </root>

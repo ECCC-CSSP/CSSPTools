@@ -40,8 +40,8 @@
 //                FirstName = "AlAlAl",
 //                LastName = "BlBlBl",
 //                Initial = "T",
-//                Password = Configuration.GetValue<string>("Password"),
-//                ConfirmPassword = Configuration.GetValue<string>("Password"),
+//                Password = Configuration["Password"],
+//                ConfirmPassword = Configuration["Password"],
 //            };
 
 //            bool retBool = await CSSPDesktopService.Register(registerModel);

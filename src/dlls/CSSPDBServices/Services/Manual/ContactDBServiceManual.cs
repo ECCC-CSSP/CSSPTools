@@ -29,8 +29,8 @@ namespace CSSPDBServices
     public partial interface IContactDBService
     {
         Task<ActionResult<Contact>> Login(LoginModel loginModel);
-        Task<ActionResult<string>> AzureStore();
-        Task<ActionResult<string>> GoogleMapKey();
+        Task<ActionResult<string>> AzureStoreHash();
+        Task<ActionResult<string>> GoogleMapKeyHash();
     }
 
     public partial class ContactDBService : ControllerBase, IContactDBService
@@ -64,7 +64,7 @@ namespace CSSPDBServices
         #endregion Constructors
 
         #region Functions public 
-        public async Task<ActionResult<string>> AzureStore()
+        public async Task<ActionResult<string>> AzureStoreHash()
         {
             if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
@@ -72,16 +72,16 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            string sto = Configuration.GetValue<string>("AzureStore");
-            if (string.IsNullOrWhiteSpace(sto))
+            string AzureStoreHash = Configuration["AzureStoreHash"];
+            if (string.IsNullOrWhiteSpace(AzureStoreHash))
             {
-                errRes.ErrList.Add(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStore"));
+                errRes.ErrList.Add(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "AzureStoreHash"));
                 return await Task.FromResult(BadRequest(errRes));
             }
 
-            return await Task.FromResult(Ok(sto));
+            return await Task.FromResult(Ok(AzureStoreHash));
         }
-        public async Task<ActionResult<string>> GoogleMapKey()
+        public async Task<ActionResult<string>> GoogleMapKeyHash()
         {
             if (CSSPServerLoggedInService.LoggedInContactInfo == null || CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {
@@ -89,10 +89,10 @@ namespace CSSPDBServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            string sto = Configuration.GetValue<string>("GoogleMapKey");
+            string sto = Configuration["GoogleMapKeyHash"];
             if (string.IsNullOrWhiteSpace(sto))
             {
-                errRes.ErrList.Add(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "GoogleMapKey"));
+                errRes.ErrList.Add(String.Format(CSSPCultureServicesRes.__CouldNotBeFound, "Configuration", "GoogleMapKeyHash"));
                 return await Task.FromResult(BadRequest(errRes));
             }
 

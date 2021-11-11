@@ -129,7 +129,7 @@
             this.lblVersionValue.Name = "lblVersionValue";
             this.lblVersionValue.Size = new System.Drawing.Size(57, 20);
             this.lblVersionValue.TabIndex = 7;
-            this.lblVersionValue.Text = "1.0.0.0";
+            this.lblVersionValue.Text = "1.0.1.9";
             // 
             // lblVersion
             // 
@@ -558,7 +558,7 @@
             this.lblVersionTop.Name = "lblVersionTop";
             this.lblVersionTop.Size = new System.Drawing.Size(55, 21);
             this.lblVersionTop.TabIndex = 10;
-            this.lblVersionTop.Text = "1.0.0.0";
+            this.lblVersionTop.Text = "1.0.1.9";
             // 
             // lblContactLoggedIn
             // 

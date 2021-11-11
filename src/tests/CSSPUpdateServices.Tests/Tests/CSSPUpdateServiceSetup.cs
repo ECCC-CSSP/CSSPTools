@@ -50,7 +50,6 @@ namespace UpdateServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspupdateservicestests.json")
-               .AddUserSecrets("21b1f6db-3c41-4f8f-89a0-d5753256e968")
                .Build();
 
             Services = new ServiceCollection();
@@ -59,7 +58,6 @@ namespace UpdateServices.Tests
 
             Assert.NotNull(Configuration["azure_csspjson_backup"]);
             Assert.NotNull(Configuration["azure_csspjson_backup_uncompress"]);
-            Assert.NotNull(Configuration["AzureStore"]);
             Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPAzureUrl"]);

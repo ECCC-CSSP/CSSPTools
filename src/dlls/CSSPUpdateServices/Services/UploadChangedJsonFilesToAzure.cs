@@ -34,72 +34,72 @@ namespace CSSPUpdateServices
 
             if (await GetNeedToChangedWebAllAddresses(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllAddresses);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses);
             }
 
             if (await GetNeedToChangedWebAllContacts(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllContacts);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllContacts);
             }
 
             if (await GetNeedToChangedWebAllCountries(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllCountries);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllCountries);
             }
 
             if (await GetNeedToChangedWebAllEmails(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllEmails);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllEmails);
             }
 
             if (await GetNeedToChangedWebAllHelpDocs(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllHelpDocs);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllHelpDocs);
             }
 
             if (await GetNeedToChangedWebAllMunicipalities(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMunicipalities);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllMunicipalities);
             }
 
             if (await GetNeedToChangedWebAllMWQMLookupMPNs(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllMWQMLookupMPNs);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllMWQMLookupMPNs);
             }
 
             if (await GetNeedToChangedWebAllPolSourceGroupings(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllPolSourceGroupings);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllPolSourceGroupings);
             }
 
             if (await GetNeedToChangedWebAllPolSourceSiteEffectTerms(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllPolSourceSiteEffectTerms);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllPolSourceSiteEffectTerms);
             }
 
             if (await GetNeedToChangedWebAllProvinces(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllProvinces);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllProvinces);
             }
 
             if (await GetNeedToChangedWebAllReportTypes(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllReportTypes);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllReportTypes);
             }
 
             if (await GetNeedToChangedWebAllSearch(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllSearch);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllSearch);
             }
 
             if (await GetNeedToChangedWebAllTels(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTels);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllTels);
             }
 
             if (await GetNeedToChangedWebAllTideLocations(UpdateFromDate))
             {
-                await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllTideLocations);
+                await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllTideLocations);
             }
 
 
@@ -180,53 +180,53 @@ namespace CSSPUpdateServices
                 {
                     case TVTypeEnum.Root:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebRoot, 0);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebAllSearch, 0);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebRoot, 0);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllSearch, 0);
                         }
                         break;
                     case TVTypeEnum.Country:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebCountry, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebCountry, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
                         }
                         break;
                     case TVTypeEnum.Province:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebProvince, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebTideSites, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebProvince, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebClimateSites, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebHydrometricSites, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebTideSites, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebDrogueRuns, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
                         }
                         break;
                     case TVTypeEnum.Municipality:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMunicipality, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMunicipality, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMikeScenarios, tvItem.TVItemID);
                         }
                         break;
                     case TVTypeEnum.Area:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebArea, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebArea, tvItem.TVItemID);
                         }
                         break;
                     case TVTypeEnum.Sector:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebSector, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebSector, tvItem.TVItemID);
                         }
                         break;
                     case TVTypeEnum.Subsector:
                         {
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebSubsector, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMRuns, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSites, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebPolSourceSites, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebLabSheets, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSamples1980_2020, tvItem.TVItemID);
-                            await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMWQMSamples2021_2060, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebSubsector, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMWQMRuns, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMWQMSites, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebPolSourceSites, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebLabSheets, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMWQMSamples1980_2020, tvItem.TVItemID);
+                            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMWQMSamples2021_2060, tvItem.TVItemID);
                         }
                         break;
                     default:

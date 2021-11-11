@@ -12,6 +12,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ManageServices;
+using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Models;
 
 namespace CSSPDesktopServices.Services
 {
@@ -29,11 +31,6 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(true);
             }
 
-            if (string.IsNullOrWhiteSpace(Configuration["AzureStore"]))
-            {
-                return await Task.FromResult(true);
-            }
-
             // doing required file from csspwebapislocal container
             List<string> zipFileNameList = new List<string>()
             {
@@ -44,12 +41,20 @@ namespace CSSPDesktopServices.Services
             {
                 FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 
-                BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
-                BlobProperties blobProperties = null;
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+                ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
+
+                ShareFileClient file = directory.GetFileClient(zipFileName);
+
+                ShareFileProperties shareFileProperties = null;
+
+                //BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
+                //BlobProperties blobProperties = null;
 
                 try
                 {
-                    blobProperties = blobClient.GetProperties();
+                    shareFileProperties = file.GetProperties();
+                    //blobProperties = blobClient.GetProperties();
                 }
                 catch (RequestFailedException ex)
                 {
@@ -60,7 +65,8 @@ namespace CSSPDesktopServices.Services
                     }
                 }
 
-                if (blobProperties == null)
+                //if (blobProperties == null)
+                if (shareFileProperties == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName)));
                     return await Task.FromResult(false);
@@ -71,7 +77,8 @@ namespace CSSPDesktopServices.Services
                                          && c.AzureFileName == zipFileName
                                          select c).FirstOrDefault();
 
-                if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+                //if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+                if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, zipFileName)));
                     UpdateIsNeeded = true;
@@ -89,9 +96,11 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebAllContacts }.gz",
                 $"{ WebTypeEnum.WebAllCountries }.gz",
                 $"{ WebTypeEnum.WebAllEmails }.gz",
-                $"{ WebTypeEnum.WebAllMunicipalities }.gz",
                 $"{ WebTypeEnum.WebAllHelpDocs }.gz",
+                $"{ WebTypeEnum.WebAllMunicipalities }.gz",
+                $"{ WebTypeEnum.WebAllMWQMAnalysisReportParameters }.gz",
                 $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz",
+                $"{ WebTypeEnum.WebAllMWQMSubsectors }.gz",
                 $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz",
                 $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz",
                 $"{ WebTypeEnum.WebAllProvinces }.gz",
@@ -100,6 +109,7 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebAllSearch }.gz",
                 $"{ WebTypeEnum.WebAllTels }.gz",
                 $"{ WebTypeEnum.WebAllTideLocations }.gz",
+                $"{ WebTypeEnum.WebAllUseOfSites }.gz",
             };
 
             foreach (string jsonFileName in jsonFileNameList)
@@ -120,12 +130,20 @@ namespace CSSPDesktopServices.Services
 
                 FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ jsonFileName }");
 
-                BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(Configuration["AzureStore"]), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
-                BlobProperties blobProperties = null;
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+                ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
+
+                ShareFileClient file = directory.GetFileClient(jsonFileName);
+
+                ShareFileProperties shareFileProperties = null;
+
+                //BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
+                //BlobProperties blobProperties = null;
 
                 try
                 {
-                    blobProperties = blobClient.GetProperties();
+                    shareFileProperties = file.GetProperties();
+                    //blobProperties = blobClient.GetProperties();
                 }
                 catch (RequestFailedException ex)
                 {
@@ -137,7 +155,8 @@ namespace CSSPDesktopServices.Services
                     }
                 }
 
-                if (blobProperties == null)
+                //if (blobProperties == null)
+                if (shareFileProperties == null)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName)));
                     UpdateIsNeeded = true;
@@ -149,7 +168,8 @@ namespace CSSPDesktopServices.Services
                                          && c.AzureFileName == jsonFileName
                                          select c).FirstOrDefault();
 
-                if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+                //if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+                if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
                 {
                     AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, jsonFileName)));
                     UpdateIsNeeded = true;

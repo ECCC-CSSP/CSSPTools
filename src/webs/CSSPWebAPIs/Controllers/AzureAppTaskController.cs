@@ -2,38 +2,22 @@
  * Manually edited
  * 
  */
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using CSSPDBModels;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Configuration;
-using CSSPEnums;
-using CSSPCultureServices.Resources;
-using CSSPServerLoggedInServices;
-using CSSPDBServices;
-using CSSPHelperModels;
-using CSSPWebModels;
 using CSSPAzureAppTaskServices;
+using CSSPCultureServices.Services;
+using CSSPServerLoggedInServices;
+using CSSPWebModels;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CSSPWebAPIs.Controllers
 {
     public partial interface IAppTaskController
     {
-        Task<ActionResult<List<AppTaskLocalModel>>> Get();
-        Task<ActionResult<AppTaskLocalModel>> Post(AppTaskLocalModel appTaskModel);
-        Task<ActionResult<bool>> Delete(int AppTaskID);
+        Task<ActionResult<List<AppTaskLocalModel>>> GetAllAzureAppTaskAsync();
+        Task<ActionResult<AppTaskLocalModel>> AddAzureAppTaskAsync(AppTaskLocalModel appTaskModel);
+        Task<ActionResult<AppTaskLocalModel>> DeleteAzureAppTaskAsync(int AppTaskID);
+        Task<ActionResult<AppTaskLocalModel>> ModifyAzureAppTaskAsync(AppTaskLocalModel appTaskModel);
     }
 
     [Route("api/{culture}/[controller]")]
@@ -61,29 +45,37 @@ namespace CSSPWebAPIs.Controllers
 
         #region Functions public
         [HttpGet]
-        public async Task<ActionResult<List<AppTaskLocalModel>>> Get()
+        public async Task<ActionResult<List<AppTaskLocalModel>>> GetAllAzureAppTaskAsync()
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AzureAppTaskService.GetAllAzureAppTask();
+            return await AzureAppTaskService.GetAllAzureAppTaskAsync();
         }
         [HttpPost]
-        public async Task<ActionResult<AppTaskLocalModel>> Post(AppTaskLocalModel appTaskModel)
+        public async Task<ActionResult<AppTaskLocalModel>> AddAzureAppTaskAsync(AppTaskLocalModel appTaskModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AzureAppTaskService.AddOrModifyAzureAppTask(appTaskModel);
+            return await AzureAppTaskService.AddAzureAppTaskAsync(appTaskModel);
+        }
+        [HttpPut]
+        public async Task<ActionResult<AppTaskLocalModel>> ModifyAzureAppTaskAsync(AppTaskLocalModel appTaskModel)
+        {
+            CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
+            await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
+
+            return await AzureAppTaskService.AddAzureAppTaskAsync(appTaskModel);
         }
         [Route("{AppTaskID:int}")]
         [HttpDelete]
-        public async Task<ActionResult<bool>> Delete(int AppTaskID)
+        public async Task<ActionResult<AppTaskLocalModel>> DeleteAzureAppTaskAsync(int AppTaskID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
             await CSSPServerLoggedInService.SetLoggedInContactInfo(User.Identity.Name);
 
-            return await AzureAppTaskService.DeleteAzureAppTask(AppTaskID);
+            return await AzureAppTaskService.DeleteAzureAppTaskAsync(AppTaskID);
         }
         #endregion Functions public
 

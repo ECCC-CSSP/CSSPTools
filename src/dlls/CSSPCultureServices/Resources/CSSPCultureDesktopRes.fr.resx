@@ -420,8 +420,8 @@
   <data name="AlreadyLoggedIn" xml:space="preserve">
     <value>Connexion déjà établi</value>
   </data>
-  <data name="CouldNotGetGoogleMapKey" xml:space="preserve">
-    <value>Dans l'impossiblité d'aller chercher la clef de GoogleMap</value>
+  <data name="CouldNotGet_" xml:space="preserve">
+    <value>Dans l'impossiblité d'aller chercher la clef de AzureStore</value>
   </data>
   <data name="Created_SQLiteDatabase" xml:space="preserve">
     <value>La base de données SQLite {0} est créée</value>

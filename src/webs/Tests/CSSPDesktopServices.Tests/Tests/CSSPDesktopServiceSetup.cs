@@ -16,6 +16,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using CSSPScrambleServices;
+using System.Collections.Generic;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -36,6 +37,12 @@ namespace CSSPDesktopServices.Tests
         private ICSSPFileService CSSPFileService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
+        private CSSPDBManageContext dbManage { get; set; }
+        //private string AzureStoreHash { get; set; }
+        List<string> CSSPOtherFileList = new List<string>();
+        List<string> dirList = new List<string>();
+
         #endregion Properties
 
         #region Constructors
@@ -68,72 +75,64 @@ namespace CSSPDesktopServices.Tests
             Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
             Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
-            Assert.NotNull(Configuration["APISecret"]);
-            Assert.NotNull(Configuration["AzureCSSPDB"]);
-            Assert.NotNull(Configuration["AzureStore"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
-            Assert.NotNull(Configuration["CSSPAzureUrl"]);
-            Assert.NotNull(Configuration["CSSPDatabasesPath"]);
             Assert.NotNull(Configuration["CSSPDB"]);
-            Assert.NotNull(Configuration["CSSPDBManage"]);
             Assert.NotNull(Configuration["CSSPDBLocal"]);
+            Assert.NotNull(Configuration["CSSPDBManage"]);
             Assert.NotNull(Configuration["CSSPDesktopPath"]);
-            Assert.NotNull(Configuration["CSSPJSONPath"]);
-            Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
-            Assert.NotNull(Configuration["CSSPFilesPath"]);
-            Assert.NotNull(Configuration["CSSPLocalUrl"]);
-            Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
-            Assert.NotNull(Configuration["CSSPTempFilesPath"]);
+            Assert.NotNull(Configuration["CSSPDatabasesPath"]);
             Assert.NotNull(Configuration["CSSPWebAPIsLocalPath"]);
+            Assert.Contains("test", Configuration["CSSPWebAPIsLocalPath"]);
+            Assert.NotNull(Configuration["CSSPJSONPath"]);
+            Assert.Contains("test", Configuration["CSSPJSONPath"]);
+            Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
+            Assert.Contains("test", Configuration["CSSPJSONPathLocal"]);
+            Assert.NotNull(Configuration["CSSPFilesPath"]);
+            Assert.Contains("test", Configuration["CSSPFilesPath"]);
+            Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
+            Assert.Contains("test", Configuration["CSSPOtherFilesPath"]);
+            Assert.NotNull(Configuration["CSSPTempFilesPath"]);
+            Assert.Contains("test", Configuration["CSSPTempFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+            Assert.Contains("test", Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.Contains("test", Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.Contains("test", Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["CSSPLocalUrl"]);
+            Assert.NotNull(Configuration["LoginEmail"]);
+            Assert.NotNull(Configuration["Password"]);
 
-            /* ---------------------------------------------------------------------------------
-             * using CSSPDBLocal
-             * ---------------------------------------------------------------------------------      
-             */
-            FileInfo fiCSSPDBLocal = new FileInfo(Configuration["CSSPDBLocal"]);
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            CSSPOtherFileList = new List<string>()
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBLocal.FullName }");
-            });
+                $"{ Configuration["CSSPOtherFilesPath"] }CssFamilyMaterial.css",
+                $"{ Configuration["CSSPOtherFilesPath"] }flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
+                $"{ Configuration["CSSPOtherFilesPath"] }GoogleMap.js",
+                $"{ Configuration["CSSPOtherFilesPath"] }IconFamilyMaterial.css",
+                $"{ Configuration["CSSPOtherFilesPath"] }HelpDocEN.rtf",
+                $"{ Configuration["CSSPOtherFilesPath"] }HelpDocFR.rtf"
+            };
 
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBManage
-             * ---------------------------------------------------------------------------------      
-             */
-            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
-
-            Services.AddDbContext<CSSPDBManageContext>(options =>
+            dirList = new List<string>()
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
-            });
+                Configuration["CSSPWebAPIsLocalPath"],
+                Configuration["CSSPJSONPath"],
+                Configuration["CSSPJSONPathLocal"],
+                Configuration["CSSPFilesPath"],
+                Configuration["CSSPOtherFilesPath"],
+                Configuration["CSSPTempFilesPath"],
+            };
+
+            CreateAndEmptyDirectories(dirList);
+
+            CreateCopyOfCSSPDBLocal();
+
+            CreateCopyOfCSSPDBManage();
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
-
-            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
-            Assert.NotNull(CSSPScrambleService);
-
-            CSSPLogService = Provider.GetService<ICSSPLogService>();
-            Assert.NotNull(CSSPLogService);
-
-            ManageFileService = Provider.GetService<IManageFileService>();
-            Assert.NotNull(ManageFileService);
-
-            CSSPFileService = Provider.GetService<ICSSPFileService>();
-            Assert.NotNull(CSSPFileService);
-
-            CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
-            Assert.NotNull(CSSPDesktopService);
-
-            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
-            Assert.NotNull(CSSPSQLiteService);
-
+            GetProviderServices();
 
             if (culture == "fr_CA")
             {
@@ -152,6 +151,8 @@ namespace CSSPDesktopServices.Tests
             {
                 CSSPCultureService.SetCulture("fr-CA");
             }
+
+            CopyOtherFileToTestOtherFile();
 
             return await Task.FromResult(true);
         }

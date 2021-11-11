@@ -20,7 +20,7 @@ namespace CSSPCreateGzFileServices
 {
     public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
-        private async Task<bool> ValidateDBs(string FunctionName)
+        private async Task<bool> ValidateDBsAsync(string FunctionName)
         {
             if (db == null && dbLocal == null)
             {
@@ -41,9 +41,9 @@ namespace CSSPCreateGzFileServices
                     CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreCSSPJSONPath"));
                 }
 
-                if (string.IsNullOrWhiteSpace(Configuration["AzureStore"]))
+                if (string.IsNullOrWhiteSpace(AzureStoreHash))
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStore"));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "AzureStoreHash"));
                 }
             }
 

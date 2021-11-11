@@ -29,25 +29,26 @@ namespace CSSPDBLocalServices.Tests
     public partial class CSSPDBLocalServiceTest
     {
         #region Properties
-        protected IConfiguration Configuration { get; set; }
-        protected ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-        protected CSSPDBLocalContext dbLocal { get; set; }
-        protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
         protected IAddressLocalService AddressLocalService { get; set; }
         protected IAppTaskLocalService AppTaskLocalService { get; set; }
         protected IClassificationLocalService ClassificationLocalService { get; set; }
         protected ICountryLocalService CountryLocalService { get; set; }
         protected IEmailLocalService EmailLocalService { get; set; }
         protected IHelpDocLocalService HelpDocLocalService { get; set; }
-        protected IHelperLocalService HelperLocalService { get; set; }
         protected IMapInfoLocalService MapInfoLocalService { get; set; }
         protected IMWQMLookupMPNLocalService MWQMLookupMPNLocalService { get; set; }
         protected IProvinceLocalService ProvinceLocalService { get; set; }
         protected IRootLocalService RootLocalService { get; set; }
         protected ITelLocalService TelLocalService { get; set; }
         protected ITVItemLocalService TVItemLocalService { get; set; }
+
+        protected IConfiguration Configuration { get; set; }
+        protected CSSPDBLocalContext dbLocal { get; set; }
         protected CSSPDBManageContext dbManage { get; set; }
+        protected ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         protected ICSSPLogService CSSPLogService { get; set; }
+        protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
+        protected IHelperLocalService HelperLocalService { get; set; }
 
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
@@ -83,11 +84,6 @@ namespace CSSPDBLocalServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            Assert.NotNull(Configuration["APISecret"]);
-            Assert.NotNull(Configuration["AzureCSSPDB"]);
-            Assert.NotNull(Configuration["AzureStore"]);
-            Assert.NotNull(Configuration["CSSPAzureUrl"]);
-            Assert.NotNull(Configuration["CSSPLocalUrl"]);
             Assert.NotNull(Configuration["CSSPDB"]);
             Assert.NotNull(Configuration["CSSPDBLocal"]);
             Assert.NotNull(Configuration["CSSPDBManage"]);
@@ -99,7 +95,13 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(Configuration["CSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
             Assert.NotNull(Configuration["CSSPFilesPath"]);
+            Assert.NotNull(Configuration["CSSPTempFilesPath"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["CSSPLocalUrl"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["AzureCSSPDB"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
@@ -132,6 +134,8 @@ namespace CSSPDBLocalServices.Tests
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
+            Assert.NotNull(Configuration);
+
             CSSPCultureService = Provider.GetService<ICSSPCultureService>();
             Assert.NotNull(CSSPCultureService);
 
@@ -141,6 +145,8 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(CSSPLocalLoggedInService);
 
             Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 
             CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
             Assert.NotNull(CSSPScrambleService);
@@ -212,25 +218,6 @@ namespace CSSPDBLocalServices.Tests
             Assert.NotNull(dbManage);
 
             Assert.True(await ClearSomeTablesOfCSSPDBManage());
-
-            Assert.NotNull(Configuration);
-            Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(CSSPLocalLoggedInService);
-            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
-            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
-            Assert.NotNull(CSSPScrambleService);
-            Assert.NotNull(CSSPLogService);
-            Assert.NotNull(enums);
-            Assert.NotNull(FileService);
-            Assert.NotNull(ManageFileService);
-            Assert.NotNull(CSSPCreateGzFileService);
-            Assert.NotNull(CSSPReadGzFileService);
-            Assert.NotNull(AppTaskLocalService);
-            Assert.NotNull(MapInfoLocalService);
-            Assert.NotNull(TVItemLocalService);
-            Assert.NotNull(db);
-            Assert.NotNull(dbLocal);
-            Assert.NotNull(dbManage);
 
             return await Task.FromResult(true);
         }
