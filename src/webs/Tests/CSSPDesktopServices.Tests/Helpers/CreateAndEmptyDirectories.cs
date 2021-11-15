@@ -15,7 +15,7 @@ namespace CSSPDesktopServices.Tests
 {
     public partial class CSSPDesktopServiceTests
     {
-        private void CreateAndEmptyDirectories(List<string> dirList)
+        private void CreateAndEmptyDirectories()
         {
             foreach(string dir in dirList)
             {

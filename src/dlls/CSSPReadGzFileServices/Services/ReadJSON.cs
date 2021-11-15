@@ -54,7 +54,7 @@ namespace CSSPReadGzFileServices
                 {
                     ManageFile manageFile = null;
 
-                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPJSONPath"], fiGZ.Name);
+                    var actionCSSPFile = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPJSONPath"], fiGZ.Name);
                     manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                     if (manageFile != null && manageFile.LoadedOnce)
@@ -134,7 +134,7 @@ namespace CSSPReadGzFileServices
                         {
                             ManageFile manageFile = null;
 
-                            var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPJSONPath"], fiGZ.Name);
+                            var actionCSSPFile = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPJSONPath"], fiGZ.Name);
                             manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                             if (manageFile == null)
@@ -147,7 +147,7 @@ namespace CSSPReadGzFileServices
                                 {
                                     manageFile.LoadedOnce = true;
 
-                                    var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                                    var actionCSSPFileAdded = await ManageFileService.AddAsync(manageFile);
                                     if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                                     {
                                         manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;

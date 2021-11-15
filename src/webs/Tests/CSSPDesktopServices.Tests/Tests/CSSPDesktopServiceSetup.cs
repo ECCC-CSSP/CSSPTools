@@ -123,7 +123,7 @@ namespace CSSPDesktopServices.Tests
                 Configuration["CSSPTempFilesPath"],
             };
 
-            CreateAndEmptyDirectories(dirList);
+            CreateAndEmptyDirectories();
 
             CreateCopyOfCSSPDBLocal();
 
@@ -152,7 +152,7 @@ namespace CSSPDesktopServices.Tests
                 CSSPCultureService.SetCulture("fr-CA");
             }
 
-            CopyOtherFileToTestOtherFile();
+            //CopyOtherFileToTestOtherFile();
 
             return await Task.FromResult(true);
         }

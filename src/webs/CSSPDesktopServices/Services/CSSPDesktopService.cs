@@ -29,16 +29,16 @@ namespace CSSPDesktopServices.Services
         Contact contact { get; set; }
 
         // Functions
-        Task<bool> CheckIfCSSPOtherFilesExist();
-        Task<bool> CheckIfLoginIsRequired();
-        Task<bool> CheckIfUpdateIsNeeded();
-        Task<bool> CheckingInternetConnection();
-        Task<bool> CreateAllRequiredDirectories();
-        Task<bool> InstallUpdates();
-        Task<bool> Login(LoginModel loginModel);
-        Task<bool> Logoff();
-        Task<bool> Start();
-        Task<bool> Stop();
+        Task<bool> CheckIfCSSPOtherFilesExistAsync();
+        Task<bool> CheckIfLoginIsRequiredAsync();
+        Task<bool> CheckIfUpdateIsNeededAsync();
+        Task<bool> CheckingInternetConnectionAsync();
+        Task<bool> CreateAllRequiredDirectoriesAsync();
+        Task<bool> InstallUpdatesAsync();
+        Task<bool> LoginAsync(LoginModel loginModel);
+        Task<bool> LogoffAsync();
+        Task<bool> StartAsync();
+        Task<bool> StopAsync();
 
         // Events
         event EventHandler<ClearEventArgs> StatusClear;
@@ -131,90 +131,5 @@ namespace CSSPDesktopServices.Services
         }
         #endregion Constructors
 
-        #region Functions public
-        public async Task<bool> CheckIfCSSPOtherFilesExist()
-        {
-            if (!await DoCheckIfCSSPOtherFilesExist()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CheckIfLoginIsRequired()
-        {
-            if (!await DoCheckIfLoginIsRequired()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CheckIfUpdateIsNeeded()
-        {
-            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
-
-            if (!await DoCheckIfUpdateIsNeeded()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CheckingInternetConnection()
-        {
-            if(!await DoCheckingInternetConnection()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> CreateAllRequiredDirectories()
-        {
-            if (!await DoCreateAllRequiredDirectories()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> InstallUpdates()
-        {
-            // need to stop CSSPWebAPIsLocal so we can copy over some files 
-            foreach (var process in Process.GetProcessesByName("CSSPWebAPIsLocal"))
-            {
-                process.Kill();
-            }
-
-            if (!await Stop()) await Task.FromResult(false);
-
-            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
-
-            if (!await DoInstallUpdates()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> Login(LoginModel loginModel)
-        {
-            if (!await DoLogin(loginModel)) return await Task.FromResult(false);
-
-            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> Logoff()
-        {
-            if (!await DoLogoff()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        //public async Task<bool> ReadConfiguration()
-        //{
-        //    if (!await DoReadConfiguration()) return await Task.FromResult(false);
-
-        //    return await Task.FromResult(true);
-        //}
-        public async Task<bool> Start()
-        {
-            if (!await DoStart()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        public async Task<bool> Stop()
-        {
-            if (!await DoStop()) return await Task.FromResult(false);
-
-            return await Task.FromResult(true);
-        }
-        #endregion Function public
-
-        #region Functions private
-        #endregion Functions private
     }
 }

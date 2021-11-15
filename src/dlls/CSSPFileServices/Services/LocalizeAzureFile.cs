@@ -54,7 +54,7 @@ namespace CSSPFileServices
 
             if (fiDownload.Exists)
             {
-                var manageFileExist = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
+                var manageFileExist = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
                 ManageFile manageFile = (ManageFile)((OkObjectResult)manageFileExist.Result).Value;
                 if (manageFile != null)
                 {
@@ -62,7 +62,7 @@ namespace CSSPFileServices
                     {
                         manageFile.LoadedOnce = true;
 
-                        var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                        var actionCSSPFileAdded = await ManageFileService.AddAsync(manageFile);
                         if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                         {
                             manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
@@ -136,7 +136,7 @@ namespace CSSPFileServices
                     return await CSSPLogService.EndFunctionReturnBadRequest(FunctionName, string.Format(CSSPCultureServicesRes.CouldNotLocalizeAzureFile_Error_, $"{ParentTVItemID}\\{FileName}", ErrorText));
                 }
 
-                var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
+                var actionCSSPFile = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
                 ManageFile manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                 if (manageFile == null)
@@ -151,7 +151,7 @@ namespace CSSPFileServices
                         LoadedOnce = true,
                     };
 
-                    var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                    var actionCSSPFileAdded = await ManageFileService.AddAsync(manageFile);
                     if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                     {
                         // information got uploaded to CSSPDBManage.db Table ManageFiles properly
@@ -171,7 +171,7 @@ namespace CSSPFileServices
                     manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
                     manageFile.LoadedOnce = true;
 
-                    var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
+                    var actionCSSPFilePut = await ManageFileService.AddAsync(manageFile);
                     if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                     {
                         // information got uploaded to CSSPDBManage.db Table ManageFiles properly

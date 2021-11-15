@@ -111,7 +111,7 @@ namespace CSSPDesktop
         private void butUpdate_Click(object sender, EventArgs e)
         {
             butCancelUpdate.Enabled = false;
-            if (CSSPDesktopService.InstallUpdates().GetAwaiter().GetResult())
+            if (CSSPDesktopService.InstallUpdatesAsync().GetAwaiter().GetResult())
             {
                 butShowUpdatePanel.Enabled = false;
             }
@@ -231,7 +231,7 @@ namespace CSSPDesktop
         #region Functions private
         private async Task<bool> CheckInternetConnection()
         {
-            if (!await CSSPDesktopService.CheckingInternetConnection()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.CheckingInternetConnectionAsync()) return await Task.FromResult(false);
 
             if (CSSPDesktopService.contact != null && CSSPDesktopService.contact.HasInternetConnection != null)
             {
@@ -332,7 +332,7 @@ namespace CSSPDesktop
                 Password = textBoxPasswordLogin.Text.Trim(),
             };
 
-            if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.LoginAsync(loginModel)) return await Task.FromResult(false);
             if (!await StartTheAppWithLanguage()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
@@ -356,7 +356,7 @@ namespace CSSPDesktop
         //}
         private void Logoff()
         {
-            CSSPDesktopService.Logoff();
+            CSSPDesktopService.LogoffAsync();
             textBoxPasswordLogin.Text = "";
             ShowPanels(ShowPanel.Login);
         }
@@ -385,7 +385,7 @@ namespace CSSPDesktop
         {
             SettingUpAllTextForLanguage();
 
-            if (!await CSSPDesktopService.CheckIfLoginIsRequired()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.CheckIfLoginIsRequiredAsync()) return await Task.FromResult(false);
 
             if (!CSSPDesktopService.LoginRequired)
             {
@@ -397,9 +397,9 @@ namespace CSSPDesktop
                         Password = CSSPScrambleService.Descramble(CSSPDesktopService.contact.PasswordHash),
                     };
 
-                    if (!await CSSPDesktopService.Login(loginModel)) return await Task.FromResult(false);
+                    if (!await CSSPDesktopService.LoginAsync(loginModel)) return await Task.FromResult(false);
                 }
-                if (!await CSSPDesktopService.CheckIfUpdateIsNeeded()) return await Task.FromResult(false);
+                if (!await CSSPDesktopService.CheckIfUpdateIsNeededAsync()) return await Task.FromResult(false);
             }
 
             if (CSSPDesktopService.LoginRequired)
@@ -561,7 +561,7 @@ namespace CSSPDesktop
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService") + "\r\n");
             }
 
-            if (!await CSSPDesktopService.CreateAllRequiredDirectories()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.CreateAllRequiredDirectoriesAsync()) return await Task.FromResult(false);
 
             // create CSSPDBManage if it does not exist
             FileInfo fi = new FileInfo(Configuration["CSSPDBManage"]);
@@ -594,7 +594,7 @@ namespace CSSPDesktop
 
             if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
-            if (!await CSSPDesktopService.CheckIfCSSPOtherFilesExist()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.CheckIfCSSPOtherFilesExistAsync()) return await Task.FromResult(false);
 
             lblStatus.Text = "";
 
@@ -828,13 +828,13 @@ namespace CSSPDesktop
         {
             butStart.Enabled = false;
             butStop.Enabled = true;
-            CSSPDesktopService.Start();
+            CSSPDesktopService.StartAsync();
         }
         private void Stop()
         {
             butStart.Enabled = true;
             butStop.Enabled = false;
-            CSSPDesktopService.Stop();
+            CSSPDesktopService.StopAsync();
         }
         #endregion Functions private
 

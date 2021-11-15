@@ -44,7 +44,7 @@ namespace CSSPFileServices
                 {
                     ManageFile manageFile = null;
 
-                    var actionCSSPFile = await ManageFileService.ManageFileGetWithAzureStorageAndAzureFileName(Configuration["AzureStoreCSSPJSONPath"], FileName);
+                    var actionCSSPFile = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPJSONPath"], FileName);
                     manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
                     if (manageFile == null)
@@ -59,7 +59,7 @@ namespace CSSPFileServices
                             LoadedOnce = true,
                         };
 
-                        var actionCSSPFileAdded = await ManageFileService.ManageFileAddOrModify(manageFile);
+                        var actionCSSPFileAdded = await ManageFileService.AddAsync(manageFile);
                         if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                         {
                             manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;
@@ -79,7 +79,7 @@ namespace CSSPFileServices
                         manageFile.AzureCreationTimeUTC = DateTime.Parse(response.Headers.Date.ToString());
                         manageFile.LoadedOnce = true;
 
-                        var actionCSSPFilePut = await ManageFileService.ManageFileAddOrModify(manageFile);
+                        var actionCSSPFilePut = await ManageFileService.AddAsync(manageFile);
                         if (((ObjectResult)actionCSSPFilePut.Result).StatusCode == 200)
                         {
                             manageFile = (ManageFile)((OkObjectResult)actionCSSPFilePut.Result).Value;
