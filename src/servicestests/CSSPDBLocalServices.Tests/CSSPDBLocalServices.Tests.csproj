@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
   </ItemGroup>
 
 </Project>

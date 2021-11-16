@@ -19,7 +19,7 @@ namespace GenerateRepopulateTestDB
                .Build();
 
             Startup startup = new Startup(Configuration);
-            await startup.Generate();
+            //await startup.Generate();
         }
         #endregion Entry
 

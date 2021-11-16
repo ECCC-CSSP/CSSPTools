@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPCustomAttributes\CSSPCustomAttributes.csproj" />
+    <ProjectReference Include="..\..\services\CSSPCustomAttributes\CSSPCustomAttributes.csproj" />
   </ItemGroup>
 
 </Project>

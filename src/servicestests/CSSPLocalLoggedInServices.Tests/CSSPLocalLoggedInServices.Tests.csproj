@@ -32,7 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

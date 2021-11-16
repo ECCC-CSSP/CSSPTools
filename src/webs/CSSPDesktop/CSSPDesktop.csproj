@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPDesktopServices\CSSPDesktopServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

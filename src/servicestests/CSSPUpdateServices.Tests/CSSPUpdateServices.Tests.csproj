@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPUpdateServices\CSSPUpdateServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPUpdateServices\CSSPUpdateServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

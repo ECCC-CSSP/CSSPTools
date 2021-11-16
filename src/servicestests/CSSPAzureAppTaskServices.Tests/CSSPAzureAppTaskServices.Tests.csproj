@@ -32,7 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
   </ItemGroup>
   
   <ItemGroup>

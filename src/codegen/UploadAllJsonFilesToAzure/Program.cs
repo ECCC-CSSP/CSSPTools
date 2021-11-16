@@ -15,7 +15,7 @@ namespace UploadAllJsonFilesToAzure
 
             if (!startup.Setup()) return;
 
-            await startup.CSSPCreateGzFileService.CreateAllGzFiles();
+            await startup.CSSPCreateGzFileService.CreateAllGzFilesAsync();
         }
     }
 }

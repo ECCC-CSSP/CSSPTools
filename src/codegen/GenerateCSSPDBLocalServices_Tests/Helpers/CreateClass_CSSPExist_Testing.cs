@@ -51,7 +51,7 @@ namespace GenerateCSSPDBLocalServices_Tests
                             {
                                 int TVItemIDNotGoodType = 0;
                                 TVItem tvItem = null;
-                                tvItem = (from c in dbTestDB.TVItems
+                                tvItem = (from c in db.TVItems
                                           where !csspProp.AllowableTVTypeList.Contains(c.TVType)
                                           select c).FirstOrDefault();
 

@@ -29,9 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
-    <ProjectReference Include="..\..\webs\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

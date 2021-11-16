@@ -25,7 +25,7 @@ using Xunit;
 namespace CSSPAzureAppTaskServices.Tests
 {
     [Collection("Sequential")]
-    public partial class AzureAppTaskServiceTest
+    public partial class CSSPAzureAppTaskServiceTest
     {
         #region Properties
         private IConfiguration Configuration { get; set; }
@@ -42,7 +42,7 @@ namespace CSSPAzureAppTaskServices.Tests
         #endregion Properties
 
         #region Constructors
-        public AzureAppTaskServiceTest()
+        public CSSPAzureAppTaskServiceTest()
         {
 
         }

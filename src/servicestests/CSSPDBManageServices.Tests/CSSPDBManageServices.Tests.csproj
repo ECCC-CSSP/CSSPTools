@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDBManageServices\CSSPDBManageServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

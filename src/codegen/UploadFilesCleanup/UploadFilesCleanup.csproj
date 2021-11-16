@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

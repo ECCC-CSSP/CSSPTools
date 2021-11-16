@@ -5,10 +5,18 @@
 
     <IsPackable>false</IsPackable>
 
-    <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>6277018e-7198-41f3-9906-f8a6ccfa30e5</UserSecretsId>
 
-    <UserSecretsId>a99b918b-441f-4e0c-8461-a36b9e9565d3</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings_csspdesktopservicestests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
@@ -30,13 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings_csspdesktopinstallpostbuildservicestests.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\..\services\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 
 </Project>

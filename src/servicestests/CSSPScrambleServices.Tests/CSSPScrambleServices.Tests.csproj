@@ -32,7 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

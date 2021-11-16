@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDBServices\CSSPDBServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

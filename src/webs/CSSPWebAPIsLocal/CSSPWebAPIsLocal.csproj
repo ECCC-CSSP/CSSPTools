@@ -32,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

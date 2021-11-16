@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPEnums\CSSPEnums.csproj" />
+    <ProjectReference Include="..\..\services\CSSPEnums\CSSPEnums.csproj" />
   </ItemGroup>
 
   <ItemGroup>

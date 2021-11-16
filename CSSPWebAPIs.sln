@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices.Tests", "src\servicestests\CSSPCultureServices.Tests\CSSPCultureServices.Tests.csproj", "{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices", "src\webs\CSSPDesktopServices\CSSPDesktopServices.csproj", "{D3639891-5B74-4C2E-B01E-A7AD3DDCED75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices", "src\services\CSSPDesktopServices\CSSPDesktopServices.csproj", "{D3639891-5B74-4C2E-B01E-A7AD3DDCED75}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices.Tests", "src\webs\Tests\CSSPDesktopServices.Tests\CSSPDesktopServices.Tests.csproj", "{BE212A6B-B9BF-4D63-94DE-447D9DD306B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices.Tests", "src\servicestests\CSSPDesktopServices.Tests\CSSPDesktopServices.Tests.csproj", "{BE212A6B-B9BF-4D63-94DE-447D9DD306B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktop", "src\webs\CSSPDesktop\CSSPDesktop.csproj", "{7682E565-F768-4AC2-89CF-1942DF814FAA}"
 EndProject
@@ -139,9 +139,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices.Tests", "src\servicestests\CSSPScrambleServices.Tests\CSSPScrambleServices.Tests.csproj", "{674A267F-84B8-4F56-A1FB-7B9CBA6DAB00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopInstallPostBuildServices.Tests", "src\webs\Tests\CSSPDesktopInstallPostBuildServices.Tests\CSSPDesktopInstallPostBuildServices.Tests.csproj", "{2BF3881C-36D3-4FDF-80DC-DC8EB8A07C1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopInstallPostBuildServices.Tests", "src\servicestests\CSSPDesktopInstallPostBuildServices.Tests\CSSPDesktopInstallPostBuildServices.Tests.csproj", "{2BF3881C-36D3-4FDF-80DC-DC8EB8A07C1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopInstallPostBuildServices", "src\webs\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj", "{689E3434-82E2-47CB-8332-CA25BD956FDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopInstallPostBuildServices", "src\services\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj", "{689E3434-82E2-47CB-8332-CA25BD956FDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,7 +11,7 @@ namespace GenerateRepopulateTestDB
     {
         private IConfiguration Configuration { get; set; }
         public IServiceProvider Provider { get; set; }
-        private TestDBContext dbTestDB { get; set; }
+        //private TestDBContext dbTestDB { get; set; }
         private CSSPDBContext dbCSSPDB { get; set; }
 
 
@@ -19,54 +19,54 @@ namespace GenerateRepopulateTestDB
         {
             this.Configuration = Configuration;
 
-            ServiceCollection Services = new ServiceCollection();
+            //ServiceCollection Services = new ServiceCollection();
 
-            Services.AddSingleton<IConfiguration>(Configuration);
+            //Services.AddSingleton<IConfiguration>(Configuration);
 
-            string TestDBConnString = Configuration.GetValue<string>("TestDB");
-            if (TestDBConnString == null)
-            {
-                Console.WriteLine($"Could not find parameter TestDB in appsettings.json");
-                return;
-            }
+            //string TestDBConnString = Configuration.GetValue<string>("TestDB");
+            //if (TestDBConnString == null)
+            //{
+            //    Console.WriteLine($"Could not find parameter TestDB in appsettings.json");
+            //    return;
+            //}
 
-            Services.AddDbContext<TestDBContext>(options =>
-            {
-                options.UseSqlServer(TestDBConnString);
-            });
+            //Services.AddDbContext<TestDBContext>(options =>
+            //{
+            //    options.UseSqlServer(TestDBConnString);
+            //});
 
-            string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
-            if (CSSPDBConnString == null)
-            {
-                Console.WriteLine($"Could not find parameter CSSPDB in appsettings.json");
-                return;
-            }
+            //string CSSPDBConnString = Configuration.GetValue<string>("CSSPDB");
+            //if (CSSPDBConnString == null)
+            //{
+            //    Console.WriteLine($"Could not find parameter CSSPDB in appsettings.json");
+            //    return;
+            //}
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(CSSPDBConnString);
-            });
+            //Services.AddDbContext<CSSPDBContext>(options =>
+            //{
+            //    options.UseSqlServer(CSSPDBConnString);
+            //});
 
-            Provider = Services.BuildServiceProvider();
-            if (Provider == null)
-            {
-                Console.WriteLine($"Provider should not be null");
-                return;
-            }
+            //Provider = Services.BuildServiceProvider();
+            //if (Provider == null)
+            //{
+            //    Console.WriteLine($"Provider should not be null");
+            //    return;
+            //}
 
-            dbTestDB = Provider.GetService<TestDBContext>();
-            if (dbTestDB == null)
-            {
-                Console.WriteLine($"Could not get TestDBContext from Provider");
-                return;
-            }
+            //dbTestDB = Provider.GetService<TestDBContext>();
+            //if (dbTestDB == null)
+            //{
+            //    Console.WriteLine($"Could not get TestDBContext from Provider");
+            //    return;
+            //}
 
-            dbCSSPDB = Provider.GetService<CSSPDBContext>();
-            if (dbCSSPDB == null)
-            {
-                Console.WriteLine($"Could not get CSSPDBContext from Provider");
-                return;
-            }
+            //dbCSSPDB = Provider.GetService<CSSPDBContext>();
+            //if (dbCSSPDB == null)
+            //{
+            //    Console.WriteLine($"Could not get CSSPDBContext from Provider");
+            //    return;
+            //}
         }
     }
 }

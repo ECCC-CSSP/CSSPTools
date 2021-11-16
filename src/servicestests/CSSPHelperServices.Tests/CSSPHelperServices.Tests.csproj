@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPHelperServices\CSSPHelperServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPHelperServices\CSSPHelperServices.csproj" />
   </ItemGroup>
 
 </Project>

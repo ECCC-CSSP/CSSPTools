@@ -30,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj" />
-    <ProjectReference Include="..\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>
 
 </Project>

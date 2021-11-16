@@ -53,7 +53,7 @@ namespace GenerateCSSPDBServices_Tests
                                 {
                                     case "AppTask":
                                         {
-                                            AppTask appTask = dbTestDB.AppTasks.AsNoTracking().FirstOrDefault();
+                                            AppTask appTask = db.AppTasks.AsNoTracking().FirstOrDefault();
                                             if (appTask == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -66,7 +66,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "BoxModel":
                                         {
-                                            BoxModel boxModel = dbTestDB.BoxModels.AsNoTracking().FirstOrDefault();
+                                            BoxModel boxModel = db.BoxModels.AsNoTracking().FirstOrDefault();
                                             if (boxModel == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -79,7 +79,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "ClimateSite":
                                         {
-                                            ClimateSite climateSite = dbTestDB.ClimateSites.AsNoTracking().FirstOrDefault();
+                                            ClimateSite climateSite = db.ClimateSites.AsNoTracking().FirstOrDefault();
                                             if (climateSite == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -92,7 +92,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "CoCoRaHSSite":
                                         {
-                                            CoCoRaHSSite coCoRaHSSite = dbTestDB.CoCoRaHSSites.AsNoTracking().FirstOrDefault();
+                                            CoCoRaHSSite coCoRaHSSite = db.CoCoRaHSSites.AsNoTracking().FirstOrDefault();
                                             if (coCoRaHSSite == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -105,7 +105,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "Contact":
                                         {
-                                            Contact contact = dbTestDB.Contacts.AsNoTracking().FirstOrDefault();
+                                            Contact contact = db.Contacts.AsNoTracking().FirstOrDefault();
                                             if (contact == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -118,7 +118,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "DrogueRun":
                                         {
-                                            DrogueRun drogueRun = dbTestDB.DrogueRuns.AsNoTracking().FirstOrDefault();
+                                            DrogueRun drogueRun = db.DrogueRuns.AsNoTracking().FirstOrDefault();
                                             if (drogueRun == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -131,7 +131,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "EmailDistributionList":
                                         {
-                                            EmailDistributionList emailDistributionList = dbTestDB.EmailDistributionLists.AsNoTracking().FirstOrDefault();
+                                            EmailDistributionList emailDistributionList = db.EmailDistributionLists.AsNoTracking().FirstOrDefault();
                                             if (emailDistributionList == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -144,7 +144,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "EmailDistributionListContact":
                                         {
-                                            EmailDistributionListContact emailDistributionListContact = dbTestDB.EmailDistributionListContacts.AsNoTracking().FirstOrDefault();
+                                            EmailDistributionListContact emailDistributionListContact = db.EmailDistributionListContacts.AsNoTracking().FirstOrDefault();
                                             if (emailDistributionListContact == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -157,7 +157,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "HydrometricSite":
                                         {
-                                            HydrometricSite hydrometricSite = dbTestDB.HydrometricSites.AsNoTracking().FirstOrDefault();
+                                            HydrometricSite hydrometricSite = db.HydrometricSites.AsNoTracking().FirstOrDefault();
                                             if (hydrometricSite == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -170,7 +170,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "Infrastructure":
                                         {
-                                            Infrastructure infrastructure = dbTestDB.Infrastructures.AsNoTracking().FirstOrDefault();
+                                            Infrastructure infrastructure = db.Infrastructures.AsNoTracking().FirstOrDefault();
                                             if (infrastructure == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -183,7 +183,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "LabSheet":
                                         {
-                                            LabSheet labSheet = dbTestDB.LabSheets.AsNoTracking().FirstOrDefault();
+                                            LabSheet labSheet = db.LabSheets.AsNoTracking().FirstOrDefault();
                                             if (labSheet == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -196,7 +196,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "LabSheetDetail":
                                         {
-                                            LabSheetDetail labSheetDetail = dbTestDB.LabSheetDetails.AsNoTracking().FirstOrDefault();
+                                            LabSheetDetail labSheetDetail = db.LabSheetDetails.AsNoTracking().FirstOrDefault();
                                             if (labSheetDetail == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -209,7 +209,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "MapInfo":
                                         {
-                                            MapInfo mapInfo = dbTestDB.MapInfos.AsNoTracking().FirstOrDefault();
+                                            MapInfo mapInfo = db.MapInfos.AsNoTracking().FirstOrDefault();
                                             if (mapInfo == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -222,7 +222,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "MikeSource":
                                         {
-                                            MikeSource mikeSource = dbTestDB.MikeSources.AsNoTracking().FirstOrDefault();
+                                            MikeSource mikeSource = db.MikeSources.AsNoTracking().FirstOrDefault();
                                             if (mikeSource == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -235,7 +235,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "MWQMAnalysisReportParameter":
                                         {
-                                            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = dbTestDB.MWQMAnalysisReportParameters.AsNoTracking().FirstOrDefault();
+                                            MWQMAnalysisReportParameter mwqmAnalysisReportParameter = db.MWQMAnalysisReportParameters.AsNoTracking().FirstOrDefault();
                                             if (mwqmAnalysisReportParameter == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -248,7 +248,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "MWQMRun":
                                         {
-                                            MWQMRun mwqmRun = dbTestDB.MWQMRuns.AsNoTracking().FirstOrDefault();
+                                            MWQMRun mwqmRun = db.MWQMRuns.AsNoTracking().FirstOrDefault();
                                             if (mwqmRun == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -261,7 +261,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "MWQMSample":
                                         {
-                                            MWQMSample mwqmSample = dbTestDB.MWQMSamples.AsNoTracking().FirstOrDefault();
+                                            MWQMSample mwqmSample = db.MWQMSamples.AsNoTracking().FirstOrDefault();
                                             if (mwqmSample == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -274,7 +274,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "MWQMSubsector":
                                         {
-                                            MWQMSubsector mwqmSubsector = dbTestDB.MWQMSubsectors.AsNoTracking().FirstOrDefault();
+                                            MWQMSubsector mwqmSubsector = db.MWQMSubsectors.AsNoTracking().FirstOrDefault();
                                             if (mwqmSubsector == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -287,7 +287,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "PolSourceGrouping":
                                         {
-                                            PolSourceGrouping polSourceGrouping = dbTestDB.PolSourceGroupings.AsNoTracking().FirstOrDefault();
+                                            PolSourceGrouping polSourceGrouping = db.PolSourceGroupings.AsNoTracking().FirstOrDefault();
                                             if (polSourceGrouping == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -300,7 +300,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "PolSourceObservation":
                                         {
-                                            PolSourceObservation polSourceObservation = dbTestDB.PolSourceObservations.AsNoTracking().FirstOrDefault();
+                                            PolSourceObservation polSourceObservation = db.PolSourceObservations.AsNoTracking().FirstOrDefault();
                                             if (polSourceObservation == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -313,7 +313,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "PolSourceSite":
                                         {
-                                            PolSourceSite polSourceSite = dbTestDB.PolSourceSites.AsNoTracking().FirstOrDefault();
+                                            PolSourceSite polSourceSite = db.PolSourceSites.AsNoTracking().FirstOrDefault();
                                             if (polSourceSite == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -326,7 +326,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "RatingCurve":
                                         {
-                                            RatingCurve ratingCurve = dbTestDB.RatingCurves.AsNoTracking().FirstOrDefault();
+                                            RatingCurve ratingCurve = db.RatingCurves.AsNoTracking().FirstOrDefault();
                                             if (ratingCurve == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -339,7 +339,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "ReportType":
                                         {
-                                            ReportType reportType = dbTestDB.ReportTypes.AsNoTracking().FirstOrDefault();
+                                            ReportType reportType = db.ReportTypes.AsNoTracking().FirstOrDefault();
                                             if (reportType == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -352,7 +352,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "SamplingPlanSubsector":
                                         {
-                                            SamplingPlanSubsector samplingPlanSubsector = dbTestDB.SamplingPlanSubsectors.AsNoTracking().FirstOrDefault();
+                                            SamplingPlanSubsector samplingPlanSubsector = db.SamplingPlanSubsectors.AsNoTracking().FirstOrDefault();
                                             if (samplingPlanSubsector == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -365,7 +365,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "SamplingPlan":
                                         {
-                                            SamplingPlan samplingPlan = dbTestDB.SamplingPlans.AsNoTracking().FirstOrDefault();
+                                            SamplingPlan samplingPlan = db.SamplingPlans.AsNoTracking().FirstOrDefault();
                                             if (samplingPlan == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -378,7 +378,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "Spill":
                                         {
-                                            Spill spill = dbTestDB.Spills.AsNoTracking().FirstOrDefault();
+                                            Spill spill = db.Spills.AsNoTracking().FirstOrDefault();
                                             if (spill == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -391,7 +391,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "TVFile":
                                         {
-                                            TVFile tvFile = dbTestDB.TVFiles.AsNoTracking().FirstOrDefault();
+                                            TVFile tvFile = db.TVFiles.AsNoTracking().FirstOrDefault();
                                             if (tvFile == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -404,7 +404,7 @@ namespace GenerateCSSPDBServices_Tests
                                         break;
                                     case "VPScenario":
                                         {
-                                            VPScenario vpScenario = dbTestDB.VPScenarios.AsNoTracking().FirstOrDefault();
+                                            VPScenario vpScenario = db.VPScenarios.AsNoTracking().FirstOrDefault();
                                             if (vpScenario == null)
                                             {
                                                 sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");
@@ -429,7 +429,7 @@ namespace GenerateCSSPDBServices_Tests
                                                 }
                                                 else
                                                 {
-                                                    TVItem tvItem = dbTestDB.TVItems.AsNoTracking().Where(c => c.TVType == csspProp.AllowableTVTypeList[0]).FirstOrDefault();
+                                                    TVItem tvItem = db.TVItems.AsNoTracking().Where(c => c.TVType == csspProp.AllowableTVTypeList[0]).FirstOrDefault();
                                                     if (tvItem == null)
                                                     {
                                                         sb.AppendLine($@"            // Need to implement (no items found, would need to add at least one in the TestDB) [{ TypeName } { csspProp.PropName } { csspProp.ExistTypeName } { csspProp.ExistFieldID }]");

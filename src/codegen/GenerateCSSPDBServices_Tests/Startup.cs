@@ -11,7 +11,7 @@ namespace GenerateCSSPDBServices_Tests
     {
         private IConfiguration Configuration { get; set; }
         public IServiceProvider Provider { get; set; }
-        private TestDBContext dbTestDB { get; set; }
+        private CSSPDBContext db { get; set; }
 
 
         public Startup(IConfiguration Configuration)
@@ -22,16 +22,16 @@ namespace GenerateCSSPDBServices_Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            string TestDBConnString = Configuration.GetValue<string>("TestDB");
-            if (TestDBConnString == null)
+            string CSSPDBConnString = Configuration["CSSPDB"];
+            if (CSSPDBConnString == null)
             {
-                Console.WriteLine($"Could not find parameter TestDB in appsettings.json");
+                Console.WriteLine($"Could not find parameter CSSPDB in appsettings.json");
                 return;
             }
 
-            Services.AddDbContext<TestDBContext>(options =>
+            Services.AddDbContext<CSSPDBContext>(options =>
             {
-                options.UseSqlServer(TestDBConnString);
+                options.UseSqlServer(CSSPDBConnString);
             });
 
             Provider = Services.BuildServiceProvider();
@@ -41,7 +41,7 @@ namespace GenerateCSSPDBServices_Tests
                 return;
             }
 
-            dbTestDB = Provider.GetService<TestDBContext>();
+            db = Provider.GetService<CSSPDBContext>();
         }
     }
 }

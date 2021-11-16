@@ -32,7 +32,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPSyncDBsServices\CSSPSyncDBsServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSyncDBsServices\CSSPSyncDBsServices.csproj" />
   </ItemGroup>
   
   <ItemGroup>

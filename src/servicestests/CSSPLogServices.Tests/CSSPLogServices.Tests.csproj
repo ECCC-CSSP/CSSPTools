@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPLogServices\CSSPLogServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPLogServices\CSSPLogServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

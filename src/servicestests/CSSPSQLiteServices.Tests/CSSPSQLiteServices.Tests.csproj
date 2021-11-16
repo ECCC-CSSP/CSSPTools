@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPHelperModels\CSSPHelperModels.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPHelperModels\CSSPHelperModels.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPCultureServices\CSSPCultureServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPCultureServices\CSSPCultureServices.csproj" />
   </ItemGroup>
 
 </Project>

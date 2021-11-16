@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dlls\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPDBServices\CSSPDBServices.csproj" />
-    <ProjectReference Include="..\..\dlls\CSSPWebModels\CSSPWebModels.csproj" />
-    <ProjectReference Include="..\..\tests\CSSPScrambleServices.Tests\CSSPScrambleServices.Tests.csproj" />
+    <ProjectReference Include="..\..\services\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDBServices\CSSPDBServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
  
   <ItemGroup>

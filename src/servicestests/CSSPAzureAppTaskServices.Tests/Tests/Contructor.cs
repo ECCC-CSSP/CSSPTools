@@ -8,7 +8,7 @@ using Xunit;
 
 namespace CSSPAzureAppTaskServices.Tests
 {
-    public partial class AzureAppTaskServiceTest
+    public partial class CSSPAzureAppTaskServiceTest
     {
         [Theory]
         [InlineData("en-CA")]
