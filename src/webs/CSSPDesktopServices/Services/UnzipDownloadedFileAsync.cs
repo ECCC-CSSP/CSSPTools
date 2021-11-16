@@ -24,7 +24,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> UnzipDownloadedFileAsync(string zipFileName, ShareFileProperties shareFileProperties)
+        private async Task<bool> UnzipDownloadedFileAsync(string zipFileName, ShareFileProperties shareFileProperties)
         {
             FileInfo fiLocal = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 

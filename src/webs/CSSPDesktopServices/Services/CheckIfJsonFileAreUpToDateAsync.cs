@@ -45,7 +45,7 @@ namespace CSSPDesktopServices.Services
 
                 FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ jsonFileName }");
 
-                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
                 ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
                 ShareFileClient file = directory.GetFileClient(jsonFileName);
                 ShareFileProperties shareFileProperties = null;
@@ -58,7 +58,7 @@ namespace CSSPDesktopServices.Services
                 {
                     if (ex.Status == 404)
                     {
-                        string error = string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPWebAPIsLocalPath"], jsonFileName);
+                        string error = string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPJsonPath"], jsonFileName);
                         AppendStatus(new AppendEventArgs(error));
                         CSSPLogService.AppendError(error);
                         return await Task.FromResult(true);

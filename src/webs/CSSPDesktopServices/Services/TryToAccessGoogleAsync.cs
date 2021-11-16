@@ -23,7 +23,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> TryToAccessGoogleAsync()
+        private async Task<bool> TryToAccessGoogleAsync()
         {
             string url = "https://www.google.com/";
 

@@ -16,10 +16,10 @@ namespace CSSPDesktopServices.Tests
 {
     public partial class CSSPDesktopServiceTests
     {
-        private void CopyOtherFileToTestOtherFile()
+        private async Task CopyOtherFileToTestOtherFile()
         {
 
-            foreach(string fileName in CSSPOtherFileList)
+            foreach(string fileName in await GetCSSPOtherFileListAsync())
             {
                 try
                 {
@@ -31,7 +31,7 @@ namespace CSSPDesktopServices.Tests
                 }
             }
 
-            foreach (string fileName in CSSPOtherFileList)
+            foreach (string fileName in await GetCSSPOtherFileListAsync())
             {
                 FileInfo fi = new FileInfo(fileName);
 

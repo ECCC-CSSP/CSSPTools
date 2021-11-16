@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CSSPLogServices;
 using CSSPScrambleServices;
+using System.Linq;
 
 namespace CSSPDesktop
 {
@@ -563,13 +564,35 @@ namespace CSSPDesktop
 
             if (!await CSSPDesktopService.CreateAllRequiredDirectoriesAsync()) return await Task.FromResult(false);
 
+            CSSPDBManageContext dbManage = Provider.GetService<CSSPDBManageContext>();
+            if (dbManage == null)
+            {
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService") + "\r\n");
+            }
+
             // create CSSPDBManage if it does not exist
             FileInfo fi = new FileInfo(Configuration["CSSPDBManage"]);
             if (!fi.Exists)
             {
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db") + "\r\n");
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBManage()) return await Task.FromResult(false);
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync()) return await Task.FromResult(false);
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Created_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db" + "\r\n"));
+            }
+            else
+            {
+                try
+                {
+                    var a = (from c in dbManage.Contacts
+                             select c).FirstOrDefault();
+
+                    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+                }
+                catch (Exception ex)
+                {
+                    richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db") + "\r\n");
+                    if (!await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync()) return await Task.FromResult(false);
+                    richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Created_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db" + "\r\n"));
+                }
             }
 
             SettingUpAllTextForLanguage();
@@ -579,7 +602,7 @@ namespace CSSPDesktop
             if (!fi.Exists)
             {
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBLocal.db") + "\r\n");
-                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocal()) return await Task.FromResult(false);
+                if (!await CSSPSQLiteService.CreateSQLiteCSSPDBLocalAsync()) return await Task.FromResult(false);
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Created_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBLocal.db") + "\r\n");
             }
 

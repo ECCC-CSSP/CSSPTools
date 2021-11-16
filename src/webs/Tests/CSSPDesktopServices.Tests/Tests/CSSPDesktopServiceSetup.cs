@@ -39,9 +39,6 @@ namespace CSSPDesktopServices.Tests
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        //private string AzureStoreHash { get; set; }
-        List<string> CSSPOtherFileList = new List<string>();
-        List<string> dirList = new List<string>();
 
         #endregion Properties
 
@@ -103,27 +100,7 @@ namespace CSSPDesktopServices.Tests
             Assert.NotNull(Configuration["LoginEmail"]);
             Assert.NotNull(Configuration["Password"]);
 
-            CSSPOtherFileList = new List<string>()
-            {
-                $"{ Configuration["CSSPOtherFilesPath"] }CssFamilyMaterial.css",
-                $"{ Configuration["CSSPOtherFilesPath"] }flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
-                $"{ Configuration["CSSPOtherFilesPath"] }GoogleMap.js",
-                $"{ Configuration["CSSPOtherFilesPath"] }IconFamilyMaterial.css",
-                $"{ Configuration["CSSPOtherFilesPath"] }HelpDocEN.rtf",
-                $"{ Configuration["CSSPOtherFilesPath"] }HelpDocFR.rtf"
-            };
-
-            dirList = new List<string>()
-            {
-                Configuration["CSSPWebAPIsLocalPath"],
-                Configuration["CSSPJSONPath"],
-                Configuration["CSSPJSONPathLocal"],
-                Configuration["CSSPFilesPath"],
-                Configuration["CSSPOtherFilesPath"],
-                Configuration["CSSPTempFilesPath"],
-            };
-
-            CreateAndEmptyDirectories();
+            await CreateAndEmptyDirectories();
 
             CreateCopyOfCSSPDBLocal();
 

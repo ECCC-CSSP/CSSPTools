@@ -24,6 +24,8 @@ namespace CSSPDesktopServices.Tests
         {
             Assert.True(await CSSPDesktopServiceSetup(culture));
 
+            await DeleteOtherFileToTestOtherFile();
+
             LoginModel loginModel = new LoginModel()
             {
                 LoginEmail = Configuration["LoginEmail"],
@@ -33,7 +35,12 @@ namespace CSSPDesktopServices.Tests
             bool retBool = await CSSPDesktopService.LoginAsync(loginModel);
             Assert.True(retBool);
 
+            Assert.False(await CSSPDesktopService.CheckIfCSSPOtherFilesExistAsync());
+
+            await CopyOtherFileToTestOtherFile();
+
             Assert.True(await CSSPDesktopService.CheckIfCSSPOtherFilesExistAsync());
+
         }
     }
 }

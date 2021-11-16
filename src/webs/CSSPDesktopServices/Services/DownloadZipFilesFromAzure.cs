@@ -25,13 +25,13 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> DownloadZipFilesFromAzure(string zipFileName)
+        private async Task<bool> DownloadZipFilesFromAzure(string zipFileName)
         {
             AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.DownloadingFileFromAzure_, zipFileName)));
 
             FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
             ShareFileClient shareFileClient = directory.GetFileClient(zipFileName);
             ShareFileProperties shareFileProperties = null;
@@ -39,8 +39,6 @@ namespace CSSPDesktopServices.Services
             try
             {
                 shareFileProperties = shareFileClient.GetProperties();
-                //blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
-                //blobProperties = blobClient.GetProperties();
             }
             catch (RequestFailedException ex)
             {
@@ -56,7 +54,6 @@ namespace CSSPDesktopServices.Services
                 }
             }
 
-            //if (blobProperties == null)
             if (shareFileProperties == null)
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName)));
@@ -70,7 +67,6 @@ namespace CSSPDesktopServices.Services
 
             if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             {
-                //Response response = blobClient.DownloadTo(fi.FullName);
                 ShareFileDownloadInfo download = shareFileClient.Download();
                 using (FileStream stream = File.OpenWrite(fi.FullName))
                 {
@@ -78,7 +74,6 @@ namespace CSSPDesktopServices.Services
                 }
 
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Unzipping_, zipFileName)));
-                //if (!await UnzipDownloadedFile(zipFileName, response)) return await Task.FromResult(false);
                 if (!await UnzipDownloadedFileAsync(zipFileName, shareFileProperties)) return await Task.FromResult(false);
             }
 

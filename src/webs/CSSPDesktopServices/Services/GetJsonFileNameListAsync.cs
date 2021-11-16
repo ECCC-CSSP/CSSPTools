@@ -22,7 +22,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<List<string>> GetJsonFileNameListAsync()
+        private async Task<List<string>> GetJsonFileNameListAsync()
         {
             return await Task.FromResult(new List<string>()
             {

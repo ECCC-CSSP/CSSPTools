@@ -72,7 +72,7 @@ namespace CSSPDesktopServices.Services
         private ErrRes errRes { get; set; } = new ErrRes();
         private Process processCSSPWebAPIsLocal { get; set; }
         private Process processBrowser { get; set; }
-        private string AzureStoreHash { get; set; }
+        //private string AzureStoreHash { get; set; }
         #endregion Properties private
 
         #region Constructors
@@ -114,17 +114,17 @@ namespace CSSPDesktopServices.Services
             this.ReadGzFileService = ReadGzFileService;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            //CSSPLocalLoggedInService.SetLoggedInContactInfo();
 
-            if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-                return;
-            }
+            //if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+            //    return;
+            //}
 
-            AzureStoreHash = (from c in dbManage.Contacts
-                              where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
-                              select c.AzureStoreHash).FirstOrDefault();
+            //AzureStoreHash = (from c in dbManage.Contacts
+            //                  where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
+            //                  select c.AzureStoreHash).FirstOrDefault();
 
 
             contact = new Contact();

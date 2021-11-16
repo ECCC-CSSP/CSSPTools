@@ -34,7 +34,12 @@ namespace CSSPDesktopServices.Tests
             Assert.True(retBool);
 
             bool retBool2 = await CSSPDesktopService.CheckIfLoginIsRequiredAsync();
-            Assert.True(retBool2);          
+            Assert.True(retBool2);
+
+            await CopyAzureZipUpdateFilesToAzureTestDirectory();
+
+            await CopyAzureJsonUpdateFilesToAzureTestDirectory();
+            Assert.True(false);
 
             bool retBool3 = await CSSPDesktopService.InstallUpdatesAsync();
             Assert.True(retBool3);

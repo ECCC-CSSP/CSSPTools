@@ -44,14 +44,8 @@ namespace CSSPDesktopServices.Services
                 return await Task.FromResult(false);
             }
 
-            // Doing csspwebapislocal container 
-            List<string> zipFileNameList = new List<string>()
-            {
-                "csspwebapislocal.zip", "csspclient.zip", "csspotherfiles.zip",
-            };
-
             int zipCount = 0;
-            foreach (string zipFileName in zipFileNameList)
+            foreach (string zipFileName in await GetZipFileNameListAsync())
             {
                 zipCount += 1;
                 InstallingStatus(new InstallingEventArgs(5 * zipCount));

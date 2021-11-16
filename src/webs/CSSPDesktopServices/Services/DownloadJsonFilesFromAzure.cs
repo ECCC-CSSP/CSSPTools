@@ -25,7 +25,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> DownloadJsonFilesFromAzure(string jsonFileName)
+        private async Task<bool> DownloadJsonFilesFromAzure(string jsonFileName)
         {
             string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
 
@@ -46,18 +46,14 @@ namespace CSSPDesktopServices.Services
             FileInfo fi = new FileInfo($"{ Configuration["CSSPJSONPath"] }{ jsonFileName }");
 
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
             ShareFileClient shareFileClient = directory.GetFileClient(jsonFileName);
             ShareFileProperties shareFileProperties = null;
 
-            //BlobClient blobClient = new BlobClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"], jsonFileName);
-            //BlobProperties blobProperties = null;
-
             try
             {
                 shareFileProperties = shareFileClient.GetProperties();
-                //blobProperties = blobClient.GetProperties();
             }
             catch (RequestFailedException)
             {
@@ -70,10 +66,8 @@ namespace CSSPDesktopServices.Services
                                      && c.AzureFileName == jsonFileName
                                      select c).FirstOrDefault();
 
-            //if (manageFile == null || blobProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
             {
-                //Response response = blobClient.DownloadTo(fi.FullName);
                 ShareFileDownloadInfo download = shareFileClient.Download();
                 using (FileStream stream = File.OpenWrite(fi.FullName))
                 {

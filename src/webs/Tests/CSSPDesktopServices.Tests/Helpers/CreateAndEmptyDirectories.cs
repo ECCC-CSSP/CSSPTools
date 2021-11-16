@@ -15,9 +15,9 @@ namespace CSSPDesktopServices.Tests
 {
     public partial class CSSPDesktopServiceTests
     {
-        private void CreateAndEmptyDirectories()
+        private async Task CreateAndEmptyDirectories()
         {
-            foreach(string dir in dirList)
+            foreach(string dir in await GetDirectoryToCreateListAsync())
             {
                 DirectoryInfo di = new DirectoryInfo(dir);
                 if (!di.Exists)

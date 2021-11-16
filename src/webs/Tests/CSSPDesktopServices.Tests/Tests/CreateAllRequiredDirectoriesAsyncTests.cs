@@ -35,6 +35,12 @@ namespace CSSPDesktopServices.Tests
 
             bool retBool = await CSSPDesktopService.CreateAllRequiredDirectoriesAsync();
             Assert.True(retBool);
+
+            foreach(string DirName in await GetDirectoryToCreateListAsync())
+            {
+                DirectoryInfo di = new DirectoryInfo(DirName);
+                Assert.True(di.Exists);
+            }
         }
         #endregion Tests
 

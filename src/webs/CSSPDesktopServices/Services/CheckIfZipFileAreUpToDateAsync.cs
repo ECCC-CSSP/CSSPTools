@@ -31,7 +31,7 @@ namespace CSSPDesktopServices.Services
             {
                 FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 
-                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
                 ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
                 ShareFileClient file = directory.GetFileClient(zipFileName);
                 ShareFileProperties shareFileProperties = null;

@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.161
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnums", "src\dlls\CSSPEnums\CSSPEnums.csproj", "{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnums", "src\services\CSSPEnums\CSSPEnums.csproj", "{95CAA5ED-5ECC-461A-AE98-DC441E395EC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnums.Tests", "src\tests\CSSPEnums.Tests\CSSPEnums.Tests.csproj", "{71220674-7B40-4F4B-AF8E-814B01BF49DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPEnums.Tests", "src\servicestests\CSSPEnums.Tests\CSSPEnums.Tests.csproj", "{71220674-7B40-4F4B-AF8E-814B01BF49DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs.Tests", "src\webs\Tests\CSSPWebAPIs.Tests\CSSPWebAPIs.Tests.csproj", "{94D2B0DB-F344-4BD8-9AB1-BA75D7ED5216}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIs", "src\webs\CSSPWebAPIs\CSSPWebAPIs.csproj", "{76C379DD-47B1-4514-ACBE-021176536B0A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices", "src\dlls\CSSPCultureServices\CSSPCultureServices.csproj", "{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices", "src\services\CSSPCultureServices\CSSPCultureServices.csproj", "{3900FB41-76EE-41BE-99FF-3D4FE6A4C736}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices.Tests", "src\tests\CSSPCultureServices.Tests\CSSPCultureServices.Tests.csproj", "{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCultureServices.Tests", "src\servicestests\CSSPCultureServices.Tests\CSSPCultureServices.Tests.csproj", "{7CBC854E-CE53-49AA-8E83-8D4C13F1FCC1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopServices", "src\webs\CSSPDesktopServices\CSSPDesktopServices.csproj", "{D3639891-5B74-4C2E-B01E-A7AD3DDCED75}"
 EndProject
@@ -27,55 +27,55 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIsLocal", "src\web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebAPIsLocal.Tests", "src\webs\Tests\CSSPWebAPIsLocal.Tests\CSSPWebAPIsLocal.Tests.csproj", "{E07DEE2F-9365-4714-8E7B-CD4E00F3B32E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBServices", "src\dlls\CSSPDBServices\CSSPDBServices.csproj", "{AEF7CEEB-522B-4C80-8DC8-FBED0716EEEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBServices", "src\services\CSSPDBServices\CSSPDBServices.csproj", "{AEF7CEEB-522B-4C80-8DC8-FBED0716EEEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices.Tests", "src\tests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{26904D5F-B0D5-4A04-BEB5-06D5D55878CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices.Tests", "src\servicestests\CSSPSQLiteServices.Tests\CSSPSQLiteServices.Tests.csproj", "{26904D5F-B0D5-4A04-BEB5-06D5D55878CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices", "src\dlls\CSSPSQLiteServices\CSSPSQLiteServices.csproj", "{17D4BC06-BA35-4020-AC5D-AA9E8C183EC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSQLiteServices", "src\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj", "{17D4BC06-BA35-4020-AC5D-AA9E8C183EC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCreateGzFileServices", "src\dlls\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj", "{3A94261A-6356-4657-A555-160C2523CAB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCreateGzFileServices", "src\services\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj", "{3A94261A-6356-4657-A555-160C2523CAB1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCreateGzFileServices.Tests", "src\tests\CSSPCreateGzFileServices.Tests\CSSPCreateGzFileServices.Tests.csproj", "{BA0DBA49-BEF9-4FEC-84DB-DADD4F80698D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCreateGzFileServices.Tests", "src\servicestests\CSSPCreateGzFileServices.Tests\CSSPCreateGzFileServices.Tests.csproj", "{BA0DBA49-BEF9-4FEC-84DB-DADD4F80698D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPReadGzFileServices", "src\dlls\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj", "{CA85921C-33C5-4186-9685-006B23D2C700}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPReadGzFileServices", "src\services\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj", "{CA85921C-33C5-4186-9685-006B23D2C700}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPReadGzFileServices.Tests", "src\tests\CSSPReadGzFileServices.Tests\CSSPReadGzFileServices.Tests.csproj", "{5C8FC81F-6748-4783-8AEB-82C26761F499}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPReadGzFileServices.Tests", "src\servicestests\CSSPReadGzFileServices.Tests\CSSPReadGzFileServices.Tests.csproj", "{5C8FC81F-6748-4783-8AEB-82C26761F499}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebModels", "src\dlls\CSSPWebModels\CSSPWebModels.csproj", "{E774BC74-30E7-4E4E-B1E2-54235689202D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPWebModels", "src\services\CSSPWebModels\CSSPWebModels.csproj", "{E774BC74-30E7-4E4E-B1E2-54235689202D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperModels", "src\dlls\CSSPHelperModels\CSSPHelperModels.csproj", "{B4B444C5-3535-4FA2-950E-39239DD23514}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperModels", "src\services\CSSPHelperModels\CSSPHelperModels.csproj", "{B4B444C5-3535-4FA2-950E-39239DD23514}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperModels.Tests", "src\tests\CSSPHelperModels.Tests\CSSPHelperModels.Tests.csproj", "{9716892A-573C-4C25-ACAE-8DCB20220725}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperModels.Tests", "src\servicestests\CSSPHelperModels.Tests\CSSPHelperModels.Tests.csproj", "{9716892A-573C-4C25-ACAE-8DCB20220725}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperServices", "src\dlls\CSSPHelperServices\CSSPHelperServices.csproj", "{2067C30F-020F-4F9D-BFC9-B4281DA4B916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperServices", "src\services\CSSPHelperServices\CSSPHelperServices.csproj", "{2067C30F-020F-4F9D-BFC9-B4281DA4B916}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperServices.Tests", "src\tests\CSSPHelperServices.Tests\CSSPHelperServices.Tests.csproj", "{BE90E722-91B4-4F66-948D-360D97230CD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPHelperServices.Tests", "src\servicestests\CSSPHelperServices.Tests\CSSPHelperServices.Tests.csproj", "{BE90E722-91B4-4F66-948D-360D97230CD2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBModels.Tests", "src\tests\CSSPDBModels.Tests\CSSPDBModels.Tests.csproj", "{05C0CEF2-8499-4FDA-94D0-E860105CE1E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBModels.Tests", "src\servicestests\CSSPDBModels.Tests\CSSPDBModels.Tests.csproj", "{05C0CEF2-8499-4FDA-94D0-E860105CE1E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBModels", "src\dlls\CSSPDBModels\CSSPDBModels.csproj", "{77EC4441-6F15-4626-A1C4-560600D4AC92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBModels", "src\services\CSSPDBModels\CSSPDBModels.csproj", "{77EC4441-6F15-4626-A1C4-560600D4AC92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBLocalServices", "src\dlls\CSSPDBLocalServices\CSSPDBLocalServices.csproj", "{EC49A923-002B-4526-A341-FFD024A0BF14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBLocalServices", "src\services\CSSPDBLocalServices\CSSPDBLocalServices.csproj", "{EC49A923-002B-4526-A341-FFD024A0BF14}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBLocalServices.Tests", "src\tests\CSSPDBLocalServices.Tests\CSSPDBLocalServices.Tests.csproj", "{05E009EB-0356-4876-B4ED-1FF7C9693D22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBLocalServices.Tests", "src\servicestests\CSSPDBLocalServices.Tests\CSSPDBLocalServices.Tests.csproj", "{05E009EB-0356-4876-B4ED-1FF7C9693D22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPAAA.Tests", "src\tests\CSSPAAA.Tests\CSSPAAA.Tests.csproj", "{EB57E9FC-FFEF-4EAB-8143-2DEF2165319E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPAAA.Tests", "src\servicestests\CSSPAAA.Tests\CSSPAAA.Tests.csproj", "{EB57E9FC-FFEF-4EAB-8143-2DEF2165319E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCustomAttributes", "src\dlls\CSSPCustomAttributes\CSSPCustomAttributes.csproj", "{A84B8B17-8AC6-41BB-BBEB-86C00C674F6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCustomAttributes", "src\services\CSSPCustomAttributes\CSSPCustomAttributes.csproj", "{A84B8B17-8AC6-41BB-BBEB-86C00C674F6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCustomAttributes.Tests", "src\tests\CSSPCustomAttributes.Tests\CSSPCustomAttributes.Tests.csproj", "{D7BFAE08-93AA-4996-8773-6A8C45984206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPCustomAttributes.Tests", "src\servicestests\CSSPCustomAttributes.Tests\CSSPCustomAttributes.Tests.csproj", "{D7BFAE08-93AA-4996-8773-6A8C45984206}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSyncDBsServices", "src\dlls\CSSPSyncDBsServices\CSSPSyncDBsServices.csproj", "{B2A0E5BB-2F26-4C24-ACEA-6017FDE900DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSyncDBsServices", "src\services\CSSPSyncDBsServices\CSSPSyncDBsServices.csproj", "{B2A0E5BB-2F26-4C24-ACEA-6017FDE900DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSyncDBsServices.Tests", "src\tests\CSSPSyncDBsServices.Tests\CSSPSyncDBsServices.Tests.csproj", "{8EEC71C5-28D0-426B-B080-F74AB6816305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPSyncDBsServices.Tests", "src\servicestests\CSSPSyncDBsServices.Tests\CSSPSyncDBsServices.Tests.csproj", "{8EEC71C5-28D0-426B-B080-F74AB6816305}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalTaskRunnerServices", "src\dlls\CSSPLocalTaskRunnerServices\CSSPLocalTaskRunnerServices.csproj", "{DD11D2AF-F08F-4876-9F04-9F07A20D10A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalTaskRunnerServices", "src\services\CSSPLocalTaskRunnerServices\CSSPLocalTaskRunnerServices.csproj", "{DD11D2AF-F08F-4876-9F04-9F07A20D10A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerTaskRunnerServices", "src\dlls\CSSPServerTaskRunnerServices\CSSPServerTaskRunnerServices.csproj", "{8F9E8565-9274-4A8B-868B-EBDE7301F4DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerTaskRunnerServices", "src\services\CSSPServerTaskRunnerServices\CSSPServerTaskRunnerServices.csproj", "{8F9E8565-9274-4A8B-868B-EBDE7301F4DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalTaskRunnerServices.Tests", "src\tests\CSSPLocalTaskRunnerServices.Tests\CSSPLocalTaskRunnerServices.Tests.csproj", "{5349D269-6D5F-4D20-8F5D-A3BCA8012EF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalTaskRunnerServices.Tests", "src\servicestests\CSSPLocalTaskRunnerServices.Tests\CSSPLocalTaskRunnerServices.Tests.csproj", "{5349D269-6D5F-4D20-8F5D-A3BCA8012EF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerTaskRunnerServices.Tests", "src\tests\CSSPServerTaskRunnerServices.Tests\CSSPServerTaskRunnerServices.Tests.csproj", "{311BF3E9-3146-4340-BA59-C78506C64574}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerTaskRunnerServices.Tests", "src\servicestests\CSSPServerTaskRunnerServices.Tests\CSSPServerTaskRunnerServices.Tests.csproj", "{311BF3E9-3146-4340-BA59-C78506C64574}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalTaskRunner", "src\console\CSSPLocalTaskRunner\CSSPLocalTaskRunner.csproj", "{322F69D1-9E02-4219-8B34-A97678974658}"
 EndProject
@@ -105,39 +105,39 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerTaskRunnerTXT", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerTaskRunnerXLSX", "src\console\CSSPServerTaskRunnerXLSX\CSSPServerTaskRunnerXLSX.csproj", "{A9AAE634-8BF3-4369-AEDD-F586A76C9C94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPAzureAppTaskServices", "src\dlls\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj", "{9BECC7F9-4476-4DC8-99C9-2CE66D6E438E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPAzureAppTaskServices", "src\services\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj", "{9BECC7F9-4476-4DC8-99C9-2CE66D6E438E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPAzureAppTaskServices.Tests", "src\tests\CSSPAzureAppTaskServices.Tests\CSSPAzureAppTaskServices.Tests.csproj", "{25E98D01-9362-4FCA-B7A0-466FC015ACBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPAzureAppTaskServices.Tests", "src\servicestests\CSSPAzureAppTaskServices.Tests\CSSPAzureAppTaskServices.Tests.csproj", "{25E98D01-9362-4FCA-B7A0-466FC015ACBF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPFileServices.Tests", "src\tests\CSSPFileServices.Tests\CSSPFileServices.Tests.csproj", "{CE6467DB-E8D2-4465-8E29-A8F12666AACA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPFileServices.Tests", "src\servicestests\CSSPFileServices.Tests\CSSPFileServices.Tests.csproj", "{CE6467DB-E8D2-4465-8E29-A8F12666AACA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPFileServices", "src\dlls\CSSPFileServices\CSSPFileServices.csproj", "{75D1C6DC-77A5-43DD-8C9E-72FFAE8DB90A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPFileServices", "src\services\CSSPFileServices\CSSPFileServices.csproj", "{75D1C6DC-77A5-43DD-8C9E-72FFAE8DB90A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBManageServices", "src\dlls\CSSPDBManageServices\CSSPDBManageServices.csproj", "{532C6DAB-1541-4E93-ABF9-FB688DC9A02B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBManageServices", "src\services\CSSPDBManageServices\CSSPDBManageServices.csproj", "{532C6DAB-1541-4E93-ABF9-FB688DC9A02B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBManageServices.Tests", "src\tests\CSSPDBManageServices.Tests\CSSPDBManageServices.Tests.csproj", "{CC227233-3451-4115-A28C-7CCA04F15EE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDBManageServices.Tests", "src\servicestests\CSSPDBManageServices.Tests\CSSPDBManageServices.Tests.csproj", "{CC227233-3451-4115-A28C-7CCA04F15EE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPUpdateServices", "src\dlls\CSSPUpdateServices\CSSPUpdateServices.csproj", "{F1E5CBC9-A454-4BC2-B1B9-7BE1991269C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPUpdateServices", "src\services\CSSPUpdateServices\CSSPUpdateServices.csproj", "{F1E5CBC9-A454-4BC2-B1B9-7BE1991269C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPUpdateServices.Tests", "src\tests\CSSPUpdateServices.Tests\CSSPUpdateServices.Tests.csproj", "{EF372200-5ED6-4482-A4B3-88A498DB42E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPUpdateServices.Tests", "src\servicestests\CSSPUpdateServices.Tests\CSSPUpdateServices.Tests.csproj", "{EF372200-5ED6-4482-A4B3-88A498DB42E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPUpdate", "src\console\CSSPUpdate\CSSPUpdate.csproj", "{8F9AF224-BAA9-477F-B880-2DFDEC8588F9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLogServices", "src\dlls\CSSPLogServices\CSSPLogServices.csproj", "{7E242124-5BFA-47E3-B60E-B3A627DD359B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLogServices", "src\services\CSSPLogServices\CSSPLogServices.csproj", "{7E242124-5BFA-47E3-B60E-B3A627DD359B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLogServices.Tests", "src\tests\CSSPLogServices.Tests\CSSPLogServices.Tests.csproj", "{548B62C9-7D28-4BA4-A7D1-163A394089E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLogServices.Tests", "src\servicestests\CSSPLogServices.Tests\CSSPLogServices.Tests.csproj", "{548B62C9-7D28-4BA4-A7D1-163A394089E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalLoggedInServices", "src\dlls\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj", "{DFAAA611-20AD-49DC-ADDD-8B3ABC8404D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalLoggedInServices", "src\services\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj", "{DFAAA611-20AD-49DC-ADDD-8B3ABC8404D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerLoggedInServices", "src\dlls\CSSPServerLoggedInServices\CSSPServerLoggedInServices.csproj", "{4AECD914-7192-4543-839A-03C7F37E9C60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerLoggedInServices", "src\services\CSSPServerLoggedInServices\CSSPServerLoggedInServices.csproj", "{4AECD914-7192-4543-839A-03C7F37E9C60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalLoggedInServices.Tests", "src\tests\CSSPLocalLoggedInServices.Tests\CSSPLocalLoggedInServices.Tests.csproj", "{19234363-7638-45BC-9DF5-8F5FA4E46E9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPLocalLoggedInServices.Tests", "src\servicestests\CSSPLocalLoggedInServices.Tests\CSSPLocalLoggedInServices.Tests.csproj", "{19234363-7638-45BC-9DF5-8F5FA4E46E9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerLoggedInServices.Tests", "src\tests\CSSPServerLoggedInServices.Tests\CSSPServerLoggedInServices.Tests.csproj", "{143A33D1-DF19-4B96-B345-A9069C7F48E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPServerLoggedInServices.Tests", "src\servicestests\CSSPServerLoggedInServices.Tests\CSSPServerLoggedInServices.Tests.csproj", "{143A33D1-DF19-4B96-B345-A9069C7F48E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices", "src\dlls\CSSPScrambleServices\CSSPScrambleServices.csproj", "{56632DA0-0CAD-44AC-8D27-5BE50EC15CBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices", "src\services\CSSPScrambleServices\CSSPScrambleServices.csproj", "{56632DA0-0CAD-44AC-8D27-5BE50EC15CBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices.Tests", "src\tests\CSSPScrambleServices.Tests\CSSPScrambleServices.Tests.csproj", "{674A267F-84B8-4F56-A1FB-7B9CBA6DAB00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPScrambleServices.Tests", "src\servicestests\CSSPScrambleServices.Tests\CSSPScrambleServices.Tests.csproj", "{674A267F-84B8-4F56-A1FB-7B9CBA6DAB00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSSPDesktopInstallPostBuildServices.Tests", "src\webs\Tests\CSSPDesktopInstallPostBuildServices.Tests\CSSPDesktopInstallPostBuildServices.Tests.csproj", "{2BF3881C-36D3-4FDF-80DC-DC8EB8A07C1C}"
 EndProject
