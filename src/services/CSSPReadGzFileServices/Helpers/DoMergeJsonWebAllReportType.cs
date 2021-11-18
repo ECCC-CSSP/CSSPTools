@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CSSPReadGzFileServices
 {
-    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
+    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
         private async Task<bool> DoMergeJsonWebAllReportTypes(WebAllReportTypes webAllReportTypes, WebAllReportTypes webAllReportTypesLocal)
         {

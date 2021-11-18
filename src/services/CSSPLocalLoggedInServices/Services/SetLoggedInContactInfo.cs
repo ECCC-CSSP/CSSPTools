@@ -13,9 +13,14 @@ namespace CSSPLocalLoggedInServices
 {
     public partial class CSSPLocalLoggedInService : ICSSPLocalLoggedInService
     {
-        public async Task<bool> SetLoggedInContactInfo()
+        public async Task<bool> SetLocalLoggedInContactInfo()
         {
             LoggedInContactInfo = new LoggedInContactInfo();
+
+            if (dbManage == null)
+            {
+                return await Task.FromResult(false);
+            }
 
             LoggedInContactInfo.LoggedInContact = (from c in dbManage.Contacts
                                                    orderby c.LoginEmail

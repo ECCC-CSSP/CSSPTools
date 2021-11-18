@@ -56,7 +56,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             FileName = FileName.Replace(".mmdf", ".mdf");
 
@@ -67,7 +67,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             return await FileService.GetLocalFileInfoList(ParentTVItemID);
         }

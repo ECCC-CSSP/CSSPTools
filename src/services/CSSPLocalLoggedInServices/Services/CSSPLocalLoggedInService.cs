@@ -15,7 +15,7 @@ namespace CSSPLocalLoggedInServices
     {
         LoggedInContactInfo LoggedInContactInfo { get; set; }
 
-        Task<bool> SetLoggedInContactInfo();
+        Task<bool> SetLocalLoggedInContactInfo();
     }
     public partial class CSSPLocalLoggedInService : ICSSPLocalLoggedInService
     {

@@ -29,7 +29,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllTels.TelList = await GetAllTelAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllTels>(webAllTels, $"{WebTypeEnum.WebAllTels }.gz")) return await Task.FromResult(false);
                 }

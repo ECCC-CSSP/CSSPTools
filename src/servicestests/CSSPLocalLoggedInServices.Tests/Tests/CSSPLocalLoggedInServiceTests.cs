@@ -42,7 +42,7 @@ namespace CSSPLocalLoggedInServices.Tests
         {
             Assert.True(await CSSPLocalLoggedInServiceSetup(culture));
 
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.True(CSSPLocalLoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList.Count > 0);
             Assert.True(CSSPLocalLoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList.Count > 0);

@@ -16,7 +16,7 @@ using System.Text.Json;
 
 namespace CSSPReadGzFileServices
 {
-    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
+    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
         public async Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0)
         {

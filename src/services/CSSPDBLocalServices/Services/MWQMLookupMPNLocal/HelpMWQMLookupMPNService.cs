@@ -90,7 +90,7 @@ namespace CSSPDBLocalServices
             this.CSSPReadGzFileService = CSSPReadGzFileService;
             this.dbLocal = dbLocal;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

@@ -99,7 +99,7 @@ namespace CSSPDBLocalServices
             this.CSSPCreateGzFileService = CSSPCreateGzFileService;
             this.HelperLocalService = HelperLocalService;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

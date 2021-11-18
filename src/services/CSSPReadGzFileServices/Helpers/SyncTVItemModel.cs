@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CSSPReadGzFileServices
 {
-    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
+    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
         private void SyncTVItemModel(TVItemModel tvItemModelOriginal, TVItemModel tvItemModelLocal)
         {

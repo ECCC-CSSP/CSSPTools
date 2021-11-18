@@ -66,6 +66,12 @@ namespace CSSPCreateGzFileServices.Tests
 
             Assert.Empty(CSSPLogService.ErrRes.ErrList);
 
+            fiBackup = new FileInfo($"{ Configuration["azure_csspjson_backup"] }{ fileName }");
+            Assert.False(fiBackup.Exists);
+
+            fiBackupUncompress = new FileInfo($"{ Configuration["azure_csspjson_backup_uncompress"] }{ fileName.Replace(".gz", ".json") }");
+            Assert.False(fiBackupUncompress.Exists);
+
             WriteTimeSpan(webType);
 
             CSSPLocalLoggedInService.LoggedInContactInfo = null;

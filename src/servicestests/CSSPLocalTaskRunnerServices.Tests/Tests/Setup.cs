@@ -91,7 +91,7 @@ namespace CSSPLocalTaskRunnerServices.Tests
             CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
             Assert.NotNull(CSSPLocalLoggedInService);
 
-            Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
+            Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);

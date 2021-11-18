@@ -39,7 +39,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillTideSiteModelListAsync(webTideSites.TideSiteModelList, TVItemProvince)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebTideSites>(webTideSites, $"{ WebTypeEnum.WebTideSites }_{ ProvinceTVItemID }.gz")) return await Task.FromResult(false);
                 }

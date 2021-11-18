@@ -22,7 +22,7 @@ namespace CSSPCreateGzFileServices.Tests
     {
         private void FillAzureStoreHash()
         {
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 

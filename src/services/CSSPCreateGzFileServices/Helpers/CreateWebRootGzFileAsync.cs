@@ -42,7 +42,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillFileModelListAsync(webRoot.TVFileModelList, TVItemRoot)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebRoot>(webRoot, $"{ WebTypeEnum.WebRoot }.gz")) return await Task.FromResult(false);
                 }

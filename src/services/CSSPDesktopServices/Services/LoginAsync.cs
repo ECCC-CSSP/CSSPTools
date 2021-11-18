@@ -35,7 +35,7 @@ namespace CSSPDesktopServices.Services
 
             AppendStatus(new AppendEventArgs(""));
 
-            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
+            if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
 
             return await Task.FromResult(true);
         }

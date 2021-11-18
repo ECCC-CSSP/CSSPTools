@@ -45,7 +45,7 @@ namespace CSSPCreateGzFileServices
 
                 webMunicipality.MunicipalityTVItemLinkList = await GetInfrastructureTVItemLinkListUnderMunicipalityAsync(TVItemMunicipality);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebMunicipality>(webMunicipality, $"{ WebTypeEnum.WebMunicipality }_{ MunicipalityTVItemID }.gz")) return await Task.FromResult(false);
                 }

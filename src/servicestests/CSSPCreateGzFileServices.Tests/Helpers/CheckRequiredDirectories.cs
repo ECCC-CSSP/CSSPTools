@@ -17,17 +17,13 @@ namespace CSSPCreateGzFileServices.Tests
     {
         private void CheckRequiredDirectories()
         {
-            List<string> dirList = new List<string>()
+            List<string> FileList = new List<string>()
             {
-                Configuration["CSSPDBLocal"],
                 Configuration["CSSPDBManage"],
-                Configuration["CSSPJSONPathLocal"],
-                Configuration["azure_csspjson_backup"],
-                Configuration["azure_csspjson_backup_uncompress"],
             };
 
             // create all directories
-            foreach (string FileName in dirList)
+            foreach (string FileName in FileList)
             {
                 FileInfo fi = new FileInfo(FileName);
                 DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);
@@ -44,7 +40,7 @@ namespace CSSPCreateGzFileServices.Tests
                 }
             }
 
-            foreach (string FileName in dirList)
+            foreach (string FileName in FileList)
             {
                 FileInfo fi = new FileInfo(FileName);
                 DirectoryInfo di = new DirectoryInfo(fi.DirectoryName);

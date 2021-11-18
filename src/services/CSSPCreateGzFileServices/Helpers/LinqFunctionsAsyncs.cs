@@ -19,7 +19,7 @@ namespace CSSPCreateGzFileServices
     {
         private async Task<TVItem> GetTVItemRootAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where c.TVLevel == 0
@@ -35,7 +35,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<TVItem> GetTVItemWithTVItemIDAsync(int TVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where c.TVItemID == TVItemID
@@ -48,7 +48,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItemLanguage>> GetTVItemLanguageWithTVItemIDAsync(int TVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -65,7 +65,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVFile>> GetTVFileListWithTVItemIDAsync(int TVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cf in dbLocal.TVItems
@@ -88,7 +88,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVFile>> GetAllTVFileListUnderAsync(TVItem tvItem)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from f in dbLocal.TVFiles
@@ -107,7 +107,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVFileLanguage>> GetTVFileLanguageListWithTVItemIDAsync(int TVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cf in dbLocal.TVItems
@@ -134,7 +134,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVFileLanguage>> GetAllTVFileLanguageListUnderAsync(TVItem tvItem)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from f in dbLocal.TVFiles
@@ -157,7 +157,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItem>> GetTVItemListFileUnderMunicipalityAsync(TVItem MunicipalityTVItem)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where c.TVPath.Contains(MunicipalityTVItem.TVPath + "p")
@@ -172,7 +172,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItemLanguage>> GetTVItemLanguageListFileUnderMunicipalityAsync(TVItem MunicipalityTVItem)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -193,7 +193,7 @@ namespace CSSPCreateGzFileServices
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   where c.TVPath.Contains(ParentTVItem.TVPath + "p")
@@ -211,7 +211,7 @@ namespace CSSPCreateGzFileServices
 
             if (tvType == TVTypeEnum.File)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   where c.TVPath.Contains(ParentTVItem.TVPath + "p")
@@ -227,7 +227,7 @@ namespace CSSPCreateGzFileServices
                               select c).AsNoTracking().ToListAsync();
             }
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where c.TVPath.Contains(ParentTVItem.TVPath + "p")
@@ -242,7 +242,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItem>> GetTVItemAllChildrenListWithTVItemIDAsync(TVItem ParentTVItem, TVTypeEnum tvType)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where c.TVPath.Contains(ParentTVItem.TVPath + "p")
@@ -257,7 +257,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMSample>> GetMWQMSampleListUnderSubsectorAsync(TVItem subsectorTVItem)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from s in dbLocal.MWQMSamples
@@ -276,7 +276,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSampleCountOtherByYearUnderCountry(TVItem countryTVItem, int Year)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -299,7 +299,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSampleCountOtherByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -322,7 +322,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSampleCountOtherBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 switch (Season)
                 {
@@ -451,7 +451,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSampleCountRoutineByYearUnderCountry(TVItem countryTVItem, int Year)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -474,7 +474,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSampleCountRoutineByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -497,7 +497,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSampleCountRoutineBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 switch (Season)
                 {
@@ -626,7 +626,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSiteCountOtherByYearUnderCountry(TVItem countryTVItem, int Year)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -649,7 +649,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSiteCountOtherByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -672,7 +672,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSiteCountOtherBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 switch (Season)
                 {
@@ -801,7 +801,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSiteCountRoutineByYearUnderCountry(TVItem countryTVItem, int Year)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -824,7 +824,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSiteCountRoutineByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -847,7 +847,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMSiteCountRoutineBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 switch (Season)
                 {
@@ -976,7 +976,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMRunCountOtherByYearUnderCountry(TVItem countryTVItem, int Year)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -999,7 +999,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMRunCountOtherByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -1022,7 +1022,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMRunCountOtherBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 switch (Season)
                 {
@@ -1151,7 +1151,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMRunCountRoutineByYearUnderCountry(TVItem countryTVItem, int Year)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -1174,7 +1174,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMRunCountRoutineByMonthUnderCountry(TVItem countryTVItem, MonthEnum Month)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return (from c in dbLocal.TVItems
                         from s in dbLocal.MWQMSamples
@@ -1197,7 +1197,7 @@ namespace CSSPCreateGzFileServices
         }
         private int GetMWQMRunCountRoutineBySeasonUnderCountry(TVItem countryTVItem, SeasonEnum Season)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 switch (Season)
                 {
@@ -1328,7 +1328,7 @@ namespace CSSPCreateGzFileServices
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from cl in dbLocal.TVItemLanguages
@@ -1350,7 +1350,7 @@ namespace CSSPCreateGzFileServices
 
             if (tvType == TVTypeEnum.File)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from cl in dbLocal.TVItemLanguages
@@ -1370,7 +1370,7 @@ namespace CSSPCreateGzFileServices
                               select cl).AsNoTracking().ToListAsync();
             }
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -1390,7 +1390,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItemLanguage>> GetTVItemLanguageAllChildrenListWithTVItemIDAsync(TVItem ParentTVItem, TVTypeEnum tvType)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -1411,7 +1411,7 @@ namespace CSSPCreateGzFileServices
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from cs in dbLocal.TVItemStats
@@ -1433,7 +1433,7 @@ namespace CSSPCreateGzFileServices
 
             if (tvType == TVTypeEnum.File)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from cs in dbLocal.TVItemStats
@@ -1453,7 +1453,7 @@ namespace CSSPCreateGzFileServices
                               select cs).AsNoTracking().ToListAsync();
             }
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cs in dbLocal.TVItemStats
@@ -1474,7 +1474,7 @@ namespace CSSPCreateGzFileServices
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from mi in dbLocal.MapInfos
@@ -1496,7 +1496,7 @@ namespace CSSPCreateGzFileServices
 
             if (tvType == TVTypeEnum.File)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from mi in dbLocal.MapInfos
@@ -1516,7 +1516,7 @@ namespace CSSPCreateGzFileServices
                               select mi).AsNoTracking().ToListAsync();
             }
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from mi in dbLocal.MapInfos
@@ -1537,7 +1537,7 @@ namespace CSSPCreateGzFileServices
         {
             if (tvType == TVTypeEnum.MikeBoundaryConditionMesh || tvType == TVTypeEnum.MikeBoundaryConditionWebTide)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from mi in dbLocal.MapInfos
@@ -1563,7 +1563,7 @@ namespace CSSPCreateGzFileServices
 
             if (tvType == TVTypeEnum.File)
             {
-                if (dbLocal != null)
+                if (Local)
                 {
                     return await (from c in dbLocal.TVItems
                                   from mi in dbLocal.MapInfos
@@ -1587,7 +1587,7 @@ namespace CSSPCreateGzFileServices
                               select mip).AsNoTracking().ToListAsync();
             }
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from mi in dbLocal.MapInfos
@@ -1610,7 +1610,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Infrastructure>> GetInfrastructureListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1629,7 +1629,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MikeScenario>> GetMikeScenarioListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.MikeScenarios
@@ -1648,7 +1648,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MikeSource>> GetMikeSourceListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.MikeSources
@@ -1667,7 +1667,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MikeSourceStartEnd>> GetMikeSourceStartEndListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.MikeSources
@@ -1690,7 +1690,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItemLink>> GetInfrastructureTVItemLinkListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1719,7 +1719,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItemLink>> GetAllTVItemLinkAsync(TVTypeEnum fromTVType, TVTypeEnum toTVType)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItemLinks
                               where t.FromTVType == fromTVType
@@ -1734,7 +1734,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Address>> GetInfrastructureCivicAddressListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1759,7 +1759,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<InfrastructureLanguage>> GetInfrastructureLanguageListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1782,7 +1782,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<BoxModel>> GetBoxModelListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1805,7 +1805,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<BoxModelLanguage>> GetBoxModelLanguageListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1832,7 +1832,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<BoxModelResult>> GetBoxModelResultListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1859,7 +1859,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<VPScenario>> GetVPScenarioListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1882,7 +1882,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<VPScenarioLanguage>> GetVPScenarioLanguageListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1909,7 +1909,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<VPAmbient>> GetVPAmbientListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1936,7 +1936,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<VPResult>> GetVPResultListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from ci in dbLocal.Infrastructures
@@ -1963,7 +1963,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Contact>> GetMunicipalityContactListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
@@ -1984,7 +1984,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<int>> GetMunicipalityContactEmailTVItemIDListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
@@ -2013,7 +2013,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<int>> GetMunicipalityContactTelTVItemIDListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
@@ -2042,7 +2042,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<int>> GetMunicipalityContactAddressTVItemIDListUnderMunicipalityAsync(TVItem TVItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from tl in dbLocal.TVItemLinks
                               from c in dbLocal.Contacts
@@ -2071,7 +2071,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<SamplingPlan>> GetAllSamplingPlanUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.SamplingPlans
                               where c.ProvinceTVItemID == TVItemProvince.TVItemID
@@ -2084,7 +2084,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<SamplingPlanEmail>> GetAllSamplingPlanEmailUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from sp in dbLocal.SamplingPlans
@@ -2105,7 +2105,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<SamplingPlanSubsector>> GetAllSamplingPlanSubsectorUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from sp in dbLocal.SamplingPlans
@@ -2126,7 +2126,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<SamplingPlanSubsectorSite>> GetAllSamplingPlanSubsectorSiteUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from sp in dbLocal.SamplingPlans
@@ -2154,7 +2154,7 @@ namespace CSSPCreateGzFileServices
             DateTime StartDate = new DateTime(1980, 1, 1);
             DateTime EndDate = new DateTime(2020, 12, 31);
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from sa in dbLocal.MWQMSamples
@@ -2180,7 +2180,7 @@ namespace CSSPCreateGzFileServices
             DateTime StartDate = new DateTime(2021, 1, 1);
             DateTime EndDate = new DateTime(2060, 12, 31);
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from sa in dbLocal.MWQMSamples
@@ -2206,7 +2206,7 @@ namespace CSSPCreateGzFileServices
             DateTime StartDate = new DateTime(1980, 1, 1);
             DateTime EndDate = new DateTime(2020, 12, 31);
 
-            if (dbLocal != null)
+            if (Local)
             {
                 List<int> MWQMSampleIDList2 = await (from c in dbLocal.TVItems
                                                      from sa in dbLocal.MWQMSamples
@@ -2240,7 +2240,7 @@ namespace CSSPCreateGzFileServices
             DateTime StartDate = new DateTime(2021, 1, 1);
             DateTime EndDate = new DateTime(2060, 12, 31);
 
-            if (dbLocal != null)
+            if (Local)
             {
                 List<int> MWQMSampleIDList2 = await (from c in dbLocal.TVItems
                                                      from sa in dbLocal.MWQMSamples
@@ -2271,7 +2271,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMRun>> GetMWQMRunListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from r in dbLocal.MWQMRuns
@@ -2290,7 +2290,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMRunLanguage>> GetMWQMRunLanguageListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 List<int> MWQMRunIDList2 = await (from c in dbLocal.TVItems
                                                   from r in dbLocal.MWQMRuns
@@ -2317,7 +2317,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMSite>> GetMWQMSiteListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -2344,7 +2344,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Classification>> GetClassificationListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -2371,7 +2371,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Contact>> GetAllContactAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 List<Contact> contactList2 = await (from c in dbLocal.Contacts
                                                     orderby c.LastName, c.FirstName, c.Initial
@@ -2400,7 +2400,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Address>> GetAllAddressAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.Addresses
                               orderby c.GoogleAddressText, c.PostalCode
@@ -2413,7 +2413,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Email>> GetAllEmailAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.Emails
                               orderby c.EmailAddress
@@ -2426,7 +2426,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Tel>> GetAllTelAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.Tels
                               orderby c.TelNumber
@@ -2439,7 +2439,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<ClimateSite>> GetClimateSiteListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cs in dbLocal.ClimateSites
@@ -2460,7 +2460,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TideSite>> GetTideSiteListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cs in dbLocal.TideSites
@@ -2481,7 +2481,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<HydrometricSite>> GetHydrometricSiteListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from hs in dbLocal.HydrometricSites
@@ -2502,7 +2502,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<RainExceedance>> GetRainExceedanceUnderCountryAsync(TVItem TVItemCountry)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from tl in dbLocal.TVItemLanguages
@@ -2527,7 +2527,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<RainExceedanceClimateSite>> GetRainExceedanceClimateSiteUnderCountryAsync(TVItem TVItemCountry)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from tl in dbLocal.TVItemLanguages
@@ -2556,7 +2556,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<RatingCurve>> GetRatingCurveListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from hs in dbLocal.HydrometricSites
@@ -2581,7 +2581,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<RatingCurveValue>> GetRatingCurveValueListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from hs in dbLocal.HydrometricSites
@@ -2610,7 +2610,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<DrogueRun>> GetDrogueRunListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from d in dbLocal.DrogueRuns
@@ -2629,7 +2629,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<DrogueRunPosition>> GetDrogueRunPositionListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from d in dbLocal.DrogueRuns
@@ -2652,7 +2652,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMAnalysisReportParameter>> GetAllMWQMAnalysisReportParameterListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.MWQMAnalysisReportParameters
                               select c).AsNoTracking().ToListAsync();
@@ -2663,7 +2663,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMLookupMPN>> GetMWQMLookupMPNAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.MWQMLookupMPNs
                               select c).AsNoTracking().ToListAsync();
@@ -2674,7 +2674,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MikeBoundaryCondition>> GetMikeBoundaryConditionListUnderMunicipalityAsync(TVItem tvItemMunicipality)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from bc in dbLocal.MikeBoundaryConditions
@@ -2695,7 +2695,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<EmailDistributionList>> GetEmailDistributionListListUnderCountryAsync(TVItem tvItemCountry)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.EmailDistributionLists
                               where c.ParentTVItemID == tvItemCountry.TVItemID
@@ -2708,7 +2708,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<EmailDistributionListLanguage>> GetEmailDistributionListLanguageListUnderCountryAsync(TVItem tvItemCountry)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.EmailDistributionLists
                               from cl in dbLocal.EmailDistributionListLanguages
@@ -2725,7 +2725,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<EmailDistributionListContact>> GetEmailDistributionListContactListUnderCountryAsync(TVItem tvItemCountry)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.EmailDistributionLists
                               from ec in dbLocal.EmailDistributionListContacts
@@ -2742,7 +2742,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<EmailDistributionListContactLanguage>> GetEmailDistributionListContactLanguageListUnderCountryAsync(TVItem tvItemCountry)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.EmailDistributionLists
                               from ec in dbLocal.EmailDistributionListContacts
@@ -2763,7 +2763,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<ClimateDataValue>> GetClimateDataValueListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from c in dbLocal.ClimateSites
@@ -2786,7 +2786,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TideDataValue>> GetTideDataValueListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from c in dbLocal.TideSites
@@ -2809,7 +2809,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<HydrometricDataValue>> GetHydrometricDataValueListUnderProvinceAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from t in dbLocal.TVItems
                               from c in dbLocal.HydrometricSites
@@ -2832,7 +2832,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<HelpDoc>> GetHelpDocAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.HelpDocs
                               select c).AsNoTracking().ToListAsync();
@@ -2843,7 +2843,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<LabSheet>> GetLabSheetListUnderSubsectorAsync(int subsectorTVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.LabSheets
                               where c.SubsectorTVItemID == subsectorTVItemID
@@ -2856,7 +2856,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<LabSheetDetail>> GetLabSheetDetailListUnderSubsectorAsync(int subsectorTVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.LabSheets
                               from cd in dbLocal.LabSheetDetails
@@ -2873,7 +2873,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<LabSheetTubeMPNDetail>> GetLabSheetTubeMPNDetailListUnderSubsectorAsync(int subsectorTVItemID)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.LabSheets
                               from cd in dbLocal.LabSheetDetails
@@ -2894,7 +2894,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMSubsector>> GetAllMWQMSubsectorAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.MWQMSubsectors
                               select c).AsNoTracking().ToListAsync();
@@ -2905,7 +2905,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<MWQMSubsectorLanguage>> GetAllMWQMSubsectorLanguageAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from cl in dbLocal.MWQMSubsectorLanguages
                               select cl).AsNoTracking().ToListAsync();
@@ -2916,7 +2916,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TideLocation>> GetTideLocationAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TideLocations
                               select c).AsNoTracking().ToListAsync();
@@ -2927,7 +2927,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<UseOfSite>> GetAllUseOfSiteListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.UseOfSites
                               select c).AsNoTracking().ToListAsync();
@@ -2938,7 +2938,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceSite>> GetPolSourceSiteListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from p in dbLocal.PolSourceSites
@@ -2957,7 +2957,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<Address>> GetPolSourceSiteAddressListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from p in dbLocal.PolSourceSites
@@ -2982,7 +2982,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceObservation>> GetPolSourceObservationListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from p in dbLocal.PolSourceSites
@@ -3005,7 +3005,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceObservationIssue>> GetPolSourceObservationIssueListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from p in dbLocal.PolSourceSites
@@ -3032,7 +3032,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceSiteEffect>> GetPolSourceSiteEffectListFromSubsectorAsync(TVItem TVItemSubsector)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from p in dbLocal.PolSourceSites
@@ -3055,7 +3055,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceGrouping>> GetPolSourceGroupingListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.PolSourceGroupings
                               select c).AsNoTracking().ToListAsync();
@@ -3066,7 +3066,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceGroupingLanguage>> GetPolSourceGroupingLanguageListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.PolSourceGroupingLanguages
                               select c).AsNoTracking().ToListAsync();
@@ -3077,7 +3077,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<PolSourceSiteEffectTerm>> GetPolSourceSiteEffectTermListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.PolSourceSiteEffectTerms
                               select c).AsNoTracking().ToListAsync();
@@ -3088,7 +3088,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<ReportType>> GetReportTypeListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.ReportTypes
                               select c).AsNoTracking().ToListAsync();
@@ -3099,7 +3099,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<ReportSection>> GetReportSectionListAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.ReportSections
                               select c).AsNoTracking().ToListAsync();
@@ -3110,7 +3110,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItem>> GetSearchableTVItemAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where c.TVType == TVTypeEnum.Country
@@ -3133,7 +3133,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<TVItemLanguage>> GetSearchableTVItemLanguageAsync()
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 List<int> TVItemIDList = await (from c in dbLocal.TVItems
                                                 where c.TVType == TVTypeEnum.Country
@@ -3168,7 +3168,7 @@ namespace CSSPCreateGzFileServices
         {
             List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               where ParentsTVItemID.Contains(c.TVItemID)
@@ -3183,7 +3183,7 @@ namespace CSSPCreateGzFileServices
         }
         private async Task<List<int>> GetMunicipalityWithInfrastructureTVItemIDListAsync(TVItem TVItemProvince)
         {
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from c2 in dbLocal.TVItems
@@ -3214,7 +3214,7 @@ namespace CSSPCreateGzFileServices
         {
             List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cl in dbLocal.TVItemLanguages
@@ -3233,7 +3233,7 @@ namespace CSSPCreateGzFileServices
         {
             List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from cs in dbLocal.TVItemStats
@@ -3252,7 +3252,7 @@ namespace CSSPCreateGzFileServices
         {
             List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from mi in dbLocal.MapInfos
@@ -3271,7 +3271,7 @@ namespace CSSPCreateGzFileServices
         {
             List<int> ParentsTVItemID = TVItem.TVPath.Split("p", StringSplitOptions.RemoveEmptyEntries).Select(c => int.Parse(c)).ToList();
 
-            if (dbLocal != null)
+            if (Local)
             {
                 return await (from c in dbLocal.TVItems
                               from mi in dbLocal.MapInfos

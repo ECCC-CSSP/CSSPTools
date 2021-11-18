@@ -107,7 +107,7 @@ namespace CSSPCreateGzFileServices
             try
             {
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebMonitoringOtherStatsCountry>(webMonitoringOtherStatsCountry, $"{ WebTypeEnum.WebMonitoringOtherStatsCountry }_{tvItemCountry.TVItemID}.gz")) return await Task.FromResult(false);
                 }

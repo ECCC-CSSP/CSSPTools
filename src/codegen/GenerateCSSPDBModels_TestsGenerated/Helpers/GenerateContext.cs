@@ -64,14 +64,14 @@ namespace GenerateCSSPDBModels_TestsGenerated
             sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
             sb.AppendLine(@"        public async Task Context_Constructor_Good_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Assert.True(await Setup(culture));");
+            sb.AppendLine(@"            Assert.True(await ContextDBModelSetup(culture));");
             sb.AppendLine(@"        }");
             sb.AppendLine(@"        [Theory]");
             sb.AppendLine(@"        [InlineData(""en-CA"")]");
             sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
             sb.AppendLine(@"        public async Task CSSPDBContext_Good_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Assert.True(await Setup(culture));");
+            sb.AppendLine(@"            Assert.True(await ContextDBModelSetup(culture));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPDBContext csspDBContext = new CSSPDBContext();");
             sb.AppendLine(@"            Assert.NotNull(csspDBContext);");
@@ -107,7 +107,7 @@ namespace GenerateCSSPDBModels_TestsGenerated
             sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
             sb.AppendLine(@"        public async Task CSSPDBLocalContext_Good_Test(string culture)");
             sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Assert.True(await Setup(culture));");
+            sb.AppendLine(@"            Assert.True(await ContextDBModelSetup(culture));");
             sb.AppendLine(@"");
             sb.AppendLine(@"            CSSPDBLocalContext csspDBLocalContext = new CSSPDBLocalContext();");
             sb.AppendLine(@"            Assert.NotNull(csspDBLocalContext);");
@@ -138,46 +138,46 @@ namespace GenerateCSSPDBModels_TestsGenerated
                 sb.AppendLine(@"");
             }
             sb.AppendLine(@"        }");
-            sb.AppendLine(@"        [Theory]");
-            sb.AppendLine(@"        [InlineData(""en-CA"")]");
-            sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
-            sb.AppendLine(@"        public async Task TestDBContext_Good_Test(string culture)");
-            sb.AppendLine(@"        {");
-            sb.AppendLine(@"            Assert.True(await Setup(culture));");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            TestDBContext testDBContext = new TestDBContext();");
-            sb.AppendLine(@"            Assert.NotNull(testDBContext);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            TestDBContext testDBContext2 = Provider.GetService<TestDBContext>();");
-            sb.AppendLine(@"            Assert.NotNull(testDBContext2);");
-            sb.AppendLine(@"");
-            foreach (Type type in types)
-            {
-                string plurial = "s";
-                if (type.Name == "Address")
-                {
-                    plurial = "es";
-                }
+            //sb.AppendLine(@"        [Theory]");
+            //sb.AppendLine(@"        [InlineData(""en-CA"")]");
+            //sb.AppendLine(@"        //[InlineData(""fr-CA"")]");
+            //sb.AppendLine(@"        public async Task TestDBContext_Good_Test(string culture)");
+            //sb.AppendLine(@"        {");
+            //sb.AppendLine(@"            Assert.True(await ContextDBModelSetup(culture));");
+            //sb.AppendLine(@"");
+            //sb.AppendLine(@"            TestDBContext testDBContext = new TestDBContext();");
+            //sb.AppendLine(@"            Assert.NotNull(testDBContext);");
+            //sb.AppendLine(@"");
+            //sb.AppendLine(@"            TestDBContext testDBContext2 = Provider.GetService<TestDBContext>();");
+            //sb.AppendLine(@"            Assert.NotNull(testDBContext2);");
+            //sb.AppendLine(@"");
+            //foreach (Type type in types)
+            //{
+            //    string plurial = "s";
+            //    if (type.Name == "Address")
+            //    {
+            //        plurial = "es";
+            //    }
 
-                if (GenerateCodeBase.SkipType(type))
-                {
-                    continue;
-                }
+            //    if (GenerateCodeBase.SkipType(type))
+            //    {
+            //        continue;
+            //    }
 
-                //if (type.Name != "Address")
-                //{
-                //    continue;
-                //}
+            //    //if (type.Name != "Address")
+            //    //{
+            //    //    continue;
+            //    //}
 
-                sb.AppendLine($@"            var { type.Name }{ plurial } = testDBContext2.{ type.Name }{ plurial };");
-                sb.AppendLine($@"            Assert.NotNull({ type.Name }{ plurial });");
-                sb.AppendLine(@"");
-            }
-            sb.AppendLine(@"        }");
+            //    sb.AppendLine($@"            var { type.Name }{ plurial } = testDBContext2.{ type.Name }{ plurial };");
+            //    sb.AppendLine($@"            Assert.NotNull({ type.Name }{ plurial });");
+            //    sb.AppendLine(@"");
+            //}
+            //sb.AppendLine(@"        }");
             sb.AppendLine(@"        #endregion Tests");
             sb.AppendLine(@"");
             sb.AppendLine(@"        #region private");
-            sb.AppendLine(@"        private async Task<bool> Setup(string culture)");
+            sb.AppendLine(@"        private async Task<bool> ContextDBModelSetup(string culture)");
             sb.AppendLine(@"        {");
             sb.AppendLine(@"            Configuration = new ConfigurationBuilder()");
             sb.AppendLine(@"               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)");
@@ -200,18 +200,18 @@ namespace GenerateCSSPDBModels_TestsGenerated
             sb.AppendLine(@"                options.UseSqlServer(CSSPDBConnString);");
             sb.AppendLine(@"            });");
             sb.AppendLine(@"");
-            sb.AppendLine(@"            /* ---------------------------------------------------------------------------------");
-            sb.AppendLine(@"             * using TestDB");
-            sb.AppendLine(@"             * ---------------------------------------------------------------------------------      ");
-            sb.AppendLine(@"             */");
-            sb.AppendLine(@"            string TestDBConnString = Configuration.GetValue<string>(""TestDB"");");
-            sb.AppendLine(@"            Assert.NotNull(TestDBConnString);");
-            sb.AppendLine(@"");
-            sb.AppendLine(@"            Services.AddDbContext<TestDBContext>(options =>");
-            sb.AppendLine(@"            {");
-            sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
-            sb.AppendLine(@"            });");
-            sb.AppendLine(@"");
+            //sb.AppendLine(@"            /* ---------------------------------------------------------------------------------");
+            //sb.AppendLine(@"             * using TestDB");
+            //sb.AppendLine(@"             * ---------------------------------------------------------------------------------      ");
+            //sb.AppendLine(@"             */");
+            //sb.AppendLine(@"            string TestDBConnString = Configuration.GetValue<string>(""TestDB"");");
+            //sb.AppendLine(@"            Assert.NotNull(TestDBConnString);");
+            //sb.AppendLine(@"");
+            //sb.AppendLine(@"            Services.AddDbContext<TestDBContext>(options =>");
+            //sb.AppendLine(@"            {");
+            //sb.AppendLine(@"                options.UseSqlServer(TestDBConnString);");
+            //sb.AppendLine(@"            });");
+            //sb.AppendLine(@"");
             sb.AppendLine(@"            /* ---------------------------------------------------------------------------------");
             sb.AppendLine(@"             * using CSSPDBLocal");
             sb.AppendLine(@"             * ---------------------------------------------------------------------------------      ");

@@ -26,7 +26,7 @@ namespace CSSPCreateGzFileServices
             {
                 if (!await FillReportTypeModelListAsync(webAllReportTypes.ReportTypeModelList)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllReportTypes>(webAllReportTypes, $"{ WebTypeEnum.WebAllReportTypes }.gz")) return await Task.FromResult(false);
                 }

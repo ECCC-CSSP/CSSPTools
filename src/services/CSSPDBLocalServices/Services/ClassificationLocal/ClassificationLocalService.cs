@@ -96,7 +96,7 @@ namespace CSSPDBLocalServices
             this.TVItemLocalService = TVItemLocalService;
             this.MapInfoLocalService = MapInfoLocalService;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

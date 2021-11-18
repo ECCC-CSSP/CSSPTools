@@ -39,7 +39,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillMikeScenarioModelListAsync(webMikeScenarios.TVItemModel, webMikeScenarios.TVItemModelParentList, webMikeScenarios.MikeScenarioModelList, TVItemMunicipality)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebMikeScenarios>(webMikeScenarios, $"{ WebTypeEnum.WebMikeScenarios }_{ MunicipalityTVItemID }.gz")) return await Task.FromResult(false);
                 }

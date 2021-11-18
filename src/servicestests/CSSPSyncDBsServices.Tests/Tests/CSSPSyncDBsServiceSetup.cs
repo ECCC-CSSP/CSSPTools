@@ -92,7 +92,7 @@ namespace CSSPSyncDBsServices.Tests
             Assert.NotNull(CSSPLocalLoggedInService);
 
             //string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
+            Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
 
             db = Provider.GetService<CSSPDBContext>();
             Assert.NotNull(db);

@@ -51,7 +51,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             FileName = FileName.Replace(".mmdf", ".mdf");
 

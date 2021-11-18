@@ -14,7 +14,7 @@ namespace CSSPDesktopInstallPostBuildServices.Services
     {
         public async Task<bool> CSSPOtherFilesCompressAndSendToAzureAsync()
         {
-            DirectoryInfo di = new DirectoryInfo(@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles\");
+            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPOtherFilesPath"]);
 
             if (!di.Exists)
             {
@@ -22,7 +22,7 @@ namespace CSSPDesktopInstallPostBuildServices.Services
                 return await Task.FromResult(false);
             }
 
-            FileInfo fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
+            FileInfo fi = new FileInfo(Configuration["CSSPOtherFilesZipFile"]);
             if (fi.Exists)
             {
                 try
@@ -38,7 +38,7 @@ namespace CSSPDesktopInstallPostBuildServices.Services
 
             ZipFile.CreateFromDirectory(di.FullName, fi.FullName);
 
-            fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
+            fi = new FileInfo(Configuration["CSSPOtherFilesZipFile"]);
 
             int countSeconds = 0;
             while (!fi.Exists)
@@ -47,7 +47,7 @@ namespace CSSPDesktopInstallPostBuildServices.Services
                 countSeconds += 1;
                 Thread.Sleep(1000);
 
-                fi = new FileInfo($@"C:\CSSPTools\src\webs\CSSPDesktop\csspotherfiles.zip");
+                fi = new FileInfo(Configuration["CSSPOtherFilesZipFile"]);
             }
 
             try

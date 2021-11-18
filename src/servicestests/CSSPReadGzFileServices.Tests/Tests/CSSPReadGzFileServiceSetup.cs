@@ -104,7 +104,7 @@ namespace CSSPReadGzFileServices.Tests
             CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
             Assert.NotNull(CSSPLocalLoggedInService);
 
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 

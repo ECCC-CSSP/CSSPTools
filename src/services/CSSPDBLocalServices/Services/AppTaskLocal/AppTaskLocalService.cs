@@ -84,7 +84,7 @@ namespace CSSPDBLocalServices
             this.CSSPLogService = CSSPLogService;
             this.dbLocal = dbLocal;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

@@ -41,6 +41,12 @@ namespace CSSPDesktopInstallPostBuild
             Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPDesktopInstallPostBuildService, CSSPDesktopInstallPostBuildService> ();
 
+            if (string.IsNullOrEmpty(Configuration["CSSPClientPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPClientPath", "CSSPDesktopInstallPostBuild") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPClientZipFile"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPClientZipFile", "CSSPDesktopInstallPostBuild") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPOtherFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPOtherFilesPath", "CSSPDesktopInstallPostBuild") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPOtherFilesZipFile"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPOtherFilesZipFile", "CSSPDesktopInstallPostBuild") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPWebAPIsLocalPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPWebAPIsLocalPath", "CSSPDesktopInstallPostBuild") }");
+            if (string.IsNullOrEmpty(Configuration["CSSPWebAPIsLocalZipFile"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPWebAPIsLocalZipFile", "CSSPDesktopInstallPostBuild") }");
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPWebAPIsLocalPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPWebAPIsLocalPath", "CSSPDesktopInstallPostBuild") }");
             if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CSSPDesktopInstallPostBuild") }");
             if (string.IsNullOrEmpty(Configuration["LoginEmail"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "LoginEmail", "CSSPDesktopInstallPostBuild") }");

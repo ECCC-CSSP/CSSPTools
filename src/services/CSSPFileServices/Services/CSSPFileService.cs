@@ -83,7 +83,7 @@ namespace CSSPFileServices
             this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

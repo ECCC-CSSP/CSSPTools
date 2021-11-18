@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllTideLocations.TideLocationList = await GetTideLocationAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz")) return await Task.FromResult(false);
                 }

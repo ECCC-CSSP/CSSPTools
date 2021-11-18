@@ -39,7 +39,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillDrogueRunModelAsync(webDrogueRuns.DrogueRunModelList, TVItemProvince)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebDrogueRuns>(webDrogueRuns, $"{ WebTypeEnum.WebDrogueRuns }_{ ProvinceTVItemID }.gz")) return await Task.FromResult(false);
                 }

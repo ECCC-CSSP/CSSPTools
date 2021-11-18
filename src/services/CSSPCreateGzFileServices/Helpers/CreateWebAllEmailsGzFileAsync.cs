@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllEmails.EmailList = await GetAllEmailAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllEmails>(webAllEmails, $"{ WebTypeEnum.WebAllEmails }.gz")) return await Task.FromResult(false);
                 }

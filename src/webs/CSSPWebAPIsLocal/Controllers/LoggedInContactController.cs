@@ -55,7 +55,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.PasswordHash = "";
             CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash = CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.GoogleMapKeyHash);

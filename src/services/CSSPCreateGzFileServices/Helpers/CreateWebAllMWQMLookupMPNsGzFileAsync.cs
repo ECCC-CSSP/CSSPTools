@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllMWQMLookupMPNs.MWQMLookupMPNList = await GetMWQMLookupMPNAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllMWQMLookupMPNs>(webAllMWQMLookupMPNs, $"{ WebTypeEnum.WebAllMWQMLookupMPNs }.gz")) return await Task.FromResult(false);
                 }

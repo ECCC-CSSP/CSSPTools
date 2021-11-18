@@ -155,7 +155,7 @@ namespace CSSPUpdate
                 return await Task.FromResult(false);
             }
 
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null)
             {
                 Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService.LoggedInContactInfo") }");

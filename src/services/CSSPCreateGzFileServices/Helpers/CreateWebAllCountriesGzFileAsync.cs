@@ -37,7 +37,7 @@ namespace CSSPCreateGzFileServices
             {
                 if (!await FillAllCountryTVItemModelListAsync(webAllCountries.TVItemModelList, TVItemRoot)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllCountries>(webAllCountries, $"{ WebTypeEnum.WebAllCountries }.gz")) return await Task.FromResult(false);
                 }

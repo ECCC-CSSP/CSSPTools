@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
                 CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db || dbLocal"));
             }
 
-            if (dbLocal != null)
+            if (Local)
             {
                 if (string.IsNullOrWhiteSpace(Configuration["CSSPJSONPathLocal"]))
                 {

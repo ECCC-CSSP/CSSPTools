@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllHelpDocs.HelpDocList = await GetHelpDocAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllHelpDocs>(webAllHelpDocs, $"{ WebTypeEnum.WebAllHelpDocs }.gz")) return await Task.FromResult(false);
                 }

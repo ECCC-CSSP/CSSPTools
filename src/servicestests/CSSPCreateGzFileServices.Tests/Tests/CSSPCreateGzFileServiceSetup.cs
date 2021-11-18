@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Xunit;
 using CSSPScrambleServices;
 using CSSPSQLiteServices;
-using CSSPDesktopInstallPostBuildServices.Services;
+using CSSPAzureLoginServices.Services;
 
 namespace CSSPCreateGzFileServices.Tests
 {
@@ -37,7 +37,7 @@ namespace CSSPCreateGzFileServices.Tests
         private ICSSPCreateGzFileService CreateGzFileService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        private ICSSPDesktopInstallPostBuildService CSSPDesktopInstallPostBuildService { get; set; }
+        private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         private string AzureStoreHash { get; set; }
         #endregion Properties
@@ -84,7 +84,7 @@ namespace CSSPCreateGzFileServices.Tests
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
             Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
             Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<ICSSPDesktopInstallPostBuildService, CSSPDesktopInstallPostBuildService>();
+            Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
             CheckRequiredDirectories();
 
@@ -114,6 +114,10 @@ namespace CSSPCreateGzFileServices.Tests
             FillAzureStoreHash();
 
             DeleteAllJsonFilesInAzureTestStore();
+
+            DeleteAllJsonFilesLocal();
+
+            DeleteAllBackupFilesLocal();
 
             return await Task.FromResult(true);
         }

@@ -39,7 +39,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillHydrometricSiteModelListAsync(webHydrometricSites.HydrometricSiteModelList, TVItemProvince)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebHydrometricSites>(webHydrometricSites, $"{ WebTypeEnum.WebHydrometricSites }_{ ProvinceTVItemID }.gz")) return await Task.FromResult(false);
                 }

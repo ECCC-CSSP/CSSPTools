@@ -39,7 +39,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillLabSheetModelListAsync(webLabSheets.LabSheetModelList, TVItemSubsector)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebLabSheets>(webLabSheets, $"{ WebTypeEnum.WebLabSheets }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);
                 }

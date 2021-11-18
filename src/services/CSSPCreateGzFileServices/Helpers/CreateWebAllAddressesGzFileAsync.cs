@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllAddresses.AddressList = await GetAllAddressAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz")) return await Task.FromResult(false);
                 }

@@ -45,7 +45,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillEmailDistributionListModelListAsync(webCountry.EmailDistributionListModelList, TVItemCountry)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebCountry>(webCountry, $"{ WebTypeEnum.WebCountry }_{ CountryTVItemID }.gz")) return await Task.FromResult(false);
                 }

@@ -27,7 +27,7 @@ namespace CSSPDesktopServices.Services
     {
         public async Task<bool> CheckIfUpdateIsNeededAsync()
         {
-            if (!await CSSPLocalLoggedInService.SetLoggedInContactInfo()) return await Task.FromResult(false);
+            if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
 
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfUpdateIsNeeded));
 

@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllMWQMAnalysisReportParameters.MWQMAnalysisReportParameterList = await GetAllMWQMAnalysisReportParameterListAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllMWQMAnalysisReportParameters>(webAllMWQMAnalysisReportParameters, $"{ WebTypeEnum.WebAllMWQMAnalysisReportParameters }.gz")) return await Task.FromResult(false);
                 }

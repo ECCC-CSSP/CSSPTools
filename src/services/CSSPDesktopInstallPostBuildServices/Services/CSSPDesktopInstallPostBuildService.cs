@@ -15,6 +15,7 @@ using CSSPCultureServices.Resources;
 using CSSPScrambleServices;
 using CSSPLogServices;
 using System.Linq;
+using CSSPAzureLoginServices.Services;
 
 namespace CSSPDesktopInstallPostBuildServices.Services
 {

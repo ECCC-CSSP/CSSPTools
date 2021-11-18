@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 if (!await FillAllContactModelListAsync(webAllContacts.ContactModelList)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllContacts>(webAllContacts, $"{ WebTypeEnum.WebAllContacts }.gz")) return await Task.FromResult(false);
                 }

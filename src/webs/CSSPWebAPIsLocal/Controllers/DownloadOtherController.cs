@@ -52,7 +52,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
             // TVItemID = AreaTVItemID
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             return await FileService.DownloadOtherFile(FileName);
         }

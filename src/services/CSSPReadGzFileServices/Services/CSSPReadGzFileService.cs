@@ -24,7 +24,7 @@ namespace CSSPReadGzFileServices
         Task<T> GetUncompressJSON<T>(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<T>> ReadJSON<T>(WebTypeEnum webType, int TVItemID = 0);
     }
-    public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileService
+    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
         #region Variables
         #endregion Variables
@@ -75,7 +75,7 @@ namespace CSSPReadGzFileServices
             this.ManageFileService = ManageFileService;
             this.dbManage = dbManage;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

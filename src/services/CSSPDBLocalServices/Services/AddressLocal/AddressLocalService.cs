@@ -96,7 +96,7 @@ namespace CSSPDBLocalServices
             this.HelperLocalService = HelperLocalService;
             this.TVItemLocalService = TVItemLocalService;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

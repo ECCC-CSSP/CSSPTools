@@ -144,7 +144,7 @@ namespace CSSPDBLocalServices.Tests
             CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
             Assert.NotNull(CSSPLocalLoggedInService);
 
-            Assert.True(await CSSPLocalLoggedInService.SetLoggedInContactInfo());
+            Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 

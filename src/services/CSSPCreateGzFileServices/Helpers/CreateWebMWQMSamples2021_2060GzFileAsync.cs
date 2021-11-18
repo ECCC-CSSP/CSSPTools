@@ -39,7 +39,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillMWQMSampleModelList2021_2060Async(webMWQMSamples.MWQMSampleModelList, TVItemSubsector)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebMWQMSamples>(webMWQMSamples, $"{ WebTypeEnum.WebMWQMSamples2021_2060 }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);
                 }

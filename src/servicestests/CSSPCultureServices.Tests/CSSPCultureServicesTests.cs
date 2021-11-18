@@ -56,6 +56,7 @@ namespace CSSPCultureServices.Tests
             CSSPCultureService.SetCulture(culture);
 
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureDesktopRes.Culture);
+            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureEnumsRes.Culture);
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureModelsRes.Culture);
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCulturePolSourcesRes.Culture);
             Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureServicesRes.Culture);

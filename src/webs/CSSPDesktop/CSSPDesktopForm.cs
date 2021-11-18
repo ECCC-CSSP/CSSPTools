@@ -585,7 +585,7 @@ namespace CSSPDesktop
                     var a = (from c in dbManage.Contacts
                              select c).FirstOrDefault();
 
-                    await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+                    await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
                 }
                 catch (Exception ex)
                 {

@@ -59,7 +59,7 @@ namespace CSSPWebAPIsLocal.Controllers
         public async Task<ActionResult<bool>> CreateTempCSV(TableConvertToCSVModel tableConvertToCSVModel)
         {
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             return await FileService.CreateTempCSV(tableConvertToCSVModel);
         }
@@ -69,7 +69,7 @@ namespace CSSPWebAPIsLocal.Controllers
         {
 
             CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             return await FileService.CreateTempPNG(Request);
 

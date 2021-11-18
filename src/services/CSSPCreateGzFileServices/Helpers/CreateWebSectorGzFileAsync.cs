@@ -43,7 +43,7 @@ namespace CSSPCreateGzFileServices
 
                 if (!await FillFileModelListAsync(webSector.TVFileModelList, TVItemSector)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebSector>(webSector, $"{ WebTypeEnum.WebSector }_{ SectorTVItemID }.gz")) return await Task.FromResult(false);
                 }

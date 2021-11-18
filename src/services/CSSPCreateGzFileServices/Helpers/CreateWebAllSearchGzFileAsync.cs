@@ -29,7 +29,7 @@ namespace CSSPCreateGzFileServices
             {
                 if (!await FillAllSearchTVItemModelListAsync(WebAllSearch.TVItemModelList)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllSearch>(WebAllSearch, $"{ WebTypeEnum.WebAllSearch }.gz")) return await Task.FromResult(false);
                 }

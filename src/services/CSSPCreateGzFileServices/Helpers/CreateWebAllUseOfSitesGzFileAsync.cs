@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices
             {
                 webAllUseOfSites.UseOfSiteList = await GetAllUseOfSiteListAsync();
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllUseOfSites>(webAllUseOfSites, $"{ WebTypeEnum.WebAllUseOfSites  }.gz")) return await Task.FromResult(false);
                 }

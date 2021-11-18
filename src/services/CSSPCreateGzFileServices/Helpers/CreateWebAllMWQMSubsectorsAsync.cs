@@ -42,7 +42,7 @@ namespace CSSPCreateGzFileServices
                     });
                 }
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllMWQMSubsectors>(webAllMWQMSubsectors, $"{ WebTypeEnum.WebAllMWQMSubsectors }.gz")) return await Task.FromResult(false);
                 }

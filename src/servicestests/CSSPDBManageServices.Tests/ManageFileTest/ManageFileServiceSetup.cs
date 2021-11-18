@@ -1,4 +1,6 @@
 using CSSPCultureServices.Services;
+using CSSPDBModels;
+using CSSPSQLiteServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +24,9 @@ namespace ManageServices.Tests
         private IServiceCollection Services { get; set; }
         private IServiceProvider Provider { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
-        //private ICommandLogService CommandLogService { get; set; }
+        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private IManageFileService ManageFileService { get; set; }
+        private CSSPDBLocalContext dbLocal { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
 
@@ -48,79 +51,32 @@ namespace ManageServices.Tests
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            //Services.AddSingleton<ICommandLogService, CommandLogService>();
-            Services.AddSingleton<IManageFileService, ManageFileService>();
-
+            Assert.NotNull(Configuration["CSSPDBLocal"]);
             Assert.NotNull(Configuration["CSSPDBManage"]);
 
-            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"].Replace("_test", ""));
-            Assert.True(fiCSSPDBManage.Exists);
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
 
-            FileInfo fiCSSPDBManageTest = new FileInfo(Configuration["CSSPDBManage"]);
-            if (!fiCSSPDBManageTest.Exists)
-            {
-                try
-                {
-                    File.Copy(fiCSSPDBManage.FullName, fiCSSPDBManageTest.FullName);
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, $"Could not copy {fiCSSPDBManage.FullName} to {fiCSSPDBManageTest.FullName}. Ex: {ex.Message}");
-                }
-            }
+            CheckRequiredDirectories();
 
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBManageContext
-             * ---------------------------------------------------------------------------------      
-             */
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManageTest.FullName }");
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
+            });
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
             });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
+            await GetProviderServices(culture);
 
-            CSSPCultureService.SetCulture(culture);
-
-            ManageFileService = Provider.GetService<IManageFileService>();
-            Assert.NotNull(ManageFileService);
-
-            //CommandLogService = Provider.GetService<ICommandLogService>();
-            //Assert.NotNull(CommandLogService);
-
-            dbManage = Provider.GetService<CSSPDBManageContext>();
-            Assert.NotNull(dbManage);
-
-            List<CommandLog> commandLogToDeleteList = (from c in dbManage.CommandLogs
-                                                       select c).ToList();
-
-            try
-            {
-                dbManage.CommandLogs.RemoveRange(commandLogToDeleteList);
-                dbManage.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, $"Could not delete all CommandLogs from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
-            }
-
-            List<ManageFile> manageFileToDeleteList = (from c in dbManage.ManageFiles
-                                                       select c).ToList();
-
-            try
-            {
-                dbManage.ManageFiles.RemoveRange(manageFileToDeleteList);
-                dbManage.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, $"Could not delete all ManageFiles from {fiCSSPDBManageTest.FullName}. Ex: { ex.Message }");
-            }
+            ClearCommandLogs();
+            ClearManageFiles();
 
             return await Task.FromResult(true);
         }

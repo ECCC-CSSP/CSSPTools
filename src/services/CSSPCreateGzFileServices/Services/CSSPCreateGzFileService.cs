@@ -23,6 +23,7 @@ namespace CSSPCreateGzFileServices
         Task<ActionResult<bool>> CreateAllGzFilesAsync();
         Task<ActionResult<bool>> CreateGzFileAsync(WebTypeEnum webType, int TVItemID = 0);
         Task<ActionResult<bool>> DeleteGzFileAsync(WebTypeEnum webType, int TVItemID = 0);
+        Task<ActionResult<bool>> SetLocal(bool local);
     }
     public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
     {
@@ -39,11 +40,12 @@ namespace CSSPCreateGzFileServices
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private string AzureStoreHash { get; set; }
+        private bool Local { get; set; } = false;
         #endregion Properties
 
         #region Constructors
         public CSSPCreateGzFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPLocalLoggedInService CSSPLocalLoggedInService,
-            ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, CSSPDBManageContext dbManage, CSSPDBContext db = null, CSSPDBLocalContext dbLocal = null)
+            ICSSPScrambleService CSSPScrambleService, ICSSPLogService CSSPLogService, CSSPDBManageContext dbManage, CSSPDBContext db, CSSPDBLocalContext dbLocal)
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService") }");
@@ -51,8 +53,9 @@ namespace CSSPCreateGzFileServices
             if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService") }");
             if (CSSPScrambleService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPScrambleService") }");
             if (CSSPLogService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLogService") }");
+            if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
+            if (dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbLocal") }");
             if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
-            if (db == null && dbLocal == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db && dbLocal") }");
 
             if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup", "CreateGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["azure_csspjson_backup_uncompress"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "azure_csspjson_backup_uncompress", "CreateGzFileService") }");
@@ -72,7 +75,7 @@ namespace CSSPCreateGzFileServices
             this.db = db;
             this.dbLocal = dbLocal;
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
             {

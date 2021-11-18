@@ -26,7 +26,7 @@ namespace CSSPCreateGzFileServices
             {
                 if (!await FillPolSourceGroupingModelListAsync(webAllPolSourceGroupings.PolSourceGroupingModelList)) return await Task.FromResult(false);
 
-                if (dbLocal != null)
+                if (Local)
                 {
                     if (!await StoreLocalAsync<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz")) return await Task.FromResult(false);
                 }

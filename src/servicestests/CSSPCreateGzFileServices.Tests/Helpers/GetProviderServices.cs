@@ -17,7 +17,8 @@ using CSSPLogServices;
 using CSSPScrambleServices;
 using CSSPLocalLoggedInServices;
 using CSSPSQLiteServices;
-using CSSPDesktopInstallPostBuildServices.Services;
+using CSSPAzureLoginServices.Services;
+using CSSPHelperModels;
 
 namespace CSSPCreateGzFileServices.Tests
 {
@@ -48,30 +49,55 @@ namespace CSSPCreateGzFileServices.Tests
                 await CSSPSQLiteService.CreateSQLiteCSSPDBLocalAsync();
             }
 
+            fiCSSPDBLocal = new FileInfo(Configuration["CSSPDBLocal"]);
+            Assert.True(fiCSSPDBLocal.Exists);
+
             FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
             if (!fiCSSPDBManage.Exists)
             {
                 await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync();
             }
 
+            fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+            Assert.True(fiCSSPDBManage.Exists);
+
             dbManage = Provider.GetService<CSSPDBManageContext>();
             Assert.NotNull(dbManage);
+
+            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+            Assert.NotNull(CSSPLocalLoggedInService);
 
             Contact contact = (from c in dbManage.Contacts
                                select c).FirstOrDefault();
 
             if (contact == null)
             {
-                CSSPDesktopInstallPostBuildService = Provider.GetService<ICSSPDesktopInstallPostBuildService>();
-                Assert.NotNull(CSSPDesktopInstallPostBuildService);
+                CSSPAzureLoginService = Provider.GetService<ICSSPAzureLoginService>();
+                Assert.NotNull(CSSPAzureLoginService);
 
-                await CSSPDesktopInstallPostBuildService.LoginAsync();
+                LoginModel loginModel = new LoginModel()
+                {
+                    LoginEmail = Configuration["LoginEmail"],
+                    Password = Configuration["Password"],
+                };
+
+                var actionRes = await CSSPAzureLoginService.AzureLoginAsync(loginModel);
+                Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+                Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+                Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
+                Assert.Empty(CSSPLogService.ErrRes.ErrList);
+
+                Contact contactDB = (from c in dbManage.Contacts
+                                     select c).FirstOrDefault();
+                Assert.NotNull(contactDB);
+
+                Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+                Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
+                Assert.Equal(contactDB.ContactTVItemID, CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID);
+
             }
 
-            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-            Assert.NotNull(CSSPLocalLoggedInService);
-
-            await CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.True(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID > 0);

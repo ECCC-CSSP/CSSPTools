@@ -1089,4 +1089,7 @@
   <data name="ModifyOf_IsNotAllowed" xml:space="preserve">
     <value>Modifier {0} n'est pas permit</value>
   </data>
+  <data name="ErrorInSetLocalLoggedInContactInfo" xml:space="preserve">
+    <value>Erreur dans SetLocalLoggedInContactInfo</value>
+  </data>
 </root>

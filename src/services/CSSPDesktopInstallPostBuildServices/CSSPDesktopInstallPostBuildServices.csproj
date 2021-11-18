@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
     <ProjectReference Include="..\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
     <ProjectReference Include="..\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
     <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
