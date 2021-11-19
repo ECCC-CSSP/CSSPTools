@@ -105,7 +105,7 @@ namespace UploadAllFilesToAzure
                 return false;
             }
 
-            CSSPLocalLoggedInService.SetLoggedInContactInfo();
+            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             if (CSSPLocalLoggedInService.LoggedInContactInfo == null)
             {
                 Console.WriteLine("CSSPLocalLoggedInService.LoggedInContactInfo should not be null");
