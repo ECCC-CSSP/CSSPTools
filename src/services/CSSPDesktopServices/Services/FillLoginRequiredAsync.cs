@@ -21,24 +21,17 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> CheckIfLoginIsRequiredAsync()
+        public async Task<bool> FillLoginRequiredAsync()
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfLoginIsRequired));
 
-            // doing Contact
             contact = (from c in dbManage.Contacts
                        select c).FirstOrDefault();
 
-            if (contact == null)
+            if (contact == null || contact.IsLoggedIn == null || !(bool)contact.IsLoggedIn)
             {
                 AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.LoginRequired));
 
-                LoginRequired = true;
-                return await Task.FromResult(true);
-            }
-
-            if (contact.IsLoggedIn == null || !(bool)contact.IsLoggedIn)
-            {
                 LoginRequired = true;
                 return await Task.FromResult(true);
             }

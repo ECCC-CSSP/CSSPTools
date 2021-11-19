@@ -16,14 +16,14 @@ namespace CSSPDesktopServices.Tests
 {
     public partial class CSSPDesktopServiceTests
     {
-        private async Task CopyOtherFileToTestOtherFile()
+        private void CreateCSSPOtherFilesPath()
         {
-
-            foreach(string fileName in await GetCSSPOtherFileListAsync())
+            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPOtherFilesPath"]);
+            if (!di.Exists)
             {
                 try
                 {
-                    File.Copy(fileName.Replace("test", ""), fileName);
+                    di.Create();
                 }
                 catch (Exception ex)
                 {
@@ -31,12 +31,6 @@ namespace CSSPDesktopServices.Tests
                 }
             }
 
-            foreach (string fileName in await GetCSSPOtherFileListAsync())
-            {
-                FileInfo fi = new FileInfo(fileName);
-
-                Assert.True(fi.Exists);
-            }
         }
     }
 }

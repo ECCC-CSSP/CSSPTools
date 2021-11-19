@@ -1,28 +1,24 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPDBModels;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.SignalR;
 
 namespace CSSPAzureLoginServices.Services
 {
     public partial class CSSPAzureLoginService : ICSSPAzureLoginService
     {
-        private async Task<bool> AzureLoginTVItemUserAuthorizationAsync()
+        private async Task<bool> AzureLoginTVTypeUserAuthorizationAsync()
         {
             using (HttpClient httpClient = new HttpClient())
             {
 
-                // Getting TVItemUserAuthorization for the Contact
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVItemUserAuthorization/GetWithContactTVItemID/{ contact.ContactTVItemID }").Result;
+                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVTypeUserAuthorization/GetWithContactTVItemID/{ contact.ContactTVItemID }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
@@ -30,7 +26,7 @@ namespace CSSPAzureLoginServices.Services
                         CSSPLogService.AppendError(CSSPCultureDesktopRes.NeedToBeLoggedIn);
                         return await Task.FromResult(false);
                     }
-                    else if ((int)response.StatusCode == 500)
+                    else 
                     {
                         CSSPLogService.AppendError(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
                         return await Task.FromResult(false);
@@ -38,33 +34,33 @@ namespace CSSPAzureLoginServices.Services
 
                 }
 
-                List<TVItemUserAuthorization> tvItemUserAuthorizationList = JsonSerializer.Deserialize<List<TVItemUserAuthorization>>(response.Content.ReadAsStringAsync().Result);
+                List<TVTypeUserAuthorization> TVTypeUserAuthorizationList = JsonSerializer.Deserialize<List<TVTypeUserAuthorization>>(response.Content.ReadAsStringAsync().Result);
 
-                List<TVItemUserAuthorization> tvItemUserAuthorizationToDeleteList = (from c in dbManage.TVItemUserAuthorizations
+                List<TVTypeUserAuthorization> TVTypeUserAuthorizationToDeleteList = (from c in dbManage.TVTypeUserAuthorizations
                                                                                      select c).ToList();
 
-                if (tvItemUserAuthorizationToDeleteList.Count > 0)
+                if (TVTypeUserAuthorizationToDeleteList.Count > 0)
                 {
                     try
                     {
-                        dbManage.TVItemUserAuthorizations.RemoveRange(tvItemUserAuthorizationToDeleteList);
+                        dbManage.TVTypeUserAuthorizations.RemoveRange(TVTypeUserAuthorizationToDeleteList);
                         dbManage.SaveChanges();
                     }
                     catch (Exception ex)
                     {
-                        CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "TVItemUserAuthorizationList", ex.Message));
+                        CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message));
                         return await Task.FromResult(false);
                     }
                 }
 
                 try
                 {
-                    dbManage.TVItemUserAuthorizations.AddRange(tvItemUserAuthorizationList);
+                    dbManage.TVTypeUserAuthorizations.AddRange(TVTypeUserAuthorizationList);
                     dbManage.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVItemUserAuthorizationList", ex.Message));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVTypeUserAuthorizationList", ex.Message));
                     return await Task.FromResult(false);
                 }
 

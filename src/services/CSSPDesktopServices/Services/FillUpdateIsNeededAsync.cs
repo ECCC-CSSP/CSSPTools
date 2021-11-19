@@ -25,7 +25,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> CheckIfUpdateIsNeededAsync()
+        public async Task<bool> FillUpdateIsNeededAsync()
         {
             if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
 

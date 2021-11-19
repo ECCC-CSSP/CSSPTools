@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Diagnostics;
 using System.Collections.Generic;
-using ManageServices;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSSPDesktopServices.Tests
 {
     public partial class CSSPDesktopServiceTests
     {
-        private async Task CreateAndEmptyDirectories()
+        private async Task CheckCSSPDBManage()
         {
-            foreach(string dir in await CSSPDesktopService.GetDirectoryToCreateListAsync())
+            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+            if (!fiCSSPDBManage.Exists)
             {
-                DirectoryInfo di = new DirectoryInfo(dir);
+                DirectoryInfo di = new DirectoryInfo(fiCSSPDBManage.DirectoryName);
                 if (!di.Exists)
                 {
                     try
@@ -31,18 +33,13 @@ namespace CSSPDesktopServices.Tests
                         Assert.True(false, ex.Message);
                     }
                 }
-                else
-                {
-                    foreach (FileInfo file in di.GetFiles())
-                    {
-                        file.Delete();
-                    }
-                }
-
-                di = new DirectoryInfo(dir);
-                Assert.True(di.Exists);
-                Assert.Empty(di.GetFiles());
             }
+
+            if (!fiCSSPDBManage.Exists)
+            {
+                await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync();
+            }
+
         }
     }
 }

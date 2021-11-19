@@ -25,29 +25,15 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<bool> CheckIfJsonFileAreUpToDateAsync()
+        private async Task<bool> CheckIfZipFileAreUpToDateAsync()
         {
-            foreach (string jsonFileName in await GetJsonFileNameListAsync())
+            foreach (string zipFileName in await GetZipFileNameListAsync())
             {
-                string enumTypeName = jsonFileName.Substring(0, jsonFileName.IndexOf("."));
+                FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ zipFileName }");
 
-                WebTypeEnum webType;
-
-                foreach (int enumVal in Enum.GetValues(typeof(WebTypeEnum)))
-                {
-
-                    if (((WebTypeEnum)enumVal).ToString() == enumTypeName)
-                    {
-                        webType = (WebTypeEnum)enumVal;
-                        break;
-                    }
-                }
-
-                FileInfo fi = new FileInfo($"{ Configuration["CSSPDesktopPath"] }{ jsonFileName }");
-
-                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
                 ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
-                ShareFileClient file = directory.GetFileClient(jsonFileName);
+                ShareFileClient file = directory.GetFileClient(zipFileName);
                 ShareFileProperties shareFileProperties = null;
 
                 try
@@ -58,34 +44,34 @@ namespace CSSPDesktopServices.Services
                 {
                     if (ex.Status == 404)
                     {
-                        string error = string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPJsonPath"], jsonFileName);
+                        string error = string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
                         AppendStatus(new AppendEventArgs(error));
                         CSSPLogService.AppendError(error);
-                        return await Task.FromResult(true);
+                        return await Task.FromResult(false);
                     }
                 }
 
                 if (shareFileProperties == null)
                 {
-                    string error = string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, "csspjson", jsonFileName);
+                    string error = string.Format(CSSPCultureDesktopRes.CouldNotGetPropertiesFromAzureStore_AndFile_, Configuration["AzureStoreCSSPWebAPIsLocalPath"], zipFileName);
                     AppendStatus(new AppendEventArgs(error));
                     CSSPLogService.AppendError(error);
-                    return await Task.FromResult(true);
+                    return await Task.FromResult(false);
                 }
 
                 ManageFile manageFile = (from c in dbManage.ManageFiles
-                                         where c.AzureStorage == "csspjson"
-                                         && c.AzureFileName == jsonFileName
+                                         where c.AzureStorage == Configuration["AzureStoreCSSPWebAPIsLocalPath"]
+                                         && c.AzureFileName == zipFileName
                                          select c).FirstOrDefault();
 
                 if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, jsonFileName)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, zipFileName)));
                     UpdateIsNeeded = true;
                 }
                 else
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_DidNotChanged, jsonFileName)));
+                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_DidNotChanged, zipFileName)));
                 }
             }
 

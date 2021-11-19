@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Xunit;
 using CSSPScrambleServices;
 using System.Collections.Generic;
+using CSSPAzureLoginServices.Services;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -37,9 +38,8 @@ namespace CSSPDesktopServices.Tests
         private ICSSPFileService CSSPFileService { get; set; }
         private ICSSPDesktopService CSSPDesktopService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        private CSSPDBLocalContext dbLocal { get; set; }
+        private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-
         #endregion Properties
 
         #region Constructors
@@ -60,17 +60,6 @@ namespace CSSPDesktopServices.Tests
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
-
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
-            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<IManageFileService, ManageFileService>();
-            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-            Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
-            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
             Assert.NotNull(Configuration["CSSPDB"]);
             Assert.NotNull(Configuration["CSSPDBLocal"]);
@@ -100,37 +89,64 @@ namespace CSSPDesktopServices.Tests
             Assert.NotNull(Configuration["CSSPLocalUrl"]);
             Assert.NotNull(Configuration["LoginEmail"]);
             Assert.NotNull(Configuration["Password"]);
+            Assert.NotNull(Configuration["LocalCSSPOtherFilesPath"]);
+            Assert.NotNull(Configuration["AfterInstallLocalCSSPJsonPath"]);
+            Assert.NotNull(Configuration["AfterInstallLocalCSSPOtherFilesPath"]);
+            Assert.NotNull(Configuration["AfterInstallLocalCSSPWebAPIsLocalPath"]);
 
-            await CreateAndEmptyDirectories();
+            DeleteCSSPDesktopPath();
 
-            CreateCopyOfCSSPDBLocal();
+            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+            Services.AddSingleton<IEnums, Enums>();
+            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
+            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+            Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<IManageFileService, ManageFileService>();
+            Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
+            Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
 
-            CreateCopyOfCSSPDBManage();
+            Services.AddDbContext<CSSPDBManageContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
+            });
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
+            });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            GetProviderServices();
+            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+            Assert.NotNull(CSSPCultureService);
 
-            if (culture == "fr_CA")
-            {
-                CSSPDesktopService.IsEnglish = false;
-            }
-            else
-            {
-                CSSPDesktopService.IsEnglish = true;
-            }
+            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
+            Assert.NotNull(CSSPScrambleService);
 
-            if (CSSPDesktopService.IsEnglish)
-            {
-                CSSPCultureService.SetCulture("en-CA");
-            }
-            else
-            {
-                CSSPCultureService.SetCulture("fr-CA");
-            }
+            CSSPLogService = Provider.GetService<ICSSPLogService>();
+            Assert.NotNull(CSSPLogService);
 
-            //CopyOtherFileToTestOtherFile();
+            ManageFileService = Provider.GetService<IManageFileService>();
+            Assert.NotNull(ManageFileService);
+
+            CSSPFileService = Provider.GetService<ICSSPFileService>();
+            Assert.NotNull(CSSPFileService);
+
+            CSSPSQLiteService = Provider.GetService<ICSSPSQLiteService>();
+            Assert.NotNull(CSSPSQLiteService);
+
+            CSSPAzureLoginService = Provider.GetService<ICSSPAzureLoginService>();
+            Assert.NotNull(CSSPAzureLoginService);
+
+            CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
+            Assert.NotNull(CSSPDesktopService);
+
+            dbManage = Provider.GetService<CSSPDBManageContext>();
+            Assert.NotNull(dbManage);
 
             return await Task.FromResult(true);
         }

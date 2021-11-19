@@ -16,6 +16,7 @@ using CSSPCultureServices.Resources;
 using CSSPScrambleServices;
 using CSSPLogServices;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CSSPDesktopServices.Services
 {
@@ -25,17 +26,21 @@ namespace CSSPDesktopServices.Services
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.LoggingIn));
 
-            if (!await LoginContactAsync(loginModel)) return await Task.FromResult(false);
+            await CSSPAzureLoginService.AzureLoginAsync(loginModel);  
 
-            if (!await LoginTVItemUserAuthorizationAsync()) return await Task.FromResult(false);
+            if (CSSPLogService.ErrRes.ErrList.Count == 0)
+            {
+                AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.LoggedIn));
+                LoginRequired = false;
 
-            if (!await LoginTVTypeUserAuthorizationAsync()) return await Task.FromResult(false);
-
-            if (!await LoginManageAsync(loginModel)) return await Task.FromResult(false);
-
-            AppendStatus(new AppendEventArgs(""));
-
-            if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
+                contact = (from c in dbManage.Contacts
+                           select c).FirstOrDefault();
+            }
+            else
+            {
+                AppendStatus(new AppendEventArgs(string.Join(",", CSSPLogService.ErrRes.ErrList)));
+                LoginRequired = true;
+            }
 
             return await Task.FromResult(true);
         }

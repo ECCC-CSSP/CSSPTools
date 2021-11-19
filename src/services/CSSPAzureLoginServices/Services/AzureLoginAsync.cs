@@ -1,21 +1,7 @@
-﻿using CSSPCultureServices.Services;
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.Extensions.Configuration;
-using CSSPReadGzFileServices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using CSSPCultureServices.Resources;
 using CSSPHelperModels;
-using ManageServices;
-using CSSPLocalLoggedInServices;
-using CSSPCultureServices.Resources;
-using CSSPScrambleServices;
-using CSSPLogServices;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace CSSPAzureLoginServices.Services
 {

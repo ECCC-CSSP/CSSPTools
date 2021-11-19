@@ -32,7 +32,7 @@ namespace CSSPAzureAppTaskServices
 
         #region Properties
         private CSSPDBContext db { get; }
-        private IConfiguration Configuration { get; }
+        //private IConfiguration Configuration { get; }
         private IEnums enums { get; }
         private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
         private ErrRes errRes { get; set; } = new ErrRes();
@@ -49,7 +49,7 @@ namespace CSSPAzureAppTaskServices
             if (string.IsNullOrEmpty(Configuration["AzureCSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureCSSPDB", "AzureAppTaskService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "AzureAppTaskService") }");
 
-            this.Configuration = Configuration;
+            //this.Configuration = Configuration;
             this.enums = enums;
             this.CSSPServerLoggedInService = CSSPServerLoggedInService;
             this.db = db;

@@ -438,4 +438,7 @@
   <data name="SetAllManageFilesLoadedOnceToFalse" xml:space="preserve">
     <value>Set all ManageFiles.LoadedOnce to false</value>
   </data>
+  <data name="LoggedIn" xml:space="preserve">
+    <value>Logged in</value>
+  </data>
 </root>

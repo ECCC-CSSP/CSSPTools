@@ -1,29 +1,19 @@
 ﻿using CSSPCultureServices.Resources;
-using CSSPDesktopServices.Models;
 using CSSPDBModels;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.SignalR;
 
-namespace CSSPDesktopServices.Services
+namespace CSSPAzureLoginServices.Services
 {
-    public partial class CSSPDesktopService : ICSSPDesktopService
+    public partial class CSSPAzureLoginService : ICSSPAzureLoginService
     {
-        private async Task<bool> LoginTVItemUserAuthorizationAsync()
+        private async Task<bool> AzureLoginTVItemUserAuthorizationAsync()
         {
-            string culture = "fr-CA";
-            if (IsEnglish)
-            {
-                culture = "en-CA";
-            }
-
             using (HttpClient httpClient = new HttpClient())
             {
 
@@ -34,12 +24,12 @@ namespace CSSPDesktopServices.Services
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.NeedToBeLoggedIn));
+                        CSSPLogService.AppendError(CSSPCultureDesktopRes.NeedToBeLoggedIn);
                         return await Task.FromResult(false);
                     }
                     else if ((int)response.StatusCode == 500)
                     {
-                        AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
+                        CSSPLogService.AppendError(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
                         return await Task.FromResult(false);
                     }
 
@@ -59,7 +49,7 @@ namespace CSSPDesktopServices.Services
                     }
                     catch (Exception ex)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "TVItemUserAuthorizationList", ex.Message)));
+                        CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "TVItemUserAuthorizationList", ex.Message));
                         return await Task.FromResult(false);
                     }
                 }
@@ -71,7 +61,7 @@ namespace CSSPDesktopServices.Services
                 }
                 catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVItemUserAuthorizationList", ex.Message)));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVItemUserAuthorizationList", ex.Message));
                     return await Task.FromResult(false);
                 }
 

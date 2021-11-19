@@ -21,7 +21,7 @@ namespace CSSPDesktopServices.Tests
     {
         private async Task CopyAzureJsonUpdateFilesToAzureTestDirectory()
         {
-            foreach (string jsonFileName in await GetJsonFileNameListAsync())
+            foreach (string jsonFileName in await CSSPDesktopService.GetJsonFileNameListAsync())
             {
                 bool fileExistInTestDirectory = false;
                 FileInfo fi = new FileInfo($"{ Configuration["CSSPJSONPath"]}{jsonFileName}");

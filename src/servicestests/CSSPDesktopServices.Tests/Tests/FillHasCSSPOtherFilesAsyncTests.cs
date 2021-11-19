@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
+using CSSPHelperModels;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -19,12 +20,20 @@ namespace CSSPDesktopServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_Start_Good_Test(string culture)
+        public async Task FillHasCSSPOtherFilesAsync_Good_Test(string culture)
         {
             Assert.True(await CSSPDesktopServiceSetup(culture));
 
-            bool retBool = await CSSPDesktopService.StartAsync();
-            Assert.True(retBool);
+            DeleteCSSPDesktopPath();
+            CreateCSSPOtherFilesPath();
+
+            Assert.True(await CSSPDesktopService.FillHasCSSPOtherFilesAsync());
+            Assert.False(CSSPDesktopService.HasCSSPOtherFiles);
+
+            DirectoryCopy(Configuration["LocalCSSPOtherFilesPath"], Configuration["CSSPOtherFilesPath"], true);
+
+            Assert.True(await CSSPDesktopService.FillHasCSSPOtherFilesAsync());
+            Assert.True(CSSPDesktopService.HasCSSPOtherFiles);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<List<string>> GetJsonFileNameListAsync()
+        public async Task<List<string>> GetJsonFileNameListAsync()
         {
             return await Task.FromResult(new List<string>()
             {
@@ -39,11 +39,11 @@ namespace CSSPDesktopServices.Services
                 $"{ WebTypeEnum.WebAllPolSourceSiteEffectTerms }.gz",
                 $"{ WebTypeEnum.WebAllProvinces }.gz",
                 $"{ WebTypeEnum.WebAllReportTypes }.gz",
-                $"{ WebTypeEnum.WebRoot }.gz",
                 $"{ WebTypeEnum.WebAllSearch }.gz",
                 $"{ WebTypeEnum.WebAllTels }.gz",
                 $"{ WebTypeEnum.WebAllTideLocations }.gz",
                 $"{ WebTypeEnum.WebAllUseOfSites }.gz",
+                $"{ WebTypeEnum.WebRoot }.gz",
             });
         }
     }

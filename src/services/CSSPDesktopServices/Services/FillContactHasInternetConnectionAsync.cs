@@ -21,7 +21,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> CheckingInternetConnectionAsync()
+        public async Task<bool> FillContactHasInternetConnectionAsync()
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckingInternetConnection));
 

@@ -45,10 +45,11 @@ namespace CSSPDesktopServices.Services
             }
 
             int zipCount = 0;
+            InstallingStatus(new InstallingEventArgs(10));
             foreach (string zipFileName in await GetZipFileNameListAsync())
             {
                 zipCount += 1;
-                InstallingStatus(new InstallingEventArgs(5 * zipCount));
+                InstallingStatus(new InstallingEventArgs(10 + (10 * zipCount)));
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Downloading_, zipFileName)));
 
                 if (!await DownloadZipFilesFromAzure(zipFileName)) return await Task.FromResult(false);
@@ -58,7 +59,7 @@ namespace CSSPDesktopServices.Services
             foreach (string jsonFileName in await GetJsonFileNameListAsync())
             {
                 jsonCount += 1;
-                InstallingStatus(new InstallingEventArgs(15 + (2 * jsonCount)));
+                InstallingStatus(new InstallingEventArgs(40 + (3 * jsonCount)));
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Downloading_, jsonFileName)));
 
                 if (!await DownloadJsonFilesFromAzure(jsonFileName)) return await Task.FromResult(false);

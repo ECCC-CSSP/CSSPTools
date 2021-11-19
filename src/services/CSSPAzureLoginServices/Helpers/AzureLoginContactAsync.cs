@@ -1,6 +1,5 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPDBModels;
-using CSSPDesktopServices.Models;
 using CSSPHelperModels;
 using System;
 using System.Collections.Generic;
@@ -11,31 +10,25 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CSSPDesktopServices.Services
+namespace CSSPAzureLoginServices.Services
 {
-    public partial class CSSPDesktopService : ICSSPDesktopService
+    public partial class CSSPAzureLoginService : ICSSPAzureLoginService
     {
         #region Properties
         #endregion Properties
 
         #region Functions private
-        private async Task<bool> LoginContactAsync(LoginModel loginModel)
+        private async Task<bool> AzureLoginContactAsync(LoginModel loginModel)
         {
-            string culture = "fr-CA";
-            if (IsEnglish)
-            {
-                culture = "en-CA";
-            }
-
             if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._IsRequired, "LoginEmail")));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._IsRequired, "LoginEmail"));
                 return await Task.FromResult(false);
             }
 
             if (string.IsNullOrWhiteSpace(loginModel.Password))
             {
-                AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes._IsRequired, "Password")));
+                CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes._IsRequired, "Password"));
                 return await Task.FromResult(false);
             }
 
@@ -54,12 +47,12 @@ namespace CSSPDesktopServices.Services
                     {
                         if ((int)response.StatusCode == 400)
                         {
-                            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
+                            CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                             return await Task.FromResult(false);
                         }
                         else
                         {
-                            AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection));
+                            CSSPLogService.AppendError(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
                             return await Task.FromResult(false);
                         }
                     }
@@ -68,13 +61,13 @@ namespace CSSPDesktopServices.Services
 
                     if (contact == null)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail)));
+                        CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
                         return await Task.FromResult(false);
                     }
                 }
                 catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(ex.Message));
+                    CSSPLogService.AppendError(ex.Message);
                     return await Task.FromResult(false);
                 }
 
@@ -90,7 +83,7 @@ namespace CSSPDesktopServices.Services
                     }
                     catch (Exception ex)
                     {
-                        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "Contacts", ex.Message)));
+                        CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "Contacts", ex.Message));
                         return await Task.FromResult(false);
                     }
                 }
@@ -102,7 +95,7 @@ namespace CSSPDesktopServices.Services
                 }
                 catch (Exception ex)
                 {
-                    AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Contact", ex.Message)));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "Contact", ex.Message));
                     return await Task.FromResult(false);
                 }
 

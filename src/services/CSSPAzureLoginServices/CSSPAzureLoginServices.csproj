@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
-    <ProjectReference Include="..\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
-    <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
+    <ProjectReference Include="..\CSSPDBManageServices\CSSPDBManageServices.csproj" />
+    <ProjectReference Include="..\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
+    <ProjectReference Include="..\CSSPLogServices\CSSPLogServices.csproj" />
   </ItemGroup>
 
 

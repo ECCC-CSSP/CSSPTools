@@ -21,7 +21,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<List<string>> GetCSSPOtherFileListAsync()
+        public async Task<List<string>> GetCSSPOtherFileListAsync()
         {
             return await Task.FromResult(new List<string>()
             {

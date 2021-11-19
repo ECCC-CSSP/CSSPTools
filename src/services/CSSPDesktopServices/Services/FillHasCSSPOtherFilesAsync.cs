@@ -22,7 +22,7 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        public async Task<bool> CheckIfCSSPOtherFilesExistAsync()
+        public async Task<bool> FillHasCSSPOtherFilesAsync()
         {
             AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfCSSPOtherFilesExist));
 
@@ -44,11 +44,6 @@ namespace CSSPDesktopServices.Services
             }
 
             AppendStatus(new AppendEventArgs(""));
-
-            if (!HasCSSPOtherFiles)
-            {
-                return await Task.FromResult(false);
-            }
 
             return await Task.FromResult(true);
         }

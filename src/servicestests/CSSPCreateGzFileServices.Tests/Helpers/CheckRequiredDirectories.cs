@@ -19,7 +19,11 @@ namespace CSSPCreateGzFileServices.Tests
         {
             List<string> FileList = new List<string>()
             {
+                Configuration["CSSPDBLocal"],
                 Configuration["CSSPDBManage"],
+                Configuration["azure_csspjson_backup"],
+                Configuration["azure_csspjson_backup_uncompress"],
+                Configuration["CSSPJSONPathLocal"],
             };
 
             // create all directories

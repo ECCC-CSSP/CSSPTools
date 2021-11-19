@@ -22,11 +22,13 @@ namespace CSSPDesktopServices.Services
 {
     public partial class CSSPDesktopService : ICSSPDesktopService
     {
-        private async Task<List<string>> GetZipFileNameListAsync()
+        public async Task<List<string>> GetZipFileNameListAsync()
         {
             return await Task.FromResult(new List<string>()
             {
-                "csspwebapislocal.zip", "csspclient.zip", "csspotherfiles.zip"
+                "csspwebapislocal.zip",
+                "csspclient.zip", 
+                "csspotherfiles.zip",
             });
         }
     }

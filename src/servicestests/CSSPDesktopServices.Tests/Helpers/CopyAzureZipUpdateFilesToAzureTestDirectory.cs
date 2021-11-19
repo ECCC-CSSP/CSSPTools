@@ -21,7 +21,7 @@ namespace CSSPDesktopServices.Tests
     {
         private async Task CopyAzureZipUpdateFilesToAzureTestDirectory()
         {
-            foreach (string zipFileName in await GetZipFileNameListAsync())
+            foreach (string zipFileName in await CSSPDesktopService.GetZipFileNameListAsync())
             {
                 bool fileExistInTestDirectory = false;
                 FileInfo fi = new FileInfo($"{ Configuration["CSSPWebAPIsLocalPath"]}{zipFileName}");

@@ -60,15 +60,15 @@ namespace CSSPLogServices
         public StringBuilder sbLog { get; set; } = new StringBuilder();
         public ErrRes ErrRes { get; set; } = new ErrRes();
 
-        private IConfiguration Configuration { get; }
-        private ICSSPScrambleService CSSPScrambleService { get; }
+        //private IConfiguration Configuration { get; }
+        //private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private CSSPDBManageContext dbManage { get; }
         private int FunctionCount { get; set; } = 0;
         #endregion Properties
 
         #region Constructors
-        public CSSPLogService(IConfiguration Configuration, ICSSPScrambleService CSSPScrambleService, ICSSPLocalLoggedInService CSSPLocalLoggedInService, CSSPDBManageContext dbManage) : base()
+        public CSSPLogService(IConfiguration Configuration, /*ICSSPScrambleService CSSPScrambleService, */ICSSPLocalLoggedInService CSSPLocalLoggedInService, CSSPDBManageContext dbManage) : base()
         {
             if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
             if (CSSPLocalLoggedInService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService ") }");
@@ -76,8 +76,8 @@ namespace CSSPLogServices
 
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
 
-            this.Configuration = Configuration;
-            this.CSSPScrambleService = CSSPScrambleService;
+            //this.Configuration = Configuration;
+            //this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.dbManage = dbManage;
         }

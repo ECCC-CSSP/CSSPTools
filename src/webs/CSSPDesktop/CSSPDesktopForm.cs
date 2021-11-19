@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using CSSPLogServices;
 using CSSPScrambleServices;
 using System.Linq;
+using CSSPAzureLoginServices.Services;
 
 namespace CSSPDesktop
 {
@@ -40,6 +41,7 @@ namespace CSSPDesktop
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+        private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
         bool IsEnglish { get; set; } = true;
         #endregion Properties
 
@@ -232,7 +234,7 @@ namespace CSSPDesktop
         #region Functions private
         private async Task<bool> CheckInternetConnection()
         {
-            if (!await CSSPDesktopService.CheckingInternetConnectionAsync()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.FillContactHasInternetConnectionAsync()) return await Task.FromResult(false);
 
             if (CSSPDesktopService.contact != null && CSSPDesktopService.contact.HasInternetConnection != null)
             {
@@ -386,7 +388,7 @@ namespace CSSPDesktop
         {
             SettingUpAllTextForLanguage();
 
-            if (!await CSSPDesktopService.CheckIfLoginIsRequiredAsync()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.FillLoginRequiredAsync()) return await Task.FromResult(false);
 
             if (!CSSPDesktopService.LoginRequired)
             {
@@ -400,7 +402,7 @@ namespace CSSPDesktop
 
                     if (!await CSSPDesktopService.LoginAsync(loginModel)) return await Task.FromResult(false);
                 }
-                if (!await CSSPDesktopService.CheckIfUpdateIsNeededAsync()) return await Task.FromResult(false);
+                if (!await CSSPDesktopService.FillUpdateIsNeededAsync()) return await Task.FromResult(false);
             }
 
             if (CSSPDesktopService.LoginRequired)
@@ -489,6 +491,7 @@ namespace CSSPDesktop
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
             Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
+            Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
             /* ---------------------------------------------------------------------------------
              * using CSSPDBLocal
@@ -562,6 +565,12 @@ namespace CSSPDesktop
                 richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService") + "\r\n");
             }
 
+            CSSPAzureLoginService = Provider.GetService<ICSSPAzureLoginService>();
+            if (CSSPAzureLoginService == null)
+            {
+                richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes._ShouldNotBeNull, "CSSPSQLiteService") + "\r\n");
+            }
+
             if (!await CSSPDesktopService.CreateAllRequiredDirectoriesAsync()) return await Task.FromResult(false);
 
             CSSPDBManageContext dbManage = Provider.GetService<CSSPDBManageContext>();
@@ -587,7 +596,7 @@ namespace CSSPDesktop
 
                     await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     richTextBoxStatus.AppendText(string.Format(CSSPCultureDesktopRes.Creating_SQLiteDatabase, @"C:\CSSPDesktop\cssplocaldatabases\CSSPDBManage.db") + "\r\n");
                     if (!await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync()) return await Task.FromResult(false);
@@ -617,7 +626,7 @@ namespace CSSPDesktop
 
             if (!await CheckInternetConnection()) return await Task.FromResult(false);
 
-            if (!await CSSPDesktopService.CheckIfCSSPOtherFilesExistAsync()) return await Task.FromResult(false);
+            if (!await CSSPDesktopService.FillHasCSSPOtherFilesAsync()) return await Task.FromResult(false);
 
             lblStatus.Text = "";
 

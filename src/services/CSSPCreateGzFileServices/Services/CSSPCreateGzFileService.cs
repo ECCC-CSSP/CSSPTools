@@ -35,8 +35,8 @@ namespace CSSPCreateGzFileServices
         private CSSPDBLocalContext dbLocal { get; }
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
-        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
-        private IEnums enums { get; }
+        //private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
+        //private IEnums enums { get; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
         private string AzureStoreHash { get; set; }
@@ -68,8 +68,8 @@ namespace CSSPCreateGzFileServices
 
             this.Configuration = Configuration;
             this.CSSPCultureService = CSSPCultureService;
-            this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
-            this.enums = enums;
+            //this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
+            //this.enums = enums;
             this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;
             this.db = db;

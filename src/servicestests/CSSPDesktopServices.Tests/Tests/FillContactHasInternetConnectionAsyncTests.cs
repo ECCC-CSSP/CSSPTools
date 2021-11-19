@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using CSSPHelperModels;
+using System.Linq;
 
 namespace CSSPDesktopServices.Tests
 {
@@ -20,19 +21,17 @@ namespace CSSPDesktopServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_CheckIfLoginIsRequired_Good_Test(string culture)
+        public async Task FillContactHasInternetConnectionAsync_Good_Test(string culture)
         {
             Assert.True(await CSSPDesktopServiceSetup(culture));
 
-            Assert.True(await CSSPDesktopService.LogoffAsync());
-            Assert.NotNull(CSSPDesktopService.contact);
-            Assert.False(CSSPDesktopService.contact.IsLoggedIn);
-            Assert.True(CSSPDesktopService.LoginRequired);
+            Assert.Empty(CSSPLogService.ErrRes.ErrList);
 
-            Assert.True(await CSSPDesktopService.CheckIfLoginIsRequiredAsync());
-            Assert.NotNull(CSSPDesktopService.contact);
-            Assert.False(CSSPDesktopService.contact.IsLoggedIn);
-            Assert.True(CSSPDesktopService.LoginRequired);
+            DeleteCSSPDesktopPath();
+            CreateCSSPDatabasesPath();
+            await CheckCSSPDBManage();
+
+            Assert.Empty(CSSPLogService.ErrRes.ErrList);
 
             LoginModel loginModel = new LoginModel()
             {
@@ -40,15 +39,22 @@ namespace CSSPDesktopServices.Tests
                 Password = Configuration["Password"],
             };
 
+            Assert.Empty(CSSPLogService.ErrRes.ErrList);
+
             Assert.True(await CSSPDesktopService.LoginAsync(loginModel));
             Assert.NotNull(CSSPDesktopService.contact);
             Assert.True(CSSPDesktopService.contact.IsLoggedIn);
             Assert.False(CSSPDesktopService.LoginRequired);
 
-            Assert.True(await CSSPDesktopService.CheckIfLoginIsRequiredAsync());
-            Assert.NotNull(CSSPDesktopService.contact);
-            Assert.True(CSSPDesktopService.contact.IsLoggedIn);
-            Assert.False(CSSPDesktopService.LoginRequired);
+            bool retBool = await CSSPDesktopService.FillContactHasInternetConnectionAsync();
+            Assert.True(retBool);
+            
+            Contact contactRet = (from c in dbManage.Contacts
+                                  select c).FirstOrDefault();
+
+            Assert.NotNull(contactRet); 
+            Assert.True(contactRet.IsLoggedIn);
+            Assert.True(contactRet.HasInternetConnection); 
         }
     }
 }

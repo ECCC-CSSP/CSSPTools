@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using CSSPCultureServices.Services;
-using CSSPAzureLoginServices.Services;
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+﻿using CSSPDBModels;
 using CSSPHelperModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using CSSPLocalLoggedInServices;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace CSSPAzureLoginServices.Tests
 {

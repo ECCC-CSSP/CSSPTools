@@ -438,4 +438,7 @@
   <data name="SetAllManageFilesLoadedOnceToFalse" xml:space="preserve">
     <value>Mis tous les valeurs de ManageFiles.LoadedOnce à faux</value>
   </data>
+  <data name="LoggedIn" xml:space="preserve">
+    <value>Connexion active</value>
+  </data>
 </root>

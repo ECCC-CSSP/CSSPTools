@@ -1,15 +1,7 @@
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-using System.Diagnostics;
 using System.Collections.Generic;
-using ManageServices;
-using System.Linq;
+using System.IO;
+using Xunit;
 namespace CSSPAzureLoginServices.Tests
 {
     public partial class CSSPAzureLoginServiceTests

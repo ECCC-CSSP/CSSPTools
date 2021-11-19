@@ -29,14 +29,16 @@ namespace CSSPDesktopServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPDesktopService_CreateAllRequiredDirectories_Good_Test(string culture)
+        public async Task CreateAllRequiredDirectories_Good_Test(string culture)
         {
             Assert.True(await CSSPDesktopServiceSetup(culture));
 
             bool retBool = await CSSPDesktopService.CreateAllRequiredDirectoriesAsync();
             Assert.True(retBool);
 
-            foreach(string DirName in await GetDirectoryToCreateListAsync())
+            Assert.Empty(CSSPLogService.ErrRes.ErrList);
+
+            foreach (string DirName in await CSSPDesktopService.GetDirectoryToCreateListAsync())
             {
                 DirectoryInfo di = new DirectoryInfo(DirName);
                 Assert.True(di.Exists);
