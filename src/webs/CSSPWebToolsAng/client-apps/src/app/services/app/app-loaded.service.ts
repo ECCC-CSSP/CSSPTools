@@ -51,7 +51,7 @@ import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.mo
 })
 export class AppLoadedService {
   BaseApiUrl = 'http://localhost:4446/api/'; 
-  //BaseApiUrl = 'http://localhost:4449/api/';
+  //BaseApiUrl = 'http://localhost:44348/api/';
 
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];

@@ -16,19 +16,19 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllTideLocations(WebAllTideLocations webAllTideLocations, WebAllTideLocations webAllTideLocationsLocal)
+        private async Task<bool> MergeJsonWebAllTideLocations(WebAllTideLocations webAllTideLocations, WebAllTideLocations webAllTideLocationsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllTideLocations WebAllTideLocations, WebAllTideLocations WebAllTideLocationsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllTideLocationsTideLocationList(webAllTideLocations, webAllTideLocationsLocal);
+            MergeJsonWebAllTideLocationsTideLocationList(webAllTideLocations, webAllTideLocationsLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
 
-        private void DoMergeJsonWebAllTideLocationsTideLocationList(WebAllTideLocations webAllTideLocations, WebAllTideLocations webAllTideLocationsLocal)
+        private void MergeJsonWebAllTideLocationsTideLocationList(WebAllTideLocations webAllTideLocations, WebAllTideLocations webAllTideLocationsLocal)
         {
             List<TideLocation> tideLocationLocalList = (from c in webAllTideLocationsLocal.TideLocationList
                                                         where c.DBCommand != DBCommandEnum.Original

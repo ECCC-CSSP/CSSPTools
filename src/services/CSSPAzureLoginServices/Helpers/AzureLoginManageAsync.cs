@@ -1,9 +1,11 @@
 ﻿using CSSPCultureServices.Resources;
+using CSSPDBModels;
 using CSSPHelperModels;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace CSSPAzureLoginServices.Services
 {
@@ -11,21 +13,36 @@ namespace CSSPAzureLoginServices.Services
     {
         private async Task<bool> AzureLoginManageAsync(LoginModel loginModel)
         {
+            string culture = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? "fr-CA" : "en-CA";
+
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null
+                || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+                return await Task.FromResult(false);
+            }
+
+            if (string.IsNullOrWhiteSpace(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token))
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "Token"));
+                return await Task.FromResult(false);
+            }
+
             using (HttpClient httpClient = new HttpClient())
             {
                 // Getting googleMapKeyHash
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token);
                 HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/GoogleMapKeyHash").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        CSSPLogService.AppendError(CSSPCultureDesktopRes.NeedToBeLoggedIn);
+                        CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
                         return await Task.FromResult(false);
                     }
                     else
                     {
-                        CSSPLogService.AppendError(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
+                        CSSPLogService.AppendError(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection);
                         return await Task.FromResult(false);
                     }
                 }
@@ -37,7 +54,16 @@ namespace CSSPAzureLoginServices.Services
                 }
                 catch (Exception)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotGet_, "GoogleMapKeyHash"));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotGet_, "GoogleMapKeyHash"));
+                    return await Task.FromResult(false);
+                }
+
+                Contact contact = (from c in dbManage.Contacts
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotFind_, "Contact"));
                     return await Task.FromResult(false);
                 }
 
@@ -51,7 +77,7 @@ namespace CSSPAzureLoginServices.Services
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.UnmanagedServerError_, ex.Message));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message));
                     return await Task.FromResult(true);
                 }
             }
@@ -59,18 +85,18 @@ namespace CSSPAzureLoginServices.Services
             using (HttpClient httpClient = new HttpClient())
             {
                 // Getting googleMapKeyHash
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token);
                 HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/AzureStoreHash").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        CSSPLogService.AppendError(CSSPCultureDesktopRes.NeedToBeLoggedIn);
+                        CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
                         return await Task.FromResult(false);
                     }
                     else
                     {
-                        CSSPLogService.AppendError(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
+                        CSSPLogService.AppendError(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection);
                         return await Task.FromResult(false);
                     }
                 }
@@ -82,7 +108,16 @@ namespace CSSPAzureLoginServices.Services
                 }
                 catch (Exception)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotGet_, "AzureStoreHash"));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotGet_, "AzureStoreHash"));
+                    return await Task.FromResult(false);
+                }
+
+                Contact contact = (from c in dbManage.Contacts
+                                   select c).FirstOrDefault();
+
+                if (contact == null)
+                {
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotFind_, "Contact"));
                     return await Task.FromResult(false);
                 }
 
@@ -96,7 +131,7 @@ namespace CSSPAzureLoginServices.Services
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.UnmanagedServerError_, ex.Message));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.UnmanagedServerError_, ex.Message));
                     return await Task.FromResult(true);
                 }
             }

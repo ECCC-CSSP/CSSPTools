@@ -29,8 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPFileServices\CSSPFileServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

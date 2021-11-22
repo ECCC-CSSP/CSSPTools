@@ -16,26 +16,26 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebRoot(WebRoot webRoot, WebRoot webRootLocal)
+        private async Task<bool> MergeJsonWebRoot(WebRoot webRoot, WebRoot webRootLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebRoot WebRoot, WebRoot WebRootLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebRootTVItemModel(webRoot, webRootLocal);
+            MergeJsonWebRootTVItemModel(webRoot, webRootLocal);
 
-            DoMergeJsonWebRootTVItemModelParentList(webRoot, webRootLocal);
+            MergeJsonWebRootTVItemModelParentList(webRoot, webRootLocal);
 
-            DoMergeJsonWebRootTVItemModelCountryList(webRoot, webRootLocal);
+            MergeJsonWebRootTVItemModelCountryList(webRoot, webRootLocal);
 
-            DoMergeJsonWebRootTVFileModelList(webRoot, webRootLocal);
+            MergeJsonWebRootTVFileModelList(webRoot, webRootLocal);
 
-            DoMergeJsonWebRootIsLocalized(webRoot, webRootLocal);
+            MergeJsonWebRootIsLocalized(webRoot, webRootLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebRootTVItemModel(WebRoot webRoot, WebRoot webRootLocal)
+        private void MergeJsonWebRootTVItemModel(WebRoot webRoot, WebRoot webRootLocal)
         {
             if (webRootLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webRootLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -45,7 +45,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webRoot.TVItemModel, webRootLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebRootTVItemModelParentList(WebRoot webRoot, WebRoot webRootLocal)
+        private void MergeJsonWebRootTVItemModelParentList(WebRoot webRoot, WebRoot webRootLocal)
         {
             if ((from c in webRootLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -57,7 +57,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webRoot.TVItemModelParentList, webRootLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebRootTVItemModelCountryList(WebRoot webRoot, WebRoot webRootLocal)
+        private void MergeJsonWebRootTVItemModelCountryList(WebRoot webRoot, WebRoot webRootLocal)
         {
             List<TVItemModel> TVItemModelLocalList = (from c in webRootLocal.TVItemModelCountryList
                                                  where c.TVItem.TVItemID != 0
@@ -79,7 +79,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebRootTVFileModelList(WebRoot webRoot, WebRoot webRootLocal)
+        private void MergeJsonWebRootTVFileModelList(WebRoot webRoot, WebRoot webRootLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webRootLocal.TVFileModelList
                                                  where c.TVFile.TVFileID != 0
@@ -101,7 +101,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebRootIsLocalized(WebRoot webRoot, WebRoot webRootLocal)
+        private void MergeJsonWebRootIsLocalized(WebRoot webRoot, WebRoot webRootLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webRoot.TVItemModel.TVItem.TVItemID }\\");
 

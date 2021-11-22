@@ -22,7 +22,7 @@ namespace CSSPCreateGzFileServices.Tests
     {
         private void DeleteAllJsonFilesInAzureTestStore()
         {
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(shareClient);
 
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();

@@ -25,7 +25,6 @@ namespace CSSPLocalLoggedInServices
         #region Properties
         public LoggedInContactInfo LoggedInContactInfo { get; set; }
 
-        //private IConfiguration Configuration { get; }
         private CSSPDBManageContext dbManage { get; }
         #endregion Properties
 
@@ -37,7 +36,6 @@ namespace CSSPLocalLoggedInServices
 
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "LoggedInService") }");
 
-            //this.Configuration = Configuration;
             this.dbManage = dbManage;
             
             LoggedInContactInfo = new LoggedInContactInfo();

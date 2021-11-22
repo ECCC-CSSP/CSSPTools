@@ -15,18 +15,18 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllSearch(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
+        private async Task<bool> MergeJsonWebAllSearch(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllSearch WebAllSearch, WebAllSearch WebAllSearchLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllSearchTVItemModelList(webAllSearch, webAllSearchLocal);
+            MergeJsonWebAllSearchTVItemModelList(webAllSearch, webAllSearchLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebAllSearchTVItemModelList(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
+        private void MergeJsonWebAllSearchTVItemModelList(WebAllSearch webAllSearch, WebAllSearch webAllSearchLocal)
         {
             List<TVItemModel> TVItemModelList = (from c in webAllSearchLocal.TVItemModelList
                                                  where c.TVItem.TVItemID != 0

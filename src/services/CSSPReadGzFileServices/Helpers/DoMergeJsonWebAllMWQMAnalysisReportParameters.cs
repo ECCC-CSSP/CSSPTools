@@ -17,18 +17,18 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllMWQMAnalysisReportParameters(WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParameters, WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParametersLocal)
+        private async Task<bool> MergeJsonWebAllMWQMAnalysisReportParameters(WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParameters, WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParametersLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParameters, WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParametersLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebSubsectorMWQMAnalysisReportParameterList(webAllMWQMAnalysisReportParameters, webAllMWQMAnalysisReportParametersLocal);
+            MergeJsonWebSubsectorMWQMAnalysisReportParameterList(webAllMWQMAnalysisReportParameters, webAllMWQMAnalysisReportParametersLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebSubsectorMWQMAnalysisReportParameterList(WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParameters, WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParametersLocal)
+        private void MergeJsonWebSubsectorMWQMAnalysisReportParameterList(WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParameters, WebAllMWQMAnalysisReportParameters webAllMWQMAnalysisReportParametersLocal)
         {
             List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterLocalList = (from c in webAllMWQMAnalysisReportParametersLocal.MWQMAnalysisReportParameterList
                                                                                       where c.SubsectorTVItemID != 0

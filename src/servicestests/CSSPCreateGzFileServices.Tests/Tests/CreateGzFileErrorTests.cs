@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
             Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -44,7 +44,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = (WebTypeEnum)10000;
             int TVItemID = 10;
             
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -61,7 +61,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -79,7 +79,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebClimateSites;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -97,7 +97,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -115,7 +115,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -133,7 +133,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebHydrometricSites;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -151,7 +151,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebLabSheets;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -169,7 +169,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMikeScenarios;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -187,7 +187,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsCountry;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -205,7 +205,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsProvince;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -223,7 +223,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsCountry;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -241,7 +241,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsProvince;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -259,7 +259,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -277,7 +277,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -295,7 +295,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -313,7 +313,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMWQMSamples2021_2060;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -331,7 +331,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -349,7 +349,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebPolSourceSites;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -367,7 +367,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -385,7 +385,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -403,7 +403,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -421,7 +421,7 @@ namespace CSSPCreateGzFileServices.Tests
             WebTypeEnum webType = WebTypeEnum.WebTideSites;
             int TVItemID = 1000000;
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);

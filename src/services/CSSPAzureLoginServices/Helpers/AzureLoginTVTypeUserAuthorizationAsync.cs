@@ -14,21 +14,36 @@ namespace CSSPAzureLoginServices.Services
     {
         private async Task<bool> AzureLoginTVTypeUserAuthorizationAsync()
         {
+            string culture = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? "fr-CA" : "en-CA";
+
+            if (CSSPLocalLoggedInService.LoggedInContactInfo == null
+                || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            {
+                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+                return await Task.FromResult(false);
+            }
+
+            if (string.IsNullOrWhiteSpace(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token))
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "Token"));
+                return await Task.FromResult(false);
+            }
+
             using (HttpClient httpClient = new HttpClient())
             {
 
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
-                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVTypeUserAuthorization/GetWithContactTVItemID/{ contact.ContactTVItemID }").Result;
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token);
+                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVTypeUserAuthorization/GetWithContactTVItemID/{ CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID }").Result;
                 if ((int)response.StatusCode != 200)
                 {
                     if ((int)response.StatusCode == 401)
                     {
-                        CSSPLogService.AppendError(CSSPCultureDesktopRes.NeedToBeLoggedIn);
+                        CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
                         return await Task.FromResult(false);
                     }
                     else 
                     {
-                        CSSPLogService.AppendError(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
+                        CSSPLogService.AppendError(CSSPCultureServicesRes.ServerNotRespondingDoYouHaveInternetConnection);
                         return await Task.FromResult(false);
                     }
 
@@ -48,7 +63,7 @@ namespace CSSPAzureLoginServices.Services
                     }
                     catch (Exception ex)
                     {
-                        CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message));
+                        CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotDelete_Error_, "TVTypeUserAuthorizationList", ex.Message));
                         return await Task.FromResult(false);
                     }
                 }
@@ -60,7 +75,7 @@ namespace CSSPAzureLoginServices.Services
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError(string.Format(CSSPCultureDesktopRes.CouldNotAdd_Error_, "TVTypeUserAuthorizationList", ex.Message));
+                    CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVTypeUserAuthorizationList", ex.Message));
                     return await Task.FromResult(false);
                 }
 

@@ -15,22 +15,23 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllContacts(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
+        private async Task<bool> MergeJsonWebAllContacts(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllContacts WebAllContacts, WebAllContacts WebAllContactsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllContactsContactModelList(webAllContacts, webAllContactsLocal);
+            MergeJsonWebAllContactsContactModelList(webAllContacts, webAllContactsLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
 
-        private void DoMergeJsonWebAllContactsContactModelList(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
+        private void MergeJsonWebAllContactsContactModelList(WebAllContacts webAllContacts, WebAllContacts webAllContactsLocal)
         {
             List<ContactModel> contactModelLocalList = (from c in webAllContactsLocal.ContactModelList
-                                                        where c.Contact.DBCommand != DBCommandEnum.Original
+                                                        where c.Contact != null
+                                                        &&  c.Contact.DBCommand != DBCommandEnum.Original
                                                         select c).ToList();
 
             foreach (ContactModel contactModelLocal in contactModelLocalList)

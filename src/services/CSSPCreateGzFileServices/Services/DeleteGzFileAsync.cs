@@ -18,7 +18,7 @@ namespace CSSPCreateGzFileServices
 
             if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-            await DoDeleteGzFileAsync(webType, TVItemID);
+            await DeleteGzFileAsync(webType, TVItemID);
 
             if (CSSPLogService.ErrRes.ErrList.Count > 0)
             {

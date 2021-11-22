@@ -15,22 +15,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebLabSheets(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        private async Task<bool> MergeJsonWebLabSheets(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebLabSheets WebLabSheets, WebLabSheets WebLabSheetsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebLabSheetsTVItemModel(webLabSheets, webLabSheetsLocal);
+            MergeJsonWebLabSheetsTVItemModel(webLabSheets, webLabSheetsLocal);
 
-            DoMergeJsonWebLabSheetsTVItemModelParentList(webLabSheets, webLabSheetsLocal);
+            MergeJsonWebLabSheetsTVItemModelParentList(webLabSheets, webLabSheetsLocal);
 
-            DoMergeJsonWebLabSheetsLabSheetModelList(webLabSheets, webLabSheetsLocal);
+            MergeJsonWebLabSheetsLabSheetModelList(webLabSheets, webLabSheetsLocal);
 
             CSSPLogService.FunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebLabSheetsTVItemModel(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        private void MergeJsonWebLabSheetsTVItemModel(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
         {
             if (webLabSheetsLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webLabSheetsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -40,7 +40,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webLabSheets.TVItemModel, webLabSheetsLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebLabSheetsTVItemModelParentList(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        private void MergeJsonWebLabSheetsTVItemModelParentList(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
         {
             if ((from c in webLabSheetsLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -52,7 +52,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webLabSheets.TVItemModelParentList, webLabSheetsLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebLabSheetsLabSheetModelList(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
+        private void MergeJsonWebLabSheetsLabSheetModelList(WebLabSheets webLabSheets, WebLabSheets webLabSheetsLocal)
         {
             List<LabSheetModel> LabSheetModelList = (from c in webLabSheetsLocal.LabSheetModelList
                                                      where c.LabSheet.LabSheetID != 0

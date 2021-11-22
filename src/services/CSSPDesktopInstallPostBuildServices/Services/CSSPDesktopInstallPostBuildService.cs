@@ -24,10 +24,8 @@ namespace CSSPDesktopInstallPostBuildServices.Services
         Task<bool> CSSPOtherFilesCompressAndSendToAzureAsync();
         Task<bool> CSSPWebAPIsLocalCompressAndSendToAzureAsync();
         Task<bool> CSSPClientCompressAndSendToAzureAsync();
-        Task<bool> LoginAsync();
-        bool IsEnglish { get; set; }
-        Contact contact { get; set; }
-        string AzureStoreHash { get; set; }
+        Task<Contact> LoginAsync();
+        void SetContact(Contact contact);
     }
     public partial class CSSPDesktopInstallPostBuildService : ICSSPDesktopInstallPostBuildService
     {
@@ -35,15 +33,13 @@ namespace CSSPDesktopInstallPostBuildServices.Services
         #endregion Variables
 
         #region Properties public
-        public bool IsEnglish { get; set; } = true;
-        public Contact contact { get; set; }
-        public string AzureStoreHash { get; set; }
         #endregion Properties public
 
         #region Properties private
         private IConfiguration Configuration { get; }
         private ICSSPCultureService CSSPCultureService { get; }
         private ICSSPScrambleService CSSPScrambleService { get; }
+        private Contact contact { get; set; }
         #endregion Properties private
 
         #region Constructors

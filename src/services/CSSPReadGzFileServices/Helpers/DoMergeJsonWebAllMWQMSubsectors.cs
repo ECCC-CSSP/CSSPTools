@@ -17,18 +17,18 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllMWQMSubsectors(WebAllMWQMSubsectors webAllMWQMSubsectors, WebAllMWQMSubsectors webAllMWQMSubsectorsLocal)
+        private async Task<bool> MergeJsonWebAllMWQMSubsectors(WebAllMWQMSubsectors webAllMWQMSubsectors, WebAllMWQMSubsectors webAllMWQMSubsectorsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllMWQMSubsectors webAllMWQMSubsectors, WebAllMWQMSubsectors webAllMWQMSubsectorsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebSubsectorMWQMSubsector(webAllMWQMSubsectors, webAllMWQMSubsectorsLocal);
+            MergeJsonWebSubsectorMWQMSubsector(webAllMWQMSubsectors, webAllMWQMSubsectorsLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebSubsectorMWQMSubsector(WebAllMWQMSubsectors webAllMWQMSubsectors, WebAllMWQMSubsectors webAllMWQMSubsectorsLocal)
+        private void MergeJsonWebSubsectorMWQMSubsector(WebAllMWQMSubsectors webAllMWQMSubsectors, WebAllMWQMSubsectors webAllMWQMSubsectorsLocal)
         {
             List<MWQMSubsectorModel> mwqmSubsectorModelLocalList = (from c in webAllMWQMSubsectorsLocal.MWQMSubsectorModelList
                                                                     where c.MWQMSubsector.MWQMSubsectorID != 0

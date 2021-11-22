@@ -16,32 +16,32 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebProvince(WebProvince webProvince, WebProvince webProvinceLocal)
+        private async Task<bool> MergeJsonWebProvince(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebProvince WebProvince, WebProvince WebProvinceLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebProvinceTVItemModel(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceTVItemModel(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceTVItemModelParentList(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceTVItemModelParentList(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceTVItemModelAreaList(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceTVItemModelAreaList(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceTVItemModelMunicipalityList(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceTVItemModelMunicipalityList(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceTVFileModelList(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceTVFileModelList(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceIsLocalized(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceIsLocalized(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceSamplingPlanModelList(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceSamplingPlanModelList(webProvince, webProvinceLocal);
 
-            DoMergeJsonWebProvinceMunicipalityWithInfrastructureTVItemIDList(webProvince, webProvinceLocal);
+            MergeJsonWebProvinceMunicipalityWithInfrastructureTVItemIDList(webProvince, webProvinceLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebProvinceTVItemModel(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceTVItemModel(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             if (webProvinceLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webProvinceLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -51,7 +51,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webProvince.TVItemModel, webProvinceLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebProvinceTVItemModelParentList(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceTVItemModelParentList(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             if ((from c in webProvinceLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -63,7 +63,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webProvince.TVItemModelParentList, webProvinceLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebProvinceTVItemModelAreaList(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceTVItemModelAreaList(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             List<TVItemModel> TVItemModelLocalList = (from c in webProvinceLocal.TVItemModelAreaList
                                                       where c.TVItem.TVItemID != 0
@@ -86,7 +86,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebProvinceTVItemModelMunicipalityList(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceTVItemModelMunicipalityList(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             List<TVItemModel> TVItemModeLocallList = (from c in webProvinceLocal.TVItemModelMunicipalityList
                                                       where c.TVItem.TVItemID != 0
@@ -109,7 +109,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebProvinceTVFileModelList(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceTVFileModelList(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webProvinceLocal.TVFileModelList
                                                       where c.TVFile.TVFileID != 0
@@ -132,7 +132,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebProvinceIsLocalized(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceIsLocalized(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{Configuration["CSSPFilesPath"] }{ webProvince.TVItemModel.TVItem.TVItemID }\\");
 
@@ -155,7 +155,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebProvinceSamplingPlanModelList(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceSamplingPlanModelList(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             List<SamplingPlanModel> SamplingPlanModelLocalList = (from c in webProvinceLocal.SamplingPlanModelList
                                                                   where c.SamplingPlan.SamplingPlanID != 0
@@ -176,7 +176,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebProvinceMunicipalityWithInfrastructureTVItemIDList(WebProvince webProvince, WebProvince webProvinceLocal)
+        private void MergeJsonWebProvinceMunicipalityWithInfrastructureTVItemIDList(WebProvince webProvince, WebProvince webProvinceLocal)
         {
             foreach (int municipalityWithInfrastructureTVItemIDLocal in webProvinceLocal.MunicipalityWithInfrastructureTVItemIDList)
             {

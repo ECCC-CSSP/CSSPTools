@@ -24,11 +24,6 @@ namespace CSSPAzureAppTaskServices
                 return await Task.FromResult(Unauthorized(errRes));
             }
 
-            //if (!await ValidateDeleteAzureAppTaskAsync(appTaskID))
-            //{
-            //    return await Task.FromResult(BadRequest(errRes));
-            //}
-
             if (appTaskID == 0)
             {
                 errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
@@ -36,16 +31,11 @@ namespace CSSPAzureAppTaskServices
 
             if (errRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(errRes));
 
-            //if (!await DoDeleteAzureAppTaskAsync(appTaskID))
-            //{
-            //    return await Task.FromResult(BadRequest(errRes));
-            //}
-
-            List<AppTaskLanguage> appTaskLanguageList = (from c in db.AppTaskLanguages
+            List<AppTaskLanguage> appTaskLanguageList = (from c in dbAzure.AppTaskLanguages
                                                          where c.AppTaskID == appTaskID
                                                          select c).ToList();
 
-            AppTask appTask = (from c in db.AppTasks
+            AppTask appTask = (from c in dbAzure.AppTasks
                                where c.AppTaskID == appTaskID
                                select c).FirstOrDefault();
 
@@ -56,11 +46,11 @@ namespace CSSPAzureAppTaskServices
             }
             else
             {
-                db.AppTasks.Remove(appTask);
+                dbAzure.AppTasks.Remove(appTask);
 
                 try
                 {
-                    db.SaveChanges();
+                    dbAzure.SaveChanges();
                 }
                 catch (Exception ex)
                 {

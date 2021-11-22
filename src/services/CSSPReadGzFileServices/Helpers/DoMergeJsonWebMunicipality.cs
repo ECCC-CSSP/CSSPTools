@@ -17,32 +17,32 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebMunicipality(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private async Task<bool> MergeJsonWebMunicipality(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMunicipality WebMunicipality, WebMunicipality WebMunicipalityLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebMunicipalityTVItemModel(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityTVItemModel(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityTVItemModelParentList(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityTVItemModelParentList(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityTVFileModelList(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityTVFileModelList(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityMunicipalityIsLocalized(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityMunicipalityIsLocalized(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityMunicipalityContactModelList(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityMunicipalityContactModelList(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityMunicipalityTVItemLinkList(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityMunicipalityTVItemLinkList(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityInfrastructureModelList(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityInfrastructureModelList(webMunicipality, webMunicipalityLocal);
 
-            DoMergeJsonWebMunicipalityInfrastructureIsLocalized(webMunicipality, webMunicipalityLocal);
+            MergeJsonWebMunicipalityInfrastructureIsLocalized(webMunicipality, webMunicipalityLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebMunicipalityTVItemModel(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityTVItemModel(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             if (webMunicipalityLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webMunicipalityLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -52,7 +52,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webMunicipality.TVItemModel, webMunicipalityLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebMunicipalityTVItemModelParentList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityTVItemModelParentList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             if ((from c in webMunicipalityLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -64,7 +64,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webMunicipality.TVItemModelParentList, webMunicipalityLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebMunicipalityTVFileModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityTVFileModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webMunicipalityLocal.TVFileModelList
                                                       where c.TVFile.TVFileID != 0
@@ -86,7 +86,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMunicipalityMunicipalityIsLocalized(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityMunicipalityIsLocalized(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webMunicipality.TVItemModel.TVItem.TVItemID }\\");
 
@@ -109,7 +109,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMunicipalityMunicipalityContactModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityMunicipalityContactModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             List<ContactModel> ContactModelLocalList = (from c in webMunicipalityLocal.MunicipalityContactModelList
                                                         where c.Contact.ContactID != 0
@@ -129,7 +129,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMunicipalityMunicipalityTVItemLinkList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityMunicipalityTVItemLinkList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             List<TVItemLink> TVItemLinkLocalList = (from c in webMunicipalityLocal.MunicipalityTVItemLinkList
                                                     where c.TVItemLinkID != 0
@@ -149,7 +149,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMunicipalityInfrastructureModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityInfrastructureModelList(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             foreach(InfrastructureModel infrastructureModelLocal in webMunicipalityLocal.InfrastructureModelList)
             {
@@ -195,7 +195,7 @@ namespace CSSPReadGzFileServices
 
             // more to do
         }
-        private void DoMergeJsonWebMunicipalityInfrastructureIsLocalized(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
+        private void MergeJsonWebMunicipalityInfrastructureIsLocalized(WebMunicipality webMunicipality, WebMunicipality webMunicipalityLocal)
         {
             foreach (InfrastructureModel infrastructureModel in webMunicipality.InfrastructureModelList)
             {

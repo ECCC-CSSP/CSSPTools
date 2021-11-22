@@ -48,7 +48,7 @@ namespace CSSPDBLocalServices
         private IEnums enums { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPLogService CSSPLogService { get; }
-        private string AzureStoreHash { get; set; }
+        //private string AzureStoreHash { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -84,17 +84,17 @@ namespace CSSPDBLocalServices
             this.CSSPLogService = CSSPLogService;
             this.dbLocal = dbLocal;
 
-            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+            //CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
-            if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-                return;
-            }
+            //if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+            //    return;
+            //}
 
-            AzureStoreHash = (from c in dbManage.Contacts
-                              where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
-                              select c.AzureStoreHash).FirstOrDefault();
+            //AzureStoreHash = (from c in dbManage.Contacts
+            //                  where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
+            //                  select c.AzureStoreHash).FirstOrDefault();
         }
         #endregion Constructors
     }

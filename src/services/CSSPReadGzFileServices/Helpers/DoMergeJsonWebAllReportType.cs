@@ -15,19 +15,19 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllReportTypes(WebAllReportTypes webAllReportTypes, WebAllReportTypes webAllReportTypesLocal)
+        private async Task<bool> MergeJsonWebAllReportTypes(WebAllReportTypes webAllReportTypes, WebAllReportTypes webAllReportTypesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllReportTypes WebAllReportTypes, WebAllReportTypes WebAllReportTypesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllReportsTypesReportTypeModelList(webAllReportTypes, webAllReportTypesLocal);
+            MergeJsonWebAllReportsTypesReportTypeModelList(webAllReportTypes, webAllReportTypesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
 
-        private void DoMergeJsonWebAllReportsTypesReportTypeModelList(WebAllReportTypes webAllReportTypes, WebAllReportTypes webAllReportTypesLocal)
+        private void MergeJsonWebAllReportsTypesReportTypeModelList(WebAllReportTypes webAllReportTypes, WebAllReportTypes webAllReportTypesLocal)
         {
             List<ReportTypeModel> reportTypeModelLocalList = (from c in webAllReportTypesLocal.ReportTypeModelList
                                                               where c.ReportType.DBCommand != DBCommandEnum.Original

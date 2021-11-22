@@ -16,30 +16,30 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebCountry(WebCountry webCountry, WebCountry webCountryLocal)
+        private async Task<bool> MergeJsonWebCountry(WebCountry webCountry, WebCountry webCountryLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebCountry WebCountry, WebCountry WebCountryLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebCountryTVItemModel(webCountry, webCountryLocal);
+            MergeJsonWebCountryTVItemModel(webCountry, webCountryLocal);
 
-            DoMergeJsonWebCountryTVItemModelParentList(webCountry, webCountryLocal);
+            MergeJsonWebCountryTVItemModelParentList(webCountry, webCountryLocal);
 
-            DoMergeJsonWebCountryTVItemModelProvinceList(webCountry, webCountryLocal);
+            MergeJsonWebCountryTVItemModelProvinceList(webCountry, webCountryLocal);
 
-            DoMergeJsonWebCountryTVFileModelList(webCountry, webCountryLocal);
+            MergeJsonWebCountryTVFileModelList(webCountry, webCountryLocal);
 
-            DoMergeJsonWebCountryIsLocalized(webCountry, webCountryLocal);
+            MergeJsonWebCountryIsLocalized(webCountry, webCountryLocal);
 
-            DoMergeJsonWebCountryRainExceedanceModelList(webCountry, webCountryLocal);
+            MergeJsonWebCountryRainExceedanceModelList(webCountry, webCountryLocal);
 
-            DoMergeJsonWebCountryEmailDistributionListModelList(webCountry, webCountryLocal);
+            MergeJsonWebCountryEmailDistributionListModelList(webCountry, webCountryLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebCountryTVItemModel(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryTVItemModel(WebCountry webCountry, WebCountry webCountryLocal)
         {
             if (webCountryLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webCountryLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -49,7 +49,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webCountry.TVItemModel, webCountryLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebCountryTVItemModelParentList(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryTVItemModelParentList(WebCountry webCountry, WebCountry webCountryLocal)
         {
             if ((from c in webCountryLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -61,7 +61,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webCountry.TVItemModelParentList, webCountryLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebCountryTVItemModelProvinceList(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryTVItemModelProvinceList(WebCountry webCountry, WebCountry webCountryLocal)
         {
             List<TVItemModel> TVItemModelList = (from c in webCountryLocal.TVItemModelProvinceList
                                                  where c.TVItem.TVItemID != 0
@@ -83,7 +83,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebCountryTVFileModelList(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryTVFileModelList(WebCountry webCountry, WebCountry webCountryLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webCountryLocal.TVFileModelList
                                                  where c.TVFile.TVFileID != 0
@@ -105,7 +105,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebCountryIsLocalized(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryIsLocalized(WebCountry webCountry, WebCountry webCountryLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webCountry.TVItemModel.TVItem.TVItemID }\\");
 
@@ -128,7 +128,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebCountryRainExceedanceModelList(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryRainExceedanceModelList(WebCountry webCountry, WebCountry webCountryLocal)
         {
             List<RainExceedanceModel> RainExceedanceModelLocalList = (from c in webCountryLocal.RainExceedanceModelList
                                                                  where c.TVItemModel.TVItem.TVItemID != 0
@@ -150,7 +150,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebCountryEmailDistributionListModelList(WebCountry webCountry, WebCountry webCountryLocal)
+        private void MergeJsonWebCountryEmailDistributionListModelList(WebCountry webCountry, WebCountry webCountryLocal)
         {
             List<EmailDistributionListModel> EmailDistributionListModelList = (from c in webCountryLocal.EmailDistributionListModelList
                                                                                where c.EmailDistributionList.EmailDistributionListID != 0

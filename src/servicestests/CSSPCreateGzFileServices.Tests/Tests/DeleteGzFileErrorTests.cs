@@ -28,7 +28,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await CreateGzFileService.DeleteGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
+            var actionRes = await CSSPCreateGzFileService.DeleteGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
             Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -47,7 +47,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-            var actionRes = await CreateGzFileService.DeleteGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.DeleteGzFileAsync(webType, TVItemID);
             Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);

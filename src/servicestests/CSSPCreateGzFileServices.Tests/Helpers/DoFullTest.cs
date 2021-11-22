@@ -31,7 +31,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-            var actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -43,15 +43,15 @@ namespace CSSPCreateGzFileServices.Tests
             FileInfo fiBackupUncompress = new FileInfo($"{ Configuration["azure_csspjson_backup_uncompress"] }{ fileName.Replace(".gz", ".json") }");
             Assert.True(fiBackupUncompress.Exists);
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
-            ShareFileClient file = directory.GetFileClient(fileName);
-            Response<bool> response = await file.ExistsAsync(); 
+            ShareFileClient shareFileClient = directory.GetFileClient(fileName);
+            Response<bool> response = await shareFileClient.ExistsAsync(); 
             Assert.True(response.Value);
 
             WriteTimeSpan(webType);
 
-            actionRes = await CreateGzFileService.DeleteGzFileAsync(webType, TVItemID);
+            actionRes = await CSSPCreateGzFileService.DeleteGzFileAsync(webType, TVItemID);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -60,8 +60,8 @@ namespace CSSPCreateGzFileServices.Tests
             Assert.Empty(diBackup.GetDirectories());
             Assert.Empty(diBackupUncompress.GetDirectories());
 
-            file = directory.GetFileClient(fileName);
-            response = await file.ExistsAsync();
+            shareFileClient = directory.GetFileClient(fileName);
+            response = await shareFileClient.ExistsAsync();
             Assert.False(response.Value);
 
             Assert.Empty(CSSPLogService.ErrRes.ErrList);
@@ -76,7 +76,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            actionRes = await CreateGzFileService.CreateGzFileAsync(webType, TVItemID);
+            actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(webType, TVItemID);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);
@@ -85,7 +85,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             CSSPLogService.ErrRes = new ErrRes();
 
-            actionRes = await CreateGzFileService.DeleteGzFileAsync(webType, TVItemID);
+            actionRes = await CSSPCreateGzFileService.DeleteGzFileAsync(webType, TVItemID);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
             errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);

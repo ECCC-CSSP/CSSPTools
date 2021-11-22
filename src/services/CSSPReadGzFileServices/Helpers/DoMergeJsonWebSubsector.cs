@@ -17,26 +17,26 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebSubsector(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private async Task<bool> MergeJsonWebSubsector(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebSubsector WebSubsector, WebSubsector WebSubsectorLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebSubsectorTVItemModel(webSubsector, webSubsectorLocal);
+            MergeJsonWebSubsectorTVItemModel(webSubsector, webSubsectorLocal);
 
-            DoMergeJsonWebSubsectorTVItemModelParentList(webSubsector, webSubsectorLocal);
+            MergeJsonWebSubsectorTVItemModelParentList(webSubsector, webSubsectorLocal);
 
-            DoMergeJsonWebSubsectorTVFileModelList(webSubsector, webSubsectorLocal);
+            MergeJsonWebSubsectorTVFileModelList(webSubsector, webSubsectorLocal);
 
-            DoMergeJsonWebSubsectorIsLocalized(webSubsector, webSubsectorLocal);
+            MergeJsonWebSubsectorIsLocalized(webSubsector, webSubsectorLocal);
 
-            DoMergeJsonWebSubsectorClassificationModelList(webSubsector, webSubsectorLocal);
+            MergeJsonWebSubsectorClassificationModelList(webSubsector, webSubsectorLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebSubsectorTVItemModel(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private void MergeJsonWebSubsectorTVItemModel(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             if (webSubsectorLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webSubsectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -46,7 +46,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webSubsector.TVItemModel, webSubsectorLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebSubsectorTVItemModelParentList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private void MergeJsonWebSubsectorTVItemModelParentList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             if ((from c in webSubsectorLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -58,7 +58,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webSubsector.TVItemModelParentList, webSubsectorLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebSubsectorTVFileModelList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private void MergeJsonWebSubsectorTVFileModelList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webSubsectorLocal.TVFileModelList
                                                       where c.TVFile.TVFileID != 0
@@ -80,7 +80,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebSubsectorIsLocalized(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private void MergeJsonWebSubsectorIsLocalized(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webSubsector.TVItemModel.TVItem.TVItemID }\\");
 
@@ -103,7 +103,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebSubsectorClassificationModelList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
+        private void MergeJsonWebSubsectorClassificationModelList(WebSubsector webSubsector, WebSubsector webSubsectorLocal)
         {
             List<ClassificationModel> ClassificationModelLocalList = (from c in webSubsectorLocal.ClassificationModelList
                                                                       where c.TVItemModel.TVItem.TVItemID != 0

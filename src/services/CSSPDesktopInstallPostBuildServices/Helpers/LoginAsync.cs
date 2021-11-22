@@ -17,8 +17,9 @@ namespace CSSPDesktopInstallPostBuildServices.Services
 {
     public partial class CSSPDesktopInstallPostBuildService : ICSSPDesktopInstallPostBuildService
     {
-        public async Task<bool> LoginAsync()
+        public async Task<Contact> LoginAsync()
         {
+            contact = null;
             Console.WriteLine($"Logging in ...");
 
             using (HttpClient httpClient = new HttpClient())
@@ -43,12 +44,12 @@ namespace CSSPDesktopInstallPostBuildServices.Services
                         if ((int)response.StatusCode == 400)
                         {
                             Console.WriteLine(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
-                            return await Task.FromResult(false);
+                            return await Task.FromResult(contact);
                         }
                         else
                         {
                             Console.WriteLine(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
-                            return await Task.FromResult(false);
+                            return await Task.FromResult(contact);
                         }
                     }
 
@@ -57,13 +58,13 @@ namespace CSSPDesktopInstallPostBuildServices.Services
                     if (contact == null)
                     {
                         Console.WriteLine(string.Format(CSSPCultureDesktopRes.UnableToLoginAs_WithProvidedPassword, loginModel.LoginEmail));
-                        return await Task.FromResult(false);
+                        return await Task.FromResult(contact);
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    return await Task.FromResult(false);
+                    return await Task.FromResult(contact);
                 }
             }
 
@@ -77,29 +78,29 @@ namespace CSSPDesktopInstallPostBuildServices.Services
                     if ((int)response.StatusCode == 401)
                     {
                         Console.WriteLine(CSSPCultureDesktopRes.NeedToBeLoggedIn);
-                        return await Task.FromResult(false);
+                        return await Task.FromResult(contact);
                     }
                     else
                     {
                         Console.WriteLine(CSSPCultureDesktopRes.ServerNotRespondingDoYouHaveInternetConnection);
-                        return await Task.FromResult(false);
+                        return await Task.FromResult(contact);
                     }
                 }
 
                 try
                 {
-                    AzureStoreHash = response.Content.ReadAsStringAsync().Result;
+                   contact.AzureStoreHash = response.Content.ReadAsStringAsync().Result;
                 }
                 catch (Exception)
                 {
                     Console.WriteLine(string.Format(CSSPCultureDesktopRes.CouldNotGet_, "AzureStoreHash"));
-                    return await Task.FromResult(false);
+                    return await Task.FromResult(contact);
                 }
             }
 
             Console.WriteLine($"Logged in ...");
 
-            return await Task.FromResult(true);
+            return await Task.FromResult(contact);
         }
     }
 }

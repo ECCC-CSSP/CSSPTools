@@ -13,6 +13,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using CSSPScrambleServices;
+using CSSPAzureLoginServices.Services;
+using CSSPSQLiteServices;
+using CSSPCreateGzFileServices;
 
 namespace CSSPReadGzFileServices.Tests
 {
@@ -20,6 +23,7 @@ namespace CSSPReadGzFileServices.Tests
     public partial class CSSPReadGzFileServiceTests
     {
         #region Variables
+        DateTime LastTime = DateTime.Now;
         #endregion Variables
 
         #region Properties
@@ -27,13 +31,17 @@ namespace CSSPReadGzFileServices.Tests
         private IServiceProvider Provider { get; set; }
         private IServiceCollection Services { get; set; }
         private ICSSPCultureService CSSPCultureService { get; set; }
+        private IEnums enums { get; set; }
         private IManageFileService ManageFileService { get; set; }
+        private ICSSPFileService CSSPFileService { get; set; }
+        private ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
         private ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
-        private ICSSPFileService CSSPFileService { get; set; }
-        private CSSPDBContext db { get; set; }
+        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+        private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
+        private CSSPDBManageContext dbManage { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -48,80 +56,79 @@ namespace CSSPReadGzFileServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspreadgzfileservicestests.json")
-               .AddUserSecrets("7f7f83c1-bbc1-4805-9cae-163ec6952d6d")
+               .AddUserSecrets("dec2fcbb-e800-447d-859c-16f40cffb968")
                .Build();
 
             Services = new ServiceCollection();
 
             Services.AddSingleton<IConfiguration>(Configuration);
 
-            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
-            Assert.NotNull(Configuration["CSSPAzureUrl"]);
-            Assert.NotNull(Configuration["CSSPDatabasesPath"]);
             Assert.NotNull(Configuration["CSSPDB"]);
             Assert.NotNull(Configuration["CSSPDBLocal"]);
+            Assert.Contains("Test", Configuration["CSSPDBLocal"]);
             Assert.NotNull(Configuration["CSSPDBManage"]);
-            Assert.NotNull(Configuration["CSSPDesktopPath"]);
+            Assert.Contains("Test", Configuration["CSSPDBManage"]);
             Assert.NotNull(Configuration["CSSPFilesPath"]);
+            Assert.Contains("Test", Configuration["CSSPFilesPath"]);
             Assert.NotNull(Configuration["CSSPJSONPath"]);
+            Assert.Contains("Test", Configuration["CSSPJSONPath"]);
             Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
+            Assert.Contains("Test", Configuration["CSSPJSONPathLocal"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
+            Assert.Contains("Test", Configuration["CSSPOtherFilesPath"]);
             Assert.NotNull(Configuration["CSSPTempFilesPath"]);
-            Assert.NotNull(Configuration["CSSPWebAPIsLocalPath"]);
+            Assert.Contains("Test", Configuration["CSSPTempFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["CSSPAzureUrl"]);
+            Assert.NotNull(Configuration["CSSPLocalUrl"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup_uncompress"]);
+            Assert.Contains("_test", Configuration["azure_csspjson_backup_uncompress"]);
+            Assert.NotNull(Configuration["azure_csspjson_backup"]);
+            Assert.Contains("_test", Configuration["azure_csspjson_backup"]);
+            Assert.NotNull(Configuration["LoginEmail"]);
+            Assert.NotNull(Configuration["Password"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
             Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
             Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
             Services.AddSingleton<IManageFileService, ManageFileService>();
             Services.AddSingleton<ICSSPFileService, CSSPFileService>();
+            Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
             Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
-            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+            Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
-            Assert.NotNull(Configuration["CSSPDBManage"]);
+            CheckRequiredDirectories();
 
-            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
-            Assert.True(fiCSSPDBManage.Exists);
-
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBManageContext
-             * ---------------------------------------------------------------------------------      
-             */
+            Services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(Configuration["CSSPDB"]);
+            });
 
             Services.AddDbContext<CSSPDBManageContext>(options =>
             {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
+            });
+
+            Services.AddDbContext<CSSPDBLocalContext>(options =>
+            {
+                options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
             });
 
             Provider = Services.BuildServiceProvider();
             Assert.NotNull(Provider);
 
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
+            await GetProviderServices(culture);
 
-            CSSPCultureService.SetCulture(culture);
+            ClearCommandLogs();
+            ClearManageFiles();
 
-            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-            Assert.NotNull(CSSPLocalLoggedInService);
-
-            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
-            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
-            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
-
-            CSSPScrambleService = Provider.GetService<ICSSPScrambleService>();
-            Assert.NotNull(CSSPScrambleService);
-
-            CSSPLogService = Provider.GetService<ICSSPLogService>();
-            Assert.NotNull(CSSPLogService);
-
-            CSSPFileService = Provider.GetService<ICSSPFileService>();
-            Assert.NotNull(CSSPFileService);
-
-            ManageFileService = Provider.GetService<IManageFileService>();
-            Assert.NotNull(ManageFileService);
-
-            CSSPReadGzFileService = Provider.GetService<ICSSPReadGzFileService>();
-            Assert.NotNull(CSSPReadGzFileService);
+            DeleteAllJsonFilesInAzureTestStore();
+            DeleteAllJsonFilesLocal();
+            DeleteAllBackupFilesLocal();
 
             return await Task.FromResult(true);
         }

@@ -29,11 +29,14 @@ namespace CSSPFileServices
         Task<ActionResult> DownloadTempFile(string FileName);
         Task<ActionResult> DownloadOtherFile(string FileName);
         Task<ActionResult> DownloadFile(int ParentTVItemID, string FileName);
-        Task<ActionResult<bool>> DownloadGzFile(WebTypeEnum webType, int TVItemID = 0);
-        Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName);
+        Task<ActionResult> DownloadJSONFile(string FileName);
         Task<ActionResult<LocalFileInfo>> GetAzureFileInfo(int ParentTVItemID, string FileName);
+        Task<ActionResult<LocalFileInfo>> GetAzureJSONFileInfo(string FileName);
         Task<ActionResult<LocalFileInfo>> GetLocalFileInfo(int ParentTVItemID, string FileName);
+        Task<ActionResult<LocalFileInfo>> GetLocalJSONFileInfo(string FileName);
         Task<ActionResult<List<LocalFileInfo>>> GetLocalFileInfoList(int ParentTVItemID);
+        Task<ActionResult<bool>> LocalizeAzureFile(int ParentTVItemID, string FileName);
+        Task<ActionResult<bool>> LocalizeAzureJSONFile(string FileName);
     }
     public partial class CSSPFileService : ControllerBase, ICSSPFileService
     {
@@ -42,13 +45,10 @@ namespace CSSPFileServices
 
         #region Properties
         private IConfiguration Configuration { get; }
-        private ICSSPCultureService CSSPCultureService { get; }
-        private IEnums enums { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
         private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
         private IManageFileService ManageFileService { get; }
-        private string AzureStoreHash { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -64,20 +64,15 @@ namespace CSSPFileServices
             if (ManageFileService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "ManageFileService") }");
             if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
 
-            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPFileService") }");
-            if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CSSPFileService") }");
-            if (string.IsNullOrEmpty(Configuration["CSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "CSSPFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPFileService") }");
-            if (string.IsNullOrEmpty(Configuration["CSSPDatabasesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDatabasesPath", "CSSPFileService") }");
-            if (string.IsNullOrEmpty(Configuration["CSSPDesktopPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDesktopPath", "CSSPFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPFilesPath", "CSSPFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPath", "CSSPFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPOtherFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPOtherFilesPath", "CSSPFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPTempFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPTempFilesPath", "CSSPFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPFileService") }");
+            if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPFileService") }");
 
             this.Configuration = Configuration;
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;

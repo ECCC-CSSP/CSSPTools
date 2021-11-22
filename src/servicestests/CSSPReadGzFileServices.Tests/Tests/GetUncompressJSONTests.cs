@@ -14,10 +14,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllAddresses;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -26,10 +26,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllContacts;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllContacts>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -38,10 +38,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllCountries;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllCountries>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -50,10 +50,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllEmails;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -62,10 +62,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllHelpDocs;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -74,10 +74,22 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllMunicipalities;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllMunicipalities>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllMWQMAnalysisReportParameters_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 0;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMAnalysisReportParameters;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -86,10 +98,22 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllMWQMLookupMPNs;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllMWQMSubsectors_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 0;
+            WebTypeEnum webType = WebTypeEnum.WebAllMWQMSubsectors;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -98,10 +122,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllPolSourceGroupings;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllPolSourceGroupings>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -110,10 +134,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllPolSourceSiteEffectTerms;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllPolSourceSiteEffectTerms>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -122,10 +146,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllProvinces;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllProvinces>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -134,10 +158,22 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllReportTypes;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllReportTypes>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllSearch_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 0;
+            WebTypeEnum webType = WebTypeEnum.WebAllSearch;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -146,10 +182,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllTels;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -158,10 +194,22 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
+            int TVItemID = 0;
             WebTypeEnum webType = WebTypeEnum.WebAllTideLocations;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebAllTideLocations>(webType);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebAllUseOfSites_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 0;
+            WebTypeEnum webType = WebTypeEnum.WebAllUseOfSites;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -170,11 +218,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebArea;
             int TVItemID = 629;
+            WebTypeEnum webType = WebTypeEnum.WebArea;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -183,11 +230,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebClimateSites;
             int TVItemID = 7;
+            WebTypeEnum webType = WebTypeEnum.WebClimateSites;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -196,11 +242,22 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebCountry;
             int TVItemID = 5;
+            WebTypeEnum webType = WebTypeEnum.WebCountry;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebDrogueRuns_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 7;
+            WebTypeEnum webType = WebTypeEnum.WebDrogueRuns;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -209,11 +266,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebHydrometricSites;
             int TVItemID = 7;
+            WebTypeEnum webType = WebTypeEnum.WebHydrometricSites;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -222,11 +278,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebLabSheets;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebLabSheets;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebLabSheets>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -235,11 +290,58 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMikeScenarios;
             int TVItemID = 27764;
+            WebTypeEnum webType = WebTypeEnum.WebMikeScenarios;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebMonitoringOtherStatsCountry_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 5;
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsCountry;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebMonitoringOtherStatsProvince_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 7;
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringOtherStatsProvince;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 5;
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsCountry;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
+        }
+        [Theory]
+        [InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        public async Task GetUncompressJSON_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
+
+            int TVItemID = 7;
+            WebTypeEnum webType = WebTypeEnum.WebMonitoringRoutineStatsProvince;
+
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -248,11 +350,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMunicipality;
             int TVItemID = 27764;
+            WebTypeEnum webType = WebTypeEnum.WebMunicipality;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -261,11 +362,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMRuns;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -274,11 +374,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSamples>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -287,11 +386,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSamples2021_2060;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSamples2021_2060;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSamples>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -300,11 +398,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -313,11 +410,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebPolSourceSites;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebPolSourceSites;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -326,11 +422,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebProvince;
             int TVItemID = 7;
+            WebTypeEnum webType = WebTypeEnum.WebProvince;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -339,11 +434,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebRoot;
             int TVItemID = 0;
+            WebTypeEnum webType = WebTypeEnum.WebRoot;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -352,11 +446,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebSector;
             int TVItemID = 633;
+            WebTypeEnum webType = WebTypeEnum.WebSector;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory]
         [InlineData("en-CA")]
@@ -365,11 +458,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebSubsector;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebSubsector;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
         [Theory(Skip = "WebTideSite does not yet have items")]
         [InlineData("en-CA")]
@@ -378,11 +470,10 @@ namespace CSSPReadGzFileServices.Tests
         {
             Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-            WebTypeEnum webType = WebTypeEnum.WebTideSites;
             int TVItemID = 635;
+            WebTypeEnum webType = WebTypeEnum.WebTideSites;
 
-            var JSONRes = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(webType, TVItemID);
-            Assert.NotNull(JSONRes);
+            await DoFullGetUncompressTest(webType, TVItemID);
         }
     }
 }

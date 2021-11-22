@@ -52,7 +52,7 @@ namespace CSSPDBLocalServices
         private IHelperLocalService HelperLocalService { get; }
         private ITVItemLocalService TVItemLocalService { get; }
         private IMapInfoLocalService MapInfoLocalService { get; }
-        private string AzureStoreHash { get; set; }
+        //private string AzureStoreHash { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -99,17 +99,17 @@ namespace CSSPDBLocalServices
             this.TVItemLocalService = TVItemLocalService;
             this.MapInfoLocalService = MapInfoLocalService;
 
-            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+            //CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
-            if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-                return;
-            }
+            //if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+            //    return;
+            //}
 
-            AzureStoreHash = (from c in dbManage.Contacts
-                              where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
-                              select c.AzureStoreHash).FirstOrDefault();
+            //AzureStoreHash = (from c in dbManage.Contacts
+            //                  where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
+            //                  select c.AzureStoreHash).FirstOrDefault();
 
         }
         #endregion Constructors

@@ -32,7 +32,7 @@ namespace CSSPCreateGzFileServices
             bool ShouldSendToAzure = false;
             bool FileExistInAzure = true;
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPJsonPath"]);
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
             if (string.IsNullOrWhiteSpace(directory.ShareName))

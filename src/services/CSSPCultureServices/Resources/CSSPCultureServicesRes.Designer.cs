@@ -1078,6 +1078,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not get {0}.
+        /// </summary>
+        public static string CouldNotGet_ {
+            get {
+                return ResourceManager.GetString("CouldNotGet_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not get or create Action [{0}] Command [{1}] in DB [{2}].
         /// </summary>
         public static string CouldNotGetAction_Command_InDB_ {
@@ -1803,6 +1812,15 @@ namespace CSSPCultureServices.Resources {
         public static string ErrorWhileTryingToGetAzureFileInfoFor_Error_ {
             get {
                 return ResourceManager.GetString("ErrorWhileTryingToGetAzureFileInfoFor_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while trying to get Azure JSON file info for {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorWhileTryingToGetAzureJSONFileInfoFor_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorWhileTryingToGetAzureJSONFileInfoFor_Error_", resourceCulture);
             }
         }
         

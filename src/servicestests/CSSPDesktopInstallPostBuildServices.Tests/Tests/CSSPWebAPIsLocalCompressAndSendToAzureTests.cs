@@ -42,10 +42,10 @@ namespace CSSPDesktopInstallPostBuildServices.Tests
             fi = new FileInfo(fileName);
             Assert.False(fi.Exists);
 
-            bool retBool = await CSSPDesktopInstallPostBuildService.LoginAsync();
-            Assert.True(retBool);
+            Contact contact = await CSSPDesktopInstallPostBuildService.LoginAsync();
+            Assert.NotNull(contact);
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopInstallPostBuildService.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
             Assert.NotNull(shareClient);
 
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
@@ -68,7 +68,7 @@ namespace CSSPDesktopInstallPostBuildServices.Tests
 
             Assert.False(await shareFileClient.ExistsAsync());
 
-            retBool = await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync();
+            bool retBool = await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync();
             Assert.True(retBool);
 
             Assert.True(await shareFileClient.ExistsAsync());

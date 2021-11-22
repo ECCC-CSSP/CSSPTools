@@ -16,24 +16,24 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebPolSourceSites(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
+        private async Task<bool> MergeJsonWebPolSourceSites(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebPolSourceSites WebPolSourceSites, WebPolSourceSites WebPolSourceSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebPolSourceSitesTVItemModel(webPolSourceSites, webPolSourceSitesLocal);
+            MergeJsonWebPolSourceSitesTVItemModel(webPolSourceSites, webPolSourceSitesLocal);
 
-            DoMergeJsonWebPolSourceSitesTVItemModelParentList(webPolSourceSites, webPolSourceSitesLocal);
+            MergeJsonWebPolSourceSitesTVItemModelParentList(webPolSourceSites, webPolSourceSitesLocal);
 
-            DoMergeJsonWebPolSourceSitesPolSourceSiteModelList(webPolSourceSites, webPolSourceSitesLocal);
+            MergeJsonWebPolSourceSitesPolSourceSiteModelList(webPolSourceSites, webPolSourceSitesLocal);
 
-            DoMergeJsonWebPolSourceSitesIsLocalized(webPolSourceSites, webPolSourceSitesLocal);
+            MergeJsonWebPolSourceSitesIsLocalized(webPolSourceSites, webPolSourceSitesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebPolSourceSitesTVItemModel(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
+        private void MergeJsonWebPolSourceSitesTVItemModel(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
             if (webPolSourceSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webPolSourceSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -43,7 +43,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webPolSourceSites.TVItemModel, webPolSourceSitesLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebPolSourceSitesTVItemModelParentList(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
+        private void MergeJsonWebPolSourceSitesTVItemModelParentList(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
             if ((from c in webPolSourceSitesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -55,7 +55,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webPolSourceSites.TVItemModelParentList, webPolSourceSitesLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebPolSourceSitesPolSourceSiteModelList(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
+        private void MergeJsonWebPolSourceSitesPolSourceSiteModelList(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
             List<PolSourceSiteModel> PolSourceSiteModelLocalList = (from c in webPolSourceSitesLocal.PolSourceSiteModelList
                                                                     where c.TVItemModel.TVItem.TVItemID != 0
@@ -77,7 +77,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebPolSourceSitesIsLocalized(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
+        private void MergeJsonWebPolSourceSitesIsLocalized(WebPolSourceSites webPolSourceSites, WebPolSourceSites webPolSourceSitesLocal)
         {
             foreach (PolSourceSiteModel mwqmPolSourceSiteModel in webPolSourceSites.PolSourceSiteModelList)
             {

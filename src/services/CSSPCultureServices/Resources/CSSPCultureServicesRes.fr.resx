@@ -1092,4 +1092,10 @@
   <data name="ErrorInSetLocalLoggedInContactInfo" xml:space="preserve">
     <value>Erreur dans SetLocalLoggedInContactInfo</value>
   </data>
+  <data name="CouldNotGet_" xml:space="preserve">
+    <value>Dans l'impossiblité d'aller chercher {0}</value>
+  </data>
+  <data name="ErrorWhileTryingToGetAzureJSONFileInfoFor_Error_" xml:space="preserve">
+    <value>Erreur lors d'accès à l'information de la filière JSON Azure pour {0}. Erreur: {1}</value>
+  </data>
 </root>

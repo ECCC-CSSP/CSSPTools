@@ -1095,4 +1095,10 @@
   <data name="ErrorInSetLocalLoggedInContactInfo" xml:space="preserve">
     <value>Error in SetLocalLoggedInContactInfo</value>
   </data>
+  <data name="CouldNotGet_" xml:space="preserve">
+    <value>Could not get {0}</value>
+  </data>
+  <data name="ErrorWhileTryingToGetAzureJSONFileInfoFor_Error_" xml:space="preserve">
+    <value>Error while trying to get Azure JSON file info for {0}. Error: {1}</value>
+  </data>
 </root>

@@ -25,8 +25,8 @@ namespace CSSPAzureAppTaskServices
 
             List<AppTaskLocalModel> appTaskModelList = new List<AppTaskLocalModel>();
 
-            List<AppTask> appTaskList = (from c in db.AppTasks select c).ToList();
-            List<AppTaskLanguage> appTaskLanguageList = (from c in db.AppTaskLanguages select c).ToList();
+            List<AppTask> appTaskList = (from c in dbAzure.AppTasks select c).ToList();
+            List<AppTaskLanguage> appTaskLanguageList = (from c in dbAzure.AppTaskLanguages select c).ToList();
 
             foreach (AppTask appTask in appTaskList)
             {

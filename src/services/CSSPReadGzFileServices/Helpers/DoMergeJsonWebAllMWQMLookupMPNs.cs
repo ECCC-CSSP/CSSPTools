@@ -16,19 +16,19 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllMWQMLookupMPNs(WebAllMWQMLookupMPNs webAllMWQMLookupMPNs, WebAllMWQMLookupMPNs webAllMWQMLookupMPNsLocal)
+        private async Task<bool> MergeJsonWebAllMWQMLookupMPNs(WebAllMWQMLookupMPNs webAllMWQMLookupMPNs, WebAllMWQMLookupMPNs webAllMWQMLookupMPNsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllMWQMLookupMPNs WebAllMWQMLookupMPNs, WebAllMWQMLookupMPNs WebAllMWQMLookupMPNsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllMWQMLookupMPNsMWQMLookupMPNList(webAllMWQMLookupMPNs, webAllMWQMLookupMPNsLocal);
+            MergeJsonWebAllMWQMLookupMPNsMWQMLookupMPNList(webAllMWQMLookupMPNs, webAllMWQMLookupMPNsLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
 
-        private void DoMergeJsonWebAllMWQMLookupMPNsMWQMLookupMPNList(WebAllMWQMLookupMPNs webAllMWQMLookupMPNs, WebAllMWQMLookupMPNs webAllMWQMLookupMPNsLocal)
+        private void MergeJsonWebAllMWQMLookupMPNsMWQMLookupMPNList(WebAllMWQMLookupMPNs webAllMWQMLookupMPNs, WebAllMWQMLookupMPNs webAllMWQMLookupMPNsLocal)
         {
             List<MWQMLookupMPN> mwqmLookupMPNLocalList = (from c in webAllMWQMLookupMPNsLocal.MWQMLookupMPNList
                                                           where c.DBCommand != DBCommandEnum.Original

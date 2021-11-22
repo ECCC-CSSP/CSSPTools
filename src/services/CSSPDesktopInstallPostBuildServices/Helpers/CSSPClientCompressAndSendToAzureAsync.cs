@@ -52,7 +52,7 @@ namespace CSSPDesktopInstallPostBuildServices.Services
 
             try
             {
-                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
                 ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
                 ShareFileClient shareFileClient = directory.GetFileClient(fi.Name);

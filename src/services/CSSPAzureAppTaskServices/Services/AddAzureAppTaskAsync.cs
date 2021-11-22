@@ -159,7 +159,7 @@ namespace CSSPAzureAppTaskServices
 
             AppTask appTask = new AppTask();
 
-            appTask = (from c in db.AppTasks
+            appTask = (from c in dbAzure.AppTasks
                        where c.TVItemID == appTaskLocalModel.AppTask.TVItemID
                        && c.TVItemID2 == appTaskLocalModel.AppTask.TVItemID2
                        && c.AppTaskCommand == appTaskLocalModel.AppTask.AppTaskCommand
@@ -176,11 +176,11 @@ namespace CSSPAzureAppTaskServices
             appTask.LastUpdateDate_UTC = DateTime.UtcNow;
             appTask.LastUpdateContactTVItemID = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LastUpdateContactTVItemID;
 
-            db.AppTasks.Add(appTask);
+            dbAzure.AppTasks.Add(appTask);
 
             try
             {
-                db.SaveChanges();
+                dbAzure.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -192,7 +192,7 @@ namespace CSSPAzureAppTaskServices
             // doing AppTaskLanguage
             foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
             {
-                AppTaskLanguage appTaskLanguage = (from c in db.AppTaskLanguages
+                AppTaskLanguage appTaskLanguage = (from c in dbAzure.AppTaskLanguages
                                                    where c.AppTaskID == appTaskLocalModel.AppTask.AppTaskID
                                                    && c.Language == lang
                                                    select c).FirstOrDefault();
@@ -209,7 +209,7 @@ namespace CSSPAzureAppTaskServices
 
                     appTaskLanguage.AppTaskID = appTask.AppTaskID;
 
-                    db.AppTaskLanguages.Add(appTaskLanguage);
+                    dbAzure.AppTaskLanguages.Add(appTaskLanguage);
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace CSSPAzureAppTaskServices
 
                 try
                 {
-                    db.SaveChanges();
+                    dbAzure.SaveChanges();
                 }
                 catch (Exception ex)
                 {

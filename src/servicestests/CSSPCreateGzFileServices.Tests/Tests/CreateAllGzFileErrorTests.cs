@@ -27,7 +27,7 @@ namespace CSSPCreateGzFileServices.Tests
 
             CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await CreateGzFileService.CreateAllGzFilesAsync();
+            var actionRes = await CSSPCreateGzFileService.CreateAllGzFilesAsync();
             Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
             Assert.NotNull(errRes);

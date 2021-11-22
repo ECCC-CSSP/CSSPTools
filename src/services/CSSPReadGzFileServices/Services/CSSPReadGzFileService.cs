@@ -32,14 +32,11 @@ namespace CSSPReadGzFileServices
         #region Properties
         private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
-        private ICSSPCultureService CSSPCultureService { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
-        private IEnums enums { get; }
-        private ICSSPFileService FileService { get; }
+        private ICSSPFileService CSSPFileService { get; }
         private IManageFileService ManageFileService { get; }
         private ICSSPScrambleService CSSPScrambleService { get; }
         private ICSSPLogService CSSPLogService { get; }
-        private string AzureStoreHash { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -58,7 +55,6 @@ namespace CSSPReadGzFileServices
 
             if (string.IsNullOrEmpty(Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "ReadGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "ReadGzFileService") }");
-            if (string.IsNullOrEmpty(Configuration["CSSPDB"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDB", "ReadGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPDBLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBLocal", "ReadGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "ReadGzFileService") }");
             if (string.IsNullOrEmpty(Configuration["CSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPFilesPath", "ReadGzFileService") }");
@@ -66,26 +62,12 @@ namespace CSSPReadGzFileServices
             if (string.IsNullOrEmpty(Configuration["CSSPLocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPLocalUrl", "ReadGzFileService") }");
 
             this.Configuration = Configuration;
-            this.CSSPCultureService = CSSPCultureService;
-            this.enums = enums;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
-            this.FileService = FileService;
+            this.CSSPFileService = FileService;
             this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
             this.dbManage = dbManage;
-
-            //CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
-
-            //if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            //{
-            //    CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-            //    return;
-            //}
-
-            //AzureStoreHash = (from c in dbManage.Contacts
-            //                  where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
-            //                  select c.AzureStoreHash).FirstOrDefault();
         }
         #endregion Constructors
 

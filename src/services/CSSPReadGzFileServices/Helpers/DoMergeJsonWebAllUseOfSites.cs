@@ -17,18 +17,18 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllUseOfSites(WebAllUseOfSites webAllUseOfSites, WebAllUseOfSites webAllUseOfSitesLocal)
+        private async Task<bool> MergeJsonWebAllUseOfSites(WebAllUseOfSites webAllUseOfSites, WebAllUseOfSites webAllUseOfSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllUseOfSites webAllUseOfSites, WebAllUseOfSites webAllUseOfSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebSubsectorUseOfSiteList(webAllUseOfSites, webAllUseOfSitesLocal);
+            MergeJsonWebSubsectorUseOfSiteList(webAllUseOfSites, webAllUseOfSitesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebSubsectorUseOfSiteList(WebAllUseOfSites webAllUseOfSites, WebAllUseOfSites webAllUseOfSitesLocal)
+        private void MergeJsonWebSubsectorUseOfSiteList(WebAllUseOfSites webAllUseOfSites, WebAllUseOfSites webAllUseOfSitesLocal)
         {
             List<UseOfSite> UseOfSiteLocalList = (from c in webAllUseOfSitesLocal.UseOfSiteList
                                                   where c.SubsectorTVItemID != 0

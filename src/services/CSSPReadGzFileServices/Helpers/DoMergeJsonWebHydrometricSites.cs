@@ -15,22 +15,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebHydrometricSites(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        private async Task<bool> MergeJsonWebHydrometricSites(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebHydrometricSites WebHydrometricSites, WebHydrometricSites WebHydrometricSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebHydrometricSitesTVItemModel(webHydrometricSites, webHydrometricSitesLocal);
+            MergeJsonWebHydrometricSitesTVItemModel(webHydrometricSites, webHydrometricSitesLocal);
 
-            DoMergeJsonWebHydrometricSitesTVItemModelParentList(webHydrometricSites, webHydrometricSitesLocal);
+            MergeJsonWebHydrometricSitesTVItemModelParentList(webHydrometricSites, webHydrometricSitesLocal);
 
-            DoMergeJsonWebHydrometricSitesHydrometricSiteModelList(webHydrometricSites, webHydrometricSitesLocal);
+            MergeJsonWebHydrometricSitesHydrometricSiteModelList(webHydrometricSites, webHydrometricSitesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebHydrometricSitesTVItemModel(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        private void MergeJsonWebHydrometricSitesTVItemModel(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
         {
             if (webHydrometricSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webHydrometricSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -40,7 +40,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webHydrometricSites.TVItemModel, webHydrometricSitesLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebHydrometricSitesTVItemModelParentList(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        private void MergeJsonWebHydrometricSitesTVItemModelParentList(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
         {
             if ((from c in webHydrometricSitesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -52,7 +52,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webHydrometricSites.TVItemModelParentList, webHydrometricSitesLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebHydrometricSitesHydrometricSiteModelList(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
+        private void MergeJsonWebHydrometricSitesHydrometricSiteModelList(WebHydrometricSites webHydrometricSites, WebHydrometricSites webHydrometricSitesLocal)
         {
 
             List<HydrometricSiteModel> HydrometricSiteModelLocalList = (from c in webHydrometricSitesLocal.HydrometricSiteModelList

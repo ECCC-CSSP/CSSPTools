@@ -15,22 +15,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebTideSites(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
+        private async Task<bool> MergeJsonWebTideSites(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebTideSites WebTideSites, WebTideSites WebTideSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebTideSitesTVItemModel(webTideSites, webTideSitesLocal);
+            MergeJsonWebTideSitesTVItemModel(webTideSites, webTideSitesLocal);
 
-            DoMergeJsonWebTideSitesTVItemModelParentList(webTideSites, webTideSitesLocal);
+            MergeJsonWebTideSitesTVItemModelParentList(webTideSites, webTideSitesLocal);
 
-            DoMergeJsonWebTideSitesTideSiteModelList(webTideSites, webTideSitesLocal);
+            MergeJsonWebTideSitesTideSiteModelList(webTideSites, webTideSitesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebTideSitesTVItemModel(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
+        private void MergeJsonWebTideSitesTVItemModel(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
         {
             if (webTideSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webTideSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -40,7 +40,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webTideSites.TVItemModel, webTideSitesLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebTideSitesTVItemModelParentList(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
+        private void MergeJsonWebTideSitesTVItemModelParentList(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
         {
             if ((from c in webTideSitesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -52,7 +52,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webTideSites.TVItemModelParentList, webTideSitesLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebTideSitesTideSiteModelList(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
+        private void MergeJsonWebTideSitesTideSiteModelList(WebTideSites webTideSites, WebTideSites webTideSitesLocal)
         {
 
             List<TideSiteModel> TideSiteModelLocalList = (from c in webTideSitesLocal.TideSiteModelList

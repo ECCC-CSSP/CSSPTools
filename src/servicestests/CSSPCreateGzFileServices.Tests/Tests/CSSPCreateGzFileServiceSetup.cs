@@ -34,12 +34,11 @@ namespace CSSPCreateGzFileServices.Tests
         private IEnums enums { get; set; }
         private ICSSPScrambleService CSSPScrambleService { get; set; }
         private ICSSPLogService CSSPLogService { get; set; }
-        private ICSSPCreateGzFileService CreateGzFileService { get; set; }
+        private ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
         private ICSSPSQLiteService CSSPSQLiteService { get; set; }
         private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
         private CSSPDBManageContext dbManage { get; set; }
-        private string AzureStoreHash { get; set; }
         #endregion Properties
 
         #region Constructors
@@ -110,8 +109,6 @@ namespace CSSPCreateGzFileServices.Tests
 
             ClearCommandLogs();
             ClearManageFiles();
-
-            FillAzureStoreHash();
 
             DeleteAllJsonFilesInAzureTestStore();
 

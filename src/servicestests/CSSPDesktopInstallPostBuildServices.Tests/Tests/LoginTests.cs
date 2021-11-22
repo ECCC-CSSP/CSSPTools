@@ -23,8 +23,8 @@ namespace CSSPDesktopInstallPostBuildServices.Tests
         {
             Assert.True(await CSSPDesktopInstallPostBuildServiceSetup(culture));
 
-            bool retBool = await CSSPDesktopInstallPostBuildService.LoginAsync();
-            Assert.True(retBool);
+            Contact contact = await CSSPDesktopInstallPostBuildService.LoginAsync();
+            Assert.NotNull(contact);
         }
     }
 }

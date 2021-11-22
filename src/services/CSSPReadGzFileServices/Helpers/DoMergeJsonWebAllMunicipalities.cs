@@ -15,19 +15,19 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllMunicipalities(WebAllMunicipalities webAllMunicipalities, WebAllMunicipalities webAllMunicipalitiesLocal)
+        private async Task<bool> MergeJsonWebAllMunicipalities(WebAllMunicipalities webAllMunicipalities, WebAllMunicipalities webAllMunicipalitiesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllMunicipalities WebAllMunicipalities, WebAllMunicipalities WebAllMunicipalitiesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllMunicipalitiesTVItemModelList(webAllMunicipalities, webAllMunicipalitiesLocal);
+            MergeJsonWebAllMunicipalitiesTVItemModelList(webAllMunicipalities, webAllMunicipalitiesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
 
-        private void DoMergeJsonWebAllMunicipalitiesTVItemModelList(WebAllMunicipalities webAllMunicipalities, WebAllMunicipalities webAllMunicipalitiesLocal)
+        private void MergeJsonWebAllMunicipalitiesTVItemModelList(WebAllMunicipalities webAllMunicipalities, WebAllMunicipalities webAllMunicipalitiesLocal)
         {
             List<TVItemModel> tvItemModelLocalList = (from c in webAllMunicipalitiesLocal.TVItemModelList
                                                       where c.TVItem.DBCommand != DBCommandEnum.Original

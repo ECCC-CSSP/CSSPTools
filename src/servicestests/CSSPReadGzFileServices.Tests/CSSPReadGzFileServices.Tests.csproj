@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>7f7f83c1-bbc1-4805-9cae-163ec6952d6d</UserSecretsId>
+    <UserSecretsId>dec2fcbb-e800-447d-859c-16f40cffb968</UserSecretsId>
 
   </PropertyGroup>
 
@@ -29,7 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

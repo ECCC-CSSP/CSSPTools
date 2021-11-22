@@ -15,22 +15,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebMWQMSamples2021_2060(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
+        private async Task<bool> MergeJsonWebMWQMSamples2021_2060(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMWQMSamples WebMWQMSamples, WebMWQMSamples WebMWQMSamplesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebMWQMSamples2021_2060TVItemModel(webMWQMSamples, webMWQMSamplesLocal);
+            MergeJsonWebMWQMSamples2021_2060TVItemModel(webMWQMSamples, webMWQMSamplesLocal);
 
-            DoMergeJsonWebMWQMSamples2021_2060TVItemModelParentList(webMWQMSamples, webMWQMSamplesLocal);
+            MergeJsonWebMWQMSamples2021_2060TVItemModelParentList(webMWQMSamples, webMWQMSamplesLocal);
 
-            DoMergeJsonWebMWQMSamples2021_2060MWQMSampleModelList(webMWQMSamples, webMWQMSamplesLocal);
+            MergeJsonWebMWQMSamples2021_2060MWQMSampleModelList(webMWQMSamples, webMWQMSamplesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebMWQMSamples2021_2060TVItemModel(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
+        private void MergeJsonWebMWQMSamples2021_2060TVItemModel(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
         {
             if (webMWQMSamplesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webMWQMSamplesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -40,7 +40,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webMWQMSamples.TVItemModel, webMWQMSamplesLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebMWQMSamples2021_2060TVItemModelParentList(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
+        private void MergeJsonWebMWQMSamples2021_2060TVItemModelParentList(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
         {
             if ((from c in webMWQMSamplesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -52,7 +52,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webMWQMSamples.TVItemModelParentList, webMWQMSamplesLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebMWQMSamples2021_2060MWQMSampleModelList(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
+        private void MergeJsonWebMWQMSamples2021_2060MWQMSampleModelList(WebMWQMSamples webMWQMSamples, WebMWQMSamples webMWQMSamplesLocal)
         {
             List<MWQMSampleModel> MWQMSampleModelList = (from c in webMWQMSamplesLocal.MWQMSampleModelList
                                                          where c.MWQMSample.MWQMSampleID != 0

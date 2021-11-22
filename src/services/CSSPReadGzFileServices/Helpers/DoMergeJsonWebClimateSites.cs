@@ -16,22 +16,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebClimateSites(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
+        private async Task<bool> MergeJsonWebClimateSites(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebClimateSites WebClimateSites, WebClimateSites WebClimateSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebClimateSitesTVItemModel(webClimateSites, webClimateSitesLocal);
+            MergeJsonWebClimateSitesTVItemModel(webClimateSites, webClimateSitesLocal);
             
-            DoMergeJsonWebClimateSitesTVItemModelParentList(webClimateSites, webClimateSitesLocal);
+            MergeJsonWebClimateSitesTVItemModelParentList(webClimateSites, webClimateSitesLocal);
 
-            DoMergeJsonWebClimateSitesClimateSiteModelList(webClimateSites, webClimateSitesLocal);
+            MergeJsonWebClimateSitesClimateSiteModelList(webClimateSites, webClimateSitesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebClimateSitesTVItemModel(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
+        private void MergeJsonWebClimateSitesTVItemModel(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
         {
             if (webClimateSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webClimateSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -41,7 +41,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webClimateSites.TVItemModel, webClimateSitesLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebClimateSitesTVItemModelParentList(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
+        private void MergeJsonWebClimateSitesTVItemModelParentList(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
         {
             if ((from c in webClimateSitesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -53,7 +53,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webClimateSites.TVItemModelParentList, webClimateSitesLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebClimateSitesClimateSiteModelList(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
+        private void MergeJsonWebClimateSitesClimateSiteModelList(WebClimateSites webClimateSites, WebClimateSites webClimateSitesLocal)
         {
 
             List<ClimateSiteModel> ClimateSiteModelLocalList = (from c in webClimateSitesLocal.ClimateSiteModelList

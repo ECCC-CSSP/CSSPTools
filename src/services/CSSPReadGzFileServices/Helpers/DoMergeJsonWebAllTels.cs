@@ -16,19 +16,19 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebAllTels(WebAllTels webAllTels, WebAllTels webAllTelsLocal)
+        private async Task<bool> MergeJsonWebAllTels(WebAllTels webAllTels, WebAllTels webAllTelsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebAllTels WebAllTels, WebAllTels WebAllTelsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebAllTelsTelModelList(webAllTels, webAllTelsLocal);
+            MergeJsonWebAllTelsTelModelList(webAllTels, webAllTelsLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
 
-        private void DoMergeJsonWebAllTelsTelModelList(WebAllTels webAllTels, WebAllTels webAllTelsLocal)
+        private void MergeJsonWebAllTelsTelModelList(WebAllTels webAllTels, WebAllTels webAllTelsLocal)
         {
             List<Tel> telLocalList = (from c in webAllTelsLocal.TelList
                                                 where c.DBCommand != DBCommandEnum.Original

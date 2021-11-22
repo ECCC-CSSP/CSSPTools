@@ -15,22 +15,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebDrogueRuns(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        private async Task<bool> MergeJsonWebDrogueRuns(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebDrogueRuns WebDrogueRuns, WebDrogueRuns WebDrogueRunsLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebDrogueRunsTVItemModel(webDrogueRuns, webDrogueRunsLocal);
+            MergeJsonWebDrogueRunsTVItemModel(webDrogueRuns, webDrogueRunsLocal);
 
-            DoMergeJsonWebDrogueRunsTVItemModelParentList(webDrogueRuns, webDrogueRunsLocal);
+            MergeJsonWebDrogueRunsTVItemModelParentList(webDrogueRuns, webDrogueRunsLocal);
 
-            DoMergeJsonWebDrogueRunsDrogueRunModelList(webDrogueRuns, webDrogueRunsLocal);
+            MergeJsonWebDrogueRunsDrogueRunModelList(webDrogueRuns, webDrogueRunsLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebDrogueRunsTVItemModel(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        private void MergeJsonWebDrogueRunsTVItemModel(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
         {
             if (webDrogueRunsLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webDrogueRunsLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -40,7 +40,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webDrogueRuns.TVItemModel, webDrogueRunsLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebDrogueRunsTVItemModelParentList(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        private void MergeJsonWebDrogueRunsTVItemModelParentList(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
         {
             if ((from c in webDrogueRunsLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -52,7 +52,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webDrogueRuns.TVItemModelParentList, webDrogueRunsLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebDrogueRunsDrogueRunModelList(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
+        private void MergeJsonWebDrogueRunsDrogueRunModelList(WebDrogueRuns webDrogueRuns, WebDrogueRuns webDrogueRunsLocal)
         {
             List<DrogueRunModel> DrogueRunModelLocalList = (from c in webDrogueRunsLocal.DrogueRunModelList
                                                        where c.DrogueRun.DrogueRunID != 0

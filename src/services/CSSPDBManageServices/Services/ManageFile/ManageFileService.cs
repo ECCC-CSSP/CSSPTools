@@ -35,8 +35,6 @@ namespace ManageServices
         #endregion Variables
 
         #region Properties
-        //private IConfiguration Configuration { get; }
-        //private ICSSPCultureService CSSPCultureService { get; }
         private CSSPDBManageContext dbManage { get; set; }
         private ErrRes errRes { get; set; } = new ErrRes();
         #endregion Properties
@@ -50,8 +48,6 @@ namespace ManageServices
 
             if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
 
-            //this.Configuration = Configuration;
-            //this.CSSPCultureService = CSSPCultureService;
             this.dbManage = dbManage;
         }
         #endregion Constructors

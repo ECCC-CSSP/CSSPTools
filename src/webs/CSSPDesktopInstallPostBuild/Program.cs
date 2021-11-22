@@ -58,7 +58,7 @@ namespace CSSPDesktopInstallPostBuild
             CSSPDesktopInstallPostBuildService = Provider.GetService<ICSSPDesktopInstallPostBuildService>();
             if (CSSPDesktopInstallPostBuildService == null) return await Task.FromResult(1);
 
-            if (!await CSSPDesktopInstallPostBuildService.LoginAsync()) return await Task.FromResult(1);
+            CSSPDesktopInstallPostBuildService.SetContact(await CSSPDesktopInstallPostBuildService.LoginAsync());
             if (!await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync()) return await Task.FromResult(1);
             if (!await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync()) return await Task.FromResult(1);
             if (!await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync()) return await Task.FromResult(1);

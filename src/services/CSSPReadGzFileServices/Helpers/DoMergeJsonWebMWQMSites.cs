@@ -16,24 +16,24 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebMWQMSites(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        private async Task<bool> MergeJsonWebMWQMSites(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMWQMSites WebMWQMSites, WebMWQMSites WebMWQMSitesLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebMWQMSitesTVItemModel(webMWQMSites, webMWQMSitesLocal);
+            MergeJsonWebMWQMSitesTVItemModel(webMWQMSites, webMWQMSitesLocal);
 
-            DoMergeJsonWebMWQMSitesTVItemModelParentList(webMWQMSites, webMWQMSitesLocal);
+            MergeJsonWebMWQMSitesTVItemModelParentList(webMWQMSites, webMWQMSitesLocal);
 
-            DoMergeJsonWebMWQMSitesMWQMSiteModelList(webMWQMSites, webMWQMSitesLocal);
+            MergeJsonWebMWQMSitesMWQMSiteModelList(webMWQMSites, webMWQMSitesLocal);
 
-            DoMergeJsonWebMWQMSitesIsLocalized(webMWQMSites, webMWQMSitesLocal);
+            MergeJsonWebMWQMSitesIsLocalized(webMWQMSites, webMWQMSitesLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebMWQMSitesTVItemModel(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        private void MergeJsonWebMWQMSitesTVItemModel(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             if (webMWQMSitesLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webMWQMSitesLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -43,7 +43,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webMWQMSites.TVItemModel, webMWQMSitesLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebMWQMSitesTVItemModelParentList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        private void MergeJsonWebMWQMSitesTVItemModelParentList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             if ((from c in webMWQMSitesLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -55,7 +55,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webMWQMSites.TVItemModelParentList, webMWQMSitesLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebMWQMSitesMWQMSiteModelList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        private void MergeJsonWebMWQMSitesMWQMSiteModelList(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             List<MWQMSiteModel> MWQMSiteModelLocalList = (from c in webMWQMSitesLocal.MWQMSiteModelList
                                                           where c.TVItemModel.TVItem.TVItemID != 0
@@ -77,7 +77,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMWQMSitesIsLocalized(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
+        private void MergeJsonWebMWQMSitesIsLocalized(WebMWQMSites webMWQMSites, WebMWQMSites webMWQMSitesLocal)
         {
             foreach (MWQMSiteModel mwqmSiteModel in webMWQMSites.MWQMSiteModelList)
             {

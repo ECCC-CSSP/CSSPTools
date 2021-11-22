@@ -16,26 +16,26 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebSector(WebSector webSector, WebSector webSectorLocal)
+        private async Task<bool> MergeJsonWebSector(WebSector webSector, WebSector webSectorLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebSector WebSector, WebSector WebSectorLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebSectorTVItemModel(webSector, webSectorLocal);
+            MergeJsonWebSectorTVItemModel(webSector, webSectorLocal);
 
-            DoMergeJsonWebSectorTVItemModelParentList(webSector, webSectorLocal);
+            MergeJsonWebSectorTVItemModelParentList(webSector, webSectorLocal);
 
-            DoMergeJsonWebSectorTVItemModelSubsectorList(webSector, webSectorLocal);
+            MergeJsonWebSectorTVItemModelSubsectorList(webSector, webSectorLocal);
 
-            DoMergeJsonWebSectorTVFileModelList(webSector, webSectorLocal);
+            MergeJsonWebSectorTVFileModelList(webSector, webSectorLocal);
 
-            DoMergeJsonWebSectorIsLocalized(webSector, webSectorLocal);
+            MergeJsonWebSectorIsLocalized(webSector, webSectorLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebSectorTVItemModel(WebSector webSector, WebSector webSectorLocal)
+        private void MergeJsonWebSectorTVItemModel(WebSector webSector, WebSector webSectorLocal)
         {
             if (webSectorLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webSectorLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -45,7 +45,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webSector.TVItemModel, webSectorLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebSectorTVItemModelParentList(WebSector webSector, WebSector webSectorLocal)
+        private void MergeJsonWebSectorTVItemModelParentList(WebSector webSector, WebSector webSectorLocal)
         {
             if ((from c in webSectorLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -57,7 +57,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webSector.TVItemModelParentList, webSectorLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebSectorTVItemModelSubsectorList(WebSector webSector, WebSector webSectorLocal)
+        private void MergeJsonWebSectorTVItemModelSubsectorList(WebSector webSector, WebSector webSectorLocal)
         {
             List<TVItemModel> TVItemModelLocalList = (from c in webSectorLocal.TVItemModelSubsectorList
                                                       where c.TVItem.TVItemID != 0
@@ -80,7 +80,7 @@ namespace CSSPReadGzFileServices
             }
 
         }
-        private void DoMergeJsonWebSectorTVFileModelList(WebSector webSector, WebSector webSectorLocal)
+        private void MergeJsonWebSectorTVFileModelList(WebSector webSector, WebSector webSectorLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in webSectorLocal.TVFileModelList
                                                       where c.TVFile.TVFileID != 0
@@ -102,7 +102,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebSectorIsLocalized(WebSector webSector, WebSector webSectorLocal)
+        private void MergeJsonWebSectorIsLocalized(WebSector webSector, WebSector webSectorLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ webSector.TVItemModel.TVItem.TVItemID }\\");
 

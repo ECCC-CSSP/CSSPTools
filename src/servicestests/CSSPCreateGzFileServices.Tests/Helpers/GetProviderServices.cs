@@ -86,24 +86,26 @@ namespace CSSPCreateGzFileServices.Tests
                 Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
                 Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
                 Assert.Empty(CSSPLogService.ErrRes.ErrList);
-
-                Contact contactDB = (from c in dbManage.Contacts
-                                     select c).FirstOrDefault();
-                Assert.NotNull(contactDB);
-
-                Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
-                Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
-                Assert.Equal(contactDB.ContactTVItemID, CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID);
-
             }
+
+            contact = (from c in dbManage.Contacts
+                       select c).FirstOrDefault();
+            Assert.NotNull(contact);
+            Assert.NotNull(contact.AzureStoreHash);
+
+            await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
+            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
+            Assert.Equal(contact.ContactTVItemID, CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID);
 
             await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
             Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.True(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID > 0);
 
-            CreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
-            Assert.NotNull(CreateGzFileService);
+            CSSPCreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
+            Assert.NotNull(CSSPCreateGzFileService);
         }
     }
 }

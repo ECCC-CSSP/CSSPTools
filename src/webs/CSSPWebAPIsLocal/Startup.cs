@@ -72,6 +72,19 @@ namespace CSSPWebAPIsLocal
             if (string.IsNullOrEmpty(Configuration["CSSPLocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPLocalUrl", "CSSPWebAPIsLocal") }");
 
             /* ---------------------------------------------------------------------------------
+             * CSSPDBContext 
+             * ---------------------------------------------------------------------------------      
+             */
+            string CSSPDBFileName = Configuration.GetValue<string>("CSSPDB");
+
+            FileInfo fiCSSPDB = new FileInfo(CSSPDBFileName);
+
+            services.AddDbContext<CSSPDBContext>(options =>
+            {
+                options.UseSqlServer(Configuration["CSSPDB"]);
+            });
+
+            /* ---------------------------------------------------------------------------------
              * CSSPDBLocalContext 
              * ---------------------------------------------------------------------------------      
              */

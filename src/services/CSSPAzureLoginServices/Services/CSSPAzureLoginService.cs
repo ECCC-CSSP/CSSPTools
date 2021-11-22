@@ -1,6 +1,5 @@
 ﻿using CSSPCultureServices.Resources;
 using CSSPCultureServices.Services;
-using CSSPDBModels;
 using CSSPHelperModels;
 using CSSPLocalLoggedInServices;
 using CSSPLogServices;
@@ -25,12 +24,10 @@ namespace CSSPAzureLoginServices.Services
         #endregion Properties public
 
         #region Properties private
-        private Contact contact { get; set; } = new Contact();
         private CSSPDBManageContext dbManage { get; }
         private IConfiguration Configuration { get; }
         private ICSSPLogService CSSPLogService { get; }
         private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
-        private string culture { get; set; }
         #endregion Properties private
 
         #region Constructors
@@ -51,8 +48,6 @@ namespace CSSPAzureLoginServices.Services
             this.CSSPLogService = CSSPLogService;
             this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
             this.dbManage = dbManage;
-
-            culture = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? "fr-CA" : "en-CA";
         }
         #endregion Constructors
 

@@ -16,22 +16,22 @@ namespace CSSPReadGzFileServices
 {
     public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
-        private async Task<bool> DoMergeJsonWebMikeScenarios(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
+        private async Task<bool> MergeJsonWebMikeScenarios(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
         {
             string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(WebMikeScenarios WebMikeScenarios, WebMikeScenarios WebMikeScenariosLocal)";
             CSSPLogService.FunctionLog(FunctionName);
 
-            DoMergeJsonWebMikeScenariosTVItemModel(webMikeScenarios, webMikeScenariosLocal);
+            MergeJsonWebMikeScenariosTVItemModel(webMikeScenarios, webMikeScenariosLocal);
 
-            DoMergeJsonWebMikeScenariosTVItemModelParentList(webMikeScenarios, webMikeScenariosLocal);
+            MergeJsonWebMikeScenariosTVItemModelParentList(webMikeScenarios, webMikeScenariosLocal);
 
-            DoMergeJsonWebMikeScenariosMikeScenarioModelList(webMikeScenarios, webMikeScenariosLocal);
+            MergeJsonWebMikeScenariosMikeScenarioModelList(webMikeScenarios, webMikeScenariosLocal);
 
             CSSPLogService.EndFunctionLog(FunctionName);
 
             return await Task.FromResult(true);
         }
-        private void DoMergeJsonWebMikeScenariosTVItemModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
+        private void MergeJsonWebMikeScenariosTVItemModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
         {
             if (webMikeScenariosLocal.TVItemModel.TVItem.TVItemID != 0
                 && (webMikeScenariosLocal.TVItemModel.TVItem.DBCommand != DBCommandEnum.Original
@@ -41,7 +41,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModel(webMikeScenarios.TVItemModel, webMikeScenariosLocal.TVItemModel);
             }
         }
-        private void DoMergeJsonWebMikeScenariosTVItemModelParentList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
+        private void MergeJsonWebMikeScenariosTVItemModelParentList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
         {
             if ((from c in webMikeScenariosLocal.TVItemModelParentList
                  where c.TVItem.TVItemID != 0
@@ -53,7 +53,7 @@ namespace CSSPReadGzFileServices
                 SyncTVItemModelParentList(webMikeScenarios.TVItemModelParentList, webMikeScenariosLocal.TVItemModelParentList);
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
+        private void MergeJsonWebMikeScenariosMikeScenarioModelList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal)
         {
             List<MikeScenarioModel> MikeScenarioModelListLocal = (from c in webMikeScenariosLocal.MikeScenarioModelList
                                                                   select c).ToList();
@@ -69,19 +69,19 @@ namespace CSSPReadGzFileServices
                     mikeScenarioModelOriginal = webMikeScenarios.MikeScenarioModelList.Where(c => c.TVItemModel.TVItem.TVItemID == mikeScenarioModelLocal.TVItemModel.TVItem.TVItemID).FirstOrDefault();
                 }
 
-                DoMergeJsonWebMikeScenariosMikeScenarioModelListMikeBoundaryConditionModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
+                MergeJsonWebMikeScenariosMikeScenarioModelListMikeBoundaryConditionModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
-                DoMergeJsonWebMikeScenariosMikeScenarioModelListMikeSourceModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
+                MergeJsonWebMikeScenariosMikeScenarioModelListMikeSourceModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
-                DoMergeJsonWebMikeScenariosMikeScenarioModelListTVItemModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
+                MergeJsonWebMikeScenariosMikeScenarioModelListTVItemModel(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
-                DoMergeJsonWebMikeScenariosMikeScenarioModelListTVFileModelList(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
+                MergeJsonWebMikeScenariosMikeScenarioModelListTVFileModelList(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
-                DoMergeJsonWebMikeScenariosMikeScenarioModelListIsLocalized(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
+                MergeJsonWebMikeScenariosMikeScenarioModelListIsLocalized(webMikeScenarios, webMikeScenariosLocal, mikeScenarioModelOriginal, mikeScenarioModelLocal);
 
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelListMikeBoundaryConditionModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
+        private void MergeJsonWebMikeScenariosMikeScenarioModelListMikeBoundaryConditionModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
         {
             List<MikeBoundaryConditionModel> mikeBoundaryConditionModelListLocal = (from c in mikeScenarioModelLocal.MikeBoundaryConditionModelList
                                                                                     select c).ToList();
@@ -105,7 +105,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelListMikeSourceModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
+        private void MergeJsonWebMikeScenariosMikeScenarioModelListMikeSourceModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
         {
             List<MikeSourceModel> mikeSourceModelListLocal = (from c in mikeScenarioModelLocal.MikeSourceModelList
                                                               select c).ToList();
@@ -129,7 +129,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelListTVItemModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
+        private void MergeJsonWebMikeScenariosMikeScenarioModelListTVItemModel(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
         {
             if (mikeScenarioModelLocal.TVItemModel != null)
             {
@@ -142,7 +142,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelListTVFileModelList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
+        private void MergeJsonWebMikeScenariosMikeScenarioModelListTVFileModelList(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
         {
             List<TVFileModel> TVFileModelLocalList = (from c in mikeScenarioModelLocal.TVFileModelList
                                                  where c.TVFile.TVFileID != 0
@@ -164,7 +164,7 @@ namespace CSSPReadGzFileServices
                 }
             }
         }
-        private void DoMergeJsonWebMikeScenariosMikeScenarioModelListIsLocalized(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
+        private void MergeJsonWebMikeScenariosMikeScenarioModelListIsLocalized(WebMikeScenarios webMikeScenarios, WebMikeScenarios webMikeScenariosLocal, MikeScenarioModel mikeScenarioModel, MikeScenarioModel mikeScenarioModelLocal)
         {
             DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPFilesPath"] }{ mikeScenarioModel.TVItemModel.TVItem.TVItemID }\\");
 

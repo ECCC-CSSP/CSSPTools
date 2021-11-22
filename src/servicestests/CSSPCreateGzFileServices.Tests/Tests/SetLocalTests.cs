@@ -21,13 +21,13 @@ namespace CSSPCreateGzFileServices.Tests
             DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
             Assert.Empty(di.GetFiles());
 
-            var actionRes = await CreateGzFileService.SetLocal(true);
+            var actionRes = await CSSPCreateGzFileService.SetLocal(true);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
             Assert.Empty(CSSPLogService.ErrRes.ErrList);
 
-            actionRes = await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
+            actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -36,20 +36,20 @@ namespace CSSPCreateGzFileServices.Tests
             di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
             Assert.NotEmpty(di.GetFiles());
 
-            actionRes = await CreateGzFileService.SetLocal(false);
+            actionRes = await CSSPCreateGzFileService.SetLocal(false);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
             Assert.Empty(CSSPLogService.ErrRes.ErrList);
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"]);
             Assert.NotNull(shareClient);
 
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
             Assert.NotNull(directory);
             Assert.Empty(directory.GetFilesAndDirectories());
 
-            actionRes = await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
+            actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllAddresses, 0);
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
             Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
             Assert.True((bool)((OkObjectResult)actionRes.Result).Value);

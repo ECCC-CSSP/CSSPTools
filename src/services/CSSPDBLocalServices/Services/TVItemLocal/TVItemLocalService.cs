@@ -46,7 +46,7 @@ namespace CSSPDBLocalServices
         private ICSSPReadGzFileService CSSPReadGzFileService { get; }
         private ICSSPCreateGzFileService CSSPCreateGzFileService { get; }
         private IHelperLocalService HelperLocalService { get; }
-        private string AzureStoreHash { get; set; }
+        //private string AzureStoreHash { get; set; }
         private List<ToRecreate> ToRecreateList { get; set; }
         #endregion Properties
 
@@ -90,17 +90,17 @@ namespace CSSPDBLocalServices
             this.CSSPCreateGzFileService = CSSPCreateGzFileService;
             this.HelperLocalService = HelperLocalService;
 
-            CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+            //CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
-            if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            {
-                CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-                return;
-            }
+            //if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
+            //{
+            //    CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
+            //    return;
+            //}
 
-            AzureStoreHash = (from c in dbManage.Contacts
-                              where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
-                              select c.AzureStoreHash).FirstOrDefault();
+            //AzureStoreHash = (from c in dbManage.Contacts
+            //                  where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
+            //                  select c.AzureStoreHash).FirstOrDefault();
 
             ToRecreateList = new List<ToRecreate>();
         }

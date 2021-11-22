@@ -20,27 +20,6 @@ namespace CSSPFileServices.Tests
         public async Task Constructor_Good_Test(string culture)
         {
             Assert.True(await CSSPFileServiceSetup(culture));
-
-            Assert.NotNull(Configuration);
-            Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(ManageFileService);
-            Assert.NotNull(CSSPFileService);
-            Assert.NotNull(CSSPLocalLoggedInService);
-            Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
-            Assert.NotNull(CSSPLogService);
-            Assert.NotNull(dbManage);
-
-            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPath"]);
-            Assert.True(di.Exists);
-
-            di = new DirectoryInfo(Configuration["CSSPFilesPath"]);
-            Assert.True(di.Exists);
-
-            di = new DirectoryInfo(Configuration["CSSPTempFilesPath"]);
-            Assert.True(di.Exists);
-
-            di = new DirectoryInfo(Configuration["CSSPOtherFilesPath"]);
-            Assert.True(di.Exists);
         }
     }
 }

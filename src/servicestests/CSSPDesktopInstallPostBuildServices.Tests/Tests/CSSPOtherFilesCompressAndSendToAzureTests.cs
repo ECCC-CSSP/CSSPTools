@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using CSSPHelperModels;
 using Azure.Storage.Files.Shares;
-using Azure;
 
 namespace CSSPDesktopInstallPostBuildServices.Tests
 {
@@ -21,11 +20,11 @@ namespace CSSPDesktopInstallPostBuildServices.Tests
         [Theory]
         [InlineData("en-CA")]
         //[InlineData("fr-CA")]
-        public async Task CSSPClientCompressAndSendToAzure_Good_Test(string culture)
+        public async Task CSSPOtherFilesCompressAndSendToAzure_Good_Test(string culture)
         {
             Assert.True(await CSSPDesktopInstallPostBuildServiceSetup(culture));
 
-            string fileName = Configuration["CSSPClientZipFile"];
+            string fileName = Configuration["CSSPOtherFilesZipFile"];
 
             FileInfo fi = new FileInfo(fileName);
             if (fi.Exists)
@@ -43,10 +42,10 @@ namespace CSSPDesktopInstallPostBuildServices.Tests
             fi = new FileInfo(fileName);
             Assert.False(fi.Exists);
 
-            bool retBool = await CSSPDesktopInstallPostBuildService.LoginAsync();
-            Assert.True(retBool);
+            Contact contact = await CSSPDesktopInstallPostBuildService.LoginAsync();
+            Assert.NotNull(contact);
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopInstallPostBuildService.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
             Assert.NotNull(shareClient);
 
             ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
@@ -69,7 +68,7 @@ namespace CSSPDesktopInstallPostBuildServices.Tests
 
             Assert.False(await shareFileClient.ExistsAsync());
 
-            retBool = await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync();
+            bool retBool = await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync();
             Assert.True(retBool);
 
             Assert.True(await shareFileClient.ExistsAsync());

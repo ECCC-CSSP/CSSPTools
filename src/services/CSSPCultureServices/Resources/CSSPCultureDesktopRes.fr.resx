@@ -421,7 +421,7 @@
     <value>Connexion déjà établi</value>
   </data>
   <data name="CouldNotGet_" xml:space="preserve">
-    <value>Dans l'impossiblité d'aller chercher la clef de AzureStore</value>
+    <value>Dans l'impossiblité d'aller chercher {0}</value>
   </data>
   <data name="Created_SQLiteDatabase" xml:space="preserve">
     <value>La base de données SQLite {0} est créée</value>
