@@ -7,7 +7,7 @@
 
     <Platforms>AnyCPU;x64</Platforms>
 
-    <UserSecretsId>69cfb7e1-1420-4305-b51c-a64cf27091bb</UserSecretsId>
+    <UserSecretsId>8d884ed8-5f30-45e9-a33d-c37d20a2323d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

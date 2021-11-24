@@ -66,12 +66,18 @@ namespace CSSPFileServices.Tests
             Assert.Contains("Test", Configuration["CSSPFilesPath"]);
             Assert.NotNull(Configuration["CSSPJSONPath"]);
             Assert.Contains("Test", Configuration["CSSPJSONPath"]);
+            Assert.NotNull(Configuration["CSSPJSONPathLocal"]);
+            Assert.Contains("Test", Configuration["CSSPJSONPathLocal"]);
             Assert.NotNull(Configuration["CSSPOtherFilesPath"]);
             Assert.Contains("Test", Configuration["CSSPOtherFilesPath"]);
             Assert.NotNull(Configuration["CSSPTempFilesPath"]);
             Assert.Contains("Test", Configuration["CSSPTempFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+            Assert.Contains("test", Configuration["AzureStoreCSSPFilesPath"]);
             Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.Contains("test", Configuration["AzureStoreCSSPJSONPath"]);
+            Assert.NotNull(Configuration["LocalEmail"]);
+            Assert.NotNull(Configuration["Password"]);
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();

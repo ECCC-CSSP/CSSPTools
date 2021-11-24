@@ -49,7 +49,7 @@ namespace CSSPAzureLoginServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_CSSPAzureLoginServicestests.json")
-               .AddUserSecrets("69cfb7e1-1420-4305-b51c-a64cf27091bb")
+               .AddUserSecrets("8d884ed8-5f30-45e9-a33d-c37d20a2323d")
                .Build();
 
             Services = new ServiceCollection();

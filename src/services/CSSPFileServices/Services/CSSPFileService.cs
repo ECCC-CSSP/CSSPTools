@@ -77,18 +77,6 @@ namespace CSSPFileServices
             this.CSSPScrambleService = CSSPScrambleService;
             this.CSSPLogService = CSSPLogService;
             this.ManageFileService = ManageFileService;
-
-            //CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
-
-            //if (CSSPLocalLoggedInService.LoggedInContactInfo == null || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-            //{
-            //    CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-            //    return;
-            //}
-
-            //AzureStoreHash = (from c in dbManage.Contacts
-            //                  where c.ContactID == CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID
-            //                  select c.AzureStoreHash).FirstOrDefault();
         }
         #endregion Constructors
     }

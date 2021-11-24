@@ -17,11 +17,6 @@ namespace CSSPFileServices.Tests
         {
             Assert.True(await CSSPFileServiceSetup(culture));
 
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            CSSPLogService.CSSPAppName = "FileServiceTests";
-            CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests";
-
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
 
@@ -30,10 +25,6 @@ namespace CSSPFileServices.Tests
 
             var actionRes2 = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
             Assert.NotNull(((PhysicalFileResult)actionRes2).FileName);
-
-            await CSSPLogService.Save();
-
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]
@@ -41,11 +32,6 @@ namespace CSSPFileServices.Tests
         public async Task DownloadFile_Unauthorized_Error_Test(string culture)
         {
             Assert.True(await CSSPFileServiceSetup(culture));
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            CSSPLogService.CSSPAppName = "FileServiceTests";
-            CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests";
 
             int ParentTVItemID = 1;
             string FileName = "BarTopBottom.png";
@@ -59,10 +45,6 @@ namespace CSSPFileServices.Tests
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
             Assert.NotEmpty(errRes.ErrList);
-
-            await CSSPLogService.Save();
-
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
         [Theory]
         [InlineData("en-CA")]

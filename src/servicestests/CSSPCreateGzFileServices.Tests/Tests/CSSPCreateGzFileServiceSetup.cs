@@ -50,7 +50,7 @@ namespace CSSPCreateGzFileServices.Tests
             Configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                .AddJsonFile("appsettings_csspcreategzfileservicestests.json")
-               .AddUserSecrets("9f3e6d12-ac2b-4155-b719-acb79d29b6a7")
+               .AddUserSecrets("8d884ed8-5f30-45e9-a33d-c37d20a2323d")
                .Build();
 
             Services = new ServiceCollection();
