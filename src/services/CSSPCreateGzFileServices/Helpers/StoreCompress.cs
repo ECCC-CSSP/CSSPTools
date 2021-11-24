@@ -1,25 +1,17 @@
-﻿/*
- * Manually edited
- * 
- */
-using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using System.IO.Compression;
+﻿namespace CSSPCreateGzFileServices;
 
-namespace CSSPCreateGzFileServices
+public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
-    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
+    private Stream Compress(Stream decompressed, CompressionLevel compressionLevel = CompressionLevel.Fastest)
     {
-        private Stream Compress(Stream decompressed, CompressionLevel compressionLevel = CompressionLevel.Fastest)
+        MemoryStream compressed = new MemoryStream();
+        using (GZipStream gZip = new GZipStream(compressed, compressionLevel, true))
         {
-            MemoryStream compressed = new MemoryStream();
-            using (GZipStream gZip = new GZipStream(compressed, compressionLevel, true))
-            {
-                decompressed.CopyTo(gZip);
-            }
-
-            compressed.Seek(0, SeekOrigin.Begin);
-            return compressed;
+            decompressed.CopyTo(gZip);
         }
+
+        compressed.Seek(0, SeekOrigin.Begin);
+        return compressed;
     }
 }
+

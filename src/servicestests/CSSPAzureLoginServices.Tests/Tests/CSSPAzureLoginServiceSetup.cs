@@ -1,94 +1,63 @@
-﻿using CSSPAzureLoginServices.Services;
-using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPLocalLoggedInServices;
-using CSSPLogServices;
-using CSSPScrambleServices;
-using CSSPSQLiteServices;
-using ManageServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+﻿namespace CSSPAzureLoginServices.Tests;
 
-namespace CSSPAzureLoginServices.Tests
+[Collection("Sequential")]
+public partial class CSSPAzureLoginServiceTests
 {
-    [Collection("Sequential")]
-    public partial class CSSPAzureLoginServiceTests
+    private IConfiguration Configuration { get; set; }
+    private IServiceProvider Provider { get; set; }
+    private IServiceCollection Services { get; set; }
+    private ICSSPCultureService CSSPCultureService { get; set; }
+    private ICSSPScrambleService CSSPScrambleService { get; set; }
+    private ICSSPLogService CSSPLogService { get; set; }
+    private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+    private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+    private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
+    private CSSPDBManageContext dbManage { get; set; }
+
+    private async Task<bool> CSSPAzureLoginServiceSetup(string culture)
     {
-        #region Variables
-        #endregion Variables
+        Configuration = new ConfigurationBuilder()
+           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+           .AddJsonFile("appsettings_CSSPAzureLoginServicestests.json")
+           .AddUserSecrets("8d884ed8-5f30-45e9-a33d-c37d20a2323d")
+           .Build();
 
-        #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPScrambleService CSSPScrambleService { get; set; }
-        private ICSSPLogService CSSPLogService { get; set; }
-        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-        private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-        private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
-        private CSSPDBManageContext dbManage { get; set; }
+        Services = new ServiceCollection();
 
-        #endregion Properties
+        Services.AddSingleton<IConfiguration>(Configuration);
 
-        #region Constructors
-        #endregion Constructors
+        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+        Services.AddSingleton<IEnums, Enums>();
+        Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
+        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+        Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+        Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
-        #region Tests
-        #endregion Tests
+        Assert.NotNull(Configuration["CSSPDBManage"]);
+        Assert.NotNull(Configuration["CSSPAzureUrl"]);
+        Assert.NotNull(Configuration["LoginEmail"]);
+        Assert.NotNull(Configuration["Password"]);
 
-        #region Functions private
-        private async Task<bool> CSSPAzureLoginServiceSetup(string culture)
+        CheckRequiredDirectories();
+
+        Services.AddDbContext<CSSPDBManageContext>(options =>
         {
-            Configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_CSSPAzureLoginServicestests.json")
-               .AddUserSecrets("8d884ed8-5f30-45e9-a33d-c37d20a2323d")
-               .Build();
+            options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
+        });
 
-            Services = new ServiceCollection();
-
-            Services.AddSingleton<IConfiguration>(Configuration);
-
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
-            Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-            Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-            Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
-
-            Assert.NotNull(Configuration["CSSPDBManage"]);
-            Assert.NotNull(Configuration["CSSPAzureUrl"]);
-            Assert.NotNull(Configuration["LoginEmail"]);
-            Assert.NotNull(Configuration["Password"]);
-
-            CheckRequiredDirectories();
-
-            Services.AddDbContext<CSSPDBManageContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
-            });
-
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
-            });
+        Services.AddDbContext<CSSPDBLocalContext>(options =>
+        {
+            options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
+        });
 
 
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
+        Provider = Services.BuildServiceProvider();
+        Assert.NotNull(Provider);
 
-            await GetProviderServices();
+        await GetProviderServices();
 
-            return await Task.FromResult(true);
-        }
-        #endregion Functions private
+        return await Task.FromResult(true);
     }
 }
+

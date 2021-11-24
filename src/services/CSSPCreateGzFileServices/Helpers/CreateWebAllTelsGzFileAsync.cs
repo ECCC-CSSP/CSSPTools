@@ -1,54 +1,40 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPCreateGzFileServices;
 
-namespace CSSPCreateGzFileServices
+public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
-    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
+    private async Task<bool> CreateWebAllTelsGzFileAsync()
     {
-        private async Task<bool> CreateWebAllTelsGzFileAsync()
+        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+        CSSPLogService.FunctionLog(FunctionName);
+
+        TVItem TVItemRoot = await GetTVItemRootAsync();
+
+        WebAllTels webAllTels = new WebAllTels();
+
+        try
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
-            CSSPLogService.FunctionLog(FunctionName);
+            webAllTels.TelList = await GetAllTelAsync();
 
-            TVItem TVItemRoot = await GetTVItemRootAsync();
-
-            WebAllTels webAllTels  = new WebAllTels();
-
-            try
+            if (Local)
             {
-                webAllTels.TelList = await GetAllTelAsync();
-
-                if (Local)
-                {
-                    if (!await StoreLocalAsync<WebAllTels>(webAllTels, $"{WebTypeEnum.WebAllTels }.gz")) return await Task.FromResult(false);
-                }
-                else
-                {
-                    if (!await StoreAsync<WebAllTels>(webAllTels, $"{WebTypeEnum.WebAllTels }.gz")) return await Task.FromResult(false);
-                }
+                if (!await StoreLocalAsync<WebAllTels>(webAllTels, $"{WebTypeEnum.WebAllTels }.gz")) return await Task.FromResult(false);
             }
-            catch (Exception ex)
+            else
             {
-                string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                CSSPLogService.AppendError($"{ ex.Message } { inner }");
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
+                if (!await StoreAsync<WebAllTels>(webAllTels, $"{WebTypeEnum.WebAllTels }.gz")) return await Task.FromResult(false);
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
+        catch (Exception ex)
+        {
+            string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+            CSSPLogService.AppendError($"{ ex.Message } { inner }");
+            CSSPLogService.EndFunctionLog(FunctionName);
+            return await Task.FromResult(false);
+        }
+
+        CSSPLogService.EndFunctionLog(FunctionName);
+
+        return await Task.FromResult(true);
     }
 }
+

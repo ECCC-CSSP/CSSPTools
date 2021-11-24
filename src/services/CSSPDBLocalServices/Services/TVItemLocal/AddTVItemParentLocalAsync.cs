@@ -1,74 +1,51 @@
-/*
- * Manually edited
- *
- */
+namespace CSSPDBLocalServices;
 
-using CSSPCreateGzFileServices;
-using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPLocalLoggedInServices;
-using CSSPLogServices;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using CSSPReadGzFileServices;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Linq;
-
-namespace CSSPDBLocalServices
+public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 {
-    public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
+    public async Task<bool> AddTVItemParentLocalAsync(List<TVItemModel> tvItemModelParent)
     {
-        public async Task<bool> AddTVItemParentLocalAsync(List<TVItemModel> tvItemModelParent)
+        foreach (TVItemModel tvItemModel in tvItemModelParent)
         {
-            foreach (TVItemModel tvItemModel in tvItemModelParent)
+            if (!(from c in dbLocal.TVItems
+                  where c.TVItemID == tvItemModel.TVItem.TVItemID
+                  select c).Any())
             {
-                if (!(from c in dbLocal.TVItems
-                      where c.TVItemID == tvItemModel.TVItem.TVItemID
-                      select c).Any())
+                try
                 {
-                    try
-                    {
-                        dbLocal.TVItems.Add(tvItemModel.TVItem);
-                        dbLocal.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
-                    }
+                    dbLocal.TVItems.Add(tvItemModel.TVItem);
+                    dbLocal.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
+                }
 
-                    if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(false);
+                if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(false);
 
-                    foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+                foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
+                {
+                    if (!(from c in dbLocal.TVItemLanguages
+                          where c.TVItemID == tvItemModel.TVItem.TVItemID
+                          && c.Language == lang
+                          select c).Any())
                     {
-                        if (!(from c in dbLocal.TVItemLanguages
-                              where c.TVItemID == tvItemModel.TVItem.TVItemID
-                              && c.Language == lang
-                              select c).Any())
+
+                        try
                         {
-
-                            try
-                            {
-                                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang - 1]);
-                                dbLocal.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message));
-                            }
-
-                            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(false);
+                            dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang - 1]);
+                            dbLocal.SaveChanges();
                         }
+                        catch (Exception ex)
+                        {
+                            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemLanguage", ex.Message));
+                        }
+
+                        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(false);
                     }
                 }
             }
-
-            return await Task.FromResult(true);
         }
+
+        return await Task.FromResult(true);
     }
 }

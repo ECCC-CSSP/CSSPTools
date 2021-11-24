@@ -1,55 +1,45 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPAzureAppTaskServices.Tests;
 
-using CSSPCultureServices.Resources;
-using CSSPWebModels;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CSSPAzureAppTaskServices.Tests
+public partial class CSSPAzureAppTaskServiceTest
 {
-    public partial class CSSPAzureAppTaskServiceTest
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Delete_AppTask_NotFound_Error_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Delete_AppTask_NotFound_Error_Test(string culture)
-        {
-            Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
+        Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            AppTaskLocalModel appTaskModel = FillAppTaskModel();
+        AppTaskLocalModel appTaskModel = FillAppTaskModel();
 
-            AppTaskLocalModel appTaskModelRet = await TestAddAsync(appTaskModel);
+        AppTaskLocalModel appTaskModelRet = await TestAddAsync(appTaskModel);
 
-            int AppTaskID = -1;
+        int AppTaskID = -1;
 
-            await TestDeleteErrorAsync(AppTaskID, string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString()));
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Delete_Error_Test(string culture)
-        {
-            Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
+        await TestDeleteErrorAsync(AppTaskID, string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", AppTaskID.ToString()));
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Delete_Error_Test(string culture)
+    {
+        Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            int AppTaskID = 0;
+        int AppTaskID = 0;
 
-            await TestDeleteErrorAsync(AppTaskID, string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Delete_Unauthorized_Error_Test(string culture)
-        {
-            Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
+        await TestDeleteErrorAsync(AppTaskID, string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Delete_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await CSSPAzureAppTaskServiceSetup(culture));
 
-            int AppTaskID = 1000;
+        int AppTaskID = 1000;
 
-            CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+        CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-            await TestDeleteUnauthorizedAsync(AppTaskID, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
-        }
+        await TestDeleteUnauthorizedAsync(AppTaskID, string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
     }
 }
+

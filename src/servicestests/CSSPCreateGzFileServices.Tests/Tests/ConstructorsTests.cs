@@ -1,16 +1,13 @@
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPCreateGzFileServices.Tests;
 
-namespace CSSPCreateGzFileServices.Tests
+public partial class CSSPCreateGzFileServiceTests
 {
-    public partial class CSSPCreateGzFileServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Constructor_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Constructor_Good_Test(string culture)
-        {
-            Assert.True(await CSSPCreateGzFileServiceSetup(culture));
-        }
+        Assert.True(await CSSPCreateGzFileServiceSetup(culture));
     }
 }
+

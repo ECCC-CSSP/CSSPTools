@@ -1,51 +1,38 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCultureServices.Resources;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPCreateGzFileServices;
 
-namespace CSSPCreateGzFileServices
+public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
-    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
+    private async Task<bool> CreateWebAllPolSourceGroupingsGzFileAsync()
     {
-        private async Task<bool> CreateWebAllPolSourceGroupingsGzFileAsync()
+        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+        CSSPLogService.FunctionLog(FunctionName);
+
+        WebAllPolSourceGroupings webAllPolSourceGroupings = new WebAllPolSourceGroupings();
+
+        try
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
-            CSSPLogService.FunctionLog(FunctionName);
+            if (!await FillPolSourceGroupingModelListAsync(webAllPolSourceGroupings.PolSourceGroupingModelList)) return await Task.FromResult(false);
 
-            WebAllPolSourceGroupings webAllPolSourceGroupings = new WebAllPolSourceGroupings();
-
-            try
+            if (Local)
             {
-                if (!await FillPolSourceGroupingModelListAsync(webAllPolSourceGroupings.PolSourceGroupingModelList)) return await Task.FromResult(false);
-
-                if (Local)
-                {
-                    if (!await StoreLocalAsync<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz")) return await Task.FromResult(false);
-                }
-                else
-                {
-                    if (!await StoreAsync<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz")) return await Task.FromResult(false);
-                }
+                if (!await StoreLocalAsync<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz")) return await Task.FromResult(false);
             }
-            catch (Exception ex)
+            else
             {
-                string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                CSSPLogService.AppendError($"{ ex.Message } { inner }");
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
+                if (!await StoreAsync<WebAllPolSourceGroupings>(webAllPolSourceGroupings, $"{ WebTypeEnum.WebAllPolSourceGroupings }.gz")) return await Task.FromResult(false);
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
+        catch (Exception ex)
+        {
+            string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+            CSSPLogService.AppendError($"{ ex.Message } { inner }");
+            CSSPLogService.EndFunctionLog(FunctionName);
+            return await Task.FromResult(false);
+        }
+
+        CSSPLogService.EndFunctionLog(FunctionName);
+
+        return await Task.FromResult(true);
     }
 }
+

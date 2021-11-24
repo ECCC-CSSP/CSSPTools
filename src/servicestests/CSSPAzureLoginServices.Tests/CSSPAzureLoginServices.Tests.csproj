@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
     <Platforms>AnyCPU;x64</Platforms>
 
-    <UserSecretsId>8d884ed8-5f30-45e9-a33d-c37d20a2323d</UserSecretsId>
+    <UserSecretsId>CSSPAzureLoginServices_Tests</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

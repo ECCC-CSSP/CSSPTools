@@ -1,47 +1,31 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCultureServices.Resources;
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CSSPWebModels;
-using System.Reflection;
+﻿namespace CSSPCreateGzFileServices;
 
-namespace CSSPCreateGzFileServices
+public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
-    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
+    private async Task<bool> FillLabSheetModelListAsync(List<LabSheetModel> LabSheetModelList, TVItem TVItem)
     {
-        private async Task<bool> FillLabSheetModelListAsync(List<LabSheetModel> LabSheetModelList, TVItem TVItem)
+        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<LabSheetModel> LabSheetModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
+        CSSPLogService.FunctionLog(FunctionName);
+
+        List<LabSheet> LabSheetList = await GetLabSheetListUnderSubsectorAsync(TVItem.TVItemID);
+        List<LabSheetDetail> LabSheetDetailList = await GetLabSheetDetailListUnderSubsectorAsync(TVItem.TVItemID);
+        List<LabSheetTubeMPNDetail> LabSheetTubeMPNDetailList = await GetLabSheetTubeMPNDetailListUnderSubsectorAsync(TVItem.TVItemID);
+
+        foreach (LabSheet LabSheet in LabSheetList)
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(List<LabSheetModel> LabSheetModelList, TVItem TVItem) -- TVItem.TVItemID: { TVItem.TVItemID }   TVItem.TVPath: { TVItem.TVPath })";
-            CSSPLogService.FunctionLog(FunctionName);
-
-            List<LabSheet> LabSheetList = await GetLabSheetListUnderSubsectorAsync(TVItem.TVItemID);
-            List<LabSheetDetail> LabSheetDetailList = await GetLabSheetDetailListUnderSubsectorAsync(TVItem.TVItemID);
-            List<LabSheetTubeMPNDetail> LabSheetTubeMPNDetailList = await GetLabSheetTubeMPNDetailListUnderSubsectorAsync(TVItem.TVItemID);
-
-            foreach (LabSheet LabSheet in LabSheetList)
+            LabSheetModel LabSheetModel = new LabSheetModel();
+            LabSheetModel.LabSheet = LabSheet;
+            LabSheetModel.LabSheetDetail = LabSheetDetailList.Where(c => c.LabSheetID == LabSheet.LabSheetID).FirstOrDefault();
+            if (LabSheetModel.LabSheetDetail != null)
             {
-                LabSheetModel LabSheetModel = new LabSheetModel();
-                LabSheetModel.LabSheet = LabSheet;
-                LabSheetModel.LabSheetDetail = LabSheetDetailList.Where(c => c.LabSheetID == LabSheet.LabSheetID).FirstOrDefault();
-                if (LabSheetModel.LabSheetDetail != null)
-                {
-                    LabSheetModel.LabSheetTubeMPNDetailList = LabSheetTubeMPNDetailList.Where(c => c.LabSheetDetailID == LabSheetModel.LabSheetDetail.LabSheetDetailID).ToList();
-                }
-
-                LabSheetModelList.Add(LabSheetModel);
+                LabSheetModel.LabSheetTubeMPNDetailList = LabSheetTubeMPNDetailList.Where(c => c.LabSheetDetailID == LabSheetModel.LabSheetDetail.LabSheetDetailID).ToList();
             }
 
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
+            LabSheetModelList.Add(LabSheetModel);
         }
+
+        CSSPLogService.EndFunctionLog(FunctionName);
+
+        return await Task.FromResult(true);
     }
 }

@@ -1,83 +1,37 @@
-using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Globalization;
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPCultureServices.Tests;
 
-namespace CSSPCultureServices.Tests
+public partial class CultureServicesTests
 {
-    public partial class CultureServicesTests
+    [Theory]
+    [InlineData("en-CA")]
+    [InlineData("fr-CA")]
+    public async Task SetCulture_Good_Test(string culture)
     {
-        #region Variables
-        #endregion Variables
+        Assert.True(await CSSPCultureServiceSetup(culture));
 
-        #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        #endregion Properties
 
-        #region Constructors
-        public CultureServicesTests()
-        {
-            
-        }
-        #endregion Constructors
+        CSSPCultureService.SetCulture(culture);
 
-        #region Tests Functions public
+        Assert.Equal(new CultureInfo(culture), CSSPCultureDesktopRes.Culture);
+        Assert.Equal(new CultureInfo(culture), CSSPCultureEnumsRes.Culture);
+        Assert.Equal(new CultureInfo(culture), CSSPCultureModelsRes.Culture);
+        Assert.Equal(new CultureInfo(culture), CSSPCulturePolSourcesRes.Culture);
+        Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
+    }
+    [Theory]
+    [InlineData("en-US")]
+    [InlineData("fr-FR")]
+    public async Task SetCulture_Unsuported_Culture_Should_Default_To_en_CA_Good_Test(string culture)
+    {
+        Assert.True(await CSSPCultureServiceSetup(culture));
 
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task SetCulture_Good_Test(string culture)
-        {
-            Assert.True(await CSSPCultureServiceSetup(culture));
+        CSSPCultureService.SetCulture(culture);
 
-             
-            CSSPCultureService.SetCulture(culture);
-
-            Assert.Equal(new CultureInfo(culture), CSSPCultureDesktopRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CSSPCultureEnumsRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CSSPCultureModelsRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CSSPCulturePolSourcesRes.Culture);
-            Assert.Equal(new CultureInfo(culture), CSSPCultureServicesRes.Culture);
-        }
-        [Theory]
-        [InlineData("en-US")]
-        [InlineData("fr-FR")]
-        public async Task SetCulture_Unsuported_Culture_Should_Default_To_en_CA_Good_Test(string culture)
-        {
-            Assert.True(await CSSPCultureServiceSetup(culture));
-
-            CSSPCultureService.SetCulture(culture);
-
-            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureDesktopRes.Culture);
-            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureEnumsRes.Culture);
-            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureModelsRes.Culture);
-            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCulturePolSourcesRes.Culture);
-            Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureServicesRes.Culture);
-        }
-        #endregion Tests Functions public
-
-        #region Functions private
-        private async Task<bool> CSSPCultureServiceSetup(string culture)
-        {
-            ServiceCollection Services = new ServiceCollection();
-
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-
-            IServiceProvider Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
-
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
-
-            return await Task.FromResult(true);
-        }
-        #endregion Functions private
+        Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureDesktopRes.Culture);
+        Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureEnumsRes.Culture);
+        Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureModelsRes.Culture);
+        Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCulturePolSourcesRes.Culture);
+        Assert.Equal(new CultureInfo(CSSPCultureService.AllowableCultures[0]), CSSPCultureServicesRes.Culture);
     }
 }
+

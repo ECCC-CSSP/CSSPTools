@@ -1,46 +1,36 @@
-﻿using CSSPCultureServices.Resources;
-using System.Collections.Generic;
-using System.Globalization;
+﻿namespace CSSPCultureServices.Services;
 
-namespace CSSPCultureServices.Services
+public partial class CSSPCultureService : ICSSPCultureService
 {
-    public partial interface ICSSPCultureService
+    public List<string> AllowableCultures { get; }
+    public int LangID { get; set; }
+    public CSSPCultureService()
     {
-        List<string> AllowableCultures { get; }
-        int LangID { get; set; }
-        void SetCulture(string culture);
+        AllowableCultures = new List<string>() { "en-CA", "fr-CA" };
+        SetCulture("en-CA");
     }
-    public partial class CSSPCultureService : ICSSPCultureService
+
+    public void SetCulture(string culture)
     {
-        public List<string> AllowableCultures { get; }
-        public int LangID { get; set; }
-        public CSSPCultureService()
+        if (!AllowableCultures.Contains(culture))
         {
-            AllowableCultures = new List<string>() { "en-CA", "fr-CA" };
-            SetCulture("en-CA");
+            culture = AllowableCultures[0];
         }
 
-        public void SetCulture(string culture)
+        if (culture == "fr-CA")
         {
-            if (!AllowableCultures.Contains(culture))
-            {
-                culture = AllowableCultures[0];
-            }
-
-            if (culture == "fr-CA")
-            {
-                LangID = 1;
-            }
-            else
-            {
-                LangID = 0;
-            }
-
-            CSSPCultureDesktopRes.Culture = new CultureInfo(culture);
-            CSSPCultureEnumsRes.Culture = new CultureInfo(culture);
-            CSSPCultureModelsRes.Culture = new CultureInfo(culture);
-            CSSPCulturePolSourcesRes.Culture = new CultureInfo(culture);
-            CSSPCultureServicesRes.Culture = new CultureInfo(culture);
+            LangID = 1;
         }
+        else
+        {
+            LangID = 0;
+        }
+
+        CSSPCultureDesktopRes.Culture = new CultureInfo(culture);
+        CSSPCultureEnumsRes.Culture = new CultureInfo(culture);
+        CSSPCultureModelsRes.Culture = new CultureInfo(culture);
+        CSSPCulturePolSourcesRes.Culture = new CultureInfo(culture);
+        CSSPCultureServicesRes.Culture = new CultureInfo(culture);
     }
 }
+

@@ -1,52 +1,38 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPCreateGzFileServices;
 
-namespace CSSPCreateGzFileServices
+public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
-    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
+    private async Task<bool> CreateWebAllAddressesGzFileAsync()
     {
-        private async Task<bool> CreateWebAllAddressesGzFileAsync()
+        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+        CSSPLogService.FunctionLog(FunctionName);
+
+        WebAllAddresses webAllAddresses = new WebAllAddresses();
+
+        try
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
-            CSSPLogService.FunctionLog(FunctionName);
+            webAllAddresses.AddressList = await GetAllAddressAsync();
 
-            WebAllAddresses webAllAddresses  = new WebAllAddresses();
-
-            try
+            if (Local)
             {
-                webAllAddresses.AddressList = await GetAllAddressAsync();
-
-                if (Local)
-                {
-                    if (!await StoreLocalAsync<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz")) return await Task.FromResult(false);
-                }
-                else
-                {
-                    if (!await StoreAsync<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz")) return await Task.FromResult(false);
-                }
+                if (!await StoreLocalAsync<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz")) return await Task.FromResult(false);
             }
-            catch (Exception ex)
+            else
             {
-                string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                CSSPLogService.AppendError($"{ ex.Message } { inner }");
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
+                if (!await StoreAsync<WebAllAddresses>(webAllAddresses, $"{ WebTypeEnum.WebAllAddresses }.gz")) return await Task.FromResult(false);
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
+        catch (Exception ex)
+        {
+            string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+            CSSPLogService.AppendError($"{ ex.Message } { inner }");
+            CSSPLogService.EndFunctionLog(FunctionName);
+            return await Task.FromResult(false);
+        }
+
+        CSSPLogService.EndFunctionLog(FunctionName);
+
+        return await Task.FromResult(true);
     }
 }
+

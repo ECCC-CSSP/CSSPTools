@@ -1,52 +1,38 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPCreateGzFileServices;
 
-namespace CSSPCreateGzFileServices
+public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
-    public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
+    private async Task<bool> CreateWebAllTideLocationsGzFileAsync()
     {
-        private async Task<bool> CreateWebAllTideLocationsGzFileAsync()
+        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+        CSSPLogService.FunctionLog(FunctionName);
+
+        WebAllTideLocations webAllTideLocations = new WebAllTideLocations();
+
+        try
         {
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
-            CSSPLogService.FunctionLog(FunctionName);
+            webAllTideLocations.TideLocationList = await GetTideLocationAsync();
 
-            WebAllTideLocations webAllTideLocations = new WebAllTideLocations();
-
-            try
+            if (Local)
             {
-                webAllTideLocations.TideLocationList = await GetTideLocationAsync();
-
-                if (Local)
-                {
-                    if (!await StoreLocalAsync<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz")) return await Task.FromResult(false);
-                }
-                else
-                {
-                    if (!await StoreAsync<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz")) return await Task.FromResult(false);
-                }
+                if (!await StoreLocalAsync<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz")) return await Task.FromResult(false);
             }
-            catch (Exception ex)
+            else
             {
-                string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                CSSPLogService.AppendError($"{ ex.Message } { inner }");
-                CSSPLogService.EndFunctionLog(FunctionName);
-                return await Task.FromResult(false);
+                if (!await StoreAsync<WebAllTideLocations>(webAllTideLocations, $"{ WebTypeEnum.WebAllTideLocations }.gz")) return await Task.FromResult(false);
             }
-
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(true);
         }
+        catch (Exception ex)
+        {
+            string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
+            CSSPLogService.AppendError($"{ ex.Message } { inner }");
+            CSSPLogService.EndFunctionLog(FunctionName);
+            return await Task.FromResult(false);
+        }
+
+        CSSPLogService.EndFunctionLog(FunctionName);
+
+        return await Task.FromResult(true);
     }
 }
+

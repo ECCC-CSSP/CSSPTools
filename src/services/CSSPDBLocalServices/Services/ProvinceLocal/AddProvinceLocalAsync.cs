@@ -1,126 +1,96 @@
-/*
- * Manually edited
- *
- */
+namespace CSSPDBLocalServices;
 
-using CSSPEnums;
-using CSSPDBModels;
-using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using CSSPLocalLoggedInServices;
-using Microsoft.Extensions.Configuration;
-using CSSPWebModels;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using CSSPHelperModels;
-using CSSPLogServices;
-using System.Reflection;
-using System.Security.Cryptography;
-using CSSPReadGzFileServices;
-using CSSPCreateGzFileServices;
-
-namespace CSSPDBLocalServices
+public partial class ProvinceLocalService : ControllerBase, IProvinceLocalService
 {
-    public partial class ProvinceLocalService : ControllerBase, IProvinceLocalService
+    public async Task<ActionResult<TVItemModel>> AddProvinceLocalAsync(int ParentTVItemID)
     {
-        public async Task<ActionResult<TVItemModel>> AddProvinceLocalAsync(int ParentTVItemID)
+        string parameters = $" --  ParentTVItemID = { ParentTVItemID }";
+
+        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID) { parameters }";
+        CSSPLogService.FunctionLog(FunctionName);
+
+        if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+
+        if (ParentTVItemID == 0)
         {
-            string parameters = $" --  ParentTVItemID = { ParentTVItemID }";
+            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "ParentTVItemID"));
+        }
 
-            string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int ParentTVItemID) { parameters }";
-            CSSPLogService.FunctionLog(FunctionName);
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-            if (ParentTVItemID == 0)
-            {
-                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "ParentTVItemID"));
-            }
+        TVItemModel tvItemModelParent = webCountry.TVItemModel;
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        await TVItemLocalService.AddTVItemParentLocalAsync(webCountry.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
 
-            WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            TVItemModel tvItemModelParent = webCountry.TVItemModel;
+        TVItemModel tvItemModelNew = new TVItemModel();
 
-            await TVItemLocalService.AddTVItemParentLocalAsync(webCountry.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
+        List<TVItemModel> tvItemModelProvinceList = webCountry.TVItemModelProvinceList;
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        string TVTextEN = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelProvinceList, LanguageEnum.en, "New Province");
+        string TVTextFR = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelProvinceList, LanguageEnum.fr, "Nouvelle Province");
 
-            TVItemModel tvItemModelNew = new TVItemModel();
+        var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemModelParent.TVItem, TVTypeEnum.Province, TVTextEN, TVTextFR);
 
-            List<TVItemModel> tvItemModelProvinceList = webCountry.TVItemModelProvinceList;
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            string TVTextEN = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelProvinceList, LanguageEnum.en, "New Province");
-            string TVTextFR = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelProvinceList, LanguageEnum.fr, "Nouvelle Province");
+        TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
 
-            var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemModelParent.TVItem, TVTypeEnum.Province, TVTextEN, TVTextFR);
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        tvItemModelNew = tvItemModel;
 
-            TVItemModel tvItemModel = (TVItemModel)((OkObjectResult)actionTVItemModel.Result).Value;
+        List<MapInfoModel> mapInfoModelList = new List<MapInfoModel>();
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        foreach (TVItemModel tvItemModelForMapInfo in tvItemModelProvinceList)
+        {
+            mapInfoModelList.AddRange(tvItemModelForMapInfo.MapInfoModelList);
+        }
 
-            tvItemModelNew = tvItemModel;
+        var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Point);
 
-            List<MapInfoModel> mapInfoModelList = new List<MapInfoModel>();
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            foreach (TVItemModel tvItemModelForMapInfo in tvItemModelProvinceList)
-            {
-                mapInfoModelList.AddRange(tvItemModelForMapInfo.MapInfoModelList);
-            }
+        MapInfoModel mapInfoModelPoint = (MapInfoModel)((OkObjectResult)actionMapInfoModelPoint.Result).Value;
 
-            var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Point);
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        tvItemModelNew.MapInfoModelList.Add(mapInfoModelPoint);
 
-            MapInfoModel mapInfoModelPoint = (MapInfoModel)((OkObjectResult)actionMapInfoModelPoint.Result).Value;
+        var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Polygon);
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            tvItemModelNew.MapInfoModelList.Add(mapInfoModelPoint);
+        MapInfoModel mapInfoModelPolygon = (MapInfoModel)((OkObjectResult)actionMapInfoModelPolygon.Result).Value;
 
-            var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Polygon);
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        tvItemModelNew.MapInfoModelList.Add(mapInfoModelPolygon);
 
-            MapInfoModel mapInfoModelPolygon = (MapInfoModel)((OkObjectResult)actionMapInfoModelPolygon.Result).Value;
-
-            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-            tvItemModelNew.MapInfoModelList.Add(mapInfoModelPolygon);
-
-            List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
             {
                 new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
                 new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
                 new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelNew.TVItem.TVItemID },
             };
 
-            foreach (ToRecreate toRecreate in ToRecreateList)
+        foreach (ToRecreate toRecreate in ToRecreateList)
+        {
+            var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(toRecreate.WebType, toRecreate.TVItemID);
+            if (400 == ((ObjectResult)actionRes.Result).StatusCode)
             {
-                var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(toRecreate.WebType, toRecreate.TVItemID);
-                if (400 == ((ObjectResult)actionRes.Result).StatusCode)
-                {
-                    ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
-                    CSSPLogService.ErrRes.ErrList.AddRange(errRes.ErrList);
-                }
-
-                if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+                CSSPLogService.ErrRes.ErrList.AddRange(errRes.ErrList);
             }
 
-            CSSPLogService.EndFunctionLog(FunctionName);
-
-            return await Task.FromResult(Ok(tvItemModelNew));
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
         }
+
+        CSSPLogService.EndFunctionLog(FunctionName);
+
+        return await Task.FromResult(Ok(tvItemModelNew));
     }
 }
