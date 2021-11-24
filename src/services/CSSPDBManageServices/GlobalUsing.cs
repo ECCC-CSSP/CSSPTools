@@ -1,0 +1,13 @@
+﻿global using CSSPCustomAttributes;
+global using System;
+global using System.ComponentModel.DataAnnotations;
+global using CSSPDBModels;
+global using Microsoft.EntityFrameworkCore;
+global using CSSPCultureServices.Resources;
+global using Microsoft.AspNetCore.Mvc;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using CSSPCultureServices.Services;
+global using CSSPHelperModels;
+global using Microsoft.Extensions.Configuration;
+global using System.Collections.Generic;

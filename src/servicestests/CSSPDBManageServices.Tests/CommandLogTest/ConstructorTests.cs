@@ -1,16 +1,13 @@
-using System.Threading.Tasks;
-using Xunit;
+namespace ManageServices.Tests;
 
-namespace ManageServices.Tests
+public partial class CommandLogServicesTests
 {
-    public partial class CommandLogServicesTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Constructor_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Constructor_Good_Test(string culture)
-        {
-            Assert.True(await CommandLogServiceSetup(culture));
-        }
+        Assert.True(await CommandLogServiceSetup(culture));
     }
 }
+

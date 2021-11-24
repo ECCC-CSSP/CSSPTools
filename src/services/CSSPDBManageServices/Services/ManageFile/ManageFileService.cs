@@ -1,55 +1,19 @@
-/*
- * Manually edited
- *
- */
+namespace ManageServices;
 
-using CSSPEnums;
-using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks; 
-using Microsoft.Extensions.Configuration;
-using CSSPHelperModels;
-
-namespace ManageServices
+public partial class ManageFileService : ControllerBase, IManageFileService
 {
-    public partial interface IManageFileService
+    private CSSPDBManageContext dbManage { get; set; }
+    private ErrRes errRes { get; set; } = new ErrRes();
+
+    public ManageFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
     {
-        Task<ActionResult<ManageFile>> AddAsync(ManageFile manageFile);
-        Task<ActionResult<ManageFile>> DeleteAsync(int ManageFileID);
-        Task<ActionResult<List<ManageFile>>> GetListAsync(int skip = 0, int take = 100);
-        Task<ActionResult<int>> GetNextIndexToUseAsync();
-        Task<ActionResult<ManageFile>> GetWithAzureStorageAndAzureFileNameAsync(string AzureStorage, string AzureFileName);
-        Task<ActionResult<ManageFile>> GetWithManageFileIDAsync(int ManageFileID);
-        Task<ActionResult<ManageFile>> ModifyAsync(ManageFile manageFile);
-    }
-    public partial class ManageFileService : ControllerBase, IManageFileService
-    {
-        #region Variables
-        #endregion Variables
+        if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+        if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService ") }");
+        if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
 
-        #region Properties
-        private CSSPDBManageContext dbManage { get; set; }
-        private ErrRes errRes { get; set; } = new ErrRes();
-        #endregion Properties
+        if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
 
-        #region Constructors
-        public ManageFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
-        {
-            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
-            if (CSSPCultureService == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPCultureService ") }");
-            if (dbManage == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbManage") }");
-
-            if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
-
-            this.dbManage = dbManage;
-        }
-        #endregion Constructors
+        this.dbManage = dbManage;
     }
 }
+
