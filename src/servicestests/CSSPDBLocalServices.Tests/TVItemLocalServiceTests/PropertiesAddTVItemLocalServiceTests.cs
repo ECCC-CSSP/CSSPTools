@@ -1,208 +1,187 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPDBLocalServices.Tests;
 
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPHelperModels;
-using CSSPReadGzFileServices;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using System.Text.Json;
-using ManageServices;
-
-namespace CSSPDBLocalServices.Tests
+public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
 {
-    public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_tvItemParent_null_Error_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_tvItemParent_null_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvItemParent = null;
+        tvItemParent = null;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent");
+        string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_tvItemParent_TVItemID_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_tvItemParent_TVItemID_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvItemParent.TVItemID = 0;
+        tvItemParent.TVItemID = 0;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_TVItemParent_TVLevel_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_TVItemParent_TVLevel_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvItemParent.TVLevel = -1;
+        tvItemParent.TVLevel = -1;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVLevel");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVLevel");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_TVItemParent_TVPath_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_TVItemParent_TVPath_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvItemParent.TVPath = "";
+        tvItemParent.TVPath = "";
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVPath");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVPath");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_TVType_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_TVType_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvType = (TVTypeEnum)10000;
+        tvType = (TVTypeEnum)10000;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvType");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvType");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_tvItemParent_TVType_Is_Truly_A_Parent_of_tvItemModel_TVItem_TVType_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_tvItemParent_TVType_Is_Truly_A_Parent_of_tvItemModel_TVItem_TVType_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvType = TVTypeEnum.MWQMSite;
+        tvType = TVTypeEnum.MWQMSite;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsNotAParentTypeOf_, tvItemParent.TVType.ToString(), tvType.ToString());
+        string errMessage = string.Format(CSSPCultureServicesRes._IsNotAParentTypeOf_, tvItemParent.TVType.ToString(), tvType.ToString());
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_tvItemParent_TVType_Is_not_implemented_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_tvItemParent_TVType_Is_not_implemented_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            tvItemParent.TVType = TVTypeEnum.BoxModel;
-            tvItemParent.TVLevel = 1;
+        tvItemParent.TVType = TVTypeEnum.BoxModel;
+        tvItemParent.TVLevel = 1;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._NotImplementedYet, tvItemParent.TVType.ToString()) + " --- HelperLocalService.CheckTVTypeParentAndTVType";
+        string errMessage = string.Format(CSSPCultureServicesRes._NotImplementedYet, tvItemParent.TVType.ToString()) + " --- HelperLocalService.CheckTVTypeParentAndTVType";
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_TVTextEN_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_TVTextEN_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            TVTextEN = "";
+        TVTextEN = "";
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_AddTVItemLocal_TVTextFR_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_AddTVItemLocal_TVTextFR_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            string TVTextEN = "New Country";
-            string TVTextFR = "Nouveau Pays";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        string TVTextEN = "New Country";
+        string TVTextFR = "Nouveau Pays";
 
-            TVTextFR = "";
+        TVTextFR = "";
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR");
 
-            await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
-        }
+        await CheckPropertyAddTVItemLocalError(tvItemParent, tvType, TVTextEN, TVTextFR, errMessage);
     }
 }
+

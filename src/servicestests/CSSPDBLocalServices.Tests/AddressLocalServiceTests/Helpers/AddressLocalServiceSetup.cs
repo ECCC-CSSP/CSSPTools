@@ -1,56 +1,21 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPDBLocalServices.Tests;
 
-using CSSPCreateGzFileServices;
-using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPFileServices;
-using CSSPLocalLoggedInServices;
-using ManageServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using CSSPReadGzFileServices;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
-using CSSPLogServices;
-using System.Linq;
-using CSSPScrambleServices;
-using CSSPWebModels;
-
-namespace CSSPDBLocalServices.Tests
+[Collection("Sequential")]
+public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
 {
-    [Collection("Sequential")]
-    public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
+    public AddressLocalServiceTest() : base()
     {
-        #region Properties
 
-        #endregion Properties
+    }
 
-        #region Constructors
-        public AddressLocalServiceTest() : base()
-        {
+    private async Task<bool> AddressLocalServiceSetup(string culture)
+    {
+        List<string> TableList = new List<string>() { "Addresses", "TVItems", "TVItemLanguages" };
 
+        Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
+        Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
-        }
-        #endregion Constructors
-
-        #region Functions private
-        private async Task<bool> AddressLocalServiceSetup(string culture)
-        {
-            List<string> TableList = new List<string>() { "Addresses", "TVItems", "TVItemLanguages" };
-
-            Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-            Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
-
-            return await Task.FromResult(true);
-        }
-        #endregion Functions private
+        return await Task.FromResult(true);
     }
 }
+

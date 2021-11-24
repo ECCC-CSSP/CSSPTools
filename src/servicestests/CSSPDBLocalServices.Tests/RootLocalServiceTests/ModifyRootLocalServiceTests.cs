@@ -1,123 +1,101 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPDBLocalServices.Tests;
 
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPHelperModels;
-using CSSPReadGzFileServices;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using System.Text.Json;
-using ManageServices;
-using System.IO;
-
-namespace CSSPDBLocalServices.Tests
+public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
 {
-    public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyRootLocal_Existing_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyRootLocal_Existing_Good_Test(string culture)
-        {
-            Assert.True(await RootLocalServiceSetup(culture));
+        Assert.True(await RootLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            Assert.NotNull(webRoot);
+        Assert.NotNull(webRoot);
 
-            TVItemModel tvItemModelRootToModify = webRoot.TVItemModel;
+        TVItemModel tvItemModelRootToModify = webRoot.TVItemModel;
 
-            string TVTextEN = "Changed Root";
-            string TVTextFR = "Base changé";
+        string TVTextEN = "Changed Root";
+        string TVTextFR = "Base changé";
 
-            var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
-            Assert.Equal(200, ((ObjectResult)actionRootRes.Result).StatusCode);
-            Assert.NotNull(((OkObjectResult)actionRootRes.Result).Value);
-            TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionRootRes.Result).Value;
-            Assert.NotNull(tvItemModelChangedRet);
+        var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
+        Assert.Equal(200, ((ObjectResult)actionRootRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRootRes.Result).Value);
+        TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionRootRes.Result).Value;
+        Assert.NotNull(tvItemModelChangedRet);
 
-            webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItemModel tvItemModelRet = webRoot.TVItemModel;
+        TVItemModel tvItemModelRet = webRoot.TVItemModel;
 
-            Assert.NotNull(tvItemModelRet);
+        Assert.NotNull(tvItemModelRet);
 
-            CheckTVItem(tvItemModelRet, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        CheckTVItem(tvItemModelRet, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            List<TVItemModel> tvItemModelList = new List<TVItemModel>()
+        List<TVItemModel> tvItemModelList = new List<TVItemModel>()
             {
                 tvItemModelChangedRet
             };
 
-            CheckDBLocal(tvItemModelList);
+        CheckDBLocal(tvItemModelList);
 
-            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
+        DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
 
-            Assert.True(di.Exists);
+        Assert.True(di.Exists);
 
-            List<FileInfo> fiList = di.GetFiles().ToList();
+        List<FileInfo> fiList = di.GetFiles().ToList();
 
-            Assert.Single(fiList);
+        Assert.Single(fiList);
 
-            Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyRootLocal_TVTextEN_Error_Test(string culture)
-        {
-            Assert.True(await RootLocalServiceSetup(culture));
+        Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyRootLocal_TVTextEN_Error_Test(string culture)
+    {
+        Assert.True(await RootLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            Assert.NotNull(webRoot.TVItemModel);
+        Assert.NotNull(webRoot.TVItemModel);
 
-            TVItemModel tvItemModelRootToModify = webRoot.TVItemModel;
+        TVItemModel tvItemModelRootToModify = webRoot.TVItemModel;
 
-            string TVTextEN = "";
-            string TVTextFR = "Base modifié";
+        string TVTextEN = "";
+        string TVTextFR = "Base modifié";
 
-            var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionRootRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRootRes.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"), errRes.ErrList[0]);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyRootLocal_TVTextFR_Error_Test(string culture)
-        {
-            Assert.True(await RootLocalServiceSetup(culture));
+        var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRootRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRootRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"), errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyRootLocal_TVTextFR_Error_Test(string culture)
+    {
+        Assert.True(await RootLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            Assert.NotNull(webRoot.TVItemModel);
+        Assert.NotNull(webRoot.TVItemModel);
 
-            TVItemModel tvItemModelRootToModify = webRoot.TVItemModel;
+        TVItemModel tvItemModelRootToModify = webRoot.TVItemModel;
 
-            string TVTextEN = "Modified Root";
-            string TVTextFR = "";
+        string TVTextEN = "Modified Root";
+        string TVTextFR = "";
 
-            var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
-            Assert.Equal(400, ((ObjectResult)actionRootRes.Result).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRootRes.Result).Value;
-            Assert.NotNull(errRes);
-            Assert.NotEmpty(errRes.ErrList);
-            Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"), errRes.ErrList[0]);
-        }
+        var actionRootRes = await RootLocalService.ModifyTVTextRootLocalAsync(TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRootRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRootRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"), errRes.ErrList[0]);
     }
 }
+

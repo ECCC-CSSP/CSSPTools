@@ -1,175 +1,154 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPDBLocalServices.Tests;
 
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPHelperModels;
-using CSSPReadGzFileServices;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using System.Text.Json;
-using ManageServices;
-
-namespace CSSPDBLocalServices.Tests
+public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
 {
-    public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemParent_null_Error_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemParent_null_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemParent = null;
+        tvItemParent = null;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent");
+        string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemParent");
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemModel_null_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemModel_null_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemModel = null;
+        tvItemModel = null;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemModel");
+        string errMessage = string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tvItemModel");
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemParent_TVItemID_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemParent_TVItemID_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemParent.TVItemID = 0;
+        tvItemParent.TVItemID = 0;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID");
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemParent_TVType_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemParent_TVType_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemParent.TVType = (TVTypeEnum)100000;
+        tvItemParent.TVType = (TVTypeEnum)100000;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVType");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVType");
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemModel_TVItem_TVType_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemModel_TVItem_TVType_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemModel.TVItem.TVType = (TVTypeEnum)100000;
+        tvItemModel.TVItem.TVType = (TVTypeEnum)100000;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemModel.TVItem.TVType");
+        string errMessage = string.Format(CSSPCultureServicesRes._IsRequired, "tvItemModel.TVItem.TVType");
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemParent_TVType_Is_Truly_A_Parent_of_tvItemModel_TVItem_TVType_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemParent_TVType_Is_Truly_A_Parent_of_tvItemModel_TVItem_TVType_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemModel.TVItem.TVType = TVTypeEnum.MWQMSite;
+        tvItemModel.TVItem.TVType = TVTypeEnum.MWQMSite;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._IsNotAParentTypeOf_, tvItemParent.TVType.ToString(), tvItemModel.TVItem.TVType.ToString());
+        string errMessage = string.Format(CSSPCultureServicesRes._IsNotAParentTypeOf_, tvItemParent.TVType.ToString(), tvItemModel.TVItem.TVType.ToString());
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Properties_DeleteTVItemLocal_tvItemParent_TVType_Is_not_implemented_Error_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Properties_DeleteTVItemLocal_tvItemParent_TVType_Is_not_implemented_Error_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
+        TVItemModel tvItemModel = webRoot.TVItemModelCountryList[0];
 
-            tvItemParent.TVType = TVTypeEnum.BoxModel;
-            tvItemParent.TVLevel = 1;
+        tvItemParent.TVType = TVTypeEnum.BoxModel;
+        tvItemParent.TVLevel = 1;
 
-            string errMessage = string.Format(CSSPCultureServicesRes._NotImplementedYet, tvItemParent.TVType.ToString()) + " --- HelperLocalService.CheckTVTypeParentAndTVType";
+        string errMessage = string.Format(CSSPCultureServicesRes._NotImplementedYet, tvItemParent.TVType.ToString()) + " --- HelperLocalService.CheckTVTypeParentAndTVType";
 
-            await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
-        }
+        await CheckPropertyDeleteTVItemLocalError(tvItemParent, tvItemModel, errMessage);
     }
 }
+

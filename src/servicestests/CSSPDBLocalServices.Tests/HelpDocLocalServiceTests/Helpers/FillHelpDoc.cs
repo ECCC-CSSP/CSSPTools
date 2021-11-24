@@ -1,30 +1,19 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPDBLocalServices.Tests;
 
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using System;
-using System.Collections.Generic;
-
-namespace CSSPDBLocalServices.Tests
+public partial class HelpDocLocalServiceTest
 {
-    public partial class HelpDocLocalServiceTest
+    private HelpDoc FillHelpDoc()
     {
-        private HelpDoc FillHelpDoc()
+        return new HelpDoc()
         {
-            return new HelpDoc()
-            {
-                HelpDocID = 0,
-                DBCommand = DBCommandEnum.Created,
-                DocKey = "ThisIsDocKey",
-                Language = LanguageEnum.en,
-                DocHTMLText = "<html><head><title>The Title</title></head><body><p>Bonjour</p></body></html>",
-                LastUpdateDate_UTC = DateTime.UtcNow,
-                LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
-            };
-        }
+            HelpDocID = 0,
+            DBCommand = DBCommandEnum.Created,
+            DocKey = "ThisIsDocKey",
+            Language = LanguageEnum.en,
+            DocHTMLText = "<html><head><title>The Title</title></head><body><p>Bonjour</p></body></html>",
+            LastUpdateDate_UTC = DateTime.UtcNow,
+            LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+        };
     }
 }
+

@@ -1,1426 +1,1405 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPDBLocalServices.Tests;
 
-using CSSPCultureServices.Resources;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPHelperModels;
-using CSSPReadGzFileServices;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using System.Text.Json;
-using ManageServices;
-
-namespace CSSPDBLocalServices.Tests
+public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
 {
-    public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Root_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Root_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            webRoot.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
-            webRoot.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
+        webRoot.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
+        webRoot.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
 
-            TVItemModel tvItemModelModify = webRoot.TVItemModel;
+        TVItemModel tvItemModelModify = webRoot.TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelModify);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelModify);
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            List<TVItemModel> tvItemModelParentList = new List<TVItemModel>();
-            
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = new List<TVItemModel>();
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Country_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModel);
 
-            int TVItemID = 0;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Country_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, TVItemID);
+        int TVItemID = 0;
 
-            TVItem tvItemParent = webRoot.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, TVItemID);
 
-            Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        TVItem tvItemParent = webRoot.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webRoot.TVItemModelCountryList[0];
+        Assert.NotEmpty(webRoot.TVItemModelCountryList);
 
-            tvItemModelToModify .TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webRoot.TVItemModelCountryList[0];
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webRoot.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Country;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webRoot.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Country;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webRoot.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webRoot.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Address_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            // not allowed to modify an Address type
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Email_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Address_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            // not allowed to modify an Email type
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Tel_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        // not allowed to modify an Address type
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Email_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            // not allowed to modify an Tel type
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Province_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        // not allowed to modify an Email type
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Tel_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            int TVItemID = 5;
+        // not allowed to modify an Tel type
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Province_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
+        int TVItemID = 5;
 
-            TVItem tvItemParent = webCountry.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
-            Assert.NotEmpty(webCountry.TVItemModelProvinceList);
+        TVItem tvItemParent = webCountry.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webCountry.TVItemModelProvinceList[0];
+        Assert.NotEmpty(webCountry.TVItemModelProvinceList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webCountry.TVItemModelProvinceList[0];
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webCountry.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webCountry.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Province;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webCountry.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Province;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            Assert.NotNull(tvItemModelAdded);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        Assert.NotNull(tvItemModelAdded);
 
-            webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webCountry.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webCountry.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_RainExceedance_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            // no testing required
-            // RainExceedance does not have TVItems and TVItemLanguages
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_EmailDistributionList_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_RainExceedance_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            // no testing required
-            // EmailDistributionList does not have TVItems and TVItemLanguages
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Area_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        // no testing required
+        // RainExceedance does not have TVItems and TVItemLanguages
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_EmailDistributionList_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            int TVItemID = 7;
+        // no testing required
+        // EmailDistributionList does not have TVItems and TVItemLanguages
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Area_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        int TVItemID = 7;
 
-            TVItem tvItemParent = webProvince.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
-            Assert.NotEmpty(webProvince.TVItemModelAreaList);
+        TVItem tvItemParent = webProvince.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webProvince.TVItemModelAreaList[0];
+        Assert.NotEmpty(webProvince.TVItemModelAreaList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webProvince.TVItemModelAreaList[0];
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webProvince.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Area;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webProvince.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Area;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webProvince.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webProvince.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_SamplingPlan_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 7;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_SamplingPlan_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        int TVItemID = 7;
 
-            TVItem tvItemParent = webProvince.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.SamplingPlan;
-            string TVTextEN = "New Item";
-            string TVTextFR = "Nouveau Item";
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        TVItem tvItemParent = webProvince.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.SamplingPlan;
+        string TVTextEN = "New Item";
+        string TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList = webProvince.TVItemModelParentList;
+        List<TVItemModel> tvItemModelParentList = webProvince.TVItemModelParentList;
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webProvince.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_ClimateSite_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 7;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_ClimateSite_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
+        int TVItemID = 7;
 
-            TVItem tvItemParent = webClimateSites.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
 
-            Assert.NotEmpty(webClimateSites.ClimateSiteModelList);
+        TVItem tvItemParent = webClimateSites.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webClimateSites.ClimateSiteModelList[0].TVItemModel;
+        Assert.NotEmpty(webClimateSites.ClimateSiteModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webClimateSites.ClimateSiteModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webClimateSites.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webClimateSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webClimateSites.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.ClimateSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webClimateSites.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.ClimateSite;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webClimateSites.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webClimateSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_HydrometricSite_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 7;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_HydrometricSite_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
+        int TVItemID = 7;
 
-            TVItem tvItemParent = webHydrometricSites.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
 
-            Assert.NotEmpty(webHydrometricSites.HydrometricSiteModelList);
+        TVItem tvItemParent = webHydrometricSites.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webHydrometricSites.HydrometricSiteModelList[0].TVItemModel;
+        Assert.NotEmpty(webHydrometricSites.HydrometricSiteModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webHydrometricSites.HydrometricSiteModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webHydrometricSites.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webHydrometricSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webHydrometricSites.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.HydrometricSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webHydrometricSites.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.HydrometricSite;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webHydrometricSites.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webHydrometricSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_TideSite_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 7;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_TideSite_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
+        int TVItemID = 7;
 
-            TVItem tvItemParent = webTideSites.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
 
-            Assert.NotEmpty(webTideSites.TideSiteModelList);
+        TVItem tvItemParent = webTideSites.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webTideSites.TideSiteModelList[0].TVItemModel;
+        Assert.NotEmpty(webTideSites.TideSiteModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webTideSites.TideSiteModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webTideSites.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webTideSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webTideSites.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.TideSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webTideSites.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.TideSite;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webTideSites.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webTideSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Infrastructure_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 27764;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Infrastructure_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
+        int TVItemID = 27764;
 
-            TVItem tvItemParent = webMunicipality.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
-            Assert.NotEmpty(webMunicipality.InfrastructureModelList);
+        TVItem tvItemParent = webMunicipality.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webMunicipality.InfrastructureModelList[0].TVItemModel;
+        Assert.NotEmpty(webMunicipality.InfrastructureModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webMunicipality.InfrastructureModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMunicipality.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Infrastructure;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webMunicipality.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Infrastructure;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMunicipality.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMunicipality.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_MikeScenario_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 27764;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_MikeScenario_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        int TVItemID = 27764;
 
-            TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
+        TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webMikeScenarios.MikeScenarioModelList[0].TVItemModel;
+        Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webMikeScenarios.MikeScenarioModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.MikeScenario;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.MikeScenario;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_MikeSource_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 27764;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_MikeSource_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        int TVItemID = 27764;
 
-            TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
+        TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            MikeScenarioModel mikeScenarioModel = webMikeScenarios.MikeScenarioModelList[0];
+        Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
 
-            Assert.NotEmpty(mikeScenarioModel.MikeSourceModelList);
+        MikeScenarioModel mikeScenarioModel = webMikeScenarios.MikeScenarioModelList[0];
 
-            tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
-            TVItemModel tvItemModelToModify = mikeScenarioModel.MikeSourceModelList[0].TVItemModel;
+        Assert.NotEmpty(mikeScenarioModel.MikeSourceModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
+        TVItemModel tvItemModelToModify = mikeScenarioModel.MikeSourceModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.MikeSource;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
+        tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.MikeSource;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_MikeBoundaryConditionMesh_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 27764;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_MikeBoundaryConditionMesh_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        int TVItemID = 27764;
 
-            TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
+        TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            MikeScenarioModel mikeScenarioModel = webMikeScenarios.MikeScenarioModelList[0];
+        Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
 
-            Assert.NotEmpty(mikeScenarioModel.MikeBoundaryConditionModelList);
+        MikeScenarioModel mikeScenarioModel = webMikeScenarios.MikeScenarioModelList[0];
 
-            tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
-            TVItemModel tvItemModelToModify = mikeScenarioModel.MikeBoundaryConditionModelList[0].TVItemModel;
+        Assert.NotEmpty(mikeScenarioModel.MikeBoundaryConditionModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
+        TVItemModel tvItemModelToModify = mikeScenarioModel.MikeBoundaryConditionModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionMesh;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
+        tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionMesh;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_MikeBoundaryConditionWebTide_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 27764;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_MikeBoundaryConditionWebTide_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        int TVItemID = 27764;
 
-            TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
+        TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            MikeScenarioModel mikeScenarioModel = webMikeScenarios.MikeScenarioModelList[0];
+        Assert.NotEmpty(webMikeScenarios.MikeScenarioModelList);
 
-            Assert.NotEmpty(mikeScenarioModel.MikeBoundaryConditionModelList);
+        MikeScenarioModel mikeScenarioModel = webMikeScenarios.MikeScenarioModelList[0];
 
-            tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
-            TVItemModel tvItemModelToModify = mikeScenarioModel.MikeBoundaryConditionModelList[0].TVItemModel;
+        Assert.NotEmpty(mikeScenarioModel.MikeBoundaryConditionModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
+        TVItemModel tvItemModelToModify = mikeScenarioModel.MikeBoundaryConditionModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMikeScenarios.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionWebTide;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
+        tvItemParent = webMikeScenarios.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionWebTide;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = mikeScenarioModel.TVItemModel.TVItem;
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMikeScenarios.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Sector_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(mikeScenarioModel.TVItemModel);
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 629;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Sector_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
+        int TVItemID = 629;
 
-            TVItem tvItemParent = webArea.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
 
-            Assert.NotEmpty(webArea.TVItemModelSectorList);
+        TVItem tvItemParent = webArea.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webArea.TVItemModelSectorList[0];
+        Assert.NotEmpty(webArea.TVItemModelSectorList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webArea.TVItemModelSectorList[0];
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webArea.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webArea.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webArea.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Sector;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webArea.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Sector;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webArea.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webArea.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Subsector_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 633;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Subsector_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
+        int TVItemID = 633;
 
-            TVItem tvItemParent = webSector.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
 
-            Assert.NotEmpty(webSector.TVItemModelSubsectorList);
+        TVItem tvItemParent = webSector.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webSector.TVItemModelSubsectorList[0];
+        Assert.NotEmpty(webSector.TVItemModelSubsectorList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webSector.TVItemModelSubsectorList[0];
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webSector.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webSector.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webSector.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Subsector;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webSector.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Subsector;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webSector.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webSector.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_MWQMRuns_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 635;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_MWQMRuns_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMWQMRuns webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
+        int TVItemID = 635;
 
-            TVItem tvItemParent = webMWQMRuns.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMWQMRuns webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
 
-            Assert.NotEmpty(webMWQMRuns.MWQMRunModelList);
+        TVItem tvItemParent = webMWQMRuns.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            MWQMRunModel mwqmRunModel = webMWQMRuns.MWQMRunModelList[0];
+        Assert.NotEmpty(webMWQMRuns.MWQMRunModelList);
 
-            mwqmRunModel.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
-            mwqmRunModel.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
+        MWQMRunModel mwqmRunModel = webMWQMRuns.MWQMRunModelList[0];
 
-            TVItemModel tvItemModelToModify = mwqmRunModel.TVItemModel;
+        mwqmRunModel.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
+        mwqmRunModel.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        TVItemModel tvItemModelToModify = mwqmRunModel.TVItemModel;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMWQMRuns.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMWQMRuns.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMWQMRuns.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.MWQMRun;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webMWQMRuns.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.MWQMRun;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMWQMRuns = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMRuns>(WebTypeEnum.WebMWQMRuns, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMWQMRuns.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMWQMRuns.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_MWQMSites_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 635;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_MWQMSites_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
+        int TVItemID = 635;
 
-            TVItem tvItemParent = webMWQMSites.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
 
-            Assert.NotEmpty(webMWQMSites.MWQMSiteModelList);
+        TVItem tvItemParent = webMWQMSites.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            MWQMSiteModel mwqmRunModel = webMWQMSites.MWQMSiteModelList[0];
+        Assert.NotEmpty(webMWQMSites.MWQMSiteModelList);
 
-            mwqmRunModel.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
-            mwqmRunModel.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
+        MWQMSiteModel mwqmRunModel = webMWQMSites.MWQMSiteModelList[0];
 
-            TVItemModel tvItemModelToModify = mwqmRunModel.TVItemModel;
+        mwqmRunModel.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
+        mwqmRunModel.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        TVItemModel tvItemModelToModify = mwqmRunModel.TVItemModel;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webMWQMSites.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webMWQMSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webMWQMSites.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.MWQMSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webMWQMSites.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.MWQMSite;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webMWQMSites.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webMWQMSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_PolSourceSites_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 635;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_PolSourceSites_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
+        int TVItemID = 635;
 
-            TVItem tvItemParent = webPolSourceSites.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
 
-            Assert.NotEmpty(webPolSourceSites.PolSourceSiteModelList);
+        TVItem tvItemParent = webPolSourceSites.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            PolSourceSiteModel mwqmRunModel = webPolSourceSites.PolSourceSiteModelList[0];
+        Assert.NotEmpty(webPolSourceSites.PolSourceSiteModelList);
 
-            mwqmRunModel.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
-            mwqmRunModel.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
+        PolSourceSiteModel mwqmRunModel = webPolSourceSites.PolSourceSiteModelList[0];
 
-            TVItemModel tvItemModelToModify = mwqmRunModel.TVItemModel;
+        mwqmRunModel.TVItemModel.TVItemLanguageList[0].TVText = TVTextEN;
+        mwqmRunModel.TVItemModel.TVItemLanguageList[1].TVText = TVTextFR;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        TVItemModel tvItemModelToModify = mwqmRunModel.TVItemModel;
 
-            CheckTVItem(tvItemModel, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
+        CheckTVItem(tvItemModel, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModel, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModel);
+        List<TVItemModel> tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModel);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webPolSourceSites.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.PolSourceSite;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webPolSourceSites.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.PolSourceSite;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webPolSourceSites.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ModifyTVItemLocal_Classifications_Good_Test(string culture)
-        {
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        tvItemModelParentList.Add(tvItemModelModify);
 
-            int TVItemID = 635;
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyTVItemLocal_Classifications_Good_Test(string culture)
+    {
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        int TVItemID = 635;
 
-            TVItem tvItemParent = webSubsector.TVItemModel.TVItem;
-            string TVTextEN = "Modify Item";
-            string TVTextFR = "Item modifié";
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
-            Assert.NotEmpty(webSubsector.ClassificationModelList);
+        TVItem tvItemParent = webSubsector.TVItemModel.TVItem;
+        string TVTextEN = "Modify Item";
+        string TVTextFR = "Item modifié";
 
-            TVItemModel tvItemModelToModify = webSubsector.ClassificationModelList[0].TVItemModel;
+        Assert.NotEmpty(webSubsector.ClassificationModelList);
 
-            tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
+        TVItemModel tvItemModelToModify = webSubsector.ClassificationModelList[0].TVItemModel;
 
-            TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
+        tvItemModelToModify.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelToModify.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelToModify, DBCommandEnum.Original);
-            CheckTVItemLanguage(tvItemModelToModify, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelToModify, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModel = await CheckModifyTVItemLocal(tvItemParent, tvItemModelToModify);
 
-            List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
+        CheckTVItem(tvItemModelToModify, DBCommandEnum.Original);
+        CheckTVItemLanguage(tvItemModelToModify, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelToModify, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelToModify);
+        List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
+        tvItemModelParentList.Add(tvItemModelToModify);
 
-            //-----------------------------------------------------------------------------------------
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
 
-            Assert.True(await TVItemLocalServiceSetup(culture));
+        //-----------------------------------------------------------------------------------------
 
-            webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        Assert.True(await TVItemLocalServiceSetup(culture));
 
-            tvItemParent = webSubsector.TVItemModel.TVItem;
-            TVTypeEnum tvType = TVTypeEnum.Classification;
-            TVTextEN = "New Item";
-            TVTextFR = "Nouveau Item";
+        webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
-            TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
+        tvItemParent = webSubsector.TVItemModel.TVItem;
+        TVTypeEnum tvType = TVTypeEnum.Classification;
+        TVTextEN = "New Item";
+        TVTextFR = "Nouveau Item";
 
-            CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelAdded = await CheckAddTVItemLocal(tvItemParent, tvType, TVTextEN, TVTextFR);
 
-            webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        CheckTVItem(tvItemModelAdded, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelAdded, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            TVTextEN = "Modified New Item";
-            TVTextFR = "Nouveau Item modifié";
+        webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
-            tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
-            tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
+        TVTextEN = "Modified New Item";
+        TVTextFR = "Nouveau Item modifié";
 
-            TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
+        tvItemModelAdded.TVItemLanguageList[0].TVText = TVTextEN;
+        tvItemModelAdded.TVItemLanguageList[1].TVText = TVTextFR;
 
-            CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
-            CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
+        TVItemModel tvItemModelModify = await CheckModifyTVItemLocal(tvItemParent, tvItemModelAdded);
 
-            tvItemModelParentList = webSubsector.TVItemModelParentList;
+        CheckTVItem(tvItemModelModify, DBCommandEnum.Created);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextEN, LanguageEnum.en);
+        CheckTVItemLanguage(tvItemModelModify, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr);
 
-            tvItemModelParentList.Add(tvItemModelModify);
+        tvItemModelParentList = webSubsector.TVItemModelParentList;
 
-            CheckDBLocal(tvItemModelParentList);
-            //CheckLocalJsonFileCreated(tvItemModelParentList);
-        }
+        tvItemModelParentList.Add(tvItemModelModify);
+
+        CheckDBLocal(tvItemModelParentList);
+        //CheckLocalJsonFileCreated(tvItemModelParentList);
     }
 }
+
