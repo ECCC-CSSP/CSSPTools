@@ -20,7 +20,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -36,7 +36,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 635;
 
-        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
         TVItem tvItemParent = webSubsector.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Classification;
@@ -52,7 +52,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.ClimateSite;
@@ -66,7 +66,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MapInfoLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Country;
@@ -100,7 +100,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 629;
 
-        WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
+        WebArea webArea = await CSSPReadGzFileService.GetUncompressJSONAsync<WebArea>(WebTypeEnum.WebArea, TVItemID);
 
         TVItem tvItemParent = webArea.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -116,7 +116,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 5;
 
-        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
         TVItem tvItemParent = webCountry.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -132,7 +132,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
+        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
         TVItem tvItemParent = webMunicipality.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -148,7 +148,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -164,7 +164,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
         TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -186,7 +186,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
+        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
         TVItem tvItemParent = webMunicipality.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -202,7 +202,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 635;
 
-        WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
+        WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSites>(WebTypeEnum.WebMWQMSites, TVItemID);
 
         TVItem tvItemParent = webMWQMSites.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -224,7 +224,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 635;
 
-        WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
+        WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, TVItemID);
 
         TVItem tvItemParent = webPolSourceSites.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -246,7 +246,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 0;
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, TVItemID);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, TVItemID);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -262,7 +262,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 633;
 
-        WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
+        WebSector webSector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSector>(WebTypeEnum.WebSector, TVItemID);
 
         TVItem tvItemParent = webSector.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -278,7 +278,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 635;
 
-        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
         TVItem tvItemParent = webSubsector.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.File;
@@ -294,7 +294,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.HydrometricSite;
@@ -310,7 +310,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
+        WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMunicipality>(WebTypeEnum.WebMunicipality, TVItemID);
 
         TVItem tvItemParent = webMunicipality.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Infrastructure;
@@ -326,7 +326,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
         TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionMesh;
@@ -348,7 +348,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
         TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.MikeBoundaryConditionWebTide;
@@ -379,7 +379,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 27764;
 
-        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
+        WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, TVItemID);
 
         TVItem tvItemParent = webMikeScenarios.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.MikeSource;
@@ -401,7 +401,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Municipality;
@@ -426,7 +426,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 635;
 
-        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
         TVItem tvItemParent = webSubsector.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.MWQMSite;
@@ -442,7 +442,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 635;
 
-        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, TVItemID);
 
         TVItem tvItemParent = webSubsector.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.PolSourceSite;
@@ -458,7 +458,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 5;
 
-        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, TVItemID);
 
         TVItem tvItemParent = webCountry.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Province;
@@ -492,7 +492,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 629;
 
-        WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, TVItemID);
+        WebArea webArea = await CSSPReadGzFileService.GetUncompressJSONAsync<WebArea>(WebTypeEnum.WebArea, TVItemID);
 
         TVItem tvItemParent = webArea.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Sector;
@@ -508,7 +508,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 633;
 
-        WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, TVItemID);
+        WebSector webSector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSector>(WebTypeEnum.WebSector, TVItemID);
 
         TVItem tvItemParent = webSector.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Subsector;
@@ -533,7 +533,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.TideSite;

@@ -1,18 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+﻿namespace CSSPSQLiteServices.Tests;
 
-namespace CSSPSQLiteServices.Tests
+public partial class CSSPSQLiteServiceTests
 {
-    public partial class CSSPSQLiteServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task Constructor_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Constructor_Good_Test(string culture)
-        {
-            Assert.True(await CSSPSQLiteServiceSetup(culture));
-        }
+        Assert.True(await CSSPSQLiteServiceSetup(culture));
     }
 }
+

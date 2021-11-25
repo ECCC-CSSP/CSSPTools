@@ -1,25 +1,17 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCultureServices.Resources;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿namespace CSSPLogServices;
 
-namespace CSSPLogServices
+public partial class CSSPLogService : ControllerBase, ICSSPLogService
 {
-    public partial class CSSPLogService : ControllerBase, ICSSPLogService
+    public void AppendError(string Err)
     {
-        public void AppendError(string Err)
-        {
-            ErrRes.ErrList.Add(Err);
+        ErrRes.ErrList.Add(Err);
 
-            string errorText = $"{CSSPCultureServicesRes.ERRORCap}: { Err }";
+        string errorText = $"{CSSPCultureServicesRes.ERRORCap}: { Err }";
 
-            Console.WriteLine($"\r{errorText}");
+        Console.WriteLine($"\r{errorText}");
 
-            sbLog.AppendLine($"    {errorText}");
-            sbError.AppendLine(errorText);
-        }
+        sbLog.AppendLine($"    {errorText}");
+        sbError.AppendLine(errorText);
     }
 }
+

@@ -1,43 +1,25 @@
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-using System.Diagnostics;
-using System.Collections.Generic;
-using ManageServices;
-using System.Linq;
-using Azure.Storage.Files.Shares;
-using Azure;
-using Azure.Storage.Files.Shares.Models;
-using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
+namespace CSSPReadGzFileServices.Tests;
 
-namespace CSSPReadGzFileServices.Tests
+public partial class CSSPReadGzFileServiceTests
 {
-    public partial class CSSPReadGzFileServiceTests
+    private void DeleteAllJsonFilesLocal()
     {
-        private void DeleteAllJsonFilesLocal()
+        DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPath"]);
+        Assert.True(di.Exists);
+
+        foreach (FileInfo fi in di.GetFiles())
         {
-            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPath"]);
-            Assert.True(di.Exists);
-
-            foreach(FileInfo fi in di.GetFiles())
+            try
             {
-                try
-                {
-                    fi.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
+                fi.Delete();
             }
-
-            Assert.Empty(di.GetFiles());
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
         }
+
+        Assert.Empty(di.GetFiles());
     }
 }
+

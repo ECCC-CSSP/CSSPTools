@@ -17,12 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +31,48 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\services\CSSPDesktopServices\CSSPDesktopServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="SettingUpAllTextForLanguage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ShowPanelEnum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Stop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Start.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ShowPanels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SetupAsync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="StartTheAppWithLanguageAsync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="RecenterPanels.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Logoff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="RegisterAsync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LoginAsync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EnabledOrDisableRegisterButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="EnabledOrDisableLoginButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

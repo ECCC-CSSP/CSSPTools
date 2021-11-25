@@ -93,7 +93,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotEmpty(tvItemLanguageListDB2);
         Assert.Equal(2, tvItemLanguageListDB2.Count);
 
-        WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, 0);
+        WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllTels>(WebTypeEnum.WebAllTels, 0);
 
         Tel telWeb = (from c in webAllTels.TelList
                       where c.TelID == -1
@@ -107,7 +107,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotNull(telWeb2);
         Assert.Equal(-2, telWeb2.TelTVItemID);
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -219,7 +219,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TelLocalServiceSetup(culture));
 
-        WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSON<WebAllTels>(WebTypeEnum.WebAllTels, 0);
+        WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllTels>(WebTypeEnum.WebAllTels, 0);
 
         Assert.True(webAllTels.TelList.Count > 10);
 

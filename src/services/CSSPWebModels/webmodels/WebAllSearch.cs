@@ -1,24 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllSearch
 {
-    [NotMapped]
-    public partial class WebAllSearch
-    {
-        #region Properties
-        public List<TVItemModel> TVItemModelList { get; set; }
-        #endregion Properties
+    public List<TVItemModel> TVItemModelList { get; set; }
 
-        #region Constructors
-        public WebAllSearch()
-        {
-            TVItemModelList = new List<TVItemModel>();
-        }
-        #endregion Constructors
+    public WebAllSearch()
+    {
+        TVItemModelList = new List<TVItemModel>();
     }
 }
+

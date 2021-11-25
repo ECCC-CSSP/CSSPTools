@@ -1,58 +1,44 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPReadGzFileServices;
 
-namespace CSSPReadGzFileServices
+public partial class CSSPReadGzFileService : ICSSPReadGzFileService
 {
-    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
+    private void SyncHydrometricSiteModel(HydrometricSiteModel hydrometricSiteModelOriginal, HydrometricSiteModel hydrometricSiteModelLocal)
     {
-        private void SyncHydrometricSiteModel(HydrometricSiteModel hydrometricSiteModelOriginal, HydrometricSiteModel hydrometricSiteModelLocal)
+        if (hydrometricSiteModelLocal != null)
         {
-            if (hydrometricSiteModelLocal != null)
+            if (hydrometricSiteModelLocal.TVItemModel != null)
             {
-                if (hydrometricSiteModelLocal.TVItemModel != null)
+                SyncTVItemModel(hydrometricSiteModelOriginal.TVItemModel, hydrometricSiteModelLocal.TVItemModel);
+            }
+            if (hydrometricSiteModelLocal.HydrometricSite != null)
+            {
+                hydrometricSiteModelOriginal.HydrometricSite = hydrometricSiteModelLocal.HydrometricSite;
+            }
+            foreach (HydrometricDataValue hydrometricDataValueLocal in hydrometricSiteModelLocal.HydrometricDataValueList)
+            {
+                HydrometricDataValue hydrometricDataValueOriginal = hydrometricSiteModelOriginal.HydrometricDataValueList.Where(c => c.HydrometricDataValueID == hydrometricDataValueLocal.HydrometricDataValueID).FirstOrDefault();
+                if (hydrometricDataValueOriginal == null)
                 {
-                    SyncTVItemModel(hydrometricSiteModelOriginal.TVItemModel, hydrometricSiteModelLocal.TVItemModel);
+                    hydrometricSiteModelOriginal.HydrometricDataValueList.Add(hydrometricDataValueLocal);
                 }
-                if (hydrometricSiteModelLocal.HydrometricSite != null)
+                else
                 {
-                    hydrometricSiteModelOriginal.HydrometricSite = hydrometricSiteModelLocal.HydrometricSite;
+                    hydrometricDataValueOriginal = hydrometricDataValueLocal;
                 }
-                foreach (HydrometricDataValue hydrometricDataValueLocal in hydrometricSiteModelLocal.HydrometricDataValueList)
+            }
+            foreach (RatingCurveModel ratingCurveModelLocal in hydrometricSiteModelLocal.RatingCurveModelList)
+            {
+                RatingCurveModel ratingCurveModelOriginal = hydrometricSiteModelOriginal.RatingCurveModelList.Where(c => c.RatingCurve.RatingCurveID == ratingCurveModelLocal.RatingCurve.RatingCurveID).FirstOrDefault();
+                if (ratingCurveModelOriginal == null)
                 {
-                    HydrometricDataValue hydrometricDataValueOriginal = hydrometricSiteModelOriginal.HydrometricDataValueList.Where(c => c.HydrometricDataValueID == hydrometricDataValueLocal.HydrometricDataValueID).FirstOrDefault();
-                    if (hydrometricDataValueOriginal == null)
-                    {
-                        hydrometricSiteModelOriginal.HydrometricDataValueList.Add(hydrometricDataValueLocal);
-                    }
-                    else
-                    {
-                        hydrometricDataValueOriginal = hydrometricDataValueLocal;
-                    }
+                    hydrometricSiteModelOriginal.RatingCurveModelList.Add(ratingCurveModelLocal);
                 }
-                foreach (RatingCurveModel ratingCurveModelLocal in hydrometricSiteModelLocal.RatingCurveModelList)
+                else
                 {
-                    RatingCurveModel ratingCurveModelOriginal = hydrometricSiteModelOriginal.RatingCurveModelList.Where(c => c.RatingCurve.RatingCurveID == ratingCurveModelLocal.RatingCurve.RatingCurveID).FirstOrDefault();
-                    if (ratingCurveModelOriginal == null)
-                    {
-                        hydrometricSiteModelOriginal.RatingCurveModelList.Add(ratingCurveModelLocal);
-                    }
-                    else
-                    {
-                        SyncRatingCurveModel(ratingCurveModelOriginal, ratingCurveModelLocal);
-                    }
+                    SyncRatingCurveModel(ratingCurveModelOriginal, ratingCurveModelLocal);
                 }
             }
         }
     }
 }
+

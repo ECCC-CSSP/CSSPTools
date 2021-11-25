@@ -1,27 +1,15 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class ClassificationModel
 {
-    [NotMapped]
-    public partial class ClassificationModel
-    {
-        #region Properties
-        public TVItemModel TVItemModel { get; set; }
-        public Classification Classification { get; set; }
-        #endregion Properties
+    public TVItemModel TVItemModel { get; set; }
+    public Classification Classification { get; set; }
 
-        #region Constructors
-        public ClassificationModel()
-        {
-            TVItemModel = new TVItemModel();
-            Classification = new Classification();
-        }
-        #endregion Constructors
+    public ClassificationModel()
+    {
+        TVItemModel = new TVItemModel();
+        Classification = new Classification();
     }
 }
+

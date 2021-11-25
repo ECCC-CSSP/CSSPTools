@@ -1,29 +1,17 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebLabSheets
 {
-    [NotMapped]
-    public partial class WebLabSheets
-    {
-        #region Properties
-        public TVItemModel TVItemModel { get; set; }
-        public List<TVItemModel> TVItemModelParentList { get; set; }
-        public List<LabSheetModel> LabSheetModelList { get; set; }
-        #endregion Properties
+    public TVItemModel TVItemModel { get; set; }
+    public List<TVItemModel> TVItemModelParentList { get; set; }
+    public List<LabSheetModel> LabSheetModelList { get; set; }
 
-        #region Constructors
-        public WebLabSheets()
-        {
-            TVItemModel = new TVItemModel();
-            TVItemModelParentList = new List<TVItemModel>();
-            LabSheetModelList = new List<LabSheetModel>();
-        }
-        #endregion Constructors
+    public WebLabSheets()
+    {
+        TVItemModel = new TVItemModel();
+        TVItemModelParentList = new List<TVItemModel>();
+        LabSheetModelList = new List<LabSheetModel>();
     }
 }
+

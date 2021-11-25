@@ -30,7 +30,7 @@ public partial class MapInfoLocalServiceTest
 
         CheckCreatedMapInfoAndMapInfoPointList(mapInfoModelPoint);
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemModel.TVItem.TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, tvItemModel.TVItem.TVItemID);
 
         var actionMapInfoLocalModelPoint = await MapInfoLocalService.DeleteMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
         Assert.Equal(200, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);

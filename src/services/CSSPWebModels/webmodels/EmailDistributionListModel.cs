@@ -1,29 +1,17 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class EmailDistributionListModel
 {
-    [NotMapped]
-    public partial class EmailDistributionListModel
-    {
-        #region Properties
-        public EmailDistributionList EmailDistributionList { get; set; }
-        public List<EmailDistributionListLanguage> EmailDistributionListLanguageList { get; set; }
-        public List<EmailDistributionListContactModel> EmailDistributionListContactModelList { get; set; }
-        #endregion Properties
+    public EmailDistributionList EmailDistributionList { get; set; }
+    public List<EmailDistributionListLanguage> EmailDistributionListLanguageList { get; set; }
+    public List<EmailDistributionListContactModel> EmailDistributionListContactModelList { get; set; }
 
-        #region Constructors
-        public EmailDistributionListModel()
-        {
-            EmailDistributionList = new EmailDistributionList();
-            EmailDistributionListLanguageList = new List<EmailDistributionListLanguage>();
-            EmailDistributionListContactModelList = new List<EmailDistributionListContactModel>();
-        }
-        #endregion Constructors
+    public EmailDistributionListModel()
+    {
+        EmailDistributionList = new EmailDistributionList();
+        EmailDistributionListLanguageList = new List<EmailDistributionListLanguage>();
+        EmailDistributionListContactModelList = new List<EmailDistributionListContactModel>();
     }
 }
+

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>41c4156a-4b42-42e9-923a-e9c8360dba12</UserSecretsId>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>CSSPWebAPIs</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

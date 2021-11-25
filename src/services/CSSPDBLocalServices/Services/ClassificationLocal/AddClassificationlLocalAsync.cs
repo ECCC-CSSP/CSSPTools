@@ -37,7 +37,7 @@ public partial class ClassificationLocalService : ControllerBase, IClassificatio
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
 
         int LastOrdinal = (from c in webSubsector.ClassificationModelList
                            orderby c.Classification.Ordinal ascending

@@ -9,7 +9,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
@@ -31,7 +31,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.Equal(JsonSerializer.Serialize(mwqmLookupMPNDB), JsonSerializer.Serialize(mwqmLookupMPNRet));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs2 = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs2 = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
 
         MWQMLookupMPN mwqmLookupMPNWeb = (from c in webAllMWQMLookupMPNs2.MWQMLookupMPNList
                                           where c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID
@@ -53,7 +53,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
@@ -76,7 +76,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
@@ -99,7 +99,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
@@ -122,7 +122,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
@@ -145,7 +145,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
@@ -168,7 +168,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
         Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
         Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);

@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllPolSourceGroupings
 {
-    [NotMapped]
-    public partial class WebAllPolSourceGroupings
-    {
-        #region Properties
-        public List<PolSourceGroupingModel> PolSourceGroupingModelList { get; set; }
-        #endregion Properties
+    public List<PolSourceGroupingModel> PolSourceGroupingModelList { get; set; }
 
-        #region Constructors
-        public WebAllPolSourceGroupings()
-        {
-            PolSourceGroupingModelList = new List<PolSourceGroupingModel>();
-        }
-        #endregion Constructors
+    public WebAllPolSourceGroupings()
+    {
+        PolSourceGroupingModelList = new List<PolSourceGroupingModel>();
     }
 }
+

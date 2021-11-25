@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllTels
 {
-    [NotMapped]
-    public partial class WebAllTels
-    {
-        #region Properties
-        public List<Tel> TelList { get; set; }
-        #endregion Properties
+    public List<Tel> TelList { get; set; }
 
-        #region Constructors
-        public WebAllTels()
-        {
-            TelList = new List<Tel>();
-        }
-        #endregion Constructors
+    public WebAllTels()
+    {
+        TelList = new List<Tel>();
     }
 }
+

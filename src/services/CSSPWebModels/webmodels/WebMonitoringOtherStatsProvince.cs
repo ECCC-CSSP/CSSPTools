@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebMonitoringOtherStatsProvince
 {
-    [NotMapped]
-    public partial class WebMonitoringOtherStatsProvince
-    {
-        #region Properties
-        public List<MonitoringStatsModel> MonitoringStatsModelList { get; set; }
-        #endregion Properties
+    public List<MonitoringStatsModel> MonitoringStatsModelList { get; set; }
 
-        #region Constructors
-        public WebMonitoringOtherStatsProvince()
-        {
-            MonitoringStatsModelList = new List<MonitoringStatsModel>();
-        }
-        #endregion Constructors
+    public WebMonitoringOtherStatsProvince()
+    {
+        MonitoringStatsModelList = new List<MonitoringStatsModel>();
     }
 }
+

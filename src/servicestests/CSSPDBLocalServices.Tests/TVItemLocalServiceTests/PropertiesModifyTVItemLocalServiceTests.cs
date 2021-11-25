@@ -9,7 +9,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -30,7 +30,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -51,7 +51,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -72,7 +72,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -93,7 +93,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -114,7 +114,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -135,7 +135,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -157,7 +157,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -178,7 +178,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -201,7 +201,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -224,7 +224,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -245,7 +245,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 
@@ -266,7 +266,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItem tvItemParent = webRoot.TVItemModel.TVItem;
 

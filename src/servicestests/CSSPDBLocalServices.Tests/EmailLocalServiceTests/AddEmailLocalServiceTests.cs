@@ -93,7 +93,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotEmpty(tvItemLanguageListDB2);
         Assert.Equal(2, tvItemLanguageListDB2.Count);
 
-        WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
+        WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 
         Email emailWeb = (from c in webAllEmails.EmailList
                           where c.EmailID == -1
@@ -107,7 +107,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotNull(emailWeb2);
         Assert.Equal(-2, emailWeb2.EmailTVItemID);
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -237,7 +237,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await EmailLocalServiceSetup(culture));
 
-        WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
+        WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 
         Assert.True(webAllEmails.EmailList.Count > 10);
 

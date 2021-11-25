@@ -1,43 +1,29 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPReadGzFileServices;
 
-namespace CSSPReadGzFileServices
+public partial class CSSPReadGzFileService : ICSSPReadGzFileService
 {
-    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
+    private void SyncPolSourceObservationModel(PolSourceObservationModel polSourceObservationModelOriginal, PolSourceObservationModel polSourceObservationModelLocal)
     {
-        private void SyncPolSourceObservationModel(PolSourceObservationModel polSourceObservationModelOriginal, PolSourceObservationModel polSourceObservationModelLocal)
+        if (polSourceObservationModelLocal != null)
         {
-            if (polSourceObservationModelLocal != null)
+            if (polSourceObservationModelLocal.PolSourceObservation != null)
             {
-                if (polSourceObservationModelLocal.PolSourceObservation != null)
+                polSourceObservationModelOriginal.PolSourceObservation = polSourceObservationModelLocal.PolSourceObservation;
+            }
+
+            foreach (PolSourceObservationIssue polSourceObservationIssueLocal in polSourceObservationModelLocal.PolSourceObservationIssueList)
+            {
+                PolSourceObservationIssue polSourceObservationIssueOriginal = polSourceObservationModelOriginal.PolSourceObservationIssueList.Where(c => c.PolSourceObservationIssueID == polSourceObservationIssueLocal.PolSourceObservationIssueID).FirstOrDefault();
+                if (polSourceObservationIssueOriginal == null)
                 {
-                    polSourceObservationModelOriginal.PolSourceObservation = polSourceObservationModelLocal.PolSourceObservation;
+                    polSourceObservationModelOriginal.PolSourceObservationIssueList.Add(polSourceObservationIssueLocal);
                 }
-                
-                foreach (PolSourceObservationIssue polSourceObservationIssueLocal in polSourceObservationModelLocal.PolSourceObservationIssueList)
+                else
                 {
-                    PolSourceObservationIssue polSourceObservationIssueOriginal = polSourceObservationModelOriginal.PolSourceObservationIssueList.Where(c => c.PolSourceObservationIssueID == polSourceObservationIssueLocal.PolSourceObservationIssueID).FirstOrDefault();
-                    if (polSourceObservationIssueOriginal == null)
-                    {
-                        polSourceObservationModelOriginal.PolSourceObservationIssueList.Add(polSourceObservationIssueLocal);
-                    }
-                    else
-                    {
-                        polSourceObservationIssueOriginal = polSourceObservationIssueLocal;
-                    }
+                    polSourceObservationIssueOriginal = polSourceObservationIssueLocal;
                 }
             }
         }
     }
 }
+

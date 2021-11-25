@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllEmails
 {
-    [NotMapped]
-    public partial class WebAllEmails
-    {
-        #region Properties
-        public List<Email> EmailList { get; set; }
-        #endregion Properties
+    public List<Email> EmailList { get; set; }
 
-        #region Constructors
-        public WebAllEmails()
-        {
-            EmailList = new List<Email>();
-        }
-        #endregion Constructors
+    public WebAllEmails()
+    {
+        EmailList = new List<Email>();
     }
 }
+

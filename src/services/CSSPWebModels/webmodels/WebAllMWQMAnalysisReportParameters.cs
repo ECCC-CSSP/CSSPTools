@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllMWQMAnalysisReportParameters
 {
-    [NotMapped]
-    public partial class WebAllMWQMAnalysisReportParameters
-    {
-        #region Properties
-        public List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterList { get; set; }
-        #endregion Properties
+    public List<MWQMAnalysisReportParameter> MWQMAnalysisReportParameterList { get; set; }
 
-        #region Constructors
-        public WebAllMWQMAnalysisReportParameters()
-        {
-            MWQMAnalysisReportParameterList = new List<MWQMAnalysisReportParameter>();
-        }
-        #endregion Constructors
+    public WebAllMWQMAnalysisReportParameters()
+    {
+        MWQMAnalysisReportParameterList = new List<MWQMAnalysisReportParameter>();
     }
 }
+

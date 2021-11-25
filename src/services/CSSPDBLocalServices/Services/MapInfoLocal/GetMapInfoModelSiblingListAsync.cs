@@ -15,27 +15,27 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.Area:
                 {
-                    WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
+                    WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
                     tvItemModelList = webProvince.TVItemModelAreaList;
                 }
                 break;
             case TVTypeEnum.Classification:
                 {
-                    WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, tvItemParent.TVItemID);
+                    WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webSubsector.ClassificationModelList
                                        select c.TVItemModel).ToList();
                 }
                 break;
             case TVTypeEnum.ClimateSite:
                 {
-                    WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSON<WebClimateSites>(WebTypeEnum.WebClimateSites, tvItemParent.TVItemID);
+                    WebClimateSites webClimateSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebClimateSites>(WebTypeEnum.WebClimateSites, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webClimateSites.ClimateSiteModelList
                                        select c.TVItemModel).ToList();
                 }
                 break;
             case TVTypeEnum.Country:
                 {
-                    WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+                    WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
                     tvItemModelList = webRoot.TVItemModelCountryList;
                 }
                 break;
@@ -55,19 +55,19 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                     {
                         case TVTypeEnum.Area:
                             {
-                                WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, tvItemParent.TVItemID);
+                                WebArea webArea = await CSSPReadGzFileService.GetUncompressJSONAsync<WebArea>(WebTypeEnum.WebArea, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webArea.TVItemModel };
                             }
                             break;
                         case TVTypeEnum.Country:
                             {
-                                WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
+                                WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webCountry.TVItemModel };
                             }
                             break;
                         case TVTypeEnum.Infrastructure:
                             {
-                                WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)tvItemParent.ParentID);
+                                WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMunicipality>(WebTypeEnum.WebMunicipality, (int)tvItemParent.ParentID);
 
                                 InfrastructureModel infrastructureModel = (from c in webMunicipality.InfrastructureModelList
                                                                            where c.TVItemModel != null
@@ -83,13 +83,13 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                             break;
                         case TVTypeEnum.Province:
                             {
-                                WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
+                                WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webProvince.TVItemModel };
                             }
                             break;
                         case TVTypeEnum.MikeScenario:
                             {
-                                WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
+                                WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                                 MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                                        where c.TVItemModel != null
@@ -106,13 +106,13 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                             break;
                         case TVTypeEnum.Municipality:
                             {
-                                WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItemParent.TVItemID);
+                                WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webMunicipality.TVItemModel };
                             }
                             break;
                         case TVTypeEnum.MWQMSite:
                             {
-                                WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, (int)tvItemParent.ParentID);
+                                WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSites>(WebTypeEnum.WebMWQMSites, (int)tvItemParent.ParentID);
 
                                 MWQMSiteModel mwqmSiteModel = (from c in webMWQMSites.MWQMSiteModelList
                                                                where c.TVItemModel != null
@@ -128,7 +128,7 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                             break;
                         case TVTypeEnum.PolSourceSite:
                             {
-                                WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, (int)tvItemParent.ParentID);
+                                WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, (int)tvItemParent.ParentID);
 
                                 PolSourceSiteModel polSourceSiteModel = (from c in webPolSourceSites.PolSourceSiteModelList
                                                                          where c.TVItemModel != null
@@ -144,19 +144,19 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                             break;
                         case TVTypeEnum.Root:
                             {
-                                WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, tvItemParent.TVItemID);
+                                WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webRoot.TVItemModel };
                             }
                             break;
                         case TVTypeEnum.Sector:
                             {
-                                WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, tvItemParent.TVItemID);
+                                WebSector webSector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSector>(WebTypeEnum.WebSector, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webSector.TVItemModel };
                             }
                             break;
                         case TVTypeEnum.Subsector:
                             {
-                                WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, tvItemParent.TVItemID);
+                                WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, tvItemParent.TVItemID);
                                 tvItemModelList = new List<TVItemModel>() { webSubsector.TVItemModel };
                             }
                             break;
@@ -167,21 +167,21 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.Infrastructure:
                 {
-                    WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSON<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItemParent.TVItemID);
+                    WebMunicipality webMunicipality = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMunicipality>(WebTypeEnum.WebMunicipality, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webMunicipality.InfrastructureModelList
                                        select c.TVItemModel).ToList();
                 }
                 break;
             case TVTypeEnum.HydrometricSite:
                 {
-                    WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSON<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, tvItemParent.TVItemID);
+                    WebHydrometricSites webHydrometricSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebHydrometricSites>(WebTypeEnum.WebHydrometricSites, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webHydrometricSites.HydrometricSiteModelList
                                        select c.TVItemModel).ToList();
                 }
                 break;
             case TVTypeEnum.MikeBoundaryConditionMesh:
                 {
-                    WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
+                    WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                     MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                            where c.TVItemModel != null
@@ -200,7 +200,7 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.MikeBoundaryConditionWebTide:
                 {
-                    WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
+                    WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                     MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                            where c.TVItemModel != null
@@ -224,7 +224,7 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.MikeSource:
                 {
-                    WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSON<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
+                    WebMikeScenarios webMikeScenarios = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMikeScenarios>(WebTypeEnum.WebMikeScenarios, (int)tvItemParent.ParentID);
 
                     MikeScenarioModel mikeScenarioModel = (from c in webMikeScenarios.MikeScenarioModelList
                                                            where c.TVItemModel != null
@@ -241,7 +241,7 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.Municipality:
                 {
-                    WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
+                    WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, tvItemParent.TVItemID);
                     tvItemModelList = webProvince.TVItemModelMunicipalityList;
                 }
                 break;
@@ -252,21 +252,21 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.MWQMSite:
                 {
-                    WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSON<WebMWQMSites>(WebTypeEnum.WebMWQMSites, tvItemParent.TVItemID);
+                    WebMWQMSites webMWQMSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSites>(WebTypeEnum.WebMWQMSites, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webMWQMSites.MWQMSiteModelList
                                        select c.TVItemModel).ToList();
                 }
                 break;
             case TVTypeEnum.PolSourceSite:
                 {
-                    WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSON<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, tvItemParent.TVItemID);
+                    WebPolSourceSites webPolSourceSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebPolSourceSites>(WebTypeEnum.WebPolSourceSites, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webPolSourceSites.PolSourceSiteModelList
                                        select c.TVItemModel).ToList();
                 }
                 break;
             case TVTypeEnum.Province:
                 {
-                    WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
+                    WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, tvItemParent.TVItemID);
                     tvItemModelList = webCountry.TVItemModelProvinceList;
                 }
                 break;
@@ -282,14 +282,14 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.Sector:
                 {
-                    WebArea webArea = await CSSPReadGzFileService.GetUncompressJSON<WebArea>(WebTypeEnum.WebArea, tvItemParent.TVItemID);
+                    WebArea webArea = await CSSPReadGzFileService.GetUncompressJSONAsync<WebArea>(WebTypeEnum.WebArea, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webArea.TVItemModelSectorList
                                        select c).ToList();
                 }
                 break;
             case TVTypeEnum.Subsector:
                 {
-                    WebSector webSector = await CSSPReadGzFileService.GetUncompressJSON<WebSector>(WebTypeEnum.WebSector, tvItemParent.TVItemID);
+                    WebSector webSector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSector>(WebTypeEnum.WebSector, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webSector.TVItemModelSubsectorList
                                        select c).ToList();
                 }
@@ -301,7 +301,7 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
                 break;
             case TVTypeEnum.TideSite:
                 {
-                    WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSON<WebTideSites>(WebTypeEnum.WebTideSites, tvItemParent.TVItemID);
+                    WebTideSites webTideSites = await CSSPReadGzFileService.GetUncompressJSONAsync<WebTideSites>(WebTypeEnum.WebTideSites, tvItemParent.TVItemID);
                     tvItemModelList = (from c in webTideSites.TideSiteModelList
                                        select c.TVItemModel).ToList();
                 }

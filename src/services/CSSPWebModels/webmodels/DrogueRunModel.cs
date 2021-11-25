@@ -1,26 +1,14 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class DrogueRunModel
 {
-    [NotMapped]
-    public partial class DrogueRunModel
-    {
-        #region Properties
-        public DrogueRun DrogueRun { get; set; }
-        public List<DrogueRunPosition> DrogueRunPositionList { get; set; }
-        #endregion Properties
+    public DrogueRun DrogueRun { get; set; }
+    public List<DrogueRunPosition> DrogueRunPositionList { get; set; }
 
-        #region Constructors
-        public DrogueRunModel()
-        {
-            DrogueRunPositionList = new List<DrogueRunPosition>();
-        }
-        #endregion Constructors
+    public DrogueRunModel()
+    {
+        DrogueRunPositionList = new List<DrogueRunPosition>();
     }
 }
+

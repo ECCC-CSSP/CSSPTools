@@ -1,27 +1,15 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class MWQMSampleModel
 {
-    [NotMapped]
-    public partial class MWQMSampleModel
-    {
-        #region Properties
-        public MWQMSample MWQMSample { get; set; }
-        public List<MWQMSampleLanguage> MWQMSampleLanguageList { get; set; }
-        #endregion Properties
+    public MWQMSample MWQMSample { get; set; }
+    public List<MWQMSampleLanguage> MWQMSampleLanguageList { get; set; }
 
-        #region Constructors
-        public MWQMSampleModel()
-        {
-            MWQMSample = new MWQMSample();
-            MWQMSampleLanguageList = new List<MWQMSampleLanguage>();
-        }
-        #endregion Constructors
+    public MWQMSampleModel()
+    {
+        MWQMSample = new MWQMSample();
+        MWQMSampleLanguageList = new List<MWQMSampleLanguage>();
     }
 }
+

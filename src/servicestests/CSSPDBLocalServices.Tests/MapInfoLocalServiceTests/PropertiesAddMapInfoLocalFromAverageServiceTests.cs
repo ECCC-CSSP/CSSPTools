@@ -11,7 +11,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -42,7 +42,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -73,7 +73,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -104,7 +104,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -135,7 +135,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -166,7 +166,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -197,7 +197,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -228,7 +228,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -259,7 +259,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -290,7 +290,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -321,7 +321,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -352,7 +352,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
         TVTypeEnum tvType = TVTypeEnum.Area;
@@ -384,7 +384,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 
         int TVItemID = 7;
 
-        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSON<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
+        WebProvince webProvince = await CSSPReadGzFileService.GetUncompressJSONAsync<WebProvince>(WebTypeEnum.WebProvince, TVItemID);
 
         TVItem tvItemParent = webProvince.TVItemModel.TVItem;
 

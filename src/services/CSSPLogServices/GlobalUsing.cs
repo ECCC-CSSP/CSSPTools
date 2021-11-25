@@ -1,0 +1,11 @@
+﻿global using CSSPCultureServices.Resources;
+global using CSSPHelperModels;
+global using CSSPLocalLoggedInServices;
+global using ManageServices;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Configuration;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
+global using System.Threading.Tasks;

@@ -1,27 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPReadGzFileServices;
 
-namespace CSSPReadGzFileServices
+public partial class CSSPReadGzFileService : ICSSPReadGzFileService
 {
-    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
+    private void SyncMWQMLookupMPN(MWQMLookupMPN mwqmLookupMPNOriginal, MWQMLookupMPN mwqmLookupMPNLocal)
     {
-        private void SyncMWQMLookupMPN(MWQMLookupMPN mwqmLookupMPNOriginal, MWQMLookupMPN mwqmLookupMPNLocal)
+        if (mwqmLookupMPNLocal != null)
         {
-            if (mwqmLookupMPNLocal != null)
-            {
-                mwqmLookupMPNOriginal = mwqmLookupMPNLocal;
-            }
+            mwqmLookupMPNOriginal = mwqmLookupMPNLocal;
         }
     }
 }
+

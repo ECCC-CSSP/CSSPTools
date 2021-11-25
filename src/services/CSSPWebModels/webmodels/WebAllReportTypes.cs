@@ -1,25 +1,12 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllReportTypes
 {
-    [NotMapped]
-    public partial class WebAllReportTypes
-    {
-        #region Properties
-        public List<ReportTypeModel> ReportTypeModelList { get; set; }
-        #endregion Properties
+    public List<ReportTypeModel> ReportTypeModelList { get; set; }
 
-        #region Constructors
-        public WebAllReportTypes()
-        {
-            ReportTypeModelList = new List<ReportTypeModel>();
-        }
-        #endregion Constructors
+    public WebAllReportTypes()
+    {
+        ReportTypeModelList = new List<ReportTypeModel>();
     }
 }

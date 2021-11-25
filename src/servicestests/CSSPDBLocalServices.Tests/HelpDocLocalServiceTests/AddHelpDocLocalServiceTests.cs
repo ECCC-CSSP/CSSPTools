@@ -33,7 +33,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.Equal(JsonSerializer.Serialize(helpDocDB), JsonSerializer.Serialize(helpDocRet));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
         HelpDoc helpDocWeb = (from c in webAllHelpDocs.HelpDocList
                               where c.HelpDocID == -1
@@ -127,7 +127,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
         Assert.True(webAllHelpDocs.HelpDocList.Count > 10);
 

@@ -1,106 +1,79 @@
-/* 
- *  Manually Edited
- *  
- */
+namespace CSSPSyncDBsServices.Tests;
 
-using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPLocalLoggedInServices;
-using ManageServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace CSSPSyncDBsServices.Tests
+public partial class SyncDBsServiceTest
 {
-    public partial class SyncDBsServiceTest
+    private IConfiguration Configuration { get; set; }
+    private IServiceProvider Provider { get; set; }
+    private IServiceCollection Services { get; set; }
+    private ICSSPCultureService CSSPCultureService { get; set; }
+    private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+    private ICSSPSyncDBsService CSSPSyncDBsService { get; set; }
+    private CSSPDBContext db { get; set; }
+
+    private async Task<bool> CSSPSyncDBsServiceSetup(string culture)
     {
-        #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private IServiceCollection Services { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-        private ISyncDBsService SyncDBsService { get; set; }
-        private CSSPDBContext db { get; set; }
-        #endregion Properties
+        Configuration = new ConfigurationBuilder()
+           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+           .AddJsonFile("appsettings_csspsyncdbsservicestests.json")
+           .AddUserSecrets("74f56089-4db8-46b3-8b49-6108e031a474")
+           .Build();
 
-        #region Constructors
-        public SyncDBsServiceTest()
+        Services = new ServiceCollection();
+
+        Services.AddSingleton<IConfiguration>(Configuration);
+
+        /* ---------------------------------------------------------------------------------
+         * CSSPDBManageContext
+         * ---------------------------------------------------------------------------------
+         */
+        string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
+        Assert.NotNull(CSSPDBManage);
+
+        FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+
+        Services.AddDbContext<CSSPDBManageContext>(options =>
         {
+            options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+        });
 
-        }
-        #endregion Constructors
+        /* ---------------------------------------------------------------------------------
+         * using AzureCSSPDB
+         * ---------------------------------------------------------------------------------      
+         */
+        string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
+        Assert.NotNull(AzureCSSPDB);
 
-        private async Task<bool> CSSPSyncDBsServiceSetup(string culture)
+        Services.AddDbContext<CSSPDBContext>(options =>
         {
-            Configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-               .AddJsonFile("appsettings_csspsyncdbsservicestests.json")
-               .AddUserSecrets("74f56089-4db8-46b3-8b49-6108e031a474")
-               .Build();
+            options.UseSqlServer(AzureCSSPDB);
+        });
 
-            Services = new ServiceCollection();
+        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+        Services.AddSingleton<IEnums, Enums>();
+        Services.AddSingleton<ICSSPSyncDBsService, CSSPSyncDBsService>();
 
-            Services.AddSingleton<IConfiguration>(Configuration);
+        Provider = Services.BuildServiceProvider();
+        Assert.NotNull(Provider);
 
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBManageContext
-             * ---------------------------------------------------------------------------------
-             */
-            string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-            Assert.NotNull(CSSPDBManage);
+        CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+        Assert.NotNull(CSSPCultureService);
 
-            FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+        CSSPCultureService.SetCulture(culture);
 
-            Services.AddDbContext<CSSPDBManageContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
-            });
+        CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+        Assert.NotNull(CSSPLocalLoggedInService);
 
-            /* ---------------------------------------------------------------------------------
-             * using AzureCSSPDB
-             * ---------------------------------------------------------------------------------      
-             */
-            string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-            Assert.NotNull(AzureCSSPDB);
+        //string LoginEmail = Configuration.GetValue<string>("LoginEmail");
+        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
 
-            Services.AddDbContext<CSSPDBContext>(options =>
-            {
-                options.UseSqlServer(AzureCSSPDB);
-            });
+        db = Provider.GetService<CSSPDBContext>();
+        Assert.NotNull(db);
 
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-            Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<ISyncDBsService, SyncDBsService>();
+        CSSPSyncDBsService = Provider.GetService<ICSSPSyncDBsService>();
+        Assert.NotNull(CSSPSyncDBsService);
 
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
-
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
-
-            CSSPCultureService.SetCulture(culture);
-
-            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-            Assert.NotNull(CSSPLocalLoggedInService);
-
-            //string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-            Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
-
-            db = Provider.GetService<CSSPDBContext>();
-            Assert.NotNull(db);
-
-            SyncDBsService = Provider.GetService<ISyncDBsService>();
-            Assert.NotNull(SyncDBsService);
-
-            return await Task.FromResult(true);
-        }
+        return await Task.FromResult(true);
     }
 }
+

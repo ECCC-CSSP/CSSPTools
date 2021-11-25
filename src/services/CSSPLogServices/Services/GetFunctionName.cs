@@ -1,20 +1,14 @@
-﻿/*
- * Manually edited
- * 
- */
-using Microsoft.AspNetCore.Mvc;
+﻿namespace CSSPLogServices;
 
-namespace CSSPLogServices
+public partial class CSSPLogService : ControllerBase, ICSSPLogService
 {
-    public partial class CSSPLogService : ControllerBase, ICSSPLogService
+    public string GetFunctionName(string FullFunctionName)
     {
-        public string GetFunctionName(string FullFunctionName)
-        {
-            string FunctionName = FullFunctionName;
-            FunctionName = FunctionName.Substring(FunctionName.IndexOf("<") + 1);
-            FunctionName = FunctionName.Substring(0, FunctionName.IndexOf(">"));
+        string FunctionName = FullFunctionName;
+        FunctionName = FunctionName.Substring(FunctionName.IndexOf("<") + 1);
+        FunctionName = FunctionName.Substring(0, FunctionName.IndexOf(">"));
 
-            return FunctionName;
-        }
+        return FunctionName;
     }
 }
+

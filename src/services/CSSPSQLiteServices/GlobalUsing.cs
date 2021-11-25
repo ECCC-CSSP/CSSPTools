@@ -1,0 +1,15 @@
+﻿global using System;
+global using CSSPEnums;
+global using CSSPDBModels;
+global using CSSPCultureServices.Resources;
+global using CSSPCultureServices.Services;
+global using Microsoft.Data.Sqlite;
+global using Microsoft.Extensions.Configuration;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System.IO;
+global using System.Text;
+global using System.Threading.Tasks;
+global using ManageServices;
+global using CSSPHelperModels;
+global using Microsoft.EntityFrameworkCore;

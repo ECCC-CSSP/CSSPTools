@@ -93,7 +93,7 @@ public partial class AddressLocalService : ControllerBase, IAddressLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
+        WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
         Address addressJSON = (from c in webAllAddresses.AddressList
                                where c.StreetName == address.StreetName
@@ -109,10 +109,10 @@ public partial class AddressLocalService : ControllerBase, IAddressLocalService
             return await Task.FromResult(Ok(addressJSON));
         }
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
-        WebAllCountries webAllCountries = await CSSPReadGzFileService.GetUncompressJSON<WebAllCountries>(WebTypeEnum.WebAllCountries, 0);
-        WebAllProvinces webAllProvinces = await CSSPReadGzFileService.GetUncompressJSON<WebAllProvinces>(WebTypeEnum.WebAllProvinces, 0);
-        WebAllMunicipalities webAllMunicipalities = await CSSPReadGzFileService.GetUncompressJSON<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebAllCountries webAllCountries = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllCountries>(WebTypeEnum.WebAllCountries, 0);
+        WebAllProvinces webAllProvinces = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllProvinces>(WebTypeEnum.WebAllProvinces, 0);
+        WebAllMunicipalities webAllMunicipalities = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMunicipalities>(WebTypeEnum.WebAllMunicipalities, 0);
 
         TVItemModel tvItemModelCountry = (from c in webAllCountries.TVItemModelList
                                           where c.TVItem.TVItemID == address.CountryTVItemID

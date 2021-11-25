@@ -1,88 +1,74 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using CSSPEnums;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿namespace CSSPReadGzFileServices;
 
-namespace CSSPReadGzFileServices
+public partial class CSSPReadGzFileService : ICSSPReadGzFileService
 {
-    public partial class CSSPReadGzFileService : ICSSPReadGzFileService
+    private void SyncInfrastructureModel(InfrastructureModel infrastructureModelOriginal, InfrastructureModel infrastructureModelLocal)
     {
-        private void SyncInfrastructureModel(InfrastructureModel infrastructureModelOriginal, InfrastructureModel infrastructureModelLocal)
+        if (infrastructureModelLocal != null)
         {
-            if (infrastructureModelLocal != null)
+            if (infrastructureModelLocal.TVItemModel != null)
             {
-                if (infrastructureModelLocal.TVItemModel != null)
-                {
-                    SyncTVItemModel(infrastructureModelOriginal.TVItemModel, infrastructureModelLocal.TVItemModel);
-                }
-                if (infrastructureModelLocal.Infrastructure != null)
-                {
-                    infrastructureModelOriginal.Infrastructure = infrastructureModelLocal.Infrastructure;
-                }
-                if (infrastructureModelLocal.InfrastructureLanguageList != null)
-                {
-                    infrastructureModelOriginal.InfrastructureLanguageList = infrastructureModelLocal.InfrastructureLanguageList;
-                }
+                SyncTVItemModel(infrastructureModelOriginal.TVItemModel, infrastructureModelLocal.TVItemModel);
+            }
+            if (infrastructureModelLocal.Infrastructure != null)
+            {
+                infrastructureModelOriginal.Infrastructure = infrastructureModelLocal.Infrastructure;
+            }
+            if (infrastructureModelLocal.InfrastructureLanguageList != null)
+            {
+                infrastructureModelOriginal.InfrastructureLanguageList = infrastructureModelLocal.InfrastructureLanguageList;
+            }
 
-                List<TVFileModel> TVFileModelInfrastructureLocalList = (from c in infrastructureModelLocal.TVFileModelList
-                                                                        where c.TVFile.TVFileID != 0
-                                                                        && (c.TVFile.DBCommand != DBCommandEnum.Original
-                                                                        || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
-                                                                        || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
-                                                                        select c).ToList();
+            List<TVFileModel> TVFileModelInfrastructureLocalList = (from c in infrastructureModelLocal.TVFileModelList
+                                                                    where c.TVFile.TVFileID != 0
+                                                                    && (c.TVFile.DBCommand != DBCommandEnum.Original
+                                                                    || c.TVFileLanguageList[0].DBCommand != DBCommandEnum.Original
+                                                                    || c.TVFileLanguageList[1].DBCommand != DBCommandEnum.Original)
+                                                                    select c).ToList();
 
-                foreach (TVFileModel tvFileModelInfrastructureLocal in TVFileModelInfrastructureLocalList)
+            foreach (TVFileModel tvFileModelInfrastructureLocal in TVFileModelInfrastructureLocalList)
+            {
+                TVFileModel tvFileModelInfrastructureOriginal = infrastructureModelOriginal.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModelInfrastructureLocal.TVFile.TVFileID).FirstOrDefault();
+                if (tvFileModelInfrastructureOriginal == null)
                 {
-                    TVFileModel tvFileModelInfrastructureOriginal = infrastructureModelOriginal.TVFileModelList.Where(c => c.TVFile.TVFileID == tvFileModelInfrastructureLocal.TVFile.TVFileID).FirstOrDefault();
-                    if (tvFileModelInfrastructureOriginal == null)
+                    infrastructureModelOriginal.TVFileModelList.Add(tvFileModelInfrastructureLocal);
+                }
+                else
+                {
+                    SyncTVFileModel(tvFileModelInfrastructureOriginal, tvFileModelInfrastructureLocal);
+                }
+            }
+            if (infrastructureModelLocal.BoxModelModelList != null)
+            {
+                foreach (BoxModelModel boxModelModelLocal in infrastructureModelLocal.BoxModelModelList)
+                {
+                    BoxModelModel boxModelModelOriginal = infrastructureModelOriginal.BoxModelModelList.Where(c => c.BoxModel.BoxModelID == boxModelModelLocal.BoxModel.BoxModelID).FirstOrDefault();
+                    if (boxModelModelOriginal == null)
                     {
-                        infrastructureModelOriginal.TVFileModelList.Add(tvFileModelInfrastructureLocal);
+                        infrastructureModelOriginal.BoxModelModelList.Add(boxModelModelLocal);
                     }
                     else
                     {
-                        SyncTVFileModel(tvFileModelInfrastructureOriginal, tvFileModelInfrastructureLocal);
+                        SyncBoxModelModel(boxModelModelOriginal, boxModelModelLocal);
                     }
                 }
-                if (infrastructureModelLocal.BoxModelModelList != null)
+            }
+            if (infrastructureModelLocal.VPScenarioModelList != null)
+            {
+                foreach (VPScenarioModel boxModelModelLocal in infrastructureModelLocal.VPScenarioModelList)
                 {
-                    foreach (BoxModelModel boxModelModelLocal in infrastructureModelLocal.BoxModelModelList)
+                    VPScenarioModel boxModelModelOriginal = infrastructureModelOriginal.VPScenarioModelList.Where(c => c.VPScenario.VPScenarioID == boxModelModelLocal.VPScenario.VPScenarioID).FirstOrDefault();
+                    if (boxModelModelOriginal == null)
                     {
-                        BoxModelModel boxModelModelOriginal = infrastructureModelOriginal.BoxModelModelList.Where(c => c.BoxModel.BoxModelID == boxModelModelLocal.BoxModel.BoxModelID).FirstOrDefault();
-                        if (boxModelModelOriginal == null)
-                        {
-                            infrastructureModelOriginal.BoxModelModelList.Add(boxModelModelLocal);
-                        }
-                        else
-                        {
-                            SyncBoxModelModel(boxModelModelOriginal, boxModelModelLocal);
-                        }
+                        infrastructureModelOriginal.VPScenarioModelList.Add(boxModelModelLocal);
                     }
-                }
-                if (infrastructureModelLocal.VPScenarioModelList != null)
-                {
-                    foreach (VPScenarioModel boxModelModelLocal in infrastructureModelLocal.VPScenarioModelList)
+                    else
                     {
-                        VPScenarioModel boxModelModelOriginal = infrastructureModelOriginal.VPScenarioModelList.Where(c => c.VPScenario.VPScenarioID == boxModelModelLocal.VPScenario.VPScenarioID).FirstOrDefault();
-                        if (boxModelModelOriginal == null)
-                        {
-                            infrastructureModelOriginal.VPScenarioModelList.Add(boxModelModelLocal);
-                        }
-                        else
-                        {
-                            SyncVPScenarioModel(boxModelModelOriginal, boxModelModelLocal);
-                        }
+                        SyncVPScenarioModel(boxModelModelOriginal, boxModelModelLocal);
                     }
                 }
             }
         }
     }
 }
+

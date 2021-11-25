@@ -1,25 +1,14 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPDBModels;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class AppTaskLocalModel
 {
-    [NotMapped]
-    public partial class AppTaskLocalModel
-    {
-        public AppTask AppTask { get; set; }
-        public List<AppTaskLanguage> AppTaskLanguageList { get; set; }
+    public AppTask AppTask { get; set; }
+    public List<AppTaskLanguage> AppTaskLanguageList { get; set; }
 
-        public AppTaskLocalModel()
-        {
-            AppTaskLanguageList = new List<AppTaskLanguage>();
-        }
+    public AppTaskLocalModel()
+    {
+        AppTaskLanguageList = new List<AppTaskLanguage>();
     }
 }
+

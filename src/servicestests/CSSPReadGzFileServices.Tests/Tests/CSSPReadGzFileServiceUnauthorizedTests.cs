@@ -1,21 +1,13 @@
-using CSSPEnums;
-using CSSPHelperModels;
-using CSSPWebModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPReadGzFileServices.Tests;
 
-namespace CSSPReadGzFileServices.Tests
+public partial class CSSPReadGzFileServiceTests
 {
-    public partial class CSSPReadGzFileServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ReadJSON_WebNNNNN_Unauthorized_Error_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task ReadJSON_WebNNNNN_Unauthorized_Error_Test(string culture)
-        {
-            List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
+        List<WebTypeEnum> webTypeList = new List<WebTypeEnum>()
             {
                 WebTypeEnum.WebAllAddresses,
                 WebTypeEnum.WebAllContacts,
@@ -58,28 +50,28 @@ namespace CSSPReadGzFileServices.Tests
                 WebTypeEnum.WebTideSites,
             };
 
-            foreach (WebTypeEnum webTypeToTry in webTypeList)
-            {
-                Assert.True(await CSSPReadGzFileServiceSetup(culture));
+        foreach (WebTypeEnum webTypeToTry in webTypeList)
+        {
+            Assert.True(await CSSPReadGzFileServiceSetup(culture));
 
-                CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-                WebTypeEnum webType = webTypeToTry;
+            WebTypeEnum webType = webTypeToTry;
 
-                var actionWeb = await CSSPReadGzFileService.ReadJSON<WebAllAddresses /* type not important */>(webType);
-                Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
-                ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
-                Assert.NotEmpty(errRes.ErrList);
+            var actionWeb = await CSSPReadGzFileService.ReadJSONAsync<WebAllAddresses /* type not important */>(webType);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
+            Assert.NotEmpty(errRes.ErrList);
 
-                CSSPLocalLoggedInService.LoggedInContactInfo = null;
+            CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-                webType = webTypeToTry;
+            webType = webTypeToTry;
 
-                actionWeb = await CSSPReadGzFileService.ReadJSON<WebAllAddresses /* type not important */>(webType);
-                Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
-                errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
-                Assert.NotEmpty(errRes.ErrList);
-            }
+            actionWeb = await CSSPReadGzFileService.ReadJSONAsync<WebAllAddresses /* type not important */>(webType);
+            Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
+            errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
+            Assert.NotEmpty(errRes.ErrList);
         }
     }
 }
+

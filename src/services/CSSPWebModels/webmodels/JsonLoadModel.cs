@@ -1,29 +1,15 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPDBModels;
-using CSSPEnums;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class JsonLoadModel
 {
-    [NotMapped]
-    public partial class JsonLoadModel
-    {
-        #region Properties
-        [CSSPEnumType]
-        public WebTypeEnum WebType { get; set; }
-        public int TVItemID { get; set; }
-        public bool ForceReload { get; set; }
-        #endregion Properties
+    [CSSPEnumType]
+    public WebTypeEnum WebType { get; set; }
+    public int TVItemID { get; set; }
+    public bool ForceReload { get; set; }
 
-        #region Constructors
-        public JsonLoadModel()
-        {
-        }
-        #endregion Constructors
+    public JsonLoadModel()
+    {
     }
 }
+

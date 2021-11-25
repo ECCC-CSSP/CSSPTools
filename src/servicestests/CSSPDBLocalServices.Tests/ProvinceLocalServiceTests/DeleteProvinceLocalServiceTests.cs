@@ -11,7 +11,7 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
 
         int ParentTVItemID = 5;
 
-        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
         var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
         Assert.Equal(200, ((ObjectResult)actionProvinceRes.Result).StatusCode);
@@ -27,7 +27,7 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
         TVItemModel tvItemModelDeleteRet = (TVItemModel)((OkObjectResult)actionProvinceRes2.Result).Value;
         Assert.NotNull(tvItemModelDeleteRet);
 
-        webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+        webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
         tvItemModelRet = (from c in webCountry.TVItemModelProvinceList
                           where c.TVItem.TVItemID == tvItemModelRet.TVItem.TVItemID
@@ -152,7 +152,7 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
 
         int ParentTVItemID = 5;
 
-        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
         Assert.NotEmpty(webCountry.TVItemModelProvinceList);
 

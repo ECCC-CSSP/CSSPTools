@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllUseOfSites
 {
-    [NotMapped]
-    public partial class WebAllUseOfSites
-    {
-        #region Properties
-        public List<UseOfSite> UseOfSiteList { get; set; }
-        #endregion Properties
+    public List<UseOfSite> UseOfSiteList { get; set; }
 
-        #region Constructors
-        public WebAllUseOfSites()
-        {
-            UseOfSiteList = new List<UseOfSite>();
-        }
-        #endregion Constructors
+    public WebAllUseOfSites()
+    {
+        UseOfSiteList = new List<UseOfSite>();
     }
 }
+

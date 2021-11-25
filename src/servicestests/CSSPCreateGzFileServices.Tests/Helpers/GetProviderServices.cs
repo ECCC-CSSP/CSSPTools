@@ -71,13 +71,13 @@ public partial class CSSPCreateGzFileServiceTests
         Assert.NotNull(contact);
         Assert.NotNull(contact.AzureStoreHash);
 
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
+        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
 
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
         Assert.Equal(contact.ContactTVItemID, CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID);
 
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
+        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
         Assert.True(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID > 0);

@@ -1,73 +1,61 @@
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Security.Cryptography;
-using CSSPEnums;
+namespace UpdateServices.Tests;
 
-namespace UpdateServices.Tests
+public partial class UpdateServiceTests
 {
-    public partial class UpdateServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task GetNeedToChangedWebAllMunicipalities_HasMunicipality_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetNeedToChangedWebAllMunicipalities_HasMunicipality_Good_Test(string culture)
+        Assert.True(await CSSPUpdateServiceSetup(culture));
+
+        DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Municipality().AddDays(-1);
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+        Assert.True(await CSSPUpdateService.GetNeedToChangedWebAllMunicipalities(LastUpdateDate_UTC));
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task GetNeedToChangedWebAllMunicipalities_NoMunicipality_Good_Test(string culture)
+    {
+        Assert.True(await CSSPUpdateServiceSetup(culture));
+
+        DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Municipality().AddDays(1);
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+        Assert.False(await CSSPUpdateService.GetNeedToChangedWebAllMunicipalities(LastUpdateDate_UTC));
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+    }
+
+    private DateTime GetLastUpdateDate_UTC_Municipality()
+    {
+        DateTime DateTime1 = (from t in db.TVItems
+                              where t.TVType == TVTypeEnum.Municipality
+                              orderby t.LastUpdateDate_UTC descending
+                              select t.LastUpdateDate_UTC).FirstOrDefault();
+        Assert.True(DateTime1.Year > 2000);
+
+        DateTime DateTime2 = (from t in db.TVItems
+                              from tl in db.TVItemLanguages
+                              where t.TVItemID == tl.TVItemID
+                              && t.TVType == TVTypeEnum.Municipality
+                              orderby tl.LastUpdateDate_UTC descending
+                              select tl.LastUpdateDate_UTC).FirstOrDefault();
+        Assert.True(DateTime2.Year > 2000);
+
+
+        if (DateTime1 < DateTime2)
         {
-            Assert.True(await CSSPUpdateServiceSetup(culture));
-
-            DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Municipality().AddDays(-1);
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            Assert.True(await CSSPUpdateService.GetNeedToChangedWebAllMunicipalities(LastUpdateDate_UTC));
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetNeedToChangedWebAllMunicipalities_NoMunicipality_Good_Test(string culture)
-        {
-            Assert.True(await CSSPUpdateServiceSetup(culture));
-
-            DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Municipality().AddDays(1);
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            Assert.False(await CSSPUpdateService.GetNeedToChangedWebAllMunicipalities(LastUpdateDate_UTC));
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+            DateTime1 = DateTime2;
         }
 
-        #region private
-        private DateTime GetLastUpdateDate_UTC_Municipality()
-        {
-            DateTime DateTime1 = (from t in db.TVItems
-                                  where t.TVType == TVTypeEnum.Municipality
-                                  orderby t.LastUpdateDate_UTC descending
-                                  select t.LastUpdateDate_UTC).FirstOrDefault();
-            Assert.True(DateTime1.Year > 2000);
-
-            DateTime DateTime2 = (from t in db.TVItems
-                                  from tl in db.TVItemLanguages
-                                  where t.TVItemID == tl.TVItemID
-                                  && t.TVType == TVTypeEnum.Municipality
-                                  orderby tl.LastUpdateDate_UTC descending
-                                  select tl.LastUpdateDate_UTC).FirstOrDefault();
-            Assert.True(DateTime2.Year > 2000);
-
-
-            if (DateTime1 < DateTime2)
-            {
-                DateTime1 = DateTime2;
-            }
-
-            return DateTime1;
-        }
-        #endregion private
+        return DateTime1;
     }
 }
+

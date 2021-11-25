@@ -1,27 +1,15 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class RatingCurveModel
 {
-    [NotMapped]
-    public partial class RatingCurveModel
-    {
-        #region Properties
-        public RatingCurve RatingCurve { get; set; }
-        public List<RatingCurveValue> RatingCurveValueList { get; set; }
-        #endregion Properties
+    public RatingCurve RatingCurve { get; set; }
+    public List<RatingCurveValue> RatingCurveValueList { get; set; }
 
-        #region Constructors
-        public RatingCurveModel()
-        {
-            RatingCurve = new RatingCurve();
-            RatingCurveValueList = new List<RatingCurveValue>();
-        }
-        #endregion Constructors
+    public RatingCurveModel()
+    {
+        RatingCurve = new RatingCurve();
+        RatingCurveValueList = new List<RatingCurveValue>();
     }
 }
+

@@ -1,7 +1,4 @@
-﻿global using CSSPCultureServices.Resources;
-global using CSSPCultureServices.Services;
-global using CSSPDBModels;
-global using CSSPLocalLoggedInServices;
+﻿global using CSSPCultureServices.Services;
 global using ManageServices;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;

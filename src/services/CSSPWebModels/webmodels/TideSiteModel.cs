@@ -1,27 +1,15 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class TideSiteModel
 {
-    [NotMapped]
-    public partial class TideSiteModel
-    {
-        #region Properties
-        public TVItemModel TVItemModel { get; set; }
-        public TideSite TideSite { get; set; }
-        public List<TideDataValue> TideDataValueList { get; set; }
-        #endregion Properties
+    public TVItemModel TVItemModel { get; set; }
+    public TideSite TideSite { get; set; }
+    public List<TideDataValue> TideDataValueList { get; set; }
 
-        #region Constructors
-        public TideSiteModel()
-        {
-            TideDataValueList = new List<TideDataValue>();
-        }
-        #endregion Constructors
+    public TideSiteModel()
+    {
+        TideDataValueList = new List<TideDataValue>();
     }
 }
+

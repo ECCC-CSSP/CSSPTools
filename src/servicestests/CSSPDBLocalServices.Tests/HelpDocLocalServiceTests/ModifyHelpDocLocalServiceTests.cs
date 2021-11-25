@@ -9,7 +9,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
         Assert.NotNull(webAllHelpDocs);
         Assert.NotEmpty(webAllHelpDocs.HelpDocList);
         Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
@@ -26,7 +26,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.Equal(1, (from c in dbLocal.HelpDocs select c).Count());
 
-        webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
         HelpDoc helpDocModified = webAllHelpDocs.HelpDocList.Where(c => c.HelpDocID == -1).FirstOrDefault();
         Assert.NotNull(helpDocModified);
@@ -64,7 +64,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
         Assert.NotNull(webAllHelpDocs);
         Assert.NotEmpty(webAllHelpDocs.HelpDocList);
         Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
@@ -87,7 +87,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
         Assert.NotNull(webAllHelpDocs);
         Assert.NotEmpty(webAllHelpDocs.HelpDocList);
         Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
@@ -110,7 +110,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
         Assert.NotNull(webAllHelpDocs);
         Assert.NotEmpty(webAllHelpDocs.HelpDocList);
         Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
@@ -133,7 +133,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
         Assert.NotNull(webAllHelpDocs);
         Assert.NotEmpty(webAllHelpDocs.HelpDocList);
         Assert.True(webAllHelpDocs.HelpDocList.Count > 5);
@@ -156,7 +156,7 @@ public partial class HelpDocLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await HelpDocLocalServiceSetup(culture));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
         Assert.NotNull(webAllHelpDocs);
         Assert.NotEmpty(webAllHelpDocs.HelpDocList);
         Assert.True(webAllHelpDocs.HelpDocList.Count > 5);

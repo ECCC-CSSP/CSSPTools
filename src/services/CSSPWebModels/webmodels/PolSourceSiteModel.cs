@@ -1,33 +1,21 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class PolSourceSiteModel
 {
-    [NotMapped]
-    public partial class PolSourceSiteModel
-    {
-        #region Properties
-        public TVItemModel TVItemModel { get; set; }
-        public PolSourceSite PolSourceSite { get; set; }
-        public List<TVFileModel> TVFileModelList { get; set; }
-        public List<PolSourceObservationModel> PolSourceObservationModelList { get; set; }
-        public List<PolSourceSiteEffect> PolSourceSiteEffectList { get; set; }
-        #endregion Properties
+    public TVItemModel TVItemModel { get; set; }
+    public PolSourceSite PolSourceSite { get; set; }
+    public List<TVFileModel> TVFileModelList { get; set; }
+    public List<PolSourceObservationModel> PolSourceObservationModelList { get; set; }
+    public List<PolSourceSiteEffect> PolSourceSiteEffectList { get; set; }
 
-        #region Constructors
-        public PolSourceSiteModel()
-        {
-            TVItemModel = new TVItemModel();
-            PolSourceSite = new PolSourceSite();
-            TVFileModelList = new List<TVFileModel>();
-            PolSourceObservationModelList = new List<PolSourceObservationModel>();
-            PolSourceSiteEffectList = new List<PolSourceSiteEffect>();
-        }
-        #endregion Constructors
+    public PolSourceSiteModel()
+    {
+        TVItemModel = new TVItemModel();
+        PolSourceSite = new PolSourceSite();
+        TVFileModelList = new List<TVFileModel>();
+        PolSourceObservationModelList = new List<PolSourceObservationModel>();
+        PolSourceSiteEffectList = new List<PolSourceSiteEffect>();
     }
 }
+

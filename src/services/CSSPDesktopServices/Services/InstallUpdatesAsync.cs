@@ -12,7 +12,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
 
         if (!await StopAsync()) await Task.FromResult(false);
 
-        if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync()) return await Task.FromResult(false);
+        if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
 
         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.InstallUpdates));
 

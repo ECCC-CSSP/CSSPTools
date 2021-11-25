@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace CSSPSQLiteServices;
 
-namespace CSSPSQLiteServices
+public partial class CSSPSQLiteService : ICSSPSQLiteService
 {
-    public partial class CSSPSQLiteService : ICSSPSQLiteService
+    private async Task<bool> CreateAllTablesAsync(List<string> ListTableToCreate, bool DoSearch)
     {
-        private async Task<bool> CreateAllTablesAsync(List<string> ListTableToCreate, bool DoSearch)
+        foreach (string TableName in ListTableToCreate)
         {
-            foreach (string TableName in ListTableToCreate)
-            {
-                string tableName = TableName;
+            string tableName = TableName;
 
-                if (! await CreateTableBuilder(tableName, DoSearch)) return await Task.FromResult(false);
-            }
-
-            return await Task.FromResult(true);
+            if (!await CreateTableBuilder(tableName, DoSearch)) return await Task.FromResult(false);
         }
+
+        return await Task.FromResult(true);
     }
 }
+

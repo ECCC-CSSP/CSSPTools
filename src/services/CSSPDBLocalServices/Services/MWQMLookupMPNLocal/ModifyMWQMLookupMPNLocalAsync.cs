@@ -47,7 +47,7 @@ public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNL
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSON<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
+        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
 
         MWQMLookupMPN mwqmLookupMPNJSON = (from c in webAllMWQMLookupMPNs.MWQMLookupMPNList
                                            where c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID
@@ -60,7 +60,7 @@ public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNL
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         MWQMLookupMPN MWQMLookupMPNExist = (from c in dbLocal.MWQMLookupMPNs
                                             where c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID

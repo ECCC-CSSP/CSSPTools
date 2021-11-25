@@ -1,6 +1,5 @@
 ﻿namespace CSSPDBModels;
 
-#region Classes
 public partial class LastUpdate //: CSSPError
 {
     /// <summary>

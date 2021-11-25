@@ -41,7 +41,7 @@ public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
         HelpDoc helpDocJSON = (from c in webAllHelpDocs.HelpDocList
                                where c.DocKey == helpDoc.DocKey

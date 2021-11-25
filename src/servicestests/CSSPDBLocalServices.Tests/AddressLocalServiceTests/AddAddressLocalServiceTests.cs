@@ -108,7 +108,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotEmpty(tvItemLanguageListDB2);
         Assert.Equal(2, tvItemLanguageListDB2.Count);
 
-        WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
+        WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
         Address addressWeb = (from c in webAllAddresses.AddressList
                               where c.AddressID == -1
@@ -122,7 +122,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotNull(addressWeb2);
         Assert.Equal(-2, addressWeb2.AddressTVItemID);
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         List<TVItemModel> tvItemModelParentList = webRoot.TVItemModelParentList;
 
@@ -324,7 +324,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AddressLocalServiceSetup(culture));
 
-        WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSON<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
+        WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
         Assert.True(webAllAddresses.AddressList.Count > 10);
 

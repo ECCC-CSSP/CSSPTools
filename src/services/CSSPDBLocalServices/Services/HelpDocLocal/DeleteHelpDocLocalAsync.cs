@@ -41,7 +41,7 @@ public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSON<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
+        WebAllHelpDocs webAllHelpDocs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllHelpDocs>(WebTypeEnum.WebAllHelpDocs, 0);
 
         HelpDoc helpDocJSON = (from c in webAllHelpDocs.HelpDocList
                                where c.HelpDocID == helpDoc.HelpDocID
@@ -54,7 +54,7 @@ public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         HelpDoc HelpDocExist = (from c in dbLocal.HelpDocs
                                 where c.HelpDocID == helpDoc.HelpDocID

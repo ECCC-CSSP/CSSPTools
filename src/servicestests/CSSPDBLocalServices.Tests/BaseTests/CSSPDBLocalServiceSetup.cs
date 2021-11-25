@@ -115,7 +115,7 @@ public partial class CSSPDBLocalServiceTest
         CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
         Assert.NotNull(CSSPLocalLoggedInService);
 
-        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync());
+        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 

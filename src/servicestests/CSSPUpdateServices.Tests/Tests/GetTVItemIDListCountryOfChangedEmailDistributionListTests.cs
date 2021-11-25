@@ -1,91 +1,79 @@
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Security.Cryptography;
-using CSSPEnums;
+namespace UpdateServices.Tests;
 
-namespace UpdateServices.Tests
+public partial class UpdateServiceTests
 {
-    public partial class UpdateServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task GetTVItemIDListCountryOfChangedEmailDistributionList_HasEmailDistributionList_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetTVItemIDListCountryOfChangedEmailDistributionList_HasEmailDistributionList_Good_Test(string culture)
+        Assert.True(await CSSPUpdateServiceSetup(culture));
+
+        DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_EmailDistributionList().AddDays(-1);
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+        List<int> ProvinceTVItemIDList = await CSSPUpdateService.GetTVItemIDListCountryOfChangedEmailDistributionList(LastUpdateDate_UTC);
+        Assert.True(ProvinceTVItemIDList.Count > 0);
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task GetTVItemIDListCountryOfChangedEmailDistributionList_NoEmailDistribution_Good_Test(string culture)
+    {
+        Assert.True(await CSSPUpdateServiceSetup(culture));
+
+        DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_EmailDistributionList().AddDays(1);
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+
+        List<int> CountryTVItemIDList = await CSSPUpdateService.GetTVItemIDListCountryOfChangedEmailDistributionList(LastUpdateDate_UTC);
+        Assert.True(CountryTVItemIDList.Count == 0);
+
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+    }
+
+    private DateTime GetLastUpdateDate_UTC_EmailDistributionList()
+    {
+        DateTime DateTime1 = (from e in db.EmailDistributionLists
+                              orderby e.LastUpdateDate_UTC descending
+                              select e.LastUpdateDate_UTC).FirstOrDefault();
+        Assert.True(DateTime1.Year > 2000);
+
+        DateTime DateTime2 = (from e in db.EmailDistributionListLanguages
+                              orderby e.LastUpdateDate_UTC descending
+                              select e.LastUpdateDate_UTC).FirstOrDefault();
+        Assert.True(DateTime2.Year > 2000);
+
+        DateTime DateTime3 = (from e in db.EmailDistributionListContacts
+                              orderby e.LastUpdateDate_UTC descending
+                              select e.LastUpdateDate_UTC).FirstOrDefault();
+        Assert.True(DateTime3.Year > 2000);
+
+        DateTime DateTime4 = (from e in db.EmailDistributionListContactLanguages
+                              orderby e.LastUpdateDate_UTC descending
+                              select e.LastUpdateDate_UTC).FirstOrDefault();
+        Assert.True(DateTime4.Year > 2000);
+
+
+        if (DateTime1 < DateTime2)
         {
-            Assert.True(await CSSPUpdateServiceSetup(culture));
-
-            DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_EmailDistributionList().AddDays(-1);
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            List<int> ProvinceTVItemIDList = await CSSPUpdateService.GetTVItemIDListCountryOfChangedEmailDistributionList(LastUpdateDate_UTC);
-            Assert.True(ProvinceTVItemIDList.Count > 0);
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+            DateTime1 = DateTime2;
         }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetTVItemIDListCountryOfChangedEmailDistributionList_NoEmailDistribution_Good_Test(string culture)
+
+        if (DateTime1 < DateTime3)
         {
-            Assert.True(await CSSPUpdateServiceSetup(culture));
-
-            DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_EmailDistributionList().AddDays(1);
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            List<int> CountryTVItemIDList = await CSSPUpdateService.GetTVItemIDListCountryOfChangedEmailDistributionList(LastUpdateDate_UTC);
-            Assert.True(CountryTVItemIDList.Count == 0);
-
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+            DateTime1 = DateTime3;
         }
 
-        #region private
-        private DateTime GetLastUpdateDate_UTC_EmailDistributionList()
+        if (DateTime1 < DateTime4)
         {
-            DateTime DateTime1 = (from e in db.EmailDistributionLists
-                                  orderby e.LastUpdateDate_UTC descending
-                                  select e.LastUpdateDate_UTC).FirstOrDefault();
-            Assert.True(DateTime1.Year > 2000);
-
-            DateTime DateTime2 = (from e in db.EmailDistributionListLanguages
-                                  orderby e.LastUpdateDate_UTC descending
-                                  select e.LastUpdateDate_UTC).FirstOrDefault();
-            Assert.True(DateTime2.Year > 2000);
-
-            DateTime DateTime3 = (from e in db.EmailDistributionListContacts
-                                  orderby e.LastUpdateDate_UTC descending
-                                  select e.LastUpdateDate_UTC).FirstOrDefault();
-            Assert.True(DateTime3.Year > 2000);
-
-            DateTime DateTime4 = (from e in db.EmailDistributionListContactLanguages
-                                  orderby e.LastUpdateDate_UTC descending
-                                  select e.LastUpdateDate_UTC).FirstOrDefault();
-            Assert.True(DateTime4.Year > 2000);
-
-
-            if (DateTime1 < DateTime2)
-            {
-                DateTime1 = DateTime2;
-            }
-
-            if (DateTime1 < DateTime3)
-            {
-                DateTime1 = DateTime3;
-            }
-
-            if (DateTime1 < DateTime4)
-            {
-                DateTime1 = DateTime4;
-            }
-
-            return DateTime1;
+            DateTime1 = DateTime4;
         }
-        #endregion private
+
+        return DateTime1;
     }
 }
+

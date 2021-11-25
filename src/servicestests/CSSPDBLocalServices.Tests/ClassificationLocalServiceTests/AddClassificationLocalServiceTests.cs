@@ -11,7 +11,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
 
         int SubsectorTVItemID = 635;
 
-        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
+        WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
 
         List<TVItemModel> tvItemModelParentList = webSubsector.TVItemModelParentList;
 
@@ -52,7 +52,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.Equal(JsonSerializer.Serialize(classificationDB), JsonSerializer.Serialize(classificationModelRet));
 
-        webSubsector = await CSSPReadGzFileService.GetUncompressJSON<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
+        webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
 
         ClassificationModel classificationModelWeb = (from c in webSubsector.ClassificationModelList
                                                       where c.Classification.ClassificationID == -1

@@ -33,7 +33,7 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSON<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
         TVItemModel tvItemModelToModify = (from c in webCountry.TVItemModelProvinceList
                                            where c.TVItem.TVItemID == TVItemID

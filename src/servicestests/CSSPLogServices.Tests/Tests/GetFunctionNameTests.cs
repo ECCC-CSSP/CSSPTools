@@ -1,20 +1,17 @@
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPLogServices.Tests;
 
-namespace CSSPLogServices.Tests
+public partial class CSSPLogServiceTests
 {
-    public partial class CSSPLogServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task GetFunctionName_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task GetFunctionName_Good_Test(string culture)
-        {
-            Assert.True(await CSSPLogServiceSetup(culture));
+        Assert.True(await CSSPLogServiceSetup(culture));
 
-            string ThisFunction = "ThisFunction";
+        string ThisFunction = "ThisFunction";
 
-            Assert.Equal(ThisFunction, CSSPLogService.GetFunctionName($"<{ThisFunction}>"));
-        }
+        Assert.Equal(ThisFunction, CSSPLogService.GetFunctionName($"<{ThisFunction}>"));
     }
 }
+

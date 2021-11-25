@@ -59,7 +59,7 @@ public partial class EmailLocalService : ControllerBase, IEmailLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSON<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
+        WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 
         Email emailJSON = (from c in webAllEmails.EmailList
                            where c.EmailAddress == email.EmailAddress
@@ -70,7 +70,7 @@ public partial class EmailLocalService : ControllerBase, IEmailLocalService
             return await Task.FromResult(Ok(emailJSON));
         }
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         await TVItemLocalService.AddTVItemParentLocalAsync(webRoot.TVItemModelParentList.OrderBy(c => c.TVItem.TVLevel).ToList());
 

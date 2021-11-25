@@ -1,30 +1,25 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Xunit;
-using System.Linq;
+namespace UpdateServices.Tests;
 
-namespace UpdateServices.Tests
+public partial class UpdateServiceTests
 {
-    public partial class UpdateServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task RemoveAzureDirectoriesNotFoundInTVFiles_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task RemoveAzureDirectoriesNotFoundInTVFiles_Good_Test(string culture)
-        {
-            Assert.True(await CSSPUpdateServiceSetup(culture));
+        Assert.True(await CSSPUpdateServiceSetup(culture));
 
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-            CSSPLogService.CSSPAppName = "AppNameTest";
-            CSSPLogService.CSSPCommandName = "CommandNameTest";
+        CSSPLogService.CSSPAppName = "AppNameTest";
+        CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-            var actionRes = await CSSPUpdateService.RemoveAzureDirectoriesNotFoundInTVFiles();
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        var actionRes = await CSSPUpdateService.RemoveAzureDirectoriesNotFoundInTVFiles();
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
-            await CSSPLogService.Save();
+        await CSSPLogService.Save();
 
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
-        }
+        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
+

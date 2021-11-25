@@ -1,22 +1,13 @@
-﻿using CSSPDBModels;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+﻿namespace CSSPSQLiteServices.Tests;
 
-namespace CSSPSQLiteServices.Tests
+public partial class CSSPSQLiteServiceTests
 {
-    public partial class CSSPSQLiteServiceTests
+    private void CheckCSSPDBLocalContext()
     {
-        private void CheckCSSPDBLocalContext()
+        Services.AddDbContext<CSSPDBLocalContext>(options =>
         {
-            Services.AddDbContext<CSSPDBLocalContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
-            });
-        }
+            options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
+        });
     }
 }
+

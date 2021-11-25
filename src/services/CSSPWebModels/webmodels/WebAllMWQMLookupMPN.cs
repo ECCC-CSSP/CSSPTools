@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class WebAllMWQMLookupMPNs
 {
-    [NotMapped]
-    public partial class WebAllMWQMLookupMPNs
-    {
-        #region Properties
-        public List<MWQMLookupMPN> MWQMLookupMPNList { get; set; }
-        #endregion Properties
+    public List<MWQMLookupMPN> MWQMLookupMPNList { get; set; }
 
-        #region Constructors
-        public WebAllMWQMLookupMPNs()
-        {
-            MWQMLookupMPNList = new List<MWQMLookupMPN>();
-        }
-        #endregion Constructors
+    public WebAllMWQMLookupMPNs()
+    {
+        MWQMLookupMPNList = new List<MWQMLookupMPN>();
     }
 }
+

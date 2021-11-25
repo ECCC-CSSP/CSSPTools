@@ -9,7 +9,7 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await RootLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         Assert.NotNull(webRoot);
 
@@ -24,7 +24,7 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
         TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionRootRes.Result).Value;
         Assert.NotNull(tvItemModelChangedRet);
 
-        webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         TVItemModel tvItemModelRet = webRoot.TVItemModel;
 
@@ -58,7 +58,7 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await RootLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         Assert.NotNull(webRoot.TVItemModel);
 
@@ -81,7 +81,7 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await RootLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSON<WebRoot>(WebTypeEnum.WebRoot, 0);
+        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         Assert.NotNull(webRoot.TVItemModel);
 

@@ -1,0 +1,15 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Threading.Tasks;
+global using CSSPCultureServices.Services;
+global using CSSPDesktopInstallPostBuildServices.Services;
+global using CSSPEnums;
+global using CSSPDBModels;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Xunit;
+global using CSSPHelperModels;
+global using Azure.Storage.Files.Shares;
+global using CSSPScrambleServices;

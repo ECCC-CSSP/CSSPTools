@@ -1,37 +1,32 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+﻿namespace CSSPSQLiteServices.Tests;
 
-namespace CSSPSQLiteServices.Tests
+public partial class CSSPSQLiteServiceTests
 {
-    public partial class CSSPSQLiteServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task CreateSQLiteCSSPDBManage_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task CreateSQLiteCSSPDBManage_Good_Test(string culture)
+        Assert.True(await CSSPSQLiteServiceSetup(culture));
+
+        FileInfo fi = new FileInfo(Configuration["CSSPDBManage"]);
+        if (fi.Exists)
         {
-            Assert.True(await CSSPSQLiteServiceSetup(culture));
-
-            FileInfo fi = new FileInfo(Configuration["CSSPDBManage"]);
-            if (fi.Exists)
+            try
             {
-                try
-                {
-                    fi.Delete();
-                }
-                catch (Exception ex)
-                {
-                    Assert.True(false, ex.Message);
-                }
+                fi.Delete();
             }
-
-            bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync();
-            Assert.True(retBool);
-
-            fi = new FileInfo(Configuration["CSSPDBManage"]);
-            Assert.True(fi.Exists);
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
         }
+
+        bool retBool = await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync();
+        Assert.True(retBool);
+
+        fi = new FileInfo(Configuration["CSSPDBManage"]);
+        Assert.True(fi.Exists);
     }
 }
+

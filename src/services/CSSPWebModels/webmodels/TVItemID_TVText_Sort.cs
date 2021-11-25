@@ -1,25 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPWebModels;
 
-namespace CSSPWebModels
+[NotMapped]
+public partial class TVItemID_TVText_Sort
 {
-    [NotMapped]
-    public partial class TVItemID_TVText_Sort
-    {
-        #region Properties
-        public int TVItemID { get; set; }
-        public string TVText { get; set; }
-        #endregion Properties
+    public int TVItemID { get; set; }
+    public string TVText { get; set; }
 
-        #region Constructors
-        public TVItemID_TVText_Sort()
-        {
-        }
-        #endregion Constructors
+    public TVItemID_TVText_Sort()
+    {
     }
 }
+
