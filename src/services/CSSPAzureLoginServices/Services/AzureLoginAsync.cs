@@ -20,7 +20,7 @@ public partial class CSSPAzureLoginService : ControllerBase, ICSSPAzureLoginServ
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo())
+        if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync())
         {
             CSSPLogService.AppendError(CSSPCultureServicesRes.ErrorInSetLocalLoggedInContactInfo);
         }

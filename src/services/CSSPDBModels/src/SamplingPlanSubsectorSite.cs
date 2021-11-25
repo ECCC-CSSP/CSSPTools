@@ -1,37 +1,21 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
+public partial class SamplingPlanSubsectorSite : LastUpdate
 {
-    public partial class SamplingPlanSubsectorSite : LastUpdate
-    {
-        #region Properties in DB
-        [Key]
-        public int SamplingPlanSubsectorSiteID { get; set; }
-        [CSSPEnumType]
-        public DBCommandEnum DBCommand { get; set; }
-        [CSSPExist(ExistTypeName = "SamplingPlanSubsector", ExistPlurial = "s", ExistFieldID = "SamplingPlanSubsectorID")]
-        [CSSPForeignKey(TableName = "SamplingPlanSubsectors", FieldName = "SamplingPlanSubsectorID")]
-        public int SamplingPlanSubsectorID { get; set; }
-        [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "16")]
-        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
-        public int MWQMSiteTVItemID { get; set; }
-        public bool IsDuplicate { get; set; }
-        #endregion Properties in DB
+    [Key]
+    public int SamplingPlanSubsectorSiteID { get; set; }
+    [CSSPEnumType]
+    public DBCommandEnum DBCommand { get; set; }
+    [CSSPExist(ExistTypeName = "SamplingPlanSubsector", ExistPlurial = "s", ExistFieldID = "SamplingPlanSubsectorID")]
+    [CSSPForeignKey(TableName = "SamplingPlanSubsectors", FieldName = "SamplingPlanSubsectorID")]
+    public int SamplingPlanSubsectorID { get; set; }
+    [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "16")]
+    [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
+    public int MWQMSiteTVItemID { get; set; }
+    public bool IsDuplicate { get; set; }
 
-        #region Constructors
-        public SamplingPlanSubsectorSite() : base()
-        {
-        }
-        #endregion Constructors
+    public SamplingPlanSubsectorSite() : base()
+    {
     }
 }
+

@@ -1,37 +1,21 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
+public partial class ResetPassword : LastUpdate
 {
-    public partial class ResetPassword : LastUpdate
-    {
-        #region Properties in DB
-        [Key]
-        public int ResetPasswordID { get; set; }
-        [CSSPEnumType]
-        public DBCommandEnum DBCommand { get; set; }
-        [CSSPMaxLength(256)]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-        [CSSPAfter(Year = 1980)]
-        public DateTime ExpireDate_Local { get; set; }
-        [CSSPMaxLength(8)]
-        public string Code { get; set; }
-        #endregion Properties in DB
+    [Key]
+    public int ResetPasswordID { get; set; }
+    [CSSPEnumType]
+    public DBCommandEnum DBCommand { get; set; }
+    [CSSPMaxLength(256)]
+    [DataType(DataType.EmailAddress)]
+    public string Email { get; set; }
+    [CSSPAfter(Year = 1980)]
+    public DateTime ExpireDate_Local { get; set; }
+    [CSSPMaxLength(8)]
+    public string Code { get; set; }
 
-        #region Constructors
-        public ResetPassword() : base()
-        {
-        }
-        #endregion Constructors
+    public ResetPassword() : base()
+    {
     }
 }
+

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace CSSPEnums
 {
-    partial interface IEnums
+    public partial interface IEnums
     {
         string EnumTypeListOK(Type type, List<int?> intList);
         string EnumTypeOK(Type type, int? ID);

@@ -1,34 +1,19 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPHelperModels;
 
-namespace CSSPHelperModels
+[NotMapped]
+public partial class SubsectorMWQMSampleYear
 {
-    [NotMapped]
-    public partial class SubsectorMWQMSampleYear
+    [CSSPRange(1, -1)]
+    public int SubsectorTVItemID { get; set; }
+    public int Year { get; set; }
+    [CSSPAfter(Year = 1980)]
+    public DateTime EarliestDate { get; set; }
+    [CSSPAfter(Year = 1980)]
+    [CSSPBigger(OtherField = "EarliestDate")]
+    public DateTime LatestDate { get; set; }
+
+    public SubsectorMWQMSampleYear() : base()
     {
-        #region Properties in DB
-        #endregion Properties in DB
-
-        #region Properties not in DB
-        [CSSPRange(1, -1)]
-        public int SubsectorTVItemID { get; set; }
-        public int Year { get; set; }
-        [CSSPAfter(Year = 1980)]
-        public DateTime EarliestDate { get; set; }
-        [CSSPAfter(Year = 1980)]
-        [CSSPBigger(OtherField = "EarliestDate")]
-        public DateTime LatestDate { get; set; }
-        #endregion Properties not in DB
-
-        #region Constructors
-        public SubsectorMWQMSampleYear() : base()
-        {
-        }
-        #endregion Constructors
     }
 }
+

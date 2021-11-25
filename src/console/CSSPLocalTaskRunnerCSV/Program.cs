@@ -1,12 +1,10 @@
-﻿using System;
+﻿namespace CSSPTaskRunnerCSV;
 
-namespace CSSPTaskRunnerCSV
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        Console.WriteLine("Hello World!");
     }
 }
+

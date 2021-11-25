@@ -7,7 +7,7 @@
 
     <Platforms>AnyCPU;x64</Platforms>
 
-    <UserSecretsId>a99b918b-441f-4e0c-8461-a36b9e9565d3</UserSecretsId>
+    <UserSecretsId>CSSPDesktopInstallPostBuildServices_Tests</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

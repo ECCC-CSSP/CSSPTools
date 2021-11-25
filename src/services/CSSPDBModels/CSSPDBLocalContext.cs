@@ -1,16 +1,7 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
-{
     public partial class CSSPDBLocalContext : DbContext
     {
-        #region Properties
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AppErrLog> AppErrLogs { get; set; }
         public virtual DbSet<AppTask> AppTasks { get; set; }
@@ -100,7 +91,6 @@ namespace CSSPDBModels
         public virtual DbSet<VPResult> VPResults { get; set; }
         public virtual DbSet<VPScenarioLanguage> VPScenarioLanguages { get; set; }
         public virtual DbSet<VPScenario> VPScenarios { get; set; }
-        #endregion Properties
 
         public CSSPDBLocalContext()
         {
@@ -111,4 +101,3 @@ namespace CSSPDBModels
         {
         }
     }
-}

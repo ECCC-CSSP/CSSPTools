@@ -1,27 +1,13 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPHelperModels;
 
-namespace CSSPHelperModels
+[NotMapped]
+public partial class SearchResult
 {
-    [NotMapped]
-    public partial class SearchResult
+    public TVItem TVItem { get; set; }
+    public TVItemLanguage TVItemLanguage { get; set; }
+
+    public SearchResult() : base()
     {
-        #region Properties in DB
-        #endregion Properties in DB
-
-        #region Properties not in DB
-        public TVItem TVItem { get; set; }
-        public TVItemLanguage TVItemLanguage { get; set; }
-        #endregion Properties not in DB
-
-        #region Constructors
-        public SearchResult() : base()
-        {
-        }
-        #endregion Constructors
     }
 }
+

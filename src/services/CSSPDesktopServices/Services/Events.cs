@@ -1,33 +1,27 @@
-﻿using CSSPDesktopServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CSSPDesktopServices.Services;
 
-namespace CSSPDesktopServices.Services
+public partial class CSSPDesktopService : ICSSPDesktopService
 {
-    public partial class CSSPDesktopService : ICSSPDesktopService
+    protected virtual void ClearStatus(ClearEventArgs e)
     {
-        protected virtual void ClearStatus(ClearEventArgs e)
-        {
-            StatusClear?.Invoke(this, e);
-        }
-
-        public event EventHandler<ClearEventArgs> StatusClear;
-
-
-        protected virtual void AppendStatus(AppendEventArgs e)
-        {
-            StatusAppend?.Invoke(this, e);
-        }
-
-        public event EventHandler<AppendEventArgs> StatusAppend;
-
-        protected virtual void InstallingStatus(InstallingEventArgs e)
-        {
-            StatusInstalling?.Invoke(this, e);
-        }
-
-        public event EventHandler<InstallingEventArgs> StatusInstalling;
+        StatusClear?.Invoke(this, e);
     }
+
+    public event EventHandler<ClearEventArgs> StatusClear;
+
+
+    protected virtual void AppendStatus(AppendEventArgs e)
+    {
+        StatusAppend?.Invoke(this, e);
+    }
+
+    public event EventHandler<AppendEventArgs> StatusAppend;
+
+    protected virtual void InstallingStatus(InstallingEventArgs e)
+    {
+        StatusInstalling?.Invoke(this, e);
+    }
+
+    public event EventHandler<InstallingEventArgs> StatusInstalling;
 }
+

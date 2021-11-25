@@ -1,48 +1,35 @@
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-using System.Diagnostics;
-using System.Collections.Generic;
-using ManageServices;
-using System.Linq;
+namespace CSSPDesktopServices.Tests;
 
-namespace CSSPDesktopServices.Tests
+public partial class CSSPDesktopServiceTests
 {
-    public partial class CSSPDesktopServiceTests
+    private async Task CreateAndEmptyDirectories()
     {
-        private async Task CreateAndEmptyDirectories()
+        foreach (string dir in await CSSPDesktopService.GetDirectoryToCreateListAsync())
         {
-            foreach(string dir in await CSSPDesktopService.GetDirectoryToCreateListAsync())
+            DirectoryInfo di = new DirectoryInfo(dir);
+            if (!di.Exists)
             {
-                DirectoryInfo di = new DirectoryInfo(dir);
-                if (!di.Exists)
+                try
                 {
-                    try
-                    {
-                        di.Create();
-                    }
-                    catch (Exception ex)
-                    {
-                        Assert.True(false, ex.Message);
-                    }
+                    di.Create();
                 }
-                else
+                catch (Exception ex)
                 {
-                    foreach (FileInfo file in di.GetFiles())
-                    {
-                        file.Delete();
-                    }
+                    Assert.True(false, ex.Message);
                 }
-
-                di = new DirectoryInfo(dir);
-                Assert.True(di.Exists);
-                Assert.Empty(di.GetFiles());
             }
+            else
+            {
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+            }
+
+            di = new DirectoryInfo(dir);
+            Assert.True(di.Exists);
+            Assert.Empty(di.GetFiles());
         }
     }
 }
+

@@ -1,34 +1,25 @@
-﻿using CSSPCultureServices.Resources;
-using CSSPDesktopServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CSSPDesktopServices.Services;
 
-namespace CSSPDesktopServices.Services
+public partial class CSSPDesktopService : ICSSPDesktopService
 {
-    public partial class CSSPDesktopService : ICSSPDesktopService
+    private bool OpenBrowser()
     {
-        private bool OpenBrowser()
-        {
-            //string culture = "fr-CA";
-            //if (IsEnglish)
-            //{
-            //    culture = "en-CA";
-            //}
+        //string culture = "fr-CA";
+        //if (IsEnglish)
+        //{
+        //    culture = "en-CA";
+        //}
 
-            AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ Configuration["CSSPLocalUrl"] }/")));
+        AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.Executing_, $"{ Configuration["CSSPLocalUrl"] }/")));
 
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.FileName = $"{ Configuration["CSSPLocalUrl"] }";
-            //processStartInfo.FileName = $"{ CSSPLocalUrl }{ culture }/";
-            processStartInfo.Arguments = "";
-            processStartInfo.UseShellExecute = true;
-            processBrowser = Process.Start(processStartInfo);
+        ProcessStartInfo processStartInfo = new ProcessStartInfo();
+        processStartInfo.FileName = $"{ Configuration["CSSPLocalUrl"] }";
+        //processStartInfo.FileName = $"{ CSSPLocalUrl }{ culture }/";
+        processStartInfo.Arguments = "";
+        processStartInfo.UseShellExecute = true;
+        processBrowser = Process.Start(processStartInfo);
 
-            return true;
-        }
+        return true;
     }
 }
+

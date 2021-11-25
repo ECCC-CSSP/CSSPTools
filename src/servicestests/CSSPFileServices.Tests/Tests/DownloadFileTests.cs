@@ -1,77 +1,69 @@
-using CSSPHelperModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPFileServices.Tests;
 
-namespace CSSPFileServices.Tests
+public partial class FileServiceTests
 {
-    public partial class FileServiceTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task DownloadFile_Good_Test(string culture)
     {
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadFile_Good_Test(string culture)
-        {
-            Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetup(culture));
 
-            int ParentTVItemID = 1;
-            string FileName = "BarTopBottom.png";
+        int ParentTVItemID = 1;
+        string FileName = "BarTopBottom.png";
 
-            FileInfo fi = new FileInfo($@"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\{FileName}");
-            Assert.True(fi.Exists);
+        FileInfo fi = new FileInfo($@"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\{FileName}");
+        Assert.True(fi.Exists);
 
-            var actionRes2 = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
-            Assert.NotNull(((PhysicalFileResult)actionRes2).FileName);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadFile_Unauthorized_Error_Test(string culture)
-        {
-            Assert.True(await CSSPFileServiceSetup(culture));
+        var actionRes2 = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
+        Assert.NotNull(((PhysicalFileResult)actionRes2).FileName);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task DownloadFile_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await CSSPFileServiceSetup(culture));
 
-            int ParentTVItemID = 1;
-            string FileName = "BarTopBottom.png";
+        int ParentTVItemID = 1;
+        string FileName = "BarTopBottom.png";
 
-            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
-            Assert.True(fi.Exists);
+        FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
+        Assert.True(fi.Exists);
 
-            CSSPLocalLoggedInService.LoggedInContactInfo = null;
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
-            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
-            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
-            Assert.NotEmpty(errRes.ErrList);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task DownloadFile_FileNotExist_Error_Test(string culture)
-        {
-            Assert.True(await CSSPFileServiceSetup(culture));
+        var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
+        Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
+        Assert.NotEmpty(errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task DownloadFile_FileNotExist_Error_Test(string culture)
+    {
+        Assert.True(await CSSPFileServiceSetup(culture));
 
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-            CSSPLogService.CSSPAppName = "FileServiceTests";
-            CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests_FileNotExist";
+        CSSPLogService.CSSPAppName = "FileServiceTests";
+        CSSPLogService.CSSPCommandName = "Testing_DownloadFileTests_FileNotExist";
 
-            int ParentTVItemID = 1;
-            string FileName = "NotExist.png";
+        int ParentTVItemID = 1;
+        string FileName = "NotExist.png";
 
-            FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
-            Assert.False(fi.Exists);
+        FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
+        Assert.False(fi.Exists);
 
-            var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
-            Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
-            ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
-            Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
+        Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
+        Assert.NotEmpty(errRes.ErrList);
 
-            await CSSPLogService.Save();
+        await CSSPLogService.Save();
 
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
-        }
+        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
+

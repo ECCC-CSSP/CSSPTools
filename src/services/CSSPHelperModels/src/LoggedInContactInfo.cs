@@ -1,31 +1,16 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPDBModels;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPHelperModels;
 
-namespace CSSPHelperModels
+[NotMapped]
+public partial class LoggedInContactInfo
 {
-    [NotMapped]
-    public partial class LoggedInContactInfo
+    public Contact LoggedInContact { get; set; }
+    public List<TVTypeUserAuthorization> TVTypeUserAuthorizationList { get; set; }
+    public List<TVItemUserAuthorization> TVItemUserAuthorizationList { get; set; }
+
+    public LoggedInContactInfo() : base()
     {
-        #region Properties in DB
-        #endregion Properties in DB
-
-        #region Properties not in DB
-        public Contact LoggedInContact { get; set; }
-        public List<TVTypeUserAuthorization> TVTypeUserAuthorizationList { get; set; }
-        public List<TVItemUserAuthorization> TVItemUserAuthorizationList { get; set; }
-        #endregion Properties not in DB
-
-        #region Constructors
-        public LoggedInContactInfo() : base()
-        {
-            TVTypeUserAuthorizationList = new List<TVTypeUserAuthorization>();
-            TVItemUserAuthorizationList = new List<TVItemUserAuthorization>();
-        }
-        #endregion Constructors
+        TVTypeUserAuthorizationList = new List<TVTypeUserAuthorization>();
+        TVItemUserAuthorizationList = new List<TVItemUserAuthorization>();
     }
 }
+

@@ -1,37 +1,21 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
+public partial class Classification : LastUpdate
 {
-    public partial class Classification : LastUpdate
-    {
-        #region Properties in DB
-        [Key]
-        public int ClassificationID { get; set; }
-        [CSSPEnumType]
-        public DBCommandEnum DBCommand { get; set; }
-        [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "79")]
-        [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
-        public int ClassificationTVItemID { get; set; }
-        [CSSPEnumType]
-        public ClassificationTypeEnum ClassificationType { get; set; }
-        [CSSPRange(0, 10000)]
-        public int Ordinal { get; set; }
-        #endregion Properties in DB
+    [Key]
+    public int ClassificationID { get; set; }
+    [CSSPEnumType]
+    public DBCommandEnum DBCommand { get; set; }
+    [CSSPExist(ExistTypeName = "TVItem", ExistPlurial = "s", ExistFieldID = "TVItemID", AllowableTVTypeList = "79")]
+    [CSSPForeignKey(TableName = "TVItems", FieldName = "TVItemID")]
+    public int ClassificationTVItemID { get; set; }
+    [CSSPEnumType]
+    public ClassificationTypeEnum ClassificationType { get; set; }
+    [CSSPRange(0, 10000)]
+    public int Ordinal { get; set; }
 
-        #region Constructors
-        public Classification() : base()
-        {
-        }
-        #endregion Constructors
+    public Classification() : base()
+    {
     }
 }
+

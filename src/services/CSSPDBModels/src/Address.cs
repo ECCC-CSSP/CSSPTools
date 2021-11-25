@@ -1,20 +1,7 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
-{
     public partial class Address : LastUpdate
     {
-        #region Properties in DB
         [Key]
         public int AddressID { get; set; }
         [CSSPEnumType]
@@ -50,14 +37,10 @@ namespace CSSPDBModels
         [CSSPMinLength(10)]
         [CSSPAllowNull]
         public string GoogleAddressText { get; set; }
-        #endregion Properties in DB
 
-        #region Constructors
         public Address() : base()
         {
         }
-        #endregion Constructors
     }
+   
 
-    
-}

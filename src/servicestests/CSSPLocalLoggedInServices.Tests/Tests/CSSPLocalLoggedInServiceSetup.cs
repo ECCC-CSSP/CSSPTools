@@ -1,82 +1,53 @@
-using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPLocalLoggedInServices;
-using ManageServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPLocalLoggedInServices.Tests;
 
-namespace CSSPLocalLoggedInServices.Tests
+public partial class CSSPLocalLoggedInServicesTests
 {
-    public partial class CSSPLocalLoggedInServicesTests
+    private IConfiguration Configuration { get; set; }
+    private IServiceCollection Services { get; set; }
+    private IServiceProvider Provider { get; set; }
+    private ICSSPCultureService CSSPCultureService { get; set; }
+    private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+
+    private async Task<bool> CSSPLocalLoggedInServiceSetup(string culture, int ErrNumber = 0)
     {
-        #region Variables
-        #endregion Variables
+        Configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+            .AddJsonFile("appsettings_cssplocalloggedinservicestests.json")
+            .Build();
 
-        #region Properties
-        private IConfiguration Configuration { get; set; }
-        private IServiceCollection Services { get; set; }
-        private IServiceProvider Provider { get; set; }
-        private ICSSPCultureService CSSPCultureService { get; set; }
-        private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-        #endregion Properties
+        Services = new ServiceCollection();
 
-        #region Constructors
-        public CSSPLocalLoggedInServicesTests()
+        Services.AddSingleton<IConfiguration>(Configuration);
+        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+
+        Assert.NotNull(Configuration["CSSPDBManage"]);
+
+        /* ---------------------------------------------------------------------------------
+         * CSSPDBManageContext
+         * ---------------------------------------------------------------------------------      
+         */
+
+        FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+        Assert.True(fiCSSPDBManage.Exists);
+
+        Services.AddDbContext<CSSPDBManageContext>(options =>
         {
-        }
-        #endregion Constructors
+            options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+        });
 
-        #region Tests
-        #endregion Tests
+        Provider = Services.BuildServiceProvider();
+        Assert.NotNull(Provider);
 
-        #region Functions private
-        private async Task<bool> CSSPLocalLoggedInServiceSetup(string culture, int ErrNumber = 0)
-        {
-            Configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings_cssplocalloggedinservicestests.json")
-                .Build();
+        CSSPCultureService = Provider.GetService<ICSSPCultureService>();
+        Assert.NotNull(CSSPCultureService);
 
-            Services = new ServiceCollection();
+        CSSPCultureService.SetCulture(culture);
 
-            Services.AddSingleton<IConfiguration>(Configuration);
-            Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-            Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+        CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
+        Assert.NotNull(CSSPLocalLoggedInService);
 
-            Assert.NotNull(Configuration["CSSPDBManage"]);
-
-            /* ---------------------------------------------------------------------------------
-             * CSSPDBManageContext
-             * ---------------------------------------------------------------------------------      
-             */
-
-            FileInfo fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
-            Assert.True(fiCSSPDBManage.Exists);
-
-            Services.AddDbContext<CSSPDBManageContext>(options =>
-            {
-                options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
-            });
-
-            Provider = Services.BuildServiceProvider();
-            Assert.NotNull(Provider);
-
-            CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-            Assert.NotNull(CSSPCultureService);
-
-            CSSPCultureService.SetCulture(culture);
-
-            CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-            Assert.NotNull(CSSPLocalLoggedInService);
-
-            return await Task.FromResult(true);
-        }
-        #endregion Functions private
+        return await Task.FromResult(true);
     }
 }
+

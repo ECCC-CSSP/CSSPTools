@@ -1,94 +1,77 @@
-using CSSPEnums;
-using CSSPDBModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Azure.Storage.Files.Shares;
-using Azure.Storage.Files.Shares.Models;
-using Azure;
+namespace CSSPDesktopServices.Tests;
 
-namespace CSSPDesktopServices.Tests
+public partial class CSSPDesktopServiceTests
 {
-    public partial class CSSPDesktopServiceTests
+    private async Task CopyAzureZipUpdateFilesToAzureTestDirectory()
     {
-        private async Task CopyAzureZipUpdateFilesToAzureTestDirectory()
+        foreach (string zipFileName in await CSSPDesktopService.GetZipFileNameListAsync())
         {
-            foreach (string zipFileName in await CSSPDesktopService.GetZipFileNameListAsync())
-            {
-                bool fileExistInTestDirectory = false;
-                FileInfo fi = new FileInfo($"{ Configuration["CSSPWebAPIsLocalPath"]}{zipFileName}");
+            bool fileExistInTestDirectory = false;
+            FileInfo fi = new FileInfo($"{ Configuration["CSSPWebAPIsLocalPath"]}{zipFileName}");
 
-                ShareClient shareClientTest = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
-                ShareDirectoryClient directoryTest = shareClientTest.GetRootDirectoryClient();
-                ShareFileClient shareFileClientTest = directoryTest.GetFileClient(zipFileName);
-                ShareFileProperties shareFilePropertiesTest = null;
+            ShareClient shareClientTest = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+            ShareDirectoryClient directoryTest = shareClientTest.GetRootDirectoryClient();
+            ShareFileClient shareFileClientTest = directoryTest.GetFileClient(zipFileName);
+            ShareFileProperties shareFilePropertiesTest = null;
+
+            try
+            {
+                shareFilePropertiesTest = shareFileClientTest.GetProperties();
+                fileExistInTestDirectory = true;
+            }
+            catch (Exception)
+            {
+                //nothing fileExistInTestDirectory stays false
+            }
+
+            if (!fileExistInTestDirectory)
+            {
+                ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"].Replace("test", ""));
+                ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
+                ShareFileClient shareFileClient = directory.GetFileClient(fi.Name);
+                ShareFileProperties shareFileProperties = null;
 
                 try
                 {
-                    shareFilePropertiesTest = shareFileClientTest.GetProperties();
-                    fileExistInTestDirectory = true;
+                    shareFileProperties = shareFileClient.GetProperties();
                 }
-                catch (Exception)
+                catch (RequestFailedException ex)
                 {
-                    //nothing fileExistInTestDirectory stays false
+                    Assert.True(false, ex.Message);
                 }
 
-                if (!fileExistInTestDirectory)
+                try
                 {
-                    ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"].Replace("test", ""));
-                    ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
-                    ShareFileClient shareFileClient = directory.GetFileClient(fi.Name);
-                    ShareFileProperties shareFileProperties = null;
-
-                    try
+                    ShareFileDownloadInfo download = shareFileClient.Download();
+                    using (FileStream stream = File.OpenWrite(fi.FullName))
                     {
-                        shareFileProperties = shareFileClient.GetProperties();
+                        download.Content.CopyTo(stream);
                     }
-                    catch (RequestFailedException ex)
-                    {
-                        Assert.True(false, ex.Message);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
+                }
 
-                    try
+                try
+                {
+                    fi = new FileInfo(fi.FullName);
+
+                    using (FileStream stream = File.OpenRead(fi.FullName))
                     {
-                        ShareFileDownloadInfo download = shareFileClient.Download();
-                        using (FileStream stream = File.OpenWrite(fi.FullName))
+                        if (fi.Length != 0)
                         {
-                            download.Content.CopyTo(stream);
+                            await shareFileClientTest.CreateAsync(stream.Length);
+                            await shareFileClientTest.UploadAsync(stream);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Assert.True(false, ex.Message);
-                    }
-
-                    try
-                    {
-                        fi = new FileInfo(fi.FullName);
-
-                        using (FileStream stream = File.OpenRead(fi.FullName))
-                        {
-                            if (fi.Length != 0)
-                            {
-                                await shareFileClientTest.CreateAsync(stream.Length);
-                                await shareFileClientTest.UploadAsync(stream);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Assert.True(false, ex.Message);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Assert.True(false, ex.Message);
                 }
             }
         }
     }
 }
+

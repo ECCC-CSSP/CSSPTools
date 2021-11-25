@@ -1,36 +1,20 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
+public partial class HelpDoc : LastUpdate
 {
-    public partial class HelpDoc : LastUpdate
-    {
-        #region Properties in DB
-        [Key]
-        public int HelpDocID { get; set; }
-        [CSSPEnumType]
-        public DBCommandEnum DBCommand { get; set; }
-        [CSSPMaxLength(100)]
-        public string DocKey { get; set; }
-        [CSSPEnumType]
-        public LanguageEnum Language { get; set; }
-        [CSSPMaxLength(100000)]
-        public string DocHTMLText { get; set; }
-        #endregion Properties in DB
+    [Key]
+    public int HelpDocID { get; set; }
+    [CSSPEnumType]
+    public DBCommandEnum DBCommand { get; set; }
+    [CSSPMaxLength(100)]
+    public string DocKey { get; set; }
+    [CSSPEnumType]
+    public LanguageEnum Language { get; set; }
+    [CSSPMaxLength(100000)]
+    public string DocHTMLText { get; set; }
 
-        #region Constructors
-        public HelpDoc() : base()
-        {
-        }
-        #endregion Constructors
+    public HelpDoc() : base()
+    {
     }
 }
+

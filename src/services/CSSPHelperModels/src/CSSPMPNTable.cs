@@ -1,33 +1,19 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace CSSPHelperModels;
 
-namespace CSSPHelperModels
+[NotMapped]
+public partial class CSSPMPNTable
 {
-    [NotMapped]
-    public partial class CSSPMPNTable
+    [CSSPRange(0, 5)]
+    public int Tube10 { get; set; }
+    [CSSPRange(0, 5)]
+    public int Tube1_0 { get; set; }
+    [CSSPRange(0, 5)]
+    public int Tube0_1 { get; set; }
+    [CSSPRange(0, 100000000)]
+    public int MPN { get; set; }
+
+    public CSSPMPNTable() : base()
     {
-        #region Properties in DB
-        #endregion Properties in DB
-
-        #region Properties not in DB
-        [CSSPRange(0, 5)]
-        public int Tube10 { get; set; }
-        [CSSPRange(0, 5)]
-        public int Tube1_0 { get; set; }
-        [CSSPRange(0, 5)]
-        public int Tube0_1 { get; set; }
-        [CSSPRange(0, 100000000)]
-        public int MPN { get; set; }
-        #endregion Properties not in DB
-
-        #region Constructors
-        public CSSPMPNTable() : base()
-        {
-        }
-        #endregion Constructors
     }
 }
+

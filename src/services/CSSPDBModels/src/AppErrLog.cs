@@ -1,38 +1,21 @@
-﻿/*
- * Manually edited
- * 
- */
-using CSSPCustomAttributes;
-using CSSPEnums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿namespace CSSPDBModels;
 
-namespace CSSPDBModels
+public partial class AppErrLog : LastUpdate
 {
-    public partial class AppErrLog : LastUpdate
-    {
-        #region Properties in DB
-        [Key]
-        public int AppErrLogID { get; set; }
-        [CSSPEnumType]
-        public DBCommandEnum DBCommand { get; set; }
-        [CSSPMaxLength(100)]
-        public string Tag { get; set; }
-        [CSSPRange(1, -1)]
-        public int LineNumber { get; set; }
-        public string Source { get; set; }
-        public string Message { get; set; }
-        [CSSPAfter(Year = 1980)]
-        public DateTime DateTime_UTC { get; set; }
-        #endregion Properties in DB
+    [Key]
+    public int AppErrLogID { get; set; }
+    [CSSPEnumType]
+    public DBCommandEnum DBCommand { get; set; }
+    [CSSPMaxLength(100)]
+    public string Tag { get; set; }
+    [CSSPRange(1, -1)]
+    public int LineNumber { get; set; }
+    public string Source { get; set; }
+    public string Message { get; set; }
+    [CSSPAfter(Year = 1980)]
+    public DateTime DateTime_UTC { get; set; }
 
-        #region Constructors
-        public AppErrLog() : base()
-        {
-        }
-        #endregion Constructors
+    public AppErrLog() : base()
+    {
     }
 }

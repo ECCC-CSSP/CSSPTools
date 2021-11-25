@@ -86,7 +86,7 @@ public partial class CSSPAzureLoginService : ICSSPAzureLoginService
                 return await Task.FromResult(false);
             }
 
-            if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
+            if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync()) return await Task.FromResult(false);
         }
 
         return await Task.FromResult(true);
