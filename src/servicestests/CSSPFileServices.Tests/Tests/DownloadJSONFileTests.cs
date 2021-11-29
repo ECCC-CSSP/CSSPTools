@@ -19,7 +19,7 @@ public partial class FileServiceTests
         FileInfo fi = new FileInfo($@"{ Configuration["CSSPJSONPath"] }{FileName}");
         Assert.True(fi.Exists);
 
-        var actionRes2 = await CSSPFileService.DownloadJSONFile(FileName);
+        var actionRes2 = await CSSPFileService.DownloadJSONFileAsync(FileName);
         Assert.NotNull(((PhysicalFileResult)actionRes2).FileName);
 
         await CSSPLogService.Save();
@@ -45,7 +45,7 @@ public partial class FileServiceTests
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        var actionRes = await CSSPFileService.DownloadJSONFile(FileName);
+        var actionRes = await CSSPFileService.DownloadJSONFileAsync(FileName);
         Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -71,7 +71,7 @@ public partial class FileServiceTests
         FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{FileName}");
         Assert.False(fi.Exists);
 
-        var actionRes = await CSSPFileService.DownloadJSONFile(FileName);
+        var actionRes = await CSSPFileService.DownloadJSONFileAsync(FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);

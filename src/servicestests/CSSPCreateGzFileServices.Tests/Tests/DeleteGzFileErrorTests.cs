@@ -35,7 +35,7 @@ public partial class CSSPCreateGzFileServiceTests
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
-        Assert.Equal(string.Format(CSSPCultureServicesRes.ErrorWhileTryingToDelete_FromAzure, FileName), errRes.ErrList[0]);
+        Assert.Equal(String.Format(CSSPCultureServicesRes.CouldNotFindFileNotDeletedAzureFile_, FileName), errRes.ErrList[0]);
     }
 }
 

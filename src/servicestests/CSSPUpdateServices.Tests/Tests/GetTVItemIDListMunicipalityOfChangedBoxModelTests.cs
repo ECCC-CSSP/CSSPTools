@@ -13,7 +13,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListMunicipalityOfChangedBoxModel(LastUpdateDate_UTC);
+        List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListMunicipalityOfChangedBoxModelAsync(LastUpdateDate_UTC);
         Assert.True(TVItemIDList.Count > 0);
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
@@ -29,7 +29,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListMunicipalityOfChangedBoxModel(LastUpdateDate_UTC);
+        List<int> TVItemIDList = await CSSPUpdateService.GetTVItemIDListMunicipalityOfChangedBoxModelAsync(LastUpdateDate_UTC);
         Assert.True(TVItemIDList.Count == 0);
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());

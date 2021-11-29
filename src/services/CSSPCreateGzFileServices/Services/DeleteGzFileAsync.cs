@@ -1,4 +1,6 @@
-﻿namespace CSSPCreateGzFileServices;
+﻿using Azure;
+
+namespace CSSPCreateGzFileServices;
 
 public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFileService
 {
@@ -9,7 +11,29 @@ public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFile
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        await DeleteGzFileAsync(webType, TVItemID);
+          string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
+
+        try
+        {
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"]);
+            ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
+            ShareFileClient shareFileClient = directory.GetFileClient(FileName);
+
+            Response<bool> response = shareFileClient.DeleteIfExists();
+
+            if (response.Value)
+            {
+                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletedAzureFile_, FileName) }");
+            }
+            else
+            {
+                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindFileNotDeletedAzureFile_, FileName) }");
+            }
+        }
+        catch (Exception ex)
+        {
+            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotDeleteFile_Error_, FileName, ex.Message) }");
+        }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0)
         {

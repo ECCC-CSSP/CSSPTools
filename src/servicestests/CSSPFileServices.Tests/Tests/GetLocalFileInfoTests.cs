@@ -14,7 +14,7 @@ public partial class FileServiceTests
         int ParentTVItemID = 1;
         string FileName = "BarTopBottom.png";
 
-        var actionRes = await CSSPFileService.GetLocalFileInfo(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.GetLocalFileInfoAsync(ParentTVItemID, FileName);
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
         LocalFileInfo localFileInfo = ((LocalFileInfo)((OkObjectResult)actionRes.Result).Value);
@@ -38,7 +38,7 @@ public partial class FileServiceTests
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        var actionRes = await CSSPFileService.GetLocalFileInfo(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.GetLocalFileInfoAsync(ParentTVItemID, FileName);
         Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -59,7 +59,7 @@ public partial class FileServiceTests
         int ParentTVItemID = 111111111;
         string FileName = "BarTopBottom.png";
 
-        var actionRes = await CSSPFileService.GetLocalFileInfo(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.GetLocalFileInfoAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -80,7 +80,7 @@ public partial class FileServiceTests
         int ParentTVItemID = 1;
         string FileName = "NotExist.png";
 
-        var actionRes = await CSSPFileService.GetLocalFileInfo(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.GetLocalFileInfoAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);

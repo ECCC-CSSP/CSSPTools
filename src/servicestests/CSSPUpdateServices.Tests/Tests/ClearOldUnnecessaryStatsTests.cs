@@ -14,7 +14,7 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        var actionRes = await CSSPUpdateService.ClearOldUnnecessaryStats();
+        var actionRes = await CSSPUpdateService.ClearOldUnnecessaryStatsAsync();
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         await CSSPLogService.Save();

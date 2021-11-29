@@ -16,7 +16,7 @@ public partial class FileServiceTests
 
         string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-        var actionRes = await CSSPFileService.LocalizeAzureJSONFile(fileName);
+        var actionRes = await CSSPFileService.LocalizeAzureJSONFileAsync(fileName);
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
         Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -41,7 +41,7 @@ public partial class FileServiceTests
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        var actionRes = await CSSPFileService.LocalizeAzureJSONFile(fileName);
+        var actionRes = await CSSPFileService.LocalizeAzureJSONFileAsync(fileName);
         Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -64,7 +64,7 @@ public partial class FileServiceTests
 
         string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-        var actionRes = await CSSPFileService.LocalizeAzureJSONFile(fileName);
+        var actionRes = await CSSPFileService.LocalizeAzureJSONFileAsync(fileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -87,7 +87,7 @@ public partial class FileServiceTests
 
         string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-        var actionRes = await CSSPFileService.LocalizeAzureJSONFile(fileName);
+        var actionRes = await CSSPFileService.LocalizeAzureJSONFileAsync(fileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -110,7 +110,7 @@ public partial class FileServiceTests
 
         string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-        var actionRes = await CSSPFileService.LocalizeAzureJSONFile(fileName);
+        var actionRes = await CSSPFileService.LocalizeAzureJSONFileAsync(fileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -133,7 +133,7 @@ public partial class FileServiceTests
 
         string fileName = await BaseGzFileService.GetFileName(webType, TVItemID);
 
-        var actionRes = await CSSPFileService.LocalizeAzureJSONFile(fileName);
+        var actionRes = await CSSPFileService.LocalizeAzureJSONFileAsync(fileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);

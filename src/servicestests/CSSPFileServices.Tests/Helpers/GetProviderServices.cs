@@ -74,13 +74,13 @@ public partial class FileServiceTests
         Assert.NotNull(contact);
         Assert.NotNull(contact.AzureStoreHash);
 
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
 
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
         Assert.Equal(contact.ContactTVItemID, CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID);
 
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
         Assert.True(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID > 0);

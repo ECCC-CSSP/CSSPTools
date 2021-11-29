@@ -14,7 +14,7 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        var actionRes = await CSSPUpdateService.RemoveAzureDirectoriesNotFoundInTVFiles();
+        var actionRes = await CSSPUpdateService.RemoveAzureDirectoriesNotFoundInTVFilesAsync();
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         await CSSPLogService.Save();

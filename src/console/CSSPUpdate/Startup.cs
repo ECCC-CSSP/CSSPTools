@@ -129,7 +129,7 @@ public partial class Startup
             return await Task.FromResult(false);
         }
 
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
         if (CSSPLocalLoggedInService.LoggedInContactInfo == null)
         {
             Console.WriteLine($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "CSSPLocalLoggedInService.LoggedInContactInfo") }");

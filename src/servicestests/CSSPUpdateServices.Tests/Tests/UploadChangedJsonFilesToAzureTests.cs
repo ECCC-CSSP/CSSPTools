@@ -14,7 +14,7 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        var actionRes = await CSSPUpdateService.UploadChangedJsonFilesToAzure(DateTime.Now.AddDays(-10));
+        var actionRes = await CSSPUpdateService.UploadChangedJsonFilesToAzureAsync(DateTime.Now.AddDays(-10));
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         await CSSPLogService.Save();

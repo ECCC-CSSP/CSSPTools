@@ -13,7 +13,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListSubsectorOfChangedMWQMSubsector(LastUpdateDate_UTC);
+        List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListSubsectorOfChangedMWQMSubsectorAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorTVItemIDList.Count > 0);
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
@@ -29,7 +29,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListSubsectorOfChangedMWQMSubsector(LastUpdateDate_UTC);
+        List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListSubsectorOfChangedMWQMSubsectorAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorTVItemIDList.Count == 0);
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());

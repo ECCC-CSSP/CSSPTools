@@ -10,6 +10,9 @@ public partial class CSSPDesktopServiceTests
         Assert.True(await CSSPDesktopServiceSetup(culture));
 
         DeleteCSSPDesktopPath();
+
+        Assert.True(await CSSPDesktopService.CreateAllRequiredDirectoriesAsync());
+
         CreateCSSPDatabasesPath();
         await CheckCSSPDBManage();
 
@@ -48,7 +51,6 @@ public partial class CSSPDesktopServiceTests
 
         await CopyAzureJsonUpdateFilesToAzureTestDirectory();
 
-        Assert.True(await CSSPDesktopService.CreateAllRequiredDirectoriesAsync());
 
         Assert.True(await CSSPDesktopService.InstallUpdatesAsync());
 

@@ -22,7 +22,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             count += 1;
             Console.WriteLine($"{ count } --- { d.FullName }");
 
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
+            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
             ShareDirectoryClient directory = shareClient.GetDirectoryClient(d.Name);
 
             if (!directory.Exists())

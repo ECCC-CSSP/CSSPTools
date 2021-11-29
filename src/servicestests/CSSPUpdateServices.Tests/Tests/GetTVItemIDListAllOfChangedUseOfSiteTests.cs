@@ -13,7 +13,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSite(LastUpdateDate_UTC);
+        List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSiteAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorUseOfSiteIDList.Count > 0);
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
@@ -29,7 +29,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSite(LastUpdateDate_UTC);
+        List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSiteAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorUseOfSiteIDList.Count == 0);
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());

@@ -103,7 +103,7 @@ public partial class UpdateServiceTests
         CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
         Assert.NotNull(CSSPLocalLoggedInService);
 
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo();
+        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
         Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
 

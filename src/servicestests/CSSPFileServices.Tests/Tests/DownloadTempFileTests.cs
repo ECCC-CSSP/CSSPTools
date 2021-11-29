@@ -28,7 +28,7 @@ public partial class FileServiceTests
 
         File.WriteAllText(fi.FullName, "bonjour");
 
-        var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
+        var actionRes = await CSSPFileService.DownloadTempFileAsync(fi.Name);
         Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
 
         await CSSPLogService.Save();
@@ -50,7 +50,7 @@ public partial class FileServiceTests
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        var actionRes = await CSSPFileService.DownloadTempFile(fi.Name);
+        var actionRes = await CSSPFileService.DownloadTempFileAsync(fi.Name);
         Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -70,7 +70,7 @@ public partial class FileServiceTests
 
         string FileName = "doesnotexist.css";
 
-        var actionRes = await CSSPFileService.DownloadTempFile(FileName);
+        var actionRes = await CSSPFileService.DownloadTempFileAsync(FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);

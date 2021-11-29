@@ -13,7 +13,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        Assert.True(await CSSPUpdateService.GetNeedToChangedWebAllSearch(LastUpdateDate_UTC));
+        Assert.True(await CSSPUpdateService.GetNeedToChangedWebAllSearchAsync(LastUpdateDate_UTC));
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
@@ -28,7 +28,7 @@ public partial class UpdateServiceTests
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-        Assert.False(await CSSPUpdateService.GetNeedToChangedWebAllSearch(LastUpdateDate_UTC));
+        Assert.False(await CSSPUpdateService.GetNeedToChangedWebAllSearchAsync(LastUpdateDate_UTC));
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }

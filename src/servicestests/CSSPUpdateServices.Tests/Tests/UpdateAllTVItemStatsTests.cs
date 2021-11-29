@@ -14,7 +14,7 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        var actionRes = await CSSPUpdateService.UpdateAllTVItemStats();
+        var actionRes = await CSSPUpdateService.UpdateAllTVItemStatsAsync();
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         await CSSPLogService.Save();

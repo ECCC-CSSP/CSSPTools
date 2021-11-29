@@ -15,7 +15,7 @@ public partial class FileServiceTests
         FileInfo fi = new FileInfo($@"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\{FileName}");
         Assert.True(fi.Exists);
 
-        var actionRes2 = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
+        var actionRes2 = await CSSPFileService.DownloadFileAsync(ParentTVItemID, FileName);
         Assert.NotNull(((PhysicalFileResult)actionRes2).FileName);
     }
     [Theory]
@@ -33,7 +33,7 @@ public partial class FileServiceTests
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.DownloadFileAsync(ParentTVItemID, FileName);
         Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -56,7 +56,7 @@ public partial class FileServiceTests
         FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
         Assert.False(fi.Exists);
 
-        var actionRes = await CSSPFileService.DownloadFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.DownloadFileAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);

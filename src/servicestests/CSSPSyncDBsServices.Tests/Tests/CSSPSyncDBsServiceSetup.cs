@@ -65,7 +65,7 @@ public partial class SyncDBsServiceTest
         Assert.NotNull(CSSPLocalLoggedInService);
 
         //string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
+        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync());
 
         db = Provider.GetService<CSSPDBContext>();
         Assert.NotNull(db);

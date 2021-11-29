@@ -17,7 +17,7 @@ namespace CSSPServerLoggedInServices
         LoggedInContactInfo LoggedInContactInfo { get; set; }
 
         // functions
-        Task<bool> SetLoggedInContactInfo(string LoginEmail);
+        Task<bool> SetLoggedInContactInfoAsync(string LoginEmail);
 
     }
     public partial class CSSPServerLoggedInService : ICSSPServerLoggedInService

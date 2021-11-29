@@ -42,7 +42,7 @@ namespace CSSPServerLoggedInServices.Tests
         {
             Assert.True(await CSSPServerLoggedInServiceSetup(culture));
 
-            await CSSPServerLoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail"]);
+            await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail"]);
             Assert.Equal(Configuration["LoginEmail"], CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
             Contact contact = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact;
@@ -63,7 +63,7 @@ namespace CSSPServerLoggedInServices.Tests
         {
             Assert.True(await CSSPServerLoggedInServiceSetup(culture));
 
-            await CSSPServerLoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail3"]);
+            await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail3"]);
             Assert.Null(CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact);
             Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList.Count == 0);
             Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList.Count == 0);

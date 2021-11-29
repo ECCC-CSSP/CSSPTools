@@ -1,3 +1,5 @@
+using CSSPLogServices;
+
 namespace CSSPLocalTaskRunnerServices.Tests;
 
 public partial class LocalTaskRunnerServiceTest
@@ -6,16 +8,17 @@ public partial class LocalTaskRunnerServiceTest
     private IServiceProvider Provider { get; set; }
     private IServiceCollection Services { get; set; }
     private ICSSPCultureService CSSPCultureService { get; set; }
+    private ICSSPLogService CSSPLogService { get; set; }
     private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
     private ICSSPLocalTaskRunnerService LocalTaskRunnerService { get; set; }
-    private CSSPDBContext db { get; set; }
+    //private CSSPDBContext db { get; set; }
 
     private async Task<bool> CSSPLocalTaskRunnerServiceSetup(string culture)
     {
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
            .AddJsonFile("appsettings_cssplocaltaskrunnerservicestests.json")
-           .AddUserSecrets("9b381dff-914a-456f-baba-fda3113cecd2")
+           .AddUserSecrets("CSSPLocalTaskRunnerServices_Tests")
            .Build();
 
         Services = new ServiceCollection();
@@ -36,19 +39,20 @@ public partial class LocalTaskRunnerServiceTest
             options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
         });
 
-        /* ---------------------------------------------------------------------------------
-         * using AzureCSSPDB
-         * ---------------------------------------------------------------------------------      
-         */
-        string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-        Assert.NotNull(AzureCSSPDB);
+        ///* ---------------------------------------------------------------------------------
+        // * using AzureCSSPDB
+        // * ---------------------------------------------------------------------------------      
+        // */
+        //string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
+        //Assert.NotNull(AzureCSSPDB);
 
-        Services.AddDbContext<CSSPDBContext>(options =>
-        {
-            options.UseSqlServer(AzureCSSPDB);
-        });
+        //Services.AddDbContext<CSSPDBContext>(options =>
+        //{
+        //    options.UseSqlServer(AzureCSSPDB);
+        //});
 
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
         Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
         Services.AddSingleton<IEnums, Enums>();
         Services.AddSingleton<ICSSPLocalTaskRunnerService, LocalTaskRunnerService>();
@@ -61,13 +65,16 @@ public partial class LocalTaskRunnerServiceTest
 
         CSSPCultureService.SetCulture(culture);
 
+        CSSPLogService = Provider.GetService<ICSSPLogService>();
+        Assert.NotNull(CSSPLogService);
+
         CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
         Assert.NotNull(CSSPLocalLoggedInService);
 
-        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo());
+        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync());
 
-        db = Provider.GetService<CSSPDBContext>();
-        Assert.NotNull(db);
+        //db = Provider.GetService<CSSPDBContext>();
+        //Assert.NotNull(db);
 
         LocalTaskRunnerService = Provider.GetService<ICSSPLocalTaskRunnerService>();
         Assert.NotNull(LocalTaskRunnerService);

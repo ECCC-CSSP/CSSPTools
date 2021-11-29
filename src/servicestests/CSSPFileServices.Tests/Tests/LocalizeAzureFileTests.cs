@@ -14,7 +14,7 @@ public partial class FileServiceTests
         int ParentTVItemID = 1;
         string FileName = "BarTopBottom.png";
 
-        var actionRes = await CSSPFileService.LocalizeAzureFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.LocalizeAzureFileAsync(ParentTVItemID, FileName);
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
         Assert.True((bool)((OkObjectResult)actionRes.Result).Value);
@@ -37,7 +37,7 @@ public partial class FileServiceTests
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        var actionRes = await CSSPFileService.LocalizeAzureFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.LocalizeAzureFileAsync(ParentTVItemID, FileName);
         Assert.Equal(401, ((UnauthorizedObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -60,7 +60,7 @@ public partial class FileServiceTests
 
         //config.AzureStore = "notexist" + config.AzureStore;
 
-        var actionRes = await CSSPFileService.LocalizeAzureFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.LocalizeAzureFileAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -83,7 +83,7 @@ public partial class FileServiceTests
 
         //config.AzureStoreCSSPFilesPath = "notexist" + config.AzureStoreCSSPFilesPath;
 
-        var actionRes = await CSSPFileService.LocalizeAzureFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.LocalizeAzureFileAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -104,7 +104,7 @@ public partial class FileServiceTests
         int ParentTVItemID = 111111111;
         string FileName = "BarTopBottom.png";
 
-        var actionRes = await CSSPFileService.LocalizeAzureFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.LocalizeAzureFileAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);
@@ -125,7 +125,7 @@ public partial class FileServiceTests
         int ParentTVItemID = 1;
         string FileName = "NotExist.png";
 
-        var actionRes = await CSSPFileService.LocalizeAzureFile(ParentTVItemID, FileName);
+        var actionRes = await CSSPFileService.LocalizeAzureFileAsync(ParentTVItemID, FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotEmpty(errRes.ErrList);

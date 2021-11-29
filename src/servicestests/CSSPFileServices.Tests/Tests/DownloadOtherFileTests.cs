@@ -28,7 +28,7 @@ public partial class FileServiceTests
 
             Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
-            var actionRes = await CSSPFileService.DownloadOtherFile(fileName);
+            var actionRes = await CSSPFileService.DownloadOtherFileAsync(fileName);
             Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
 
             await CSSPLogService.Save();
@@ -57,7 +57,7 @@ public partial class FileServiceTests
 
             CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            var actionRes = await CSSPFileService.DownloadOtherFile(fileName);
+            var actionRes = await CSSPFileService.DownloadOtherFileAsync(fileName);
             Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
             Assert.NotEmpty(errRes.ErrList);
@@ -78,7 +78,7 @@ public partial class FileServiceTests
 
         string FileName = "NotExist.css";
 
-        var actionRes = await CSSPFileService.DownloadOtherFile(FileName);
+        var actionRes = await CSSPFileService.DownloadOtherFileAsync(FileName);
         Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);

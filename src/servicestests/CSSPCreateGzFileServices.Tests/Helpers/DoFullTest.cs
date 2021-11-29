@@ -52,10 +52,10 @@ public partial class CSSPCreateGzFileServiceTests
         Assert.Empty(CSSPLogService.ErrRes.ErrList);
 
         fiBackup = new FileInfo($"{ Configuration["azure_csspjson_backup"] }{ fileName }");
-        Assert.False(fiBackup.Exists);
+        Assert.True(fiBackup.Exists);
 
         fiBackupUncompress = new FileInfo($"{ Configuration["azure_csspjson_backup_uncompress"] }{ fileName.Replace(".gz", ".json") }");
-        Assert.False(fiBackupUncompress.Exists);
+        Assert.True(fiBackupUncompress.Exists);
 
         WriteTimeSpan(webType);
 

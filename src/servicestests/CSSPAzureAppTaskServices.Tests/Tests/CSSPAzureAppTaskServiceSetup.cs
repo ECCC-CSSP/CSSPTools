@@ -58,7 +58,7 @@ public partial class CSSPAzureAppTaskServiceTest
         CSSPServerLoggedInService = Provider.GetService<ICSSPServerLoggedInService>();
         Assert.NotNull(CSSPServerLoggedInService);
 
-        await CSSPServerLoggedInService.SetLoggedInContactInfo(Configuration["LoginEmail"]);
+        await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail"]);
         Assert.NotNull(CSSPServerLoggedInService.LoggedInContactInfo);
 
         AzureAppTaskService = Provider.GetService<IAzureAppTaskService>();

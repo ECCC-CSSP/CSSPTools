@@ -13,7 +13,7 @@ namespace CSSPServerLoggedInServices
 {
     public partial class CSSPServerLoggedInService : ICSSPServerLoggedInService
     {
-        public async Task<bool> SetLoggedInContactInfo(string LoginEmail)
+        public async Task<bool> SetLoggedInContactInfoAsync(string LoginEmail)
         {
             LoggedInContactInfo.LoggedInContact = (from c in db.Contacts
                                                    where c.LoginEmail == LoginEmail

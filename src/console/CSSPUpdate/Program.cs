@@ -12,7 +12,7 @@ public class Program
             return await Task.FromResult(1);
         }
 
-        if (!await startup.CSSPUpdateService.RunCommand(args))
+        if (!await startup.CSSPUpdateService.RunCommandAsync(args))
         {
             Console.WriteLine($"{ string.Format(CSSPCultureServicesRes.Error_, "CSSPUpdate - startup.CSSPUpdateService.RunCommand") }");
             return await Task.FromResult(1);

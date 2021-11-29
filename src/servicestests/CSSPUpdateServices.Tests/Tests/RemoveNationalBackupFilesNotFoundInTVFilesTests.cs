@@ -14,7 +14,7 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        var actionRes = await CSSPUpdateService.RemoveNationalBackupFilesNotFoundInTVFiles();
+        var actionRes = await CSSPUpdateService.RemoveNationalBackupFilesNotFoundInTVFilesAsync();
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         await CSSPLogService.Save();

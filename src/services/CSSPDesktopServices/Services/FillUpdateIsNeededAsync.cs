@@ -4,7 +4,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
 {
     public async Task<bool> FillUpdateIsNeededAsync()
     {
-        if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfo()) return await Task.FromResult(false);
+        if (!await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync()) return await Task.FromResult(false);
 
         AppendStatus(new AppendEventArgs(CSSPCultureDesktopRes.CheckIfUpdateIsNeeded));
 

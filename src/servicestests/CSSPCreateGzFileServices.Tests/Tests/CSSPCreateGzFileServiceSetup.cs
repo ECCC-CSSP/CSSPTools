@@ -23,7 +23,7 @@ public partial class CSSPCreateGzFileServiceTests
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
            .AddJsonFile("appsettings_csspcreategzfileservicestests.json")
-           .AddUserSecrets("8d884ed8-5f30-45e9-a33d-c37d20a2323d")
+           .AddUserSecrets("CSSPCreateGzFileServices_Tests")
            .Build();
 
         Services = new ServiceCollection();

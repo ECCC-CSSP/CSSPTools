@@ -351,7 +351,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
 
         Address addressLocalModel = FillAddress();
 
-        addressLocalModel.CountryTVItemID = 1;
+        addressLocalModel.CountryTVItemID = 1000000;
 
         var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
         Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);

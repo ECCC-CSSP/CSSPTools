@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <Platforms>AnyCPU</Platforms>
-    <SignAssembly>false</SignAssembly>
+	  <OutputType>WinExe</OutputType>
+	  <TargetFramework>net6.0-windows</TargetFramework>
+	  <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,50 +32,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="SettingUpAllTextForLanguage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ShowPanelEnum.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Stop.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Start.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ShowPanels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="SetupAsync.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="StartTheAppWithLanguageAsync.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="RecenterPanels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Logoff.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="RegisterAsync.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LoginAsync.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="EnabledOrDisableRegisterButton.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="EnabledOrDisableLoginButton.cs">
-      <SubType>Form</SubType>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

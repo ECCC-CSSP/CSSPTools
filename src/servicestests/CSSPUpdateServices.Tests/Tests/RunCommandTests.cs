@@ -19,7 +19,7 @@ public partial class UpdateServiceTests
                 "ClearOldUnnecessaryStats"
             };
 
-        Assert.True(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.True(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -47,7 +47,7 @@ public partial class UpdateServiceTests
                 DateTime.Now.Day.ToString(),
             };
 
-        Assert.True(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.True(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -72,7 +72,7 @@ public partial class UpdateServiceTests
                 "CommandDoesNotExist"
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -100,7 +100,7 @@ public partial class UpdateServiceTests
                 DateTime.Now.Day.ToString(),
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -128,7 +128,7 @@ public partial class UpdateServiceTests
                 DateTime.Now.Day.ToString(),
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -156,7 +156,7 @@ public partial class UpdateServiceTests
                 DateTime.Now.Day.ToString(),
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -184,7 +184,7 @@ public partial class UpdateServiceTests
                 "32",
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -212,7 +212,7 @@ public partial class UpdateServiceTests
                 "32",
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -240,7 +240,7 @@ public partial class UpdateServiceTests
                 "30",
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 
@@ -268,7 +268,7 @@ public partial class UpdateServiceTests
                 DateTime.Now.AddDays(1).Year.ToString(),
             };
 
-        Assert.False(await CSSPUpdateService.RunCommand(argsList.ToArray()));
+        Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
 

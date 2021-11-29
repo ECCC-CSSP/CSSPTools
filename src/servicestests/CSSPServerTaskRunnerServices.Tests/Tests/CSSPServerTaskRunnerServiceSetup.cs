@@ -65,7 +65,7 @@ public partial class ServerTaskRunnerServiceTest
         Assert.NotNull(CSSPServerLoggedInService);
 
         string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-        Assert.True(await CSSPServerLoggedInService.SetLoggedInContactInfo(LoginEmail));
+        Assert.True(await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(LoginEmail));
 
         db = Provider.GetService<CSSPDBContext>();
         Assert.NotNull(db);
