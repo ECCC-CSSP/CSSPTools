@@ -9,6 +9,16 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await CountryLocalServiceSetup(culture));
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
         Assert.NotEmpty(webRoot.TVItemModelCountryList);
@@ -18,10 +28,10 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
         string TVTextEN = "Changed Country";
         string TVTextFR = "Pays changé";
 
-        var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
-        Assert.Equal(200, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionCountryRes.Result).Value);
-        TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionCountryRes.Result).Value;
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        TVItemModel tvItemModelChangedRet = (TVItemModel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(tvItemModelChangedRet);
 
         webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
@@ -41,10 +51,10 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 
         List<TVItemModel> tvItemModelList = new List<TVItemModel>()
-            {
-                webRoot.TVItemModel,
-                tvItemModelChangedRet,
-            };
+        {
+            webRoot.TVItemModel,
+            tvItemModelChangedRet,
+        };
 
         CheckDBLocal(tvItemModelList);
 
@@ -67,23 +77,31 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await CountryLocalServiceSetup(culture));
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
-        var actionCountryRes = await CountryLocalService.AddCountryLocalAsync(webRoot.TVItemModel.TVItem.TVItemID);
-        Assert.Equal(200, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionCountryRes.Result).Value);
-        TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionCountryRes.Result).Value;
+        var actionRes = await CountryLocalService.AddCountryLocalAsync(webRoot.TVItemModel.TVItem.TVItemID);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(tvItemModelRet);
-
-        // see AddCountryLocal test for more detail testing
 
         string TVTextEN = "Modified Country";
         string TVTextFR = "Pays modifié";
 
-        var actionCountryRes2 = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelRet.TVItem.TVItemID, TVTextEN, TVTextFR);
-        Assert.Equal(200, ((ObjectResult)actionCountryRes2.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionCountryRes2.Result).Value);
-        TVItemModel tvItemModelModifiedRet = (TVItemModel)((OkObjectResult)actionCountryRes2.Result).Value;
+        var actionRes2 = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelRet.TVItem.TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+        TVItemModel tvItemModelModifiedRet = (TVItemModel)((OkObjectResult)actionRes2.Result).Value;
         Assert.NotNull(tvItemModelModifiedRet);
 
         webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
@@ -103,10 +121,10 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Created, TVTextFR, LanguageEnum.fr); // Created stays created when modified
 
         List<TVItemModel> tvItemModelList = new List<TVItemModel>()
-            {
-                webRoot.TVItemModel,
-                tvItemModelModifiedRet,
-            };
+        {
+            webRoot.TVItemModel,
+            tvItemModelModifiedRet,
+        };
 
         CheckDBLocal(tvItemModelList);
 
@@ -125,18 +143,53 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
+    public async Task ModifyCountryLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await CountryLocalServiceSetup(culture));
+
+        int TVItemID = 5;
+        string TVTextEN = "Modified Country";
+        string TVTextFR = "Pays modifié";
+
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
+
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyCountryLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await CountryLocalServiceSetup(culture));
+
+        int TVItemID = 5;
+        string TVTextEN = "Modified Country";
+        string TVTextFR = "Pays modifié";
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
     public async Task ModifyCountryLocal_TVItemID_Error_Test(string culture)
     {
         Assert.True(await CountryLocalServiceSetup(culture));
 
+        int TVItemID = 0;
         string TVTextEN = "Modified Country";
         string TVTextFR = "Pays modifié";
 
-        var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(0, TVTextEN, TVTextFR);
-        Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), errRes.ErrList[0]);
     }
     [Theory]
@@ -146,20 +199,13 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await CountryLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
-
-        Assert.NotEmpty(webRoot.TVItemModelCountryList);
-
-        TVItemModel tvItemModelCountryToModify = webRoot.TVItemModelCountryList[0];
-
+        int TVItemID = 5;
         string TVTextEN = "";
         string TVTextFR = "Pays modifié";
 
-        var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
-        Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"), errRes.ErrList[0]);
     }
     [Theory]
@@ -169,20 +215,13 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await CountryLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
-
-        Assert.NotEmpty(webRoot.TVItemModelCountryList);
-
-        TVItemModel tvItemModelCountryToModify = webRoot.TVItemModelCountryList[0];
-
+        int TVItemID = 5;
         string TVTextEN = "Modified Country";
         string TVTextFR = "";
 
-        var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToModify.TVItem.TVItemID, TVTextEN, TVTextFR);
-        Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"), errRes.ErrList[0]);
     }
     [Theory]
@@ -192,20 +231,23 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await CountryLocalServiceSetup(culture));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
+        await CSSPCreateGzFileService.SetLocal(false);
 
-        Assert.NotEmpty(webRoot.TVItemModelCountryList);
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+        };
 
-        TVItemModel tvItemModelCountryToModify = webRoot.TVItemModelCountryList[0];
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
+        int TVItemID = 100000;
         string TVTextEN = "Modified Country";
         string TVTextFR = "Pays Changé";
 
-        int TVItemID = 100000;
-
-        var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
-        Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemModel", "TVItemID", $"{ TVItemID }"), errRes.ErrList[0]);
@@ -216,6 +258,16 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     public async Task ModifyCountryLocal_SiblingWithSameName_Error_Test(string culture)
     {
         Assert.True(await CountryLocalServiceSetup(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 
@@ -230,9 +282,9 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
         string message = $"{ TVTextEN } (en)     { TVTextFR } (fr)";
 
         CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExists, message));
-        var actionCountryRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToDelete.TVItem.TVItemID, TVTextEN, TVTextFR);
-        Assert.Equal(400, ((ObjectResult)actionCountryRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionCountryRes.Result).Value;
+        var actionRes = await CountryLocalService.ModifyTVTextCountryLocalAsync(tvItemModelCountryToDelete.TVItem.TVItemID, TVTextEN, TVTextFR);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._AlreadyExists, message), errRes.ErrList[0]);

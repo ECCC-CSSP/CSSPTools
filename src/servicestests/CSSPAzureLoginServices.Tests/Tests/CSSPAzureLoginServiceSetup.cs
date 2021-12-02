@@ -19,7 +19,7 @@ public partial class CSSPAzureLoginServiceTests
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
            .AddJsonFile("appsettings_CSSPAzureLoginServicestests.json")
-           .AddUserSecrets("8d884ed8-5f30-45e9-a33d-c37d20a2323d")
+           .AddUserSecrets("CSSPAzureLoginServices_Tests")
            .Build();
 
         Services = new ServiceCollection();
@@ -34,6 +34,7 @@ public partial class CSSPAzureLoginServiceTests
         Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
         Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
+        Assert.NotNull(Configuration["CSSPDBLocal"]);
         Assert.NotNull(Configuration["CSSPDBManage"]);
         Assert.NotNull(Configuration["CSSPAzureUrl"]);
         Assert.NotNull(Configuration["LoginEmail"]);
@@ -50,7 +51,6 @@ public partial class CSSPAzureLoginServiceTests
         {
             options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
         });
-
 
         Provider = Services.BuildServiceProvider();
         Assert.NotNull(Provider);

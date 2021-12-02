@@ -12,7 +12,7 @@ public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
 
         if (appTaskLocalModel.AppTask.AppTaskID == 0)
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
+            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
         }
 
         string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)appTaskLocalModel.AppTask.DBCommand);

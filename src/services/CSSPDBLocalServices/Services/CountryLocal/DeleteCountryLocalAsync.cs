@@ -35,17 +35,7 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToDelete);
-
-        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-        TVItemModel tvItemModelDeleted = (TVItemModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
-
-        tvItemModelToDelete.TVItem = tvItemModelDeleted.TVItem;
-        tvItemModelToDelete.TVItemLanguageList = tvItemModelDeleted.TVItemLanguageList;
-
-        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
+        // deleting MapInfo and MapInfoPoints
         foreach (MapInfoModel mapInfoModel in tvItemModelToDelete.MapInfoModelList)
         {
             var actionMapInfoModelRes = await MapInfoLocalService.DeleteMapInfoLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToDelete.TVItem, TVTypeEnum.Country, mapInfoModel.MapInfo.MapInfoDrawType);
@@ -58,12 +48,26 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
             mapInfoModel.MapInfoPointList = mapInfoModelDeleted.MapInfoPointList;
         }
 
+        // deleting TVItem
+        var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocalAsync(webRoot.TVItemModel.TVItem, tvItemModelToDelete);
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        TVItemModel tvItemModelDeleted = (TVItemModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
+
+        tvItemModelToDelete.TVItem = tvItemModelDeleted.TVItem;
+        tvItemModelToDelete.TVItemLanguageList = tvItemModelDeleted.TVItemLanguageList;
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModelToDelete.TVItem.TVItemID },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModelToDelete.TVItem.TVItemID },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

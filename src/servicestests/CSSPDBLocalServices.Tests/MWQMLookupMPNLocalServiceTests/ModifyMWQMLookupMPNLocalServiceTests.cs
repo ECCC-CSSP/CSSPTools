@@ -5,9 +5,18 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task ModifyMWQMLookupMPNLocal_Good_Test(string culture)
+    public async Task ModifyMWQMLookupMPNLocal_Existing_Good_Test(string culture)
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllMWQMLookupMPNs, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         Assert.NotNull(webAllMWQMLookupMPNs);
@@ -37,14 +46,38 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
                                           where c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID
                                           select c).FirstOrDefault();
         Assert.NotNull(mwqmLookupMPNWeb);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyHelpDocLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        await CSSPLogService.Save();
+        MWQMLookupMPN mwqmLookupMPN = new MWQMLookupMPN();
 
-        List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                           select c).ToList();
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        Assert.Single(commandLogList);
-        Assert.Contains("MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocal(MWQMLookupMPN mwqmLookupMPN)", commandLogList[0].Log);
+        var actionRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task ModifyHelpDocLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+
+        MWQMLookupMPN mwqmLookupMPN = new MWQMLookupMPN();
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -53,20 +86,13 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-        Assert.NotNull(webAllMWQMLookupMPNs);
-        Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
-        Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
-
-        MWQMLookupMPN mwqmLookupMPN = webAllMWQMLookupMPNs.MWQMLookupMPNList[3];
+        MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
         mwqmLookupMPN.MWQMLookupMPNID = 0;
 
-        var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMLookupMPNID"), errRes.ErrList[0]);
     }
     [Theory]
@@ -76,20 +102,13 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-        Assert.NotNull(webAllMWQMLookupMPNs);
-        Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
-        Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
-
-        MWQMLookupMPN mwqmLookupMPN = webAllMWQMLookupMPNs.MWQMLookupMPNList[3];
+        MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
         mwqmLookupMPN.Tubes10 = -1;
 
-        var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"), errRes.ErrList[0]);
     }
     [Theory]
@@ -99,20 +118,13 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-        Assert.NotNull(webAllMWQMLookupMPNs);
-        Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
-        Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
-
-        MWQMLookupMPN mwqmLookupMPN = webAllMWQMLookupMPNs.MWQMLookupMPNList[3];
+        MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
         mwqmLookupMPN.Tubes1 = -1;
 
         var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
         Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes1", "0", "5"), errRes.ErrList[0]);
     }
     [Theory]
@@ -122,20 +134,13 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-        Assert.NotNull(webAllMWQMLookupMPNs);
-        Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
-        Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
-
-        MWQMLookupMPN mwqmLookupMPN = webAllMWQMLookupMPNs.MWQMLookupMPNList[3];
+        MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
         mwqmLookupMPN.Tubes01 = -1;
 
         var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
         Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes01", "0", "5"), errRes.ErrList[0]);
     }
     [Theory]
@@ -145,20 +150,13 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-        Assert.NotNull(webAllMWQMLookupMPNs);
-        Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
-        Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
-
-        MWQMLookupMPN mwqmLookupMPN = webAllMWQMLookupMPNs.MWQMLookupMPNList[3];
+        MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
         mwqmLookupMPN.MPN_100ml = -1;
 
         var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
         Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "MPN_100ml", "1", "99000000"), errRes.ErrList[0]);
     }
     [Theory]
@@ -168,20 +166,22 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
 
-        WebAllMWQMLookupMPNs webAllMWQMLookupMPNs = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllMWQMLookupMPNs>(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
-        Assert.NotNull(webAllMWQMLookupMPNs);
-        Assert.NotEmpty(webAllMWQMLookupMPNs.MWQMLookupMPNList);
-        Assert.True(webAllMWQMLookupMPNs.MWQMLookupMPNList.Count > 5);
+        await CSSPCreateGzFileService.SetLocal(false);
 
-        MWQMLookupMPN mwqmLookupMPN = webAllMWQMLookupMPNs.MWQMLookupMPNList[3];
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllMWQMLookupMPNs, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
+        MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
         mwqmLookupMPN.MWQMLookupMPNID = 10000000;
 
         var actionPostTVItemModelRes = await MWQMLookupMPNLocalService.ModifyMWQMLookupMPNLocalAsync(mwqmLookupMPN);
         Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "MWQMLookupMPN", "MWQMLookupMPNID", mwqmLookupMPN.MWQMLookupMPNID.ToString()), errRes.ErrList[0]);
     }
 }

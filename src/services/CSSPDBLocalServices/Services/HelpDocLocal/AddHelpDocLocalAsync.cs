@@ -17,15 +17,16 @@ public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "HelpDocID", "0"));
         }
 
-        //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)HelpDocModel.DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
         if (string.IsNullOrWhiteSpace(helpDoc.DocKey))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DocKey"));
+        }
+        else
+        {
+            if (helpDoc.DocKey.Length > 100)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DocKey", "100"));
+            }
         }
 
         string retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)helpDoc.Language);
@@ -37,6 +38,13 @@ public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
         if (string.IsNullOrWhiteSpace(helpDoc.DocHTMLText))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DocHTMLText"));
+        }
+        else
+        {
+            if (helpDoc.DocHTMLText.Length > 100000)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "DocHTMLText", "100000"));
+            }
         }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -73,6 +81,8 @@ public partial class HelpDocLocalService : ControllerBase, IHelpDocLocalService
         }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllHelpDocs, 0);
         if (400 == ((ObjectResult)actionRes.Result).StatusCode)

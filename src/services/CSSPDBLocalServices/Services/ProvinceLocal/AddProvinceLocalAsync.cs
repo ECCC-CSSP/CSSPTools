@@ -50,7 +50,7 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
             mapInfoModelList.AddRange(tvItemModelForMapInfo.MapInfoModelList);
         }
 
-        var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Point);
+        var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Point, new List<Coord>());
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -60,7 +60,7 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
 
         tvItemModelNew.MapInfoModelList.Add(mapInfoModelPoint);
 
-        var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Polygon);
+        var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Province, MapInfoDrawTypeEnum.Polygon, new List<Coord>());
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -71,11 +71,13 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
         tvItemModelNew.MapInfoModelList.Add(mapInfoModelPolygon);
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelNew.TVItem.TVItemID },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelNew.TVItem.TVItemID },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

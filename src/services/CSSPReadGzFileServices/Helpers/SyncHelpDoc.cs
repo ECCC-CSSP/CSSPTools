@@ -6,7 +6,10 @@ public partial class CSSPReadGzFileService : ICSSPReadGzFileService
     {
         if (helpDocLocal != null)
         {
-            helpDocOriginal = helpDocLocal;
+            helpDocOriginal.DBCommand = helpDocLocal.DBCommand;
+            helpDocOriginal.DocHTMLText = helpDocLocal.DocHTMLText;
+            helpDocOriginal.LastUpdateContactTVItemID = helpDocLocal.LastUpdateContactTVItemID;
+            helpDocOriginal.LastUpdateDate_UTC = helpDocLocal.LastUpdateDate_UTC;
         }
     }
 }

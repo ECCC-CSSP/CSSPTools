@@ -5,9 +5,9 @@ public partial class CSSPAzureLoginServiceTests
     private void CheckRequiredDirectories()
     {
         List<string> dirList = new List<string>()
-            {
-                Configuration["CSSPDBManage"],
-            };
+        {
+            Configuration["CSSPDBManage"],
+        };
 
         // create all directories
         foreach (string FileName in dirList)

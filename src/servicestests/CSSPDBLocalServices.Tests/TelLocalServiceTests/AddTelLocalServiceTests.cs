@@ -9,12 +9,22 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await TelLocalServiceSetup(culture));
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllTels, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         Tel tel = FillTel();
 
-        var actionTelRes = await TelLocalService.AddTelLocalAsync(tel);
-        Assert.Equal(200, ((ObjectResult)actionTelRes.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionTelRes.Result).Value);
-        Tel telRet = (Tel)((OkObjectResult)actionTelRes.Result).Value;
+        var actionRes = await TelLocalService.AddTelLocalAsync(tel);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        Tel telRet = (Tel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(telRet);
 
         Assert.Equal(1, (from c in dbLocal.Tels select c).Count());
@@ -54,10 +64,10 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         tel.TelNumber = "123878423";
 
-        var actionTelRes2 = await TelLocalService.AddTelLocalAsync(tel);
-        Assert.Equal(200, ((ObjectResult)actionTelRes2.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionTelRes2.Result).Value);
-        Tel telRet2 = (Tel)((OkObjectResult)actionTelRes2.Result).Value;
+        var actionRes2 = await TelLocalService.AddTelLocalAsync(tel);
+        Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+        Tel telRet2 = (Tel)((OkObjectResult)actionRes2.Result).Value;
         Assert.NotNull(telRet2);
 
         Assert.Equal(2, (from c in dbLocal.Tels select c).Count());
@@ -131,14 +141,42 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebAllTels }.gz").Any());
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddTelLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await TelLocalServiceSetup(culture));
 
-        await CSSPLogService.Save();
+        Tel tel = FillTel();
 
-        List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                           select c).ToList();
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        Assert.Single(commandLogList);
-        Assert.Contains("TelLocalService.AddTelLocal(Tel tel)", commandLogList[0].Log);
+        var actionRes = await TelLocalService.AddTelLocalAsync(tel);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddTelLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await TelLocalServiceSetup(culture));
+
+        Tel tel = FillTel();
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionRes = await TelLocalService.AddTelLocalAsync(tel);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -151,9 +189,9 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         tel = null;
 
-        var actionTelRes = await TelLocalService.AddTelLocalAsync(tel);
-        Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
+        var actionRes = await TelLocalService.AddTelLocalAsync(tel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "tel"), errRes.ErrList[0]);
@@ -169,9 +207,9 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         tel.TelID = 10;
 
-        var actionTelRes = await TelLocalService.AddTelLocalAsync(tel);
-        Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
+        var actionRes = await TelLocalService.AddTelLocalAsync(tel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "TelID", "0"), errRes.ErrList[0]);
@@ -187,12 +225,30 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         telLocal.TelNumber = "";
 
-        var actionTelRes = await TelLocalService.AddTelLocalAsync(telLocal);
-        Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
+        var actionRes = await TelLocalService.AddTelLocalAsync(telLocal);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TelNumber"), errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddTelLocal_TelNumber_length_50_Error_Test(string culture)
+    {
+        Assert.True(await TelLocalServiceSetup(culture));
+
+        Tel telLocal = FillTel();
+
+        telLocal.TelNumber = "a".PadRight(51);
+
+        var actionRes = await TelLocalService.AddTelLocalAsync(telLocal);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TelNumber", "50"), errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -205,9 +261,9 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         telLocal.TelType = (TelTypeEnum)10000;
 
-        var actionTelRes = await TelLocalService.AddTelLocalAsync(telLocal);
-        Assert.Equal(400, ((ObjectResult)actionTelRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionTelRes.Result).Value;
+        var actionRes = await TelLocalService.AddTelLocalAsync(telLocal);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TelType"), errRes.ErrList[0]);
@@ -218,6 +274,14 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     public async Task AddTelLocal_Return_Existing_Tel_As_It_Already_Exist_Test(string culture)
     {
         Assert.True(await TelLocalServiceSetup(culture));
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllTels, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         WebAllTels webAllTels = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllTels>(WebTypeEnum.WebAllTels, 0);
 
@@ -231,9 +295,9 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
 
         telLocal.TelID = 0;
 
-        var actionTelRes = await TelLocalService.AddTelLocalAsync(telLocal);
-        Assert.Equal(200, ((ObjectResult)actionTelRes.Result).StatusCode);
-        Tel telLocalRet = (Tel)((OkObjectResult)actionTelRes.Result).Value;
+        var actionRes = await TelLocalService.AddTelLocalAsync(telLocal);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Tel telLocalRet = (Tel)((OkObjectResult)actionRes.Result).Value;
         telLocal.TelID = TelID;
         Assert.Equal(JsonSerializer.Serialize(telLocal), JsonSerializer.Serialize(telLocalRet));
     }

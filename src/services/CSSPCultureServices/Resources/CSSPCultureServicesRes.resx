@@ -1101,4 +1101,7 @@
   <data name="ErrorWhileTryingToGetAzureJSONFileInfoFor_Error_" xml:space="preserve">
     <value>Error while trying to get Azure JSON file info for {0}. Error: {1}</value>
   </data>
+  <data name="_NeedsAtLeast2Points" xml:space="preserve">
+    <value>{0} needs at least 2 points</value>
+  </data>
 </root>

@@ -9,6 +9,16 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await EmailLocalServiceSetup(culture));
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllEmails, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         Email email = FillEmail();
 
         var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
@@ -131,14 +141,42 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebAllEmails }.gz").Any());
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddEmailLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await EmailLocalServiceSetup(culture));
 
-        await CSSPLogService.Save();
+        Email email = FillEmail();
 
-        List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                           select c).ToList();
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        Assert.Single(commandLogList);
-        Assert.Contains("EmailLocalService.AddEmailLocal(Email email)", commandLogList[0].Log);
+        var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
+        Assert.Equal(401, ((ObjectResult)actionEmailRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionEmailRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddEmailLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await EmailLocalServiceSetup(culture));
+
+        Email email = FillEmail();
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
+        Assert.Equal(401, ((ObjectResult)actionEmailRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionEmailRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -197,7 +235,25 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task AddEmailLocal_EmailAddress_IsNotValid_Error_Test(string culture)
+    public async Task AddEmailLocal_EmailAddress_length_255_Error_Test(string culture)
+    {
+        Assert.True(await EmailLocalServiceSetup(culture));
+
+        Email email = FillEmail();
+
+        email.EmailAddress = "a".PadRight(256);
+
+        var actionEmailRes = await EmailLocalService.AddEmailLocalAsync(email);
+        Assert.Equal(400, ((ObjectResult)actionEmailRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionEmailRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "EmailAddress", "255"), errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddEmailLocal_EmailAddress_Valid_Email_Error_Test(string culture)
     {
         Assert.True(await EmailLocalServiceSetup(culture));
 
@@ -236,6 +292,16 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     public async Task AddEmailLocal_Return_Existing_Email_As_It_Already_Exist_Test(string culture)
     {
         Assert.True(await EmailLocalServiceSetup(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllEmails, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         WebAllEmails webAllEmails = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllEmails>(WebTypeEnum.WebAllEmails, 0);
 

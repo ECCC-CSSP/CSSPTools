@@ -295,6 +295,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} needs at least 2 points.
+        /// </summary>
+        public static string _NeedsAtLeast2Points {
+            get {
+                return ResourceManager.GetString("_NeedsAtLeast2Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [{0}] needs to be a date for {1} of model {2}.
         /// </summary>
         public static string _NeedsToBeADateFor_OfModel_ {

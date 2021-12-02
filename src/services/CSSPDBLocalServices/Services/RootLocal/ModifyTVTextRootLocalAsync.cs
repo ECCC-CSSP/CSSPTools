@@ -51,9 +51,11 @@ public partial class RootLocalService : ControllerBase, IRootLocalService
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

@@ -53,7 +53,7 @@ public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileServ
                     Response<bool> response = await shareFileClient.ExistsAsync();
                     if (!response.Value)
                     {
-                        CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotFind_, $"{ Configuration["AzureStoreCSSPJsonPath"] }{ fiGZ.Name }"));
+                        CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotFind_, $"{ Configuration["AzureStoreCSSPJsonPath"] }\\{ fiGZ.Name }"));
                         return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                     }
 

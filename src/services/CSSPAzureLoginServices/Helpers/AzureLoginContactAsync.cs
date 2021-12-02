@@ -2,20 +2,8 @@
 
 public partial class CSSPAzureLoginService : ICSSPAzureLoginService
 {
-    private async Task<bool> AzureLoginContactAsync(LoginModel loginModel)
+    private async Task<bool> AzureLoginContactAsync()
     {
-        if (string.IsNullOrWhiteSpace(loginModel.LoginEmail))
-        {
-            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"));
-            return await Task.FromResult(false);
-        }
-
-        if (string.IsNullOrWhiteSpace(loginModel.Password))
-        {
-            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "Password"));
-            return await Task.FromResult(false);
-        }
-
         using (HttpClient httpClient = new HttpClient())
         {
             Contact contact = new Contact();
@@ -25,8 +13,6 @@ public partial class CSSPAzureLoginService : ICSSPAzureLoginService
 
             try
             {
-                string culture = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? "fr-CA" : "en-CA";
-
                 string stringData = JsonSerializer.Serialize(loginModel);
                 var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/auth/token", contentData).Result;

@@ -2,7 +2,7 @@ namespace CSSPDBLocalServices.Tests;
 
 public partial class CSSPDBLocalServiceTest
 {
-    protected async Task<bool> ClearSomeTablesOfCSSPDBLocal(List<string> TableList)
+    protected async Task<bool> ClearSomeTablesOfCSSPDBLocalAsync(List<string> TableList)
     {
         if (TableList.Count == 0)
         {

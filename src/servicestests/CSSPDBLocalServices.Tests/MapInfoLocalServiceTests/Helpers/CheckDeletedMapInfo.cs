@@ -4,11 +4,11 @@ public partial class MapInfoLocalServiceTest
 {
     private async Task CheckDeletedMapInfo(TVItem tvItemParent, TVItemModel tvItemModel, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType)
     {
-        var actionMapInfoLocalModelPoint = await MapInfoLocalService.DeleteMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
-        Assert.Equal(200, ((ObjectResult)actionMapInfoLocalModelPoint.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionMapInfoLocalModelPoint.Result).Value);
-        bool boolRetPoint = (bool)((OkObjectResult)actionMapInfoLocalModelPoint.Result).Value;
-        Assert.True(boolRetPoint);
+        var actionRes = await MapInfoLocalService.DeleteMapInfoLocalAsync(tvItemParent, tvItemModel.TVItem, tvType, mapInfoDrawType);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        MapInfoModel mapInfoModel2 = (MapInfoModel)((OkObjectResult)actionRes.Result).Value;
+        Assert.NotNull(mapInfoModel2);
 
         MapInfoModel mapInfoModel = (from c in tvItemModel.MapInfoModelList
                                      where c.MapInfo.TVItemID == tvItemModel.TVItem.TVItemID

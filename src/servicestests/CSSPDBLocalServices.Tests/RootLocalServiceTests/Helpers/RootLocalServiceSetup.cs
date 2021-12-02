@@ -9,12 +9,12 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
 
     }
 
-    private async Task<bool> RootLocalServiceSetup(string culture)
+    private async Task<bool> RootLocalServiceSetupAsync(string culture)
     {
         List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
         Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-        Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
+        Assert.True(await ClearSomeTablesOfCSSPDBLocalAsync(TableList));
 
         return await Task.FromResult(true);
     }

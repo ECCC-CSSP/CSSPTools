@@ -7,7 +7,20 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_Good_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        { 
+            new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllMunicipalities, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         Address address = FillAddress();
 
@@ -146,21 +159,47 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebAllAddresses }.gz").Any());
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebRoot }.gz").Any());
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAddressLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
-        await CSSPLogService.Save();
+        Address address = FillAddress();
 
-        List<CommandLog> commandLogList = (from c in dbManage.CommandLogs
-                                           select c).ToList();
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-        Assert.Single(commandLogList);
-        Assert.Contains("AddressLocalService.AddAddressLocal(Address address)", commandLogList[0].Log);
+        var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(address);
+        Assert.Equal(401, ((ObjectResult)actionAddressRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionAddressRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAddressLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        Address address = FillAddress();
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(address);
+        Assert.Equal(401, ((ObjectResult)actionAddressRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionAddressRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_Address_null_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address address = FillAddress();
 
@@ -178,7 +217,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_AddressID_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
@@ -196,7 +235,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_AddressType_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
@@ -214,7 +253,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_CountryTVItemID_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
@@ -232,7 +271,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_ProvinceTVItemID_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
@@ -250,7 +289,7 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_MunicipalityTVItemID_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
@@ -266,45 +305,45 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task AddAddressLocal_StreetName_Error_Test(string culture)
+    public async Task AddAddressLocal_StreetName_length_over_200_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
-        addressLocalModel.StreetName = "";
+        addressLocalModel.StreetName = "a".PadRight(201);
 
         var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
         Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
-        Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "StreetName"), errRes.ErrList[0]);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StreetName", "200"), errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task AddAddressLocal_StreetNumber_Error_Test(string culture)
+    public async Task AddAddressLocal_StreetNumber_length_over_50_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
-        addressLocalModel.StreetNumber = "";
+        addressLocalModel.StreetNumber = "a".PadRight(51);
 
         var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
         Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
-        Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "StreetNumber"), errRes.ErrList[0]);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StreetNumber", "50"), errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_StreetType_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
 
         Address addressLocalModel = FillAddress();
 
@@ -315,14 +354,63 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
         Assert.NotNull(errRes);
         Assert.NotEmpty(errRes.ErrList);
-        Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "StreetType"), errRes.ErrList[0]);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._IsNotOfType_, "StreetType", "StreetTypeEnum"), errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAddressLocal_PostalCode_length_over_11_Error_Test(string culture)
+    {
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        Address addressLocalModel = FillAddress();
+
+        addressLocalModel.PostalCode = "a".PadRight(12);
+
+        var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PostalCode", "11"), errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAddressLocal_GoogelAddressText_length_over_200_Error_Test(string culture)
+    {
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        Address addressLocalModel = FillAddress();
+
+        addressLocalModel.GoogleAddressText = "a".PadRight(201);
+
+        var actionAddressRes = await AddressLocalService.AddAddressLocalAsync(addressLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionAddressRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionAddressRes.Result).Value;
+        Assert.NotNull(errRes);
+        Assert.NotEmpty(errRes.ErrList);
+        Assert.Equal(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GoogleAddressText", "200"), errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_Return_Existing_Address_As_It_Already_Exist_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllMunicipalities, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         WebAllAddresses webAllAddresses = await CSSPReadGzFileService.GetUncompressJSONAsync<WebAllAddresses>(WebTypeEnum.WebAllAddresses, 0);
 
@@ -347,7 +435,20 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_Country_Not_Found_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllMunicipalities, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         Address addressLocalModel = FillAddress();
 
@@ -365,7 +466,20 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_Province_Not_Found_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllMunicipalities, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         Address addressLocalModel = FillAddress();
 
@@ -383,7 +497,20 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddAddressLocal_Municipality_Not_Found_Error_Test(string culture)
     {
-        Assert.True(await AddressLocalServiceSetup(culture));
+        Assert.True(await AddressLocalServiceSetupAsync(culture));
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllMunicipalities, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         Address addressLocalModel = FillAddress();
 

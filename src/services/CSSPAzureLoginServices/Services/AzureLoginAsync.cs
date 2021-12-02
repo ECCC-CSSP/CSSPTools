@@ -2,9 +2,27 @@
 
 public partial class CSSPAzureLoginService : ControllerBase, ICSSPAzureLoginService
 {
-    public async Task<ActionResult<bool>> AzureLoginAsync(LoginModel loginModel)
+    public async Task<ActionResult<bool>> AzureLoginAsync(LoginModel LoginModel)
     {
-        await AzureLoginContactAsync(loginModel);
+        culture = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? "fr-CA" : "en-CA";
+
+        loginModel = LoginModel;
+
+        if (string.IsNullOrWhiteSpace(this.loginModel.LoginEmail))
+        {
+            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "LoginEmail"));
+        }
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        if (string.IsNullOrWhiteSpace(this.loginModel.Password))
+        {
+            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "Password"));
+        }
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        await AzureLoginContactAsync();
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 

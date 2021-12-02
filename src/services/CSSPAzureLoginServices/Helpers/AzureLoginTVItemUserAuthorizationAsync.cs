@@ -4,21 +4,6 @@ public partial class CSSPAzureLoginService : ICSSPAzureLoginService
 {
     private async Task<bool> AzureLoginTVItemUserAuthorizationAsync()
     {
-        string culture = CSSPCultureServicesRes.Culture.TwoLetterISOLanguageName == "fr" ? "fr-CA" : "en-CA";
-
-        if (CSSPLocalLoggedInService.LoggedInContactInfo == null
-            || CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact == null)
-        {
-            CSSPLogService.AppendError(CSSPCultureServicesRes.NeedToBeLoggedIn);
-            return await Task.FromResult(false);
-        }
-
-        if (string.IsNullOrWhiteSpace(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token))
-        {
-            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "Token"));
-            return await Task.FromResult(false);
-        }
-
         using (HttpClient httpClient = new HttpClient())
         {
 
@@ -69,8 +54,8 @@ public partial class CSSPAzureLoginService : ICSSPAzureLoginService
                 CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItemUserAuthorizationList", ex.Message));
                 return await Task.FromResult(false);
             }
-
         }
+
         return await Task.FromResult(true);
     }
 }

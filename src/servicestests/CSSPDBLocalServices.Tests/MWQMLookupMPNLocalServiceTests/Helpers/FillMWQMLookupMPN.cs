@@ -6,11 +6,11 @@ public partial class MWQMLookupMPNLocalServiceTest
     {
         return new MWQMLookupMPN()
         {
-            MWQMLookupMPNID = 0,
+            MWQMLookupMPNID = 1,
             DBCommand = DBCommandEnum.Created,
-            Tubes10 = 1,
-            Tubes1 = 4,
-            Tubes01 = 4,
+            Tubes10 = 0,
+            Tubes1 = 0,
+            Tubes01 = 0,
             MPN_100ml = 2313,
             LastUpdateDate_UTC = DateTime.UtcNow,
             LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,

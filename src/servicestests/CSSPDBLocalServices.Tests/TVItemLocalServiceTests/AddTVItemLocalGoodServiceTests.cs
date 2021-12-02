@@ -5,18 +5,20 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task AddTVItemLocal_Root_Good_Test(string culture)
-    {
-        Assert.True(await TVItemLocalServiceSetup(culture));
-
-        // not allowed to add a Root type
-    }
-    [Theory]
-    [InlineData("en-CA")]
-    //[InlineData("fr-CA")]
     public async Task AddTVItemLocal_Country_Good_Test(string culture)
     {
         Assert.True(await TVItemLocalServiceSetup(culture));
+
+        int ParentTVItemID = 0;
+
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = ParentTVItemID },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
         WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
 

@@ -1,3 +1,5 @@
+using CSSPScrambleServices;
+
 namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
@@ -47,6 +49,7 @@ public partial class UpdateServiceTests
 
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
         Services.AddSingleton<IEnums, Enums>();
+        Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
         Services.AddSingleton<ICSSPLogService, CSSPLogService>();
         Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
         Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();

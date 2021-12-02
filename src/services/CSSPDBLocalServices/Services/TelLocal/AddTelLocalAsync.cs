@@ -29,20 +29,16 @@ public partial class TelLocalService : ControllerBase, ITelLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "TelID", "0"));
         }
 
-        //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)TelModel.DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
-        //if (TelModel.TelTVItemID == 0)
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelTVItemID"));
-        //}
-
         if (string.IsNullOrWhiteSpace(tel.TelNumber))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TelNumber"));
+        }
+        else
+        {
+            if (tel.TelNumber.Length > 50)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TelNumber", "50"));
+            }
         }
 
         string retStr = enums.EnumTypeOK(typeof(TelTypeEnum), (int?)tel.TelType);
@@ -110,6 +106,8 @@ public partial class TelLocalService : ControllerBase, ITelLocalService
                 new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
                 new ToRecreate() { WebType = WebTypeEnum.WebAllTels, TVItemID = 0 },
             };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

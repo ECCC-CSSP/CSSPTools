@@ -7,16 +7,26 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddProvinceLocal_Good_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 5;
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-        var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
-        Assert.Equal(200, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionProvinceRes.Result).Value);
-        TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionProvinceRes.Result).Value;
+        var actionRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(tvItemModelRet);
 
         CheckTVItem(webCountry.TVItemModel, DBCommandEnum.Original);
@@ -43,10 +53,10 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
         }
 
         List<TVItemModel> tvItemModelList = new List<TVItemModel>()
-            {
-                webCountry.TVItemModel,
-                tvItemModelRet,
-            };
+        {
+            webCountry.TVItemModel,
+            tvItemModelRet,
+        };
 
         CheckDBLocal(tvItemModelList);
 
@@ -62,10 +72,10 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebProvince }_{ tvItemModelRet.TVItem.TVItemID }.gz").Any());
         Assert.True(fiList.Where(c => c.Name == $"{ WebTypeEnum.WebCountry }_{ ParentTVItemID }.gz").Any());
 
-        var actionProvinceRes2 = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
-        Assert.Equal(200, ((ObjectResult)actionProvinceRes2.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionProvinceRes2.Result).Value);
-        TVItemModel tvItemModelRet2 = (TVItemModel)((OkObjectResult)actionProvinceRes2.Result).Value;
+        var actionRes2 = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
+        Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+        TVItemModel tvItemModelRet2 = (TVItemModel)((OkObjectResult)actionRes2.Result).Value;
         Assert.NotNull(tvItemModelRet2);
 
         foreach (MapInfoModel mapInfoModel in tvItemModelRet2.MapInfoModelList)
@@ -91,11 +101,11 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
         CheckTVItemLanguage(tvItemModelRet2, DBCommandEnum.Created, "Nouveau Pays 2", LanguageEnum.fr);
 
         List<TVItemModel> tvItemModelList2 = new List<TVItemModel>()
-            {
-                webCountry.TVItemModel,
-                tvItemModelRet,
-                tvItemModelRet2,
-            };
+        {
+            webCountry.TVItemModel,
+            tvItemModelRet,
+            tvItemModelRet2,
+        };
 
         CheckDBLocal(tvItemModelList2);
 
@@ -115,17 +125,47 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
+    public async Task AddProvinceLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
+
+        int ParentTVItemID = 5;
+
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
+
+        var actionRes = await ProvinceLocalService.AddProvinceLocalAsync(ParentTVItemID);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddProvinceLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
+
+        int ParentTVItemID = 5;
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionRes = await ProvinceLocalService.AddProvinceLocalAsync(ParentTVItemID);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
     public async Task AddProvinceLocal_ParentTVItemID_Error_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 0;
 
-        var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(ParentTVItemID);
-        Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await ProvinceLocalService.AddProvinceLocalAsync(ParentTVItemID);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "ParentTVItemID"), errRes.ErrList[0]);
     }
 }

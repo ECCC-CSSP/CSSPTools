@@ -25,15 +25,31 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
         {
             CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextEN"));
         }
+        else
+        {
+            if (TVTextEN.Length > 200)
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVTextEN", 200));
+            }
+        }
 
         if (string.IsNullOrWhiteSpace(TVTextFR))
         {
             CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "TVTextFR"));
         }
+        else
+        {
+            if (TVTextFR.Length > 200)
+            {
+                CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "TVTextFR", 200));
+            }
+        }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         TVItemModel tvItemModelToModify = (from c in webCountry.TVItemModelProvinceList
                                            where c.TVItem.TVItemID == TVItemID
@@ -67,11 +83,13 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelToModify.TVItem.TVItemID },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelToModify.TVItem.TVItemID },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

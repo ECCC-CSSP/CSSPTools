@@ -14,7 +14,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
         List<string> TableList = new List<string>() { "AppTasks", "AppTaskLanguages" };
 
         Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-        Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
+        Assert.True(await ClearSomeTablesOfCSSPDBLocalAsync(TableList));
 
         return await Task.FromResult(true);
     }

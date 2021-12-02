@@ -8,12 +8,12 @@ public partial class AddressLocalServiceTest : CSSPDBLocalServiceTest
 
     }
 
-    private async Task<bool> AddressLocalServiceSetup(string culture)
+    private async Task<bool> AddressLocalServiceSetupAsync(string culture)
     {
         List<string> TableList = new List<string>() { "Addresses", "TVItems", "TVItemLanguages" };
 
         Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-        Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
+        Assert.True(await ClearSomeTablesOfCSSPDBLocalAsync(TableList));
 
         return await Task.FromResult(true);
     }

@@ -4,6 +4,9 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
 {
     public async Task<ActionResult<MapInfoModel>> AddMapInfoLocalAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList)
     {
+        // if coordList is empty then the function will still try to create an MapInfo
+        // with the average of siblings coordinates
+
         string parameters = "";
         if (tvItemParent != null)
         {
@@ -91,11 +94,7 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "mapInfoDrawType"));
         }
 
-        // checking coordList
-        if (coordList.Count == 0)
-        {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "coordList"));
-        }
+        // not checking coordList as it could be null or empty
         #endregion Checking Input Parameters
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -120,6 +119,13 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
         }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        if (coordList == null || coordList.Count == 0)
+        {
+            coordList = await GetCoordListFromAverageSiblingListAsync(mapInfoModelSiblingList, tvItem, tvType, mapInfoDrawType);
+
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+        }
 
         #region MapInfo
         double PolygonSize = await HelperLocalService.GetPolygonSizeAsync(tvType);

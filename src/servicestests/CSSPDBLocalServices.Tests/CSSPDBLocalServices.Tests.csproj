@@ -36,7 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
 </Project>

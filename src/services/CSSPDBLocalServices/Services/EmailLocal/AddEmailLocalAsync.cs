@@ -29,20 +29,16 @@ public partial class EmailLocalService : ControllerBase, IEmailLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "EmailID", "0"));
         }
 
-        //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)EmailModel.DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
-        //if (EmailModel.EmailTVItemID == 0)
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "EmailTVItemID"));
-        //}
-
         if (string.IsNullOrWhiteSpace(email.EmailAddress))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "EmailAddress"));
+        }
+        else
+        {
+            if (email.EmailAddress.Length > 255)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "EmailAddress", "255"));
+            }
         }
 
         if (!IsValidEmail(email.EmailAddress))
@@ -112,10 +108,12 @@ public partial class EmailLocalService : ControllerBase, IEmailLocalService
 
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllEmails, TVItemID = 0 },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllEmails, TVItemID = 0 },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

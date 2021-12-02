@@ -7,7 +7,7 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task Constructor_Good_Test(string culture)
     {
-        Assert.True(await RootLocalServiceSetup(culture));
+        Assert.True(await RootLocalServiceSetupAsync(culture));
     }
 }
 

@@ -1098,4 +1098,7 @@
   <data name="ErrorWhileTryingToGetAzureJSONFileInfoFor_Error_" xml:space="preserve">
     <value>Erreur lors d'accès à l'information de la filière JSON Azure pour {0}. Erreur: {1}</value>
   </data>
+  <data name="_NeedsAtLeast2Points" xml:space="preserve">
+    <value>{0} requiert au moins 2 points</value>
+  </data>
 </root>

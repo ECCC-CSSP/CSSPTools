@@ -30,8 +30,11 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
 
         List<TVItemModel> tvItemModelCountryList = webRoot.TVItemModelCountryList;
 
-        string TVTextEN = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelCountryList, LanguageEnum.en, "New Country");
-        string TVTextFR = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelCountryList, LanguageEnum.fr, "Nouveau Pays");
+        string StartTextEN = "New Country";
+        string StartTextFR = "Nouveau Pays";
+
+        string TVTextEN = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelCountryList, LanguageEnum.en, StartTextEN);
+        string TVTextFR = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelCountryList, LanguageEnum.fr, StartTextFR);
 
         var actionTVItemModel = await TVItemLocalService.AddTVItemLocalAsync(tvItemModelParent.TVItem, TVTypeEnum.Country, TVTextEN, TVTextFR);
 
@@ -50,7 +53,7 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
             mapInfoModelList.AddRange(tvItemModelForMapInfo.MapInfoModelList);
         }
 
-        var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Country, MapInfoDrawTypeEnum.Point);
+        var actionMapInfoModelPoint = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Country, MapInfoDrawTypeEnum.Point, new List<Coord>());
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -60,7 +63,7 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
 
         tvItemModelNew.MapInfoModelList.Add(mapInfoModelPoint);
 
-        var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalFromAverageAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Country, MapInfoDrawTypeEnum.Polygon);
+        var actionMapInfoModelPolygon = await MapInfoLocalService.AddMapInfoLocalAsync(tvItemModelParent.TVItem, tvItemModelNew.TVItem, TVTypeEnum.Country, MapInfoDrawTypeEnum.Polygon, new List<Coord>());
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -71,11 +74,13 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
         tvItemModelNew.MapInfoModelList.Add(mapInfoModelPolygon);
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModel.TVItem.TVItemID },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModel.TVItem.TVItemID },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

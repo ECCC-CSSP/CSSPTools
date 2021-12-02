@@ -3,18 +3,16 @@ namespace CSSPDBLocalServices.Tests;
 [Collection("Sequential")]
 public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
 {
+    protected List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
     public MapInfoLocalServiceTest() : base()
     {
 
-
     }
 
-    private async Task<bool> MapInfoLocalServiceSetup(string culture)
+    private async Task<bool> MapInfoLocalServiceSetupAsync(string culture)
     {
-        List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
-
         Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-        Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
+        Assert.True(await ClearSomeTablesOfCSSPDBLocalAsync(TableList));
 
         return await Task.FromResult(true);
     }

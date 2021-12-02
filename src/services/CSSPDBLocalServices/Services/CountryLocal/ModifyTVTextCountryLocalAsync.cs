@@ -62,11 +62,13 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModelToModify.TVItem.TVItemID },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = tvItemModelToModify.TVItem.TVItemID },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

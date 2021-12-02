@@ -92,6 +92,12 @@ public partial class HelperLocalService : ControllerBase, IHelperLocalService
                     TVTypeEnum.PolSourceSite,
                     TVTypeEnum.Classification,
                     TVTypeEnum.File,
+                    TVTypeEnum.Approved,
+                    TVTypeEnum.ConditionallyApproved,
+                    TVTypeEnum.ConditionallyRestricted,
+                    TVTypeEnum.Restricted,
+                    TVTypeEnum.Prohibited,
+                    TVTypeEnum.Unclassified,
                 },
             },
             new TVTypeParentTVTypeRelation() {            // MWQMSite

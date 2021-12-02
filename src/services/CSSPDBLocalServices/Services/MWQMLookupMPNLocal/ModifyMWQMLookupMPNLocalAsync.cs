@@ -19,12 +19,6 @@ public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNL
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MWQMLookupMPNID"));
         }
 
-        //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)MWQMLookupMPNModel.DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
         if (mwqmLookupMPN.Tubes10 < 0 || mwqmLookupMPN.Tubes10 > 5)
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "Tubes10", "0", "5"));
@@ -60,31 +54,35 @@ public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNL
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        WebRoot webRoot = await CSSPReadGzFileService.GetUncompressJSONAsync<WebRoot>(WebTypeEnum.WebRoot, 0);
-
         MWQMLookupMPN MWQMLookupMPNExist = (from c in dbLocal.MWQMLookupMPNs
                                             where c.MWQMLookupMPNID == mwqmLookupMPN.MWQMLookupMPNID
                                             select c).FirstOrDefault();
         if (MWQMLookupMPNExist == null)
         {
-            int MWQMLookupMPNIDNew = (from c in dbLocal.MWQMLookupMPNs
-                                      where c.MWQMLookupMPNID < 0
-                                      orderby c.MWQMLookupMPNID ascending
-                                      select c.MWQMLookupMPNID).FirstOrDefault() - 1;
 
-            mwqmLookupMPN.DBCommand = DBCommandEnum.Modified;
-            mwqmLookupMPN.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
-            mwqmLookupMPN.LastUpdateDate_UTC = DateTime.UtcNow;
+            MWQMLookupMPNExist = new MWQMLookupMPN()
+            {
+                DBCommand = DBCommandEnum.Modified,
+                LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
+                LastUpdateDate_UTC = DateTime.UtcNow,
+                MPN_100ml = mwqmLookupMPN.MPN_100ml,
+                MWQMLookupMPNID = mwqmLookupMPN.MWQMLookupMPNID,
+                Tubes01 = mwqmLookupMPN.Tubes01,
+                Tubes1 = mwqmLookupMPN.Tubes1,
+                Tubes10 = mwqmLookupMPN.Tubes10,
+            };
 
-            dbLocal.MWQMLookupMPNs.Add(mwqmLookupMPN);
+            dbLocal.MWQMLookupMPNs.Add(MWQMLookupMPNExist);
         }
         else
         {
             MWQMLookupMPNExist.DBCommand = DBCommandEnum.Modified;
+            MWQMLookupMPNExist.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+            MWQMLookupMPNExist.LastUpdateDate_UTC = DateTime.UtcNow;
+            MWQMLookupMPNExist.MPN_100ml = mwqmLookupMPN.MPN_100ml;
             MWQMLookupMPNExist.Tubes10 = mwqmLookupMPN.Tubes10;
             MWQMLookupMPNExist.Tubes1 = mwqmLookupMPN.Tubes1;
             MWQMLookupMPNExist.Tubes01 = mwqmLookupMPN.Tubes01;
-            MWQMLookupMPNExist.MPN_100ml = mwqmLookupMPN.MPN_100ml;
         }
 
         try
@@ -98,6 +96,8 @@ public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNL
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
+        await CSSPCreateGzFileService.SetLocal(true);
+
         var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebAllMWQMLookupMPNs, 0);
         if (400 == ((ObjectResult)actionRes.Result).StatusCode)
         {
@@ -109,6 +109,6 @@ public partial class MWQMLookupMPNLocalService : ControllerBase, IMWQMLookupMPNL
 
         CSSPLogService.EndFunctionLog(FunctionName);
 
-        return await Task.FromResult(Ok(mwqmLookupMPN));
+        return await Task.FromResult(Ok(MWQMLookupMPNExist));
     }
 }

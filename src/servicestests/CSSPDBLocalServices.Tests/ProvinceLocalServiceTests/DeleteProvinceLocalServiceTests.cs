@@ -7,24 +7,32 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteProvinceLocal_Good_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 5;
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
 
-        var actionProvinceRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
-        Assert.Equal(200, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionProvinceRes.Result).Value);
-        TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionProvinceRes.Result).Value;
+        var actionRes = await ProvinceLocalService.AddProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        TVItemModel tvItemModelRet = (TVItemModel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(tvItemModelRet);
 
-        // see AddProvinceLocal test for more detail testing
-
-        var actionProvinceRes2 = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, tvItemModelRet.TVItem.TVItemID);
-        Assert.Equal(200, ((ObjectResult)actionProvinceRes2.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionProvinceRes2.Result).Value);
-        TVItemModel tvItemModelDeleteRet = (TVItemModel)((OkObjectResult)actionProvinceRes2.Result).Value;
+        var actionRes2 = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, tvItemModelRet.TVItem.TVItemID);
+        Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
+        TVItemModel tvItemModelDeleteRet = (TVItemModel)((OkObjectResult)actionRes2.Result).Value;
         Assert.NotNull(tvItemModelDeleteRet);
 
         webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
@@ -54,10 +62,10 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Deleted, "Nouveau Pays 1", LanguageEnum.fr);
 
         List<TVItemModel> tvItemModelList = new List<TVItemModel>()
-            {
-                webCountry.TVItemModel,
-                tvItemModelDeleteRet,
-            };
+        {
+            webCountry.TVItemModel,
+            tvItemModelDeleteRet,
+        };
 
         CheckDBLocal(tvItemModelList);
 
@@ -76,18 +84,50 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
+    public async Task DeleteProvinceLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
+
+        int ParentTVItemID = 5;
+        int TVItemID = 7;
+
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
+
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task DeleteProvinceLocal_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
+
+        int ParentTVItemID = 5;
+        int TVItemID = 7;
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Equal(CSSPCultureServicesRes.YouDoNotHaveAuthorization, errRes.ErrList[0]);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
     public async Task DeleteProvinceLocal_ParentTVItemID_Error_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 0;
         int TVItemID = 7;
 
-        var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
-        Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "ParentTVItemID"), errRes.ErrList[0]);
     }
     [Theory]
@@ -95,16 +135,14 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteProvinceLocal_TVItemID_Error_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 5;
         int TVItemID = 0;
 
-        var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
-        Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), errRes.ErrList[0]);
     }
     [Theory]
@@ -112,35 +150,41 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteProvinceLocal_CouldNotFind_WebCountry_Error_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 10000;
         int TVItemID = 7;
 
         string fileName = await BaseGzFileService.GetFileName(WebTypeEnum.WebCountry, ParentTVItemID);
 
-        var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
-        Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
-        Assert.Equal(string.Format(CSSPCultureServicesRes.FileNotFound_, fileName), errRes.ErrList[0]);
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_, $"{ Configuration["AzureStoreCSSPJsonPath"] }\\{ fileName }"), errRes.ErrList[0]);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task DeleteProvinceLocal_CouldNotFind_ProvinceItem_Error_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 5;
         int TVItemID = 10000;
 
-        var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
-        Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            //new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "TVItemModel", "TVItemID", $"{ TVItemID }"), errRes.ErrList[0]);
     }
     [Theory]
@@ -148,21 +192,24 @@ public partial class ProvinceLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteProvinceLocal_Children_Exist_Error_Test(string culture)
     {
-        Assert.True(await ProvinceLocalServiceSetup(culture));
+        Assert.True(await ProvinceLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 5;
+        int TVItemID = 7;
 
-        WebCountry webCountry = await CSSPReadGzFileService.GetUncompressJSONAsync<WebCountry>(WebTypeEnum.WebCountry, ParentTVItemID);
+        await CSSPCreateGzFileService.SetLocal(false);
 
-        Assert.NotEmpty(webCountry.TVItemModelProvinceList);
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = TVItemID },
+            new ToRecreate() { WebType = WebTypeEnum.WebCountry, TVItemID = ParentTVItemID },
+        };
 
-        TVItemModel tvItemModelProvinceToDelete = webCountry.TVItemModelProvinceList[0];
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
 
-        var actionProvinceRes = await ProvinceLocalService.DeleteProvinceLocalAsync(webCountry.TVItemModel.TVItem.TVItemID, tvItemModelProvinceToDelete.TVItem.TVItemID);
-        Assert.Equal(400, ((ObjectResult)actionProvinceRes.Result).StatusCode);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionProvinceRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await ProvinceLocalService.DeleteProvinceLocalAsync(ParentTVItemID, TVItemID);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Equal(string.Format(CSSPCultureServicesRes.CouldNotDelete_BecauseItIsBeingUsedIn_, "TVItem Province", "Area"), errRes.ErrList[0]);
     }
 }

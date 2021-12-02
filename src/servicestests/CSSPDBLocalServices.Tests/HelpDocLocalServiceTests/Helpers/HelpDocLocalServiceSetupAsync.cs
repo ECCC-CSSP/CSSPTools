@@ -6,15 +6,14 @@ namespace CSSPDBLocalServices.Tests;
         public HelpDocLocalServiceTest() : base()
         {
 
-
         }
 
-        private async Task<bool> HelpDocLocalServiceSetup(string culture)
+        private async Task<bool> HelpDocLocalServiceSetupAsync(string culture)
         {
             List<string> TableList = new List<string>() { "HelpDocs" };
 
             Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-            Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
+            Assert.True(await ClearSomeTablesOfCSSPDBLocalAsync(TableList));
 
             return await Task.FromResult(true);
         }

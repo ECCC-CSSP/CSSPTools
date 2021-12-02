@@ -34,8 +34,4 @@
     <ProjectReference Include="..\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Generated\" />
-  </ItemGroup>
-
 </Project>

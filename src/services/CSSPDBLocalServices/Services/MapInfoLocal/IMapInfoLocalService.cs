@@ -3,7 +3,7 @@ namespace CSSPDBLocalServices;
 public partial interface IMapInfoLocalService
 {
     Task<ActionResult<MapInfoModel>> AddMapInfoLocalAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType, List<Coord> coordList);
-    Task<ActionResult<MapInfoModel>> AddMapInfoLocalFromAverageAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType);
+    //Task<ActionResult<MapInfoModel>> AddMapInfoLocalFromAverageAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType);
     Task<ActionResult<MapInfoModel>> DeleteMapInfoLocalAsync(TVItem tvItemParent, TVItem tvItem, TVTypeEnum tvType, MapInfoDrawTypeEnum mapInfoDrawType);
     //Task<ActionResult<MapInfoLocalModel>> ModifyMapInfoLocal(MapInfoLocalModel mapInfoLocalModel);
     Task<double> CalculateAreaOfPolygonAsync(List<Coord> NodeList);

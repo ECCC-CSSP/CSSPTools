@@ -120,6 +120,10 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
             try
             {
+                tvItem.DBCommand = DBCommandEnum.Modified;
+                tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
+
                 dbLocal.TVItems.Add(tvItem);
                 dbLocal.SaveChanges();
             }
@@ -128,6 +132,26 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
                 return null;
             }
+        }
+        else
+        {
+            try
+            {
+                if (tvItem.DBCommand != DBCommandEnum.Created)
+                {
+                    tvItem.DBCommand = DBCommandEnum.Modified;
+                }
+                tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
+                tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
+
+                dbLocal.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotAdd_Error_, "TVItem", ex.Message));
+                return null;
+            }
+
         }
         #endregion TVItem
 
@@ -242,12 +266,6 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
                     tvItemLanguageFR,
                 }
         };
-
-        //tvItemModelParentList.Add(tvItemModelChanged);
-
-        //await HelperLocalService.RecreateLocalGzFiles(tvItemModelParentList);
-
-        //if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         CSSPLogService.EndFunctionLog(FunctionName);
 

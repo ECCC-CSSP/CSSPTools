@@ -2,10 +2,10 @@ namespace CSSPDBLocalServices;
 
 public partial class ClassificationLocalService : ControllerBase, IClassificationLocalService
 {
-    public async Task<ActionResult<ClassificationModel>> AddClassificationLocalAsync(int SubsectorTVItemID, ClassificationTypeEnum classificationType, List<Coord> coordList)
+    public async Task<ActionResult<ClassificationModel>> AddClassificationLocalAsync(int SubsectorTVItemID, ClassificationTypeEnum ClassificationType, List<Coord> coordList)
     {
         string parameters = $" --  SubsectorTVItemID = { SubsectorTVItemID } " +
-            $"classificationType = { classificationType }";
+            $"classificationType = { ClassificationType }";
 
         string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int SubsectorTVItemID, ClassificationTypeEnum classificationType, List<Coord> coordList) { parameters }";
         CSSPLogService.FunctionLog(FunctionName);
@@ -18,21 +18,50 @@ public partial class ClassificationLocalService : ControllerBase, IClassificatio
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "SubsectorTVItemID"));
         }
 
-        string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)classificationType);
+        string retStr = enums.EnumTypeOK(typeof(ClassificationTypeEnum), (int?)ClassificationType);
         if (!string.IsNullOrWhiteSpace(retStr))
         {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "classificationType"));
+            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ClassificationType"));
         }
 
         if (coordList == null)
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "coordList"));
         }
-
-        if (coordList.Count == 0)
+        else
         {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "coordList"));
+            if (coordList.Count < 2)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._NeedsAtLeast2Points, "coordList"));
+            }
         }
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        foreach (Coord coord in coordList)
+        {
+            if (coord.Lat < -90)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "Lat", "-90"));
+                break;
+            }
+            if (coord.Lat > 90)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxValueIs_, "Lat", "90"));
+                break;
+            }
+            if (coord.Lng < -180)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MinValueIs_, "Lng", "-180"));
+                break;
+            }
+            if (coord.Lng > 180)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxValueIs_, "Lng", "180"));
+                break;
+            }
+        }
+
         #endregion Check Classification
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -40,11 +69,11 @@ public partial class ClassificationLocalService : ControllerBase, IClassificatio
         WebSubsector webSubsector = await CSSPReadGzFileService.GetUncompressJSONAsync<WebSubsector>(WebTypeEnum.WebSubsector, SubsectorTVItemID);
 
         int LastOrdinal = (from c in webSubsector.ClassificationModelList
-                           orderby c.Classification.Ordinal ascending
+                           orderby c.Classification.Ordinal descending
                            select c.Classification.Ordinal).FirstOrDefault();
 
         string TVText = "ERROR";
-        switch (classificationType)
+        switch (ClassificationType)
         {
             case ClassificationTypeEnum.Approved:
                 {
@@ -83,6 +112,14 @@ public partial class ClassificationLocalService : ControllerBase, IClassificatio
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
+        var actionMapInfo = await MapInfoLocalService.AddMapInfoLocalAsync(webSubsector.TVItemModel.TVItem, tvItemModel.TVItem, TVTypeEnum.Classification, MapInfoDrawTypeEnum.Polyline, coordList);
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        MapInfoModel mapInfoModel = (MapInfoModel)((OkObjectResult)actionMapInfo.Result).Value;
+
+        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
         int ClassificationIDNew = (from c in dbLocal.Classifications
                                    where c.ClassificationID < 0
                                    orderby c.ClassificationID ascending
@@ -92,7 +129,7 @@ public partial class ClassificationLocalService : ControllerBase, IClassificatio
         {
             ClassificationID = ClassificationIDNew,
             ClassificationTVItemID = tvItemModel.TVItem.TVItemID,
-            ClassificationType = classificationType,
+            ClassificationType = ClassificationType,
             Ordinal = LastOrdinal + 1,
             DBCommand = DBCommandEnum.Created,
             LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID,
@@ -110,6 +147,8 @@ public partial class ClassificationLocalService : ControllerBase, IClassificatio
         }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         var actionRes = await CSSPCreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebSubsector, SubsectorTVItemID);
         if (400 == ((ObjectResult)actionRes.Result).StatusCode)

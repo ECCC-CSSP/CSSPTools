@@ -42,7 +42,20 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
+        // deleting MapInfo and MapInfoPoints
+        foreach (MapInfoModel mapInfoModel in tvItemModelToDelete.MapInfoModelList)
+        {
+            var actionMapInfoModelRes = await MapInfoLocalService.DeleteMapInfoLocalAsync(webCountry.TVItemModel.TVItem, tvItemModelToDelete.TVItem, TVTypeEnum.Province, mapInfoModel.MapInfo.MapInfoDrawType);
 
+            if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+
+            MapInfoModel mapInfoModelDeleted = (MapInfoModel)((OkObjectResult)actionMapInfoModelRes.Result).Value;
+
+            mapInfoModel.MapInfo = mapInfoModelDeleted.MapInfo;
+            mapInfoModel.MapInfoPointList = mapInfoModelDeleted.MapInfoPointList;
+        }
+
+        // deleting TVItem
         var actionTVItemModelRes = await TVItemLocalService.DeleteTVItemLocalAsync(webCountry.TVItemModel.TVItem, tvItemModelToDelete);
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -60,6 +73,8 @@ public partial class ProvinceLocalService : ControllerBase, IProvinceLocalServic
             new ToRecreate() { WebType = WebTypeEnum.WebAllProvinces, TVItemID = 0 },
             new ToRecreate() { WebType = WebTypeEnum.WebProvince, TVItemID = tvItemModelToDelete.TVItem.TVItemID },
         };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

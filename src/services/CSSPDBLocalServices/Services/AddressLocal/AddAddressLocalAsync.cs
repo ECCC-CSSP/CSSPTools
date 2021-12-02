@@ -32,17 +32,6 @@ public partial class AddressLocalService : ControllerBase, IAddressLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AddressID", "0"));
         }
 
-        //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)AddressModel.DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
-        //if (AddressModel.AddressTVItemID == 0)
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AddressTVItemID"));
-        //}
-
         string retStr = enums.EnumTypeOK(typeof(AddressTypeEnum), (int?)address.AddressType);
         if (!string.IsNullOrWhiteSpace(retStr))
         {
@@ -64,31 +53,46 @@ public partial class AddressLocalService : ControllerBase, IAddressLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "MunicipalityTVItemID"));
         }
 
-        if (string.IsNullOrWhiteSpace(address.StreetName))
+        if (!string.IsNullOrWhiteSpace(address.StreetName))
         {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "StreetName"));
+            if (address.StreetName.Length > 200)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StreetName", "200"));
+            }
         }
 
-        if (string.IsNullOrWhiteSpace(address.StreetNumber))
+        if (!string.IsNullOrWhiteSpace(address.StreetNumber))
         {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "StreetNumber"));
+            if (address?.StreetNumber.Length > 50)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StreetNumber", "50"));
+            }
         }
 
-        retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), (int?)address.StreetType);
-        if (!string.IsNullOrWhiteSpace(retStr))
+        if (address.StreetType != null)
         {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "StreetType"));
+            retStr = enums.EnumTypeOK(typeof(StreetTypeEnum), (int?)address.StreetType);
+            if (!string.IsNullOrWhiteSpace(retStr))
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNotOfType_, "StreetType", "StreetTypeEnum"));
+            }
         }
 
-        //if (string.IsNullOrWhiteSpace(AddressModel.PostalCode))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "PostalCode"));
-        //}
+        if (!string.IsNullOrWhiteSpace(address.PostalCode))
+        {
+            if (address.PostalCode.Length > 11)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "PostalCode", "11"));
+            }
+        }
 
-        //if (string.IsNullOrWhiteSpace(AddressModel.GoogleAddressText))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "GoogleAddressText"));
-        //}
+        if (!string.IsNullOrWhiteSpace(address.GoogleAddressText))
+        {
+            if (address.GoogleAddressText.Length > 200)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "GoogleAddressText", "200"));
+            }
+        }
         #endregion Check Address
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
@@ -190,10 +194,12 @@ public partial class AddressLocalService : ControllerBase, IAddressLocalService
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-            {
-                new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-                new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
-            };
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllAddresses, TVItemID = 0 },
+        };
+
+        await CSSPCreateGzFileService.SetLocal(true);
 
         foreach (ToRecreate toRecreate in ToRecreateList)
         {

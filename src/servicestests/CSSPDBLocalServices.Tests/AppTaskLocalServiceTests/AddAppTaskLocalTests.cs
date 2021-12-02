@@ -11,10 +11,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(200, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((OkObjectResult)actionPostTVItemModelRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionPostTVItemModelRes.Result).Value;
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
+        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         Assert.Equal(1, (from c in dbLocal.AppTasks select c).Count());
@@ -77,7 +77,24 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task AddModifyTaskLocal_Unauthorized_Error_Test(string culture)
+    public async Task AddAppTaskLocal_Unauthorized_Error_Test(string culture)
+    {
+        Assert.True(await AppTaskLocalServiceSetup(culture));
+
+        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
+
+        var actionRes = await AppTaskLocalService.ModifyAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((UnauthorizedObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
+        Assert.Contains(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAppTaskLocal_Unauthorized2_Error_Test(string culture)
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
@@ -85,12 +102,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.ModifyAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.ModifyAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(401, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((UnauthorizedObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), errRes.ErrList);
     }
     [Theory]
@@ -104,12 +119,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.AppTaskID = 10;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskID", "0"), errRes.ErrList);
     }
     [Theory]
@@ -123,12 +136,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.TVItemID = 0;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"), errRes.ErrList);
     }
     [Theory]
@@ -142,12 +153,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.TVItemID2 = 0;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID2"), errRes.ErrList);
     }
     [Theory]
@@ -161,12 +170,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.AppTaskCommand = (AppTaskCommandEnum)10000;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskCommand"), errRes.ErrList);
     }
     [Theory]
@@ -180,13 +187,45 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.AppTaskStatus = (AppTaskStatusEnum)10000;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskStatus"), errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAppTaskLocal_PercentCompeted_0_to_100_Error_Test(string culture)
+    {
+        Assert.True(await AppTaskLocalServiceSetup(culture));
+
+        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+
+        appTaskLocalModel.AppTask.PercentCompleted = -1;
+
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.Contains(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"), errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAppTaskLocal_Parameters_length_100000_Error_Test(string culture)
+    {
+        Assert.True(await AppTaskLocalServiceSetup(culture));
+
+        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+
+        appTaskLocalModel.AppTask.Parameters = "a".PadRight(100001);
+
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Parameters", "100000"), errRes.ErrList);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -199,12 +238,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.Language = (LanguageEnum)10000;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._IsRequired, "Language"), errRes.ErrList);
     }
     [Theory]
@@ -218,12 +255,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.StartDateTime_UTC = new DateTime(1970, 1, 1);
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "StartDateTime_UTC", "1979"), errRes.ErrList);
     }
     [Theory]
@@ -237,12 +272,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.EndDateTime_UTC = new DateTime(1970, 1, 1);
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "EndDateTime_UTC", "1979"), errRes.ErrList);
     }
     [Theory]
@@ -256,12 +289,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTask.EndDateTime_UTC = appTaskLocalModel.AppTask.StartDateTime_UTC.AddDays(-1);
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._DateIsBiggerThan_, "EndDateTime_UTC", "StartDateTime_UTC"), errRes.ErrList);
     }
     [Theory]
@@ -275,12 +306,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList.Remove(appTaskLocalModel.AppTaskLanguageList[appTaskLocalModel.AppTaskLanguageList.Count - 1]);
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageList.Count", "2"), errRes.ErrList);
     }
     [Theory]
@@ -294,13 +323,28 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList[0].AppTaskLanguageID = 1;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageID", "0"), errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAppTaskLocal_AppTaskLanguage_EN_AppTaskID_Error_Test(string culture)
+    {
+        Assert.True(await AppTaskLocalServiceSetup(culture));
+
+        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+
+        appTaskLocalModel.AppTaskLanguageList[0].AppTaskID = 1;
+
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskID", "0"), errRes.ErrList);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -313,12 +357,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList[0].StatusText = "".PadLeft(251, 'a');
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StatusText", 250), errRes.ErrList);
     }
     [Theory]
@@ -332,12 +374,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList[0].ErrorText = "".PadLeft(251, 'a');
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorText", 250), errRes.ErrList);
     }
     [Theory]
@@ -351,13 +391,28 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList[1].AppTaskLanguageID = 1;
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageID", "0"), errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task AddAppTaskLocal_AppTaskLanguage_FR_AppTaskID_Error_Test(string culture)
+    {
+        Assert.True(await AppTaskLocalServiceSetup(culture));
+
+        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+
+        appTaskLocalModel.AppTaskLanguageList[1].AppTaskID = 1;
+
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.Contains(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskID", "0"), errRes.ErrList);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -370,12 +425,10 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList[1].StatusText = "".PadLeft(251, 'a');
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "StatusText", 250), errRes.ErrList);
     }
     [Theory]
@@ -389,32 +442,11 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         appTaskLocalModel.AppTaskLanguageList[1].ErrorText = "".PadLeft(251, 'a');
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
         Assert.Contains(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorText", 250), errRes.ErrList);
-    }
-    [Theory]
-    [InlineData("en-CA")]
-    //[InlineData("fr-CA")]
-    public async Task AddAppTaskLocal_Unauthorized_Error_Test(string culture)
-    {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
-
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
-
-        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
-
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(401, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
-        Assert.Contains(string.Format(CSSPCultureServicesRes.YouDoNotHaveAuthorization), errRes.ErrList);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -433,12 +465,11 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
 
         AppTaskLocalModel appTaskModel2 = FillAppTaskLocalModel();
 
-        var actionPostTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
-        Assert.Equal(400, ((ObjectResult)actionPostTVItemModelRes.Result).StatusCode);
-        Assert.NotNull(((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value);
-        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionPostTVItemModelRes.Result).Value;
-        Assert.NotNull(errRes);
-        Assert.NotEmpty(errRes.ErrList);
+        var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskModel2);
+        Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);
+        Assert.NotNull(((BadRequestObjectResult)actionRes.Result).Value);
+        ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes.Result).Value;
+        Assert.Contains(string.Format(CSSPCultureServicesRes._AlreadyExists, "AppTask"), errRes.ErrList);
     }
 }
 

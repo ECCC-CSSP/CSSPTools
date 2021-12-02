@@ -15,21 +15,15 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
         }
 
-        //string retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)appTaskLocalModel.AppTask.DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
+        if (appTaskLocalModel.AppTask.TVItemID == 0)
+        {
+            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
+        }
 
-        //if (appTaskLocalModel.AppTask.TVItemID == 0)
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID"));
-        //}
-
-        //if (appTaskLocalModel.AppTask.TVItemID2 == 0)
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID2"));
-        //}
+        if (appTaskLocalModel.AppTask.TVItemID2 == 0)
+        {
+            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TVItemID2"));
+        }
 
         string retStr = enums.EnumTypeOK(typeof(AppTaskCommandEnum), (int?)appTaskLocalModel.AppTask.AppTaskCommand);
         if (!string.IsNullOrWhiteSpace(retStr))
@@ -43,15 +37,18 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskStatus"));
         }
 
-        //if (appTaskLocalModel.AppTask.PercentCompleted < 0)
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "PercentCompleted"));
-        //}
+        if (appTaskLocalModel.AppTask.PercentCompleted < 0 || appTaskLocalModel.AppTask.PercentCompleted > 100)
+        {
+            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ValueShouldBeBetween_And_, "PercentCompleted", "0", "100"));
+        }
 
-        //if (string.IsNullOrWhiteSpace(appTaskModel.AppTask.Parameters))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Parameters"));
-        //}
+        if (!string.IsNullOrWhiteSpace(appTaskLocalModel.AppTask.Parameters))
+        {
+            if (appTaskLocalModel.AppTask.Parameters.Length > 100000)
+            {
+                CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "Parameters", "100000"));
+            }
+        }
 
         retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)appTaskLocalModel.AppTask.Language);
         if (!string.IsNullOrWhiteSpace(retStr))
@@ -81,21 +78,11 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._ShouldBeEqualTo_, "AppTaskLanguageList.Count", "2"));
         }
-
-        //if (!appTaskLocalModel.AppTaskLanguageList.Where(c => c.Language == LanguageEnum.en).Any())
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", "en"));
-        //}
-
-        //if (!appTaskLocalModel.AppTaskLanguageList.Where(c => c.Language == LanguageEnum.fr).Any())
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTaskLanguage", "Language", "fr"));
-        //}
-        #endregion Check AppTaskLocalModel
+        #endregion Check AppTaskModel.AppTask
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        #region Modify AppTaskLanguage EN
+        #region Check AppTaskModel.AppTaskLanguage EN
         if (appTaskLocalModel.AppTaskLanguageList[0].AppTaskLanguageID == 0)
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskLanguageID"));
@@ -105,18 +92,6 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
         }
-
-        //retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)appTaskLocalModel.AppTaskLanguageList[0].DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
-        //retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)appTaskLocalModel.AppTaskLanguageList[0].Language);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
-        //}
 
         if (!string.IsNullOrWhiteSpace(appTaskLocalModel.AppTaskLanguageList[0].StatusText))
         {
@@ -133,17 +108,9 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorText", 250));
             }
         }
+        #endregion Check AppTaskModel.AppTaskLanguage EN
 
-        //retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)appTaskLocalModel.AppTaskLanguageList[0].TranslationStatus);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatus"));
-        //}
-        #endregion Modify AppTaskLanguage EN
-
-        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-        #region Modify AppTaskLanguage FR
+        #region Check AppTaskModel.AppTaskLanguage FR
         if (appTaskLocalModel.AppTaskLanguageList[1].AppTaskLanguageID == 0)
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskLanguageID"));
@@ -153,18 +120,6 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AppTaskID"));
         }
-
-        //retStr = enums.EnumTypeOK(typeof(DBCommandEnum), (int?)appTaskLocalModel.AppTaskLanguageList[1].DBCommand);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "DBCommand"));
-        //}
-
-        //retStr = enums.EnumTypeOK(typeof(LanguageEnum), (int?)appTaskLocalModel.AppTaskLanguageList[1].Language);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "Language"));
-        //}
 
         if (!string.IsNullOrWhiteSpace(appTaskLocalModel.AppTaskLanguageList[1].StatusText))
         {
@@ -181,13 +136,7 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
                 CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "ErrorText", 250));
             }
         }
-
-        //retStr = enums.EnumTypeOK(typeof(TranslationStatusEnum), (int?)appTaskLocalModel.AppTaskLanguageList[1].TranslationStatus);
-        //if (!string.IsNullOrWhiteSpace(retStr))
-        //{
-        //    CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "TranslationStatus"));
-        //}
-        #endregion Modify AppTaskLanguage FR
+        #endregion Check AppTaskModel.AppTaskLanguage FR
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
@@ -198,7 +147,7 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
 
         if (appTask == null)
         {
-            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskLocalModel.AppTask.AppTaskID.ToString()));
+            CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "AppTask", "AppTaskID", appTaskLocalModel.AppTask.AppTaskID));
         }
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));

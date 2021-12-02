@@ -188,24 +188,6 @@ public partial class MapInfoLocalService : ControllerBase, IMapInfoLocalService
 
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
-        //TVItemModel tvItemModel = new TVItemModel()
-        //{
-        //    TVItem = tvItem,
-        //    TVItemLanguageList = new List<TVItemLanguage>()
-        //    {
-        //        new TVItemLanguage(),
-        //        new TVItemLanguage(),
-        //    }
-        //};
-
-        //List<TVItemModel> tvItemModelParentList = await HelperLocalService.GetTVItemModelParentList(tvItemParent, tvItem.TVType);
-
-        //tvItemModelParentList.Add(tvItemModel);
-
-        //await HelperLocalService.RecreateLocalGzFiles(tvItemModelParentList);
-
-        //if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
         CSSPLogService.EndFunctionLog(FunctionName);
 
         return await Task.FromResult(Ok(mapInfoModel));

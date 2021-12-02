@@ -6,7 +6,6 @@ namespace CSSPDBLocalServices.Tests;
         public MWQMLookupMPNLocalServiceTest() : base()
         {
 
-
         }
 
         private async Task<bool> MWQMLookupMPNLocalServiceSetup(string culture)
@@ -14,7 +13,7 @@ namespace CSSPDBLocalServices.Tests;
             List<string> TableList = new List<string>() { "MWQMLookupMPNs" };
 
             Assert.True(await CSSPDBLocalServiceSetupAsync(culture));
-            Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
+            Assert.True(await ClearSomeTablesOfCSSPDBLocalAsync(TableList));
 
             return await Task.FromResult(true);
         }
