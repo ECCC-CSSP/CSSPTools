@@ -47,10 +47,13 @@ public partial class CSSPDesktopServiceTests
         Assert.True(CSSPDesktopService.contact.IsLoggedIn);
         Assert.False(CSSPDesktopService.LoginRequired);
 
+        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync());
+        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync());
+        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync());
+
         await CopyAzureZipUpdateFilesToAzureTestDirectory();
 
         await CopyAzureJsonUpdateFilesToAzureTestDirectory();
-
 
         Assert.True(await CSSPDesktopService.InstallUpdatesAsync());
 

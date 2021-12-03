@@ -49,7 +49,7 @@ namespace GenerateRepopulateTestDB
                 dbCSSPDB.PolSourceGroupings.RemoveRange(polSourceGroupingToDeleteList);
                 dbCSSPDB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 int a = 34;
             }
@@ -80,9 +80,10 @@ namespace GenerateRepopulateTestDB
                 dbCSSPDB.PolSourceGroupings.AddRange(polSourceGroupingListToCreate);
                 dbCSSPDB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 int a = 234;
+                a = a + 1;
             }
 
             Console.WriteLine($"Saved in db PolSourceGroupingList ...");
@@ -124,9 +125,10 @@ namespace GenerateRepopulateTestDB
                 dbCSSPDB.PolSourceGroupingLanguages.AddRange(polSourceGroupingLanguageENList);
                 dbCSSPDB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 int a = 234;
+                a = a + 1;
             }
 
             Console.WriteLine($"Saved in db PolSourceGroupingLanguageENList ...");
@@ -170,9 +172,10 @@ namespace GenerateRepopulateTestDB
                 dbCSSPDB.PolSourceGroupingLanguages.AddRange(polSourceGroupingLanguageFRList);
                 dbCSSPDB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 int a = 234;
+                a = a + 1;
             }
 
             Console.WriteLine($"Saved in db PolSourceGroupingLanguageFRList ...");
@@ -246,9 +249,10 @@ namespace GenerateRepopulateTestDB
             {
                 dbCSSPDB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 int a = 34;
+                a = a + 1;
             }
 
             Console.WriteLine($"Ordering saved in db ...");

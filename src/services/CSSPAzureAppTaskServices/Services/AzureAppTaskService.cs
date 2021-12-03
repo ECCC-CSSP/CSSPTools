@@ -1,4 +1,5 @@
 namespace CSSPAzureAppTaskServices;
+
 public partial class AzureAppTaskService : ControllerBase, IAzureAppTaskService
 {
     private CSSPDBContext dbAzure { get; }

@@ -17,7 +17,7 @@ public partial class CSSPAzureAppTaskServiceTest
     {
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspAzureAppTaskservicestests.json")
+           .AddJsonFile("appsettings_csspazureapptaskservicestests.json")
            .AddUserSecrets("CSSPAzureAppTaskServices_Tests")
            .Build();
 

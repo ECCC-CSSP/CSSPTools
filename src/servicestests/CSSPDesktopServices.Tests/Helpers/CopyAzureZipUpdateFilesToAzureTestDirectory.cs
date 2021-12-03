@@ -9,7 +9,7 @@ public partial class CSSPDesktopServiceTests
             bool fileExistInTestDirectory = false;
             FileInfo fi = new FileInfo($"{ Configuration["CSSPWebAPIsLocalPath"]}{zipFileName}");
 
-            ShareClient shareClientTest = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+            ShareClient shareClientTest = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPWebAPIsLocalPath"].Replace("test", ""));
             ShareDirectoryClient directoryTest = shareClientTest.GetRootDirectoryClient();
             ShareFileClient shareFileClientTest = directoryTest.GetFileClient(zipFileName);
             ShareFileProperties shareFilePropertiesTest = null;

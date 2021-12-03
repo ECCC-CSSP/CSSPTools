@@ -1,4 +1,6 @@
-﻿namespace CSSPDesktopServices.Tests;
+﻿using CSSPDesktopInstallPostBuildServices.Services;
+
+namespace CSSPDesktopServices.Tests;
 
 [Collection("Sequential")]
 public partial class CSSPDesktopServiceTests
@@ -15,6 +17,7 @@ public partial class CSSPDesktopServiceTests
     private ICSSPSQLiteService CSSPSQLiteService { get; set; }
     private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
     private CSSPDBManageContext dbManage { get; set; }
+    private ICSSPDesktopInstallPostBuildService CSSPDesktopInstallPostBuildService { get; set; }
 
     private async Task<bool> CSSPDesktopServiceSetup(string culture)
     {
@@ -50,8 +53,11 @@ public partial class CSSPDesktopServiceTests
         Assert.NotNull(Configuration["CSSPTempFilesPath"]);
         Assert.Contains("Test", Configuration["CSSPTempFilesPath"]);
         Assert.NotNull(Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
+        Assert.Contains("test", Configuration["AzureStoreCSSPWebAPIsLocalPath"]);
         Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
+        Assert.Contains("test", Configuration["AzureStoreCSSPJSONPath"]);
         Assert.NotNull(Configuration["AzureStoreCSSPFilesPath"]);
+        Assert.Contains("test", Configuration["AzureStoreCSSPFilesPath"]);
         Assert.NotNull(Configuration["CSSPAzureUrl"]);
         Assert.NotNull(Configuration["CSSPLocalUrl"]);
         Assert.NotNull(Configuration["LoginEmail"]);
@@ -74,6 +80,7 @@ public partial class CSSPDesktopServiceTests
         Services.AddSingleton<ICSSPFileService, CSSPFileService>();
         Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
         Services.AddSingleton<ICSSPDesktopService, CSSPDesktopService>();
+        Services.AddSingleton<ICSSPDesktopInstallPostBuildService, CSSPDesktopInstallPostBuildService>();
 
         Services.AddDbContext<CSSPDBManageContext>(options =>
         {
@@ -111,6 +118,9 @@ public partial class CSSPDesktopServiceTests
 
         CSSPDesktopService = Provider.GetService<ICSSPDesktopService>();
         Assert.NotNull(CSSPDesktopService);
+
+        CSSPDesktopInstallPostBuildService = Provider.GetService<ICSSPDesktopInstallPostBuildService>();
+        Assert.NotNull(CSSPDesktopInstallPostBuildService);
 
         dbManage = Provider.GetService<CSSPDBManageContext>();
         Assert.NotNull(dbManage);

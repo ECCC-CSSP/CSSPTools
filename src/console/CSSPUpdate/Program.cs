@@ -6,7 +6,7 @@ public class Program
     {
         Startup startup = new Startup();
 
-        if (!await startup.Setup())
+        if (!await startup.SetupAsync())
         {
             Console.WriteLine($"{ string.Format(CSSPCultureServicesRes.Error_, "CSSPUpdate - startup.Setup") }");
             return await Task.FromResult(1);

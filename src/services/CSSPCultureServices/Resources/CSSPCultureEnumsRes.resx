@@ -3438,4 +3438,7 @@
   <data name="WebTypeEnumWebAllUseOfSites" xml:space="preserve">
     <value>WebAllUseOfSites</value>
   </data>
+  <data name="TVTypeEnumUnclassified" xml:space="preserve">
+    <value>Unclassified</value>
+  </data>
 </root>

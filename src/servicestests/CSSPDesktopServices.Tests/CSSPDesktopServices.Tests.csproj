@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPDesktopInstallPostBuildServices\CSSPDesktopInstallPostBuildServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPDesktopServices\CSSPDesktopServices.csproj" />
   </ItemGroup>
 

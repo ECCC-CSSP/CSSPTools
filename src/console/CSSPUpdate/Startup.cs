@@ -21,7 +21,7 @@ public partial class Startup
     {
     }
 
-    public async Task<bool> Setup()
+    public async Task<bool> SetupAsync()
     {
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)

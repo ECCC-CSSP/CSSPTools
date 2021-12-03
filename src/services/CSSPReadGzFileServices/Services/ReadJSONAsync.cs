@@ -151,76 +151,76 @@ public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileServ
                         switch (webType)
                         {
                             case WebTypeEnum.WebAllAddresses:
-                                await MergeJsonWebAllAddresses(FromAzureStore as WebAllAddresses, FromLocal as WebAllAddresses);
+                                await MergeJsonWebAllAddressesAsync(FromAzureStore as WebAllAddresses, FromLocal as WebAllAddresses);
                                 break;
                             case WebTypeEnum.WebAllContacts:
-                                await MergeJsonWebAllContacts(FromAzureStore as WebAllContacts, FromLocal as WebAllContacts);
+                                await MergeJsonWebAllContactsAsync(FromAzureStore as WebAllContacts, FromLocal as WebAllContacts);
                                 break;
                             case WebTypeEnum.WebAllCountries:
-                                await MergeJsonWebAllCountries(FromAzureStore as WebAllCountries, FromLocal as WebAllCountries);
+                                await MergeJsonWebAllCountriesAsync(FromAzureStore as WebAllCountries, FromLocal as WebAllCountries);
                                 break;
                             case WebTypeEnum.WebAllEmails:
-                                await MergeJsonWebAllEmails(FromAzureStore as WebAllEmails, FromLocal as WebAllEmails);
+                                await MergeJsonWebAllEmailsAsync(FromAzureStore as WebAllEmails, FromLocal as WebAllEmails);
                                 break;
                             case WebTypeEnum.WebAllHelpDocs:
-                                await MergeJsonWebAllHelpDocs(FromAzureStore as WebAllHelpDocs, FromLocal as WebAllHelpDocs);
+                                await MergeJsonWebAllHelpDocsAsync(FromAzureStore as WebAllHelpDocs, FromLocal as WebAllHelpDocs);
                                 break;
                             case WebTypeEnum.WebAllMunicipalities:
-                                await MergeJsonWebAllMunicipalities(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
+                                await MergeJsonWebAllMunicipalitiesAsync(FromAzureStore as WebAllMunicipalities, FromLocal as WebAllMunicipalities);
                                 break;
                             case WebTypeEnum.WebAllMWQMAnalysisReportParameters:
-                                await MergeJsonWebAllMWQMAnalysisReportParameters(FromAzureStore as WebAllMWQMAnalysisReportParameters, FromLocal as WebAllMWQMAnalysisReportParameters);
+                                await MergeJsonWebAllMWQMAnalysisReportParametersAsync(FromAzureStore as WebAllMWQMAnalysisReportParameters, FromLocal as WebAllMWQMAnalysisReportParameters);
                                 break;
                             case WebTypeEnum.WebAllMWQMLookupMPNs:
-                                await MergeJsonWebAllMWQMLookupMPNs(FromAzureStore as WebAllMWQMLookupMPNs, FromLocal as WebAllMWQMLookupMPNs);
+                                await MergeJsonWebAllMWQMLookupMPNsAsync(FromAzureStore as WebAllMWQMLookupMPNs, FromLocal as WebAllMWQMLookupMPNs);
                                 break;
                             case WebTypeEnum.WebAllMWQMSubsectors:
-                                await MergeJsonWebAllMWQMSubsectors(FromAzureStore as WebAllMWQMSubsectors, FromLocal as WebAllMWQMSubsectors);
+                                await MergeJsonWebAllMWQMSubsectorsAsync(FromAzureStore as WebAllMWQMSubsectors, FromLocal as WebAllMWQMSubsectors);
                                 break;
                             case WebTypeEnum.WebAllPolSourceGroupings:
-                                await MergeJsonWebAllPolSourceGroupings(FromAzureStore as WebAllPolSourceGroupings, FromLocal as WebAllPolSourceGroupings);
+                                await MergeJsonWebAllPolSourceGroupingsAsync(FromAzureStore as WebAllPolSourceGroupings, FromLocal as WebAllPolSourceGroupings);
                                 break;
                             case WebTypeEnum.WebAllPolSourceSiteEffectTerms:
-                                await MergeJsonWebAllPolSourceSiteEffectTerms(FromAzureStore as WebAllPolSourceSiteEffectTerms, FromLocal as WebAllPolSourceSiteEffectTerms);
+                                await MergeJsonWebAllPolSourceSiteEffectTermsAsync(FromAzureStore as WebAllPolSourceSiteEffectTerms, FromLocal as WebAllPolSourceSiteEffectTerms);
                                 break;
                             case WebTypeEnum.WebAllProvinces:
-                                await MergeJsonWebAllProvinces(FromAzureStore as WebAllProvinces, FromLocal as WebAllProvinces);
+                                await MergeJsonWebAllProvincesAsync(FromAzureStore as WebAllProvinces, FromLocal as WebAllProvinces);
                                 break;
                             case WebTypeEnum.WebAllReportTypes:
-                                await MergeJsonWebAllReportTypes(FromAzureStore as WebAllReportTypes, FromLocal as WebAllReportTypes);
+                                await MergeJsonWebAllReportTypesAsync(FromAzureStore as WebAllReportTypes, FromLocal as WebAllReportTypes);
                                 break;
                             case WebTypeEnum.WebAllSearch:
-                                await MergeJsonWebAllSearch(FromAzureStore as WebAllSearch, FromLocal as WebAllSearch);
+                                await MergeJsonWebAllSearchAsync(FromAzureStore as WebAllSearch, FromLocal as WebAllSearch);
                                 break;
                             case WebTypeEnum.WebAllTels:
-                                await MergeJsonWebAllTels(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
+                                await MergeJsonWebAllTelsAsync(FromAzureStore as WebAllTels, FromLocal as WebAllTels); ;
                                 break;
                             case WebTypeEnum.WebAllTideLocations:
-                                await MergeJsonWebAllTideLocations(FromAzureStore as WebAllTideLocations, FromLocal as WebAllTideLocations); ;
+                                await MergeJsonWebAllTideLocationsAsync(FromAzureStore as WebAllTideLocations, FromLocal as WebAllTideLocations); ;
                                 break;
                             case WebTypeEnum.WebAllUseOfSites:
-                                await MergeJsonWebAllUseOfSites(FromAzureStore as WebAllUseOfSites, FromLocal as WebAllUseOfSites);
+                                await MergeJsonWebAllUseOfSitesAsync(FromAzureStore as WebAllUseOfSites, FromLocal as WebAllUseOfSites);
                                 break;
                             case WebTypeEnum.WebArea:
-                                await MergeJsonWebArea(FromAzureStore as WebArea, FromLocal as WebArea);
+                                await MergeJsonWebAreaAsync(FromAzureStore as WebArea, FromLocal as WebArea);
                                 break;
                             case WebTypeEnum.WebClimateSites:
-                                await MergeJsonWebClimateSites(FromAzureStore as WebClimateSites, FromLocal as WebClimateSites);
+                                await MergeJsonWebClimateSitesAsync(FromAzureStore as WebClimateSites, FromLocal as WebClimateSites);
                                 break;
                             case WebTypeEnum.WebCountry:
-                                await MergeJsonWebCountry(FromAzureStore as WebCountry, FromLocal as WebCountry);
+                                await MergeJsonWebCountryAsync(FromAzureStore as WebCountry, FromLocal as WebCountry);
                                 break;
                             case WebTypeEnum.WebDrogueRuns:
-                                await MergeJsonWebDrogueRuns(FromAzureStore as WebDrogueRuns, FromLocal as WebDrogueRuns);
+                                await MergeJsonWebDrogueRunsAsync(FromAzureStore as WebDrogueRuns, FromLocal as WebDrogueRuns);
                                 break;
                             case WebTypeEnum.WebHydrometricSites:
-                                await MergeJsonWebHydrometricSites(FromAzureStore as WebHydrometricSites, FromLocal as WebHydrometricSites);
+                                await MergeJsonWebHydrometricSitesAsync(FromAzureStore as WebHydrometricSites, FromLocal as WebHydrometricSites);
                                 break;
                             case WebTypeEnum.WebLabSheets:
-                                await MergeJsonWebLabSheets(FromAzureStore as WebLabSheets, FromLocal as WebLabSheets);
+                                await MergeJsonWebLabSheetsAsync(FromAzureStore as WebLabSheets, FromLocal as WebLabSheets);
                                 break;
                             case WebTypeEnum.WebMikeScenarios:
-                                await MergeJsonWebMikeScenarios(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
+                                await MergeJsonWebMikeScenariosAsync(FromAzureStore as WebMikeScenarios, FromLocal as WebMikeScenarios);
                                 break;
                             case WebTypeEnum.WebMonitoringOtherStatsCountry:
                                 // No merging needed
@@ -235,37 +235,37 @@ public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileServ
                                 // No merging needed
                                 break;
                             case WebTypeEnum.WebMunicipality:
-                                await MergeJsonWebMunicipality(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
+                                await MergeJsonWebMunicipalityAsync(FromAzureStore as WebMunicipality, FromLocal as WebMunicipality);
                                 break;
                             case WebTypeEnum.WebMWQMRuns:
-                                await MergeJsonWebMWQMRuns(FromAzureStore as WebMWQMRuns, FromLocal as WebMWQMRuns);
+                                await MergeJsonWebMWQMRunsAsync(FromAzureStore as WebMWQMRuns, FromLocal as WebMWQMRuns);
                                 break;
                             case WebTypeEnum.WebMWQMSamples1980_2020:
-                                await MergeJsonWebMWQMSamples1980_2020(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
+                                await MergeJsonWebMWQMSamples1980_2020Async(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
                                 break;
                             case WebTypeEnum.WebMWQMSamples2021_2060:
-                                await MergeJsonWebMWQMSamples2021_2060(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
+                                await MergeJsonWebMWQMSamples2021_2060Async(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
                                 break;
                             case WebTypeEnum.WebMWQMSites:
-                                await MergeJsonWebMWQMSites(FromAzureStore as WebMWQMSites, FromLocal as WebMWQMSites);
+                                await MergeJsonWebMWQMSitesAsync(FromAzureStore as WebMWQMSites, FromLocal as WebMWQMSites);
                                 break;
                             case WebTypeEnum.WebPolSourceSites:
-                                await MergeJsonWebPolSourceSites(FromAzureStore as WebPolSourceSites, FromLocal as WebPolSourceSites);
+                                await MergeJsonWebPolSourceSitesAsync(FromAzureStore as WebPolSourceSites, FromLocal as WebPolSourceSites);
                                 break;
                             case WebTypeEnum.WebProvince:
-                                await MergeJsonWebProvince(FromAzureStore as WebProvince, FromLocal as WebProvince);
+                                await MergeJsonWebProvinceAsync(FromAzureStore as WebProvince, FromLocal as WebProvince);
                                 break;
                             case WebTypeEnum.WebRoot:
-                                await MergeJsonWebRoot(FromAzureStore as WebRoot, FromLocal as WebRoot);
+                                await MergeJsonWebRootAsync(FromAzureStore as WebRoot, FromLocal as WebRoot);
                                 break;
                             case WebTypeEnum.WebSector:
-                                await MergeJsonWebSector(FromAzureStore as WebSector, FromLocal as WebSector);
+                                await MergeJsonWebSectorAsync(FromAzureStore as WebSector, FromLocal as WebSector);
                                 break;
                             case WebTypeEnum.WebSubsector:
-                                await MergeJsonWebSubsector(FromAzureStore as WebSubsector, FromLocal as WebSubsector);
+                                await MergeJsonWebSubsectorAsync(FromAzureStore as WebSubsector, FromLocal as WebSubsector);
                                 break;
                             case WebTypeEnum.WebTideSites:
-                                await MergeJsonWebTideSites(FromAzureStore as WebTideSites, FromLocal as WebTideSites);
+                                await MergeJsonWebTideSitesAsync(FromAzureStore as WebTideSites, FromLocal as WebTideSites);
                                 break;
                             default:
                                 break;

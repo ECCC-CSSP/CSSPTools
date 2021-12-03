@@ -1296,7 +1296,7 @@ public partial class MapInfoLocalServiceTest : CSSPDBLocalServiceTest
         WebArea webArea = await CSSPReadGzFileService.GetUncompressJSONAsync<WebArea>(WebTypeEnum.WebArea, ParentTVItemID);
 
         TVItem tvItemParent = webArea.TVItemModel.TVItem;
-        TVTypeEnum tvType = TVTypeEnum.Sector;
+        //TVTypeEnum tvType = TVTypeEnum.Sector;
 
         Assert.NotEmpty(webArea.TVItemModelSectorList);
 

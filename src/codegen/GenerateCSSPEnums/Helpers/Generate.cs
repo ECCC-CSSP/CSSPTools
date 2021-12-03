@@ -63,7 +63,7 @@ namespace GenerateCSSPEnums
             sb.AppendLine(@"");
             sb.AppendLine(@"namespace CSSPEnums");
             sb.AppendLine(@"{");
-            sb.AppendLine(@"    partial interface IEnums");
+            sb.AppendLine(@"    public partial interface IEnums");
             sb.AppendLine(@"    {");
             //sb.AppendLine(@"        void SetResourcesCulture(CultureInfo culture);");
             sb.AppendLine(@"        string EnumTypeListOK(Type type, List<int?> intList);");
