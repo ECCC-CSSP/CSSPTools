@@ -9,8 +9,6 @@ public partial class CSSPDesktopServiceTests
     {
         Assert.True(await CSSPDesktopServiceSetup(culture));
 
-        DeleteCSSPDesktopPath();
-
         Assert.True(await CSSPDesktopService.CreateAllRequiredDirectoriesAsync());
 
         CreateCSSPDatabasesPath();
@@ -27,33 +25,34 @@ public partial class CSSPDesktopServiceTests
         Assert.True(CSSPDesktopService.contact.IsLoggedIn);
         Assert.False(CSSPDesktopService.LoginRequired);
 
-        Assert.True(await CSSPDesktopService.LogoffAsync());
-        Assert.NotNull(CSSPDesktopService.contact);
-        Assert.False(CSSPDesktopService.contact.IsLoggedIn);
-        Assert.True(CSSPDesktopService.LoginRequired);
+        //Assert.True(await CSSPDesktopService.LogoffAsync());
+        //Assert.NotNull(CSSPDesktopService.contact);
+        //Assert.False(CSSPDesktopService.contact.IsLoggedIn);
+        //Assert.True(CSSPDesktopService.LoginRequired);
+
+        //Assert.True(await CSSPDesktopService.FillLoginRequiredAsync());
+        //Assert.NotNull(CSSPDesktopService.contact);
+        //Assert.False(CSSPDesktopService.contact.IsLoggedIn);
+        //Assert.True(CSSPDesktopService.LoginRequired);
+
+        //Assert.True(await CSSPDesktopService.LoginAsync(loginModel));
+        //Assert.NotNull(CSSPDesktopService.contact);
+        //Assert.True(CSSPDesktopService.contact.IsLoggedIn);
+        //Assert.False(CSSPDesktopService.LoginRequired);
 
         Assert.True(await CSSPDesktopService.FillLoginRequiredAsync());
-        Assert.NotNull(CSSPDesktopService.contact);
-        Assert.False(CSSPDesktopService.contact.IsLoggedIn);
-        Assert.True(CSSPDesktopService.LoginRequired);
-
-        Assert.True(await CSSPDesktopService.LoginAsync(loginModel));
         Assert.NotNull(CSSPDesktopService.contact);
         Assert.True(CSSPDesktopService.contact.IsLoggedIn);
         Assert.False(CSSPDesktopService.LoginRequired);
 
-        Assert.True(await CSSPDesktopService.FillLoginRequiredAsync());
-        Assert.NotNull(CSSPDesktopService.contact);
-        Assert.True(CSSPDesktopService.contact.IsLoggedIn);
-        Assert.False(CSSPDesktopService.LoginRequired);
+        //CSSPDesktopInstallPostBuildService.SetContact(CSSPDesktopService.contact);
+        //Assert.True(await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync());
+        //Assert.True(await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync());
+        //Assert.True(await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync());
 
-        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync());
-        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync());
-        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync());
+        //await CopyAzureZipUpdateFilesToAzureTestDirectory();
 
-        await CopyAzureZipUpdateFilesToAzureTestDirectory();
-
-        await CopyAzureJsonUpdateFilesToAzureTestDirectory();
+        //await CopyAzureJsonUpdateFilesToAzureTestDirectory();
 
         Assert.True(await CSSPDesktopService.InstallUpdatesAsync());
 
@@ -61,10 +60,10 @@ public partial class CSSPDesktopServiceTests
         Assert.False(CSSPDesktopService.UpdateIsNeeded);
 
         List<string> WebAPIsLocalFileNameList = new List<string>()
-            {
-                "CSSPWebAPIsLocal.exe",
-                "e_sqlite3.dll"
-            };
+        {
+            "CSSPWebAPIsLocal.exe",
+            "e_sqlite3.dll"
+        };
 
         foreach (string fileName in WebAPIsLocalFileNameList)
         {
@@ -73,9 +72,9 @@ public partial class CSSPDesktopServiceTests
         }
 
         List<string> CSSPClientFileNameList = new List<string>()
-            {
-                "index.html",
-            };
+        {
+            "index.html",
+        };
 
         foreach (string fileName in CSSPClientFileNameList)
         {

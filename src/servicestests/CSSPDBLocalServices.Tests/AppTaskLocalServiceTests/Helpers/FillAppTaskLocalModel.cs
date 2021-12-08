@@ -2,9 +2,9 @@ namespace CSSPDBLocalServices.Tests;
 
 public partial class AppTaskLocalServiceTest
 {
-    private AppTaskLocalModel FillAppTaskLocalModel()
+    private AppTaskModel FillAppTaskLocalModel()
     {
-        AppTaskLocalModel appTaskModel = new AppTaskLocalModel();
+        AppTaskModel appTaskModel = new AppTaskModel();
 
         AppTask appTask = new AppTask()
         {

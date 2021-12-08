@@ -15,7 +15,7 @@ public partial class CSSPDesktopInstallPostBuildServiceTests
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
            .AddJsonFile("appsettings_csspdesktopinstallpostbuildservicestests.json")
-           .AddUserSecrets("a99b918b-441f-4e0c-8461-a36b9e9565d3")
+           .AddUserSecrets("CSSPDesktopInstallPostBuildServices_Tests")
            .Build();
 
         Services = new ServiceCollection();
@@ -39,11 +39,11 @@ public partial class CSSPDesktopInstallPostBuildServiceTests
         Services.AddSingleton<ICSSPDesktopInstallPostBuildService, CSSPDesktopInstallPostBuildService>();
 
         List<string> DirList = new List<string>()
-            {
-                Configuration["CSSPClientPath"],
-                Configuration["CSSPOtherFilesPath"],
-                Configuration["CSSPWebAPIsLocalPath"],
-            };
+        {
+            Configuration["CSSPClientPath"],
+            Configuration["CSSPOtherFilesPath"],
+            Configuration["CSSPWebAPIsLocalPath"],
+        };
 
         foreach (string dir in DirList)
         {

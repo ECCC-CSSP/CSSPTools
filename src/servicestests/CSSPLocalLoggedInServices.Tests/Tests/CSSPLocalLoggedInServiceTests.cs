@@ -1,22 +1,11 @@
 namespace CSSPLocalLoggedInServices.Tests;
 
-[Collection("Sequential")]
 public partial class CSSPLocalLoggedInServicesTests
 {
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task LoggedInService_Constructor_Good_Test(string culture)
-    {
-        Assert.True(await CSSPLocalLoggedInServiceSetup(culture));
-
-        Assert.NotNull(CSSPCultureService);
-        Assert.NotNull(CSSPLocalLoggedInService);
-    }
-    [Theory]
-    [InlineData("en-CA")]
-    //[InlineData("fr-CA")]
-    public async Task LoggedInService_SetLoggedInLocalContactInf_Good_Test(string culture)
+    public async Task SetLoggedInLocalContactInf_Good_Test(string culture)
     {
         Assert.True(await CSSPLocalLoggedInServiceSetup(culture));
 

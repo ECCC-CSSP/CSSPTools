@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>CSSPWebAPIs.Tests</UserSecretsId>
+    <UserSecretsId>CSSPWebAPIs_Tests</UserSecretsId>
 
   </PropertyGroup>
 

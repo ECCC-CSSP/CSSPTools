@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPDBAzureServices\CSSPDBAzureServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
   </ItemGroup>

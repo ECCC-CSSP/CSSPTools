@@ -7,7 +7,7 @@ global using CSSPCultureServices.Services;
 global using CSSPDBModels;
 global using CSSPDesktopServices.Models;
 global using CSSPEnums;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using CSSPLocalLoggedInServices;
 global using CSSPLogServices;
 global using CSSPReadGzFileServices;

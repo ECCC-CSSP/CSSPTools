@@ -9,4 +9,4 @@ global using System.Linq;
 global using System.Threading.Tasks;
 global using Microsoft.Extensions.Configuration;
 global using CSSPServerLoggedInServices;
-global using CSSPHelperModels;
+global using CSSPModels;

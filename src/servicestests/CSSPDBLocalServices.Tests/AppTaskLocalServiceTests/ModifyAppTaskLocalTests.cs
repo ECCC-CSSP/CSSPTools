@@ -9,12 +9,12 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet1 = (AppTaskLocalModel)((OkObjectResult)actionRes.Result).Value;
+        AppTaskModel appTaskModelRet1 = (AppTaskModel)((OkObjectResult)actionRes.Result).Value;
         Assert.NotNull(appTaskModelRet1);
 
         appTaskModelRet1.AppTask.PercentCompleted = 30;
@@ -27,7 +27,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
         var actionRes2 = await AppTaskLocalService.ModifyAppTaskLocalAsync(appTaskModelRet1);
         Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionRes2.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionRes2.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         Assert.Equal(1, (from c in dbLocal.AppTasks select c).Count());
@@ -79,13 +79,13 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
         Assert.NotNull(appTaskLanguageLocalList);
         Assert.NotEmpty(appTaskLanguageLocalList);
 
-        AppTaskLocalModel appTaskLocalModelDB = new AppTaskLocalModel()
+        AppTaskModel appTaskLocalModelDB = new AppTaskModel()
         {
             AppTask = appTaskLocalList[0],
             AppTaskLanguageList = appTaskLanguageLocalList,
         };
 
-        Assert.Equal(JsonSerializer.Serialize<AppTaskLocalModel>(appTaskModelRet), JsonSerializer.Serialize<AppTaskLocalModel>(appTaskLocalModelDB));
+        Assert.Equal(JsonSerializer.Serialize<AppTaskModel>(appTaskModelRet), JsonSerializer.Serialize<AppTaskModel>(appTaskLocalModelDB));
     }
     [Theory]
     [InlineData("en-CA")]
@@ -94,7 +94,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
@@ -111,7 +111,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
@@ -128,7 +128,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 10;
 
@@ -145,7 +145,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.TVItemID = 0;
 
@@ -162,7 +162,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.TVItemID2 = 0;
 
@@ -179,7 +179,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskCommand = (AppTaskCommandEnum)10000;
 
@@ -196,7 +196,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskStatus = (AppTaskStatusEnum)10000;
 
@@ -213,7 +213,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.PercentCompleted = -1;
 
@@ -230,7 +230,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.Parameters = "a".PadRight(100001);
 
@@ -247,7 +247,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.Language = (LanguageEnum)10000;
 
@@ -264,7 +264,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.StartDateTime_UTC = new DateTime(1970, 1, 1);
 
@@ -281,7 +281,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.EndDateTime_UTC = new DateTime(1970, 1, 1);
 
@@ -298,7 +298,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.EndDateTime_UTC = appTaskLocalModel.AppTask.StartDateTime_UTC.AddDays(-1);
 
@@ -315,7 +315,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTaskLanguageList.Remove(appTaskLocalModel.AppTaskLanguageList[appTaskLocalModel.AppTaskLanguageList.Count - 1]);
 
@@ -332,7 +332,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].AppTaskLanguageID = 0;
@@ -350,7 +350,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].AppTaskID = 0;
@@ -368,7 +368,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].StatusText = "".PadLeft(251, 'a');
@@ -386,7 +386,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].ErrorText = "".PadLeft(251, 'a');
@@ -404,7 +404,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[1].AppTaskLanguageID = 0;
@@ -422,7 +422,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].AppTaskID = 1;
@@ -441,7 +441,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].AppTaskLanguageID = 1;
@@ -461,7 +461,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         appTaskLocalModel.AppTask.AppTaskID = 1;
         appTaskLocalModel.AppTaskLanguageList[0].AppTaskLanguageID = 1;
@@ -481,12 +481,12 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionTVItemModelRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionTVItemModelRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionTVItemModelRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionTVItemModelRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         appTaskModelRet.AppTask.AppTaskID = 100000;

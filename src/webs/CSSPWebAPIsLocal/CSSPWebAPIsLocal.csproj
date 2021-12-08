@@ -30,7 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\services\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
-    <ProjectReference Include="..\..\services\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

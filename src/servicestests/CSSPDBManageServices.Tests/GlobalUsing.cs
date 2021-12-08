@@ -14,4 +14,4 @@ global using Xunit;
 global using Microsoft.AspNetCore.Mvc;
 global using System.Text.Json;
 global using CSSPCultureServices.Resources;
-global using CSSPHelperModels;
+global using CSSPModels;

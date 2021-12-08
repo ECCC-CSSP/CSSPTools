@@ -1,76 +1,39 @@
-using CSSPDBModels;
-using CSSPCultureServices.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
-using Xunit;
+namespace CSSPServerLoggedInServices.Tests;
 
-namespace CSSPServerLoggedInServices.Tests
+public partial class CSSPServerLoggedInServicesTests
 {
-    [Collection("Sequential")]
-    public partial class CSSPServerLoggedInServicesTests
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task SetLoggedInContactInfo_Good_Test(string culture)
     {
-        #region Variables
-        #endregion Variables
+        Assert.True(await CSSPServerLoggedInServiceSetup(culture));
 
-        #region Properties
-        #endregion Properties
+        await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail"]);
+        Assert.Equal(Configuration["LoginEmail"], CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
 
-        #region Constructors
-        #endregion Constructors
+        Contact contact = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact;
+        Assert.NotNull(contact.FirstName);
+        Assert.NotNull(contact.Initial);
+        Assert.NotNull(contact.LastName);
 
-        #region Tests
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task Constructor_Good_Test(string culture)
-        {
-            Assert.True(await CSSPServerLoggedInServiceSetup(culture));
+        List<TVTypeUserAuthorization> TVTypeUserAuthorizationList = CSSPServerLoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList;
+        Assert.True(TVTypeUserAuthorizationList.Count > 0);
 
-            Assert.NotNull(CSSPCultureService);
-            Assert.NotNull(CSSPServerLoggedInService);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task SetLoggedInContactInfo_With_LoginEmail_Good_Test(string culture)
-        {
-            Assert.True(await CSSPServerLoggedInServiceSetup(culture));
+        List<TVItemUserAuthorization> TVItemUserAuthorizationList = CSSPServerLoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList;
+        Assert.True(TVItemUserAuthorizationList.Count == 0);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task SetLoggedInContactInfo_Error_Test(string culture)
+    {
+        Assert.True(await CSSPServerLoggedInServiceSetup(culture));
 
-            await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail"]);
-            Assert.Equal(Configuration["LoginEmail"], CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.LoginEmail);
-
-            Contact contact = CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact;
-            Assert.Equal(Configuration["FirstName1"], contact.FirstName);
-            Assert.Equal(Configuration["Initial1"], contact.Initial);
-            Assert.Equal(Configuration["LastName1"], contact.LastName);
-
-            List <TVTypeUserAuthorization> TVTypeUserAuthorizationList = CSSPServerLoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList;
-            Assert.True(TVTypeUserAuthorizationList.Count > 0);
-
-            List<TVItemUserAuthorization> TVItemUserAuthorizationList = CSSPServerLoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList;
-            Assert.True(TVItemUserAuthorizationList.Count == 0);
-        }
-        [Theory]
-        [InlineData("en-CA")]
-        //[InlineData("fr-CA")]
-        public async Task SetLoggedInContactInfo_With_LoginEmail3_Good_Test(string culture)
-        {
-            Assert.True(await CSSPServerLoggedInServiceSetup(culture));
-
-            await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail3"]);
-            Assert.Null(CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact);
-            Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList.Count == 0);
-            Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList.Count == 0);
-        }
-        #endregion Tests
-
-        #region Functions private
-        #endregion Functions private
+        await CSSPServerLoggedInService.SetLoggedInContactInfoAsync("notGood" + Configuration["LoginEmail"]);
+        Assert.Null(CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact);
+        Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.TVTypeUserAuthorizationList.Count == 0);
+        Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.TVItemUserAuthorizationList.Count == 0);
     }
 }
+

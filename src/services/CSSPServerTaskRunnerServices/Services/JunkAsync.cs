@@ -14,24 +14,6 @@ public partial class ServerTaskRunnerService : ControllerBase, IServerTaskRunner
             return await Task.FromResult(Unauthorized(CSSPCultureServicesRes.YouDoNotHaveAuthorization));
         }
 
-        FileInfo fi = new FileInfo(@"C:\junk.txt");
-
-        if (!fi.Exists)
-        {
-            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.FileNotFound_, fi.FullName));
-        }
-
-        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
-        fi = new FileInfo(@"C:\junk.txt");
-
-        if (!fi.Exists)
-        {
-            CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes.FileNotFound_, fi.FullName));
-        }
-
-        if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-
         return await Task.FromResult(Ok(true));
     }
 }

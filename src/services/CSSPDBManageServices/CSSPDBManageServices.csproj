@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
-    <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
+    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
   </ItemGroup>
 
 </Project>

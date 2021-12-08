@@ -40,15 +40,15 @@ public partial class LocalTaskRunnerServiceTest
         });
 
         ///* ---------------------------------------------------------------------------------
-        // * using AzureCSSPDB
+        // * using CSSPDBAzure
         // * ---------------------------------------------------------------------------------      
         // */
-        //string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-        //Assert.NotNull(AzureCSSPDB);
+        //string CSSPDBAzure = Configuration.GetValue<string>("CSSPDBAzure");
+        //Assert.NotNull(CSSPDBAzure);
 
         //Services.AddDbContext<CSSPDBContext>(options =>
         //{
-        //    options.UseSqlServer(AzureCSSPDB);
+        //    options.UseSqlServer(CSSPDBAzure);
         //});
 
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();

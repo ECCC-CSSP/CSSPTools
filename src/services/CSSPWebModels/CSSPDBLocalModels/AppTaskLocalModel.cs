@@ -1,4 +1,4 @@
-﻿namespace CSSPWebModels;
+﻿namespace CSSPModels;
 
 [NotMapped]
 public partial class AppTaskLocalModel

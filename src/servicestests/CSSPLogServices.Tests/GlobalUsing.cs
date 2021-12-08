@@ -1,7 +1,7 @@
 ﻿global using CSSPCultureServices.Resources;
 global using CSSPCultureServices.Services;
 global using CSSPEnums;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using CSSPLocalLoggedInServices;
 global using CSSPScrambleServices;
 global using ManageServices;
@@ -15,3 +15,5 @@ global using System.IO;
 global using System.Linq;
 global using System.Threading.Tasks;
 global using Xunit;
+global using CSSPSQLiteServices;
+global using CSSPDBModels;

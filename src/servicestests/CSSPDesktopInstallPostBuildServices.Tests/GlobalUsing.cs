@@ -10,6 +10,6 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Xunit;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using Azure.Storage.Files.Shares;
 global using CSSPScrambleServices;

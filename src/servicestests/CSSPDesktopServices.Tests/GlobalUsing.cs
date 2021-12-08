@@ -21,6 +21,6 @@ global using CSSPAzureLoginServices.Services;
 global using Azure.Storage.Files.Shares;
 global using Azure.Storage.Files.Shares.Models;
 global using Azure;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using System.Linq;
 global using System.Threading;

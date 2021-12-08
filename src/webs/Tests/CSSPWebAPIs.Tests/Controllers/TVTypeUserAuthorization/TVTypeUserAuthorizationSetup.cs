@@ -1,100 +1,31 @@
-namespace CSSPWebAPIs.TVTypeUserAuthorizationManualController.Tests;
+namespace CSSPWebAPIs.Tests;
 
-public partial class CSSPWebAPIsTVTypeUserAuthorizationManualControllerTests
+public partial class TVTypeUserAuthorizationAzureControllerTests : BaseControllerTests
 {
-    private IConfiguration Configuration { get; set; }
-    private IServiceProvider Provider { get; set; }
-    private IServiceCollection Services { get; set; }
-    private CSSPDBContext dbTempAzureTest { get; set; }
-    private IContactDBService ContactDBService { get; set; }
-    private ICSSPServerLoggedInService CSSPServerLoggedInService { get; set; }
-    private ICSSPCultureService CSSPCultureService { get; set; }
-    private Contact contact { get; set; }
-    private string LoginEmail { get; set; }
-    private string Password { get; set; }
-    private string CSSPAzureUrl { get; set; }
-    private LoginModel loginModel { get; set; }
-
-    private async Task<bool> TVTypeUserAuthorizationSetup(string culture)
+    private async Task<bool> TVTypeUserAuthorizationAzureSetup(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapistests.json")
-           .AddUserSecrets("e43608c0-3ec4-4b6c-b995-a4be7848ec8b")
-           .Build();
-
-        Services = new ServiceCollection();
-
-        CSSPAzureUrl = Configuration.GetValue<string>("CSSPAzureUrl");
-        Assert.NotNull(CSSPAzureUrl);
-
-        string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-        Assert.NotNull(AzureCSSPDB);
-
-        Services.AddSingleton<IConfiguration>(Configuration);
-
-        Services.AddDbContext<CSSPDBContext>(options =>
-        {
-            options.UseSqlServer(AzureCSSPDB);
-        });
-
-        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-        Services.AddSingleton<IEnums, Enums>();
-        Services.AddSingleton<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
-        //Services.AddSingleton<ILoginModelService, LoginModelService>();
-        //Services.AddSingleton<IRegisterModelService, RegisterModelService>();
-        Services.AddSingleton<IContactDBService, ContactDBService>();
-
-        Provider = Services.BuildServiceProvider();
-        Assert.NotNull(Provider);
-
-        CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-        Assert.NotNull(CSSPCultureService);
-
-        CSSPCultureService.SetCulture(culture);
-
-        LoginEmail = Configuration.GetValue<string>("LoginEmail");
-        Assert.NotNull(LoginEmail);
-
-        Password = Configuration.GetValue<string>("Password");
-        Assert.NotNull(Password);
-
-        loginModel = new LoginModel()
-        {
-            LoginEmail = LoginEmail,
-            Password = Password
-        };
+        await BaseControllerSetup(culture);
 
         using (HttpClient httpClient = new HttpClient())
         {
-            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
 
-            string stringData = JsonSerializer.Serialize(loginModel);
-            var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = httpClient.PostAsync($"{ CSSPAzureUrl }api/en-CA/auth/token", contentData).Result;
-            Assert.True((int)response.StatusCode == 200);
+            HttpResponseMessage response = await httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVTypeUserAuthorizationAzure/{ 1 }");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            string jsonStr = await response.Content.ReadAsStringAsync();
+            List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = JsonSerializer.Deserialize<List<TVTypeUserAuthorization>>(jsonStr);
+            Assert.NotNull(tvTypeUserAuthorizationList);
 
-            contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
-        }
-
-        dbTempAzureTest = Provider.GetService<CSSPDBContext>();
-        Assert.NotNull(dbTempAzureTest);
-
-        List<TVTypeUserAuthorization> tvTypeUserAuthorizationList = (from c in dbTempAzureTest.TVTypeUserAuthorizations
-                                                                     select c).ToList();
-
-        try
-        {
-            dbTempAzureTest.TVTypeUserAuthorizations.RemoveRange(tvTypeUserAuthorizationList);
-            dbTempAzureTest.SaveChanges();
-        }
-        catch (Exception ex)
-        {
-            Assert.True(false, $"Could not delete all AppTasks from db. Ex: { ex.Message }");
+            foreach (TVTypeUserAuthorization TVTypeUserAuthorization in tvTypeUserAuthorizationList)
+            {
+                response = await httpClient.DeleteAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVTypeUserAuthorizationAzure/{ TVTypeUserAuthorization.TVTypeUserAuthorizationID }");
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                jsonStr = await response.Content.ReadAsStringAsync();
+                TVTypeUserAuthorization tvTypeUserAuthorization = JsonSerializer.Deserialize<TVTypeUserAuthorization>(jsonStr);
+                Assert.NotNull(tvTypeUserAuthorization);
+            }
         }
 
         return await Task.FromResult(true);
     }
 }
-

@@ -1,5 +1,6 @@
 namespace CSSPServerTaskRunnerServices.Tests;
 
+[Collection("Sequential")]
 public partial class ServerTaskRunnerServiceTest
 {
     private IConfiguration Configuration { get; set; }
@@ -8,7 +9,7 @@ public partial class ServerTaskRunnerServiceTest
     private ICSSPCultureService CSSPCultureService { get; set; }
     private ICSSPServerLoggedInService CSSPServerLoggedInService { get; set; }
     private IServerTaskRunnerService ServerTaskRunnerService { get; set; }
-    private CSSPDBContext db { get; set; }
+    private CSSPDBContext dbAzure { get; set; }
 
     private async Task<bool> CSSPServerTaskRunnerServiceSetup(string culture)
     {
@@ -22,36 +23,16 @@ public partial class ServerTaskRunnerServiceTest
 
         Services.AddSingleton<IConfiguration>(Configuration);
 
-        /* ---------------------------------------------------------------------------------
-         * CSSPDBManageContext
-         * ---------------------------------------------------------------------------------
-         */
-        string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-        Assert.NotNull(CSSPDBManage);
-
-        FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
-
-        Services.AddDbContext<CSSPDBManageContext>(options =>
-        {
-            options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
-        });
-
-        /* ---------------------------------------------------------------------------------
-         * using AzureCSSPDB
-         * ---------------------------------------------------------------------------------      
-         */
-        string AzureCSSPDB = Configuration.GetValue<string>("AzureCSSPDB");
-        Assert.NotNull(AzureCSSPDB);
-
-        Services.AddDbContext<CSSPDBContext>(options =>
-        {
-            options.UseSqlServer(AzureCSSPDB);
-        });
+        Assert.NotEmpty(Configuration["CSSPDBAzure"]);
 
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
         Services.AddSingleton<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
-        Services.AddSingleton<IEnums, Enums>();
         Services.AddSingleton<IServerTaskRunnerService, ServerTaskRunnerService>();
+
+        Services.AddDbContext<CSSPDBContext>(options =>
+        {
+            options.UseSqlServer(Configuration["CSSPDBAzure"]);
+        });
 
         Provider = Services.BuildServiceProvider();
         Assert.NotNull(Provider);
@@ -64,14 +45,11 @@ public partial class ServerTaskRunnerServiceTest
         CSSPServerLoggedInService = Provider.GetService<ICSSPServerLoggedInService>();
         Assert.NotNull(CSSPServerLoggedInService);
 
-        string LoginEmail = Configuration.GetValue<string>("LoginEmail");
-        Assert.True(await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(LoginEmail));
-
-        db = Provider.GetService<CSSPDBContext>();
-        Assert.NotNull(db);
-
         ServerTaskRunnerService = Provider.GetService<IServerTaskRunnerService>();
         Assert.NotNull(ServerTaskRunnerService);
+
+        dbAzure = Provider.GetService<CSSPDBContext>();
+        Assert.NotNull(dbAzure);
 
         return await Task.FromResult(true);
     }

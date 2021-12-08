@@ -67,8 +67,6 @@ public partial class CSSPDesktopServiceTests
         Assert.NotNull(Configuration["AfterInstallLocalCSSPOtherFilesPath"]);
         Assert.NotNull(Configuration["AfterInstallLocalCSSPWebAPIsLocalPath"]);
 
-        DeleteCSSPDesktopPath();
-
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
         Services.AddSingleton<IEnums, Enums>();
         Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();

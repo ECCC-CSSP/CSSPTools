@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
-    <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
+    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
   </ItemGroup>
 
 </Project>

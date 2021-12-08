@@ -27,9 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
-    <ProjectReference Include="..\CSSPDBServices\CSSPDBServices.csproj" />
     <ProjectReference Include="..\CSSPFileServices\CSSPFileServices.csproj" />
-    <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

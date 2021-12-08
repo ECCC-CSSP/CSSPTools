@@ -18,5 +18,4 @@ global using CSSPAzureLoginServices.Services;
 global using CSSPDBModels;
 global using CSSPReadGzFileServices;
 global using Microsoft.AspNetCore.Mvc;
-global using CSSPHelperModels;
-global using CSSPWebModels;
+global using CSSPModels;

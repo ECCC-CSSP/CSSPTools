@@ -9,7 +9,7 @@ public partial class AuthController : ControllerBase, IAuthController
         CSSPCultureService.SetCulture((string)RouteData.Values["culture"]);
         await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(User.Identity.Name);
 
-        return await ContactDBService.GetGoogleMapKeyHashAsync();
+        return await ContactAzureService.GetGoogleMapKeyHashAsync();
     }
 }
 

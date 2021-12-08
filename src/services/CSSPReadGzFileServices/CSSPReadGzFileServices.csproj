@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPFileServices\CSSPFileServices.csproj" />
-    <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

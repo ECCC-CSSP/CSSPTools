@@ -6,7 +6,7 @@ global using CSSPDesktopServices.Models;
 global using CSSPDesktopServices.Services;
 global using CSSPEnums;
 global using CSSPFileServices;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using CSSPLocalLoggedInServices;
 global using CSSPLogServices;
 global using CSSPReadGzFileServices;

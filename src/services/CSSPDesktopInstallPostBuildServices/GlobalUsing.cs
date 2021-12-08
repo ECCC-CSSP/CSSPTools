@@ -1,7 +1,7 @@
 ﻿global using CSSPCultureServices.Resources;
 global using CSSPCultureServices.Services;
 global using CSSPDBModels;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using CSSPScrambleServices;
 global using Microsoft.Extensions.Configuration;
 global using System;

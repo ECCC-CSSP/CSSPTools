@@ -9,21 +9,21 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionAddRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionAddRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionAddRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionAddRes.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionAddRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         var actionDeleteRes = await AppTaskLocalService.DeleteAppTaskLocalAsync(appTaskModelRet.AppTask.AppTaskID);
         Assert.Equal(200, ((ObjectResult)actionDeleteRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionDeleteRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet2 = (AppTaskLocalModel)((OkObjectResult)actionDeleteRes.Result).Value;
+        AppTaskModel appTaskModelRet2 = (AppTaskModel)((OkObjectResult)actionDeleteRes.Result).Value;
         Assert.NotNull(appTaskModelRet2);
 
-        Assert.Equal(JsonSerializer.Serialize<AppTaskLocalModel>(appTaskModelRet), JsonSerializer.Serialize<AppTaskLocalModel>(appTaskModelRet2));
+        Assert.Equal(JsonSerializer.Serialize<AppTaskModel>(appTaskModelRet), JsonSerializer.Serialize<AppTaskModel>(appTaskModelRet2));
     }
     [Theory]
     [InlineData("en-CA")]
@@ -32,12 +32,12 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionAddRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionAddRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionAddRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionAddRes.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionAddRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
@@ -55,12 +55,12 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionAddRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionAddRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionAddRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionAddRes.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionAddRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
@@ -78,12 +78,12 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionAddRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionAddRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionAddRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionAddRes.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionAddRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         int AppTaskID = 0;
@@ -101,12 +101,12 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     {
         Assert.True(await AppTaskLocalServiceSetup(culture));
 
-        AppTaskLocalModel appTaskLocalModel = FillAppTaskLocalModel();
+        AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
         var actionAddRes = await AppTaskLocalService.AddAppTaskLocalAsync(appTaskLocalModel);
         Assert.Equal(200, ((ObjectResult)actionAddRes.Result).StatusCode);
         Assert.NotNull(((OkObjectResult)actionAddRes.Result).Value);
-        AppTaskLocalModel appTaskModelRet = (AppTaskLocalModel)((OkObjectResult)actionAddRes.Result).Value;
+        AppTaskModel appTaskModelRet = (AppTaskModel)((OkObjectResult)actionAddRes.Result).Value;
         Assert.NotNull(appTaskModelRet);
 
         int AppTaskID = 10000;

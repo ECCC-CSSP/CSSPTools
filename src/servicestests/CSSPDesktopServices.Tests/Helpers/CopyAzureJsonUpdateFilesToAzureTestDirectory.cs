@@ -9,7 +9,7 @@ public partial class CSSPDesktopServiceTests
             bool fileExistInTestDirectory = false;
             FileInfo fi = new FileInfo($"{ Configuration["CSSPJSONPath"]}{jsonFileName}");
 
-            ShareClient shareClientTest = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"].Replace("test", ""));
+            ShareClient shareClientTest = new ShareClient(CSSPScrambleService.Descramble(CSSPDesktopService.contact.AzureStoreHash), Configuration["AzureStoreCSSPJSONPath"]);
             ShareDirectoryClient directoryTest = shareClientTest.GetRootDirectoryClient();
             ShareFileClient shareFileClientTest = directoryTest.GetFileClient(jsonFileName);
             ShareFileProperties shareFilePropertiesTest = null;

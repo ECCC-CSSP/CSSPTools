@@ -18,18 +18,18 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\services\CSSPAzureAppTaskServices\CSSPAzureAppTaskServices.csproj" />
-    <ProjectReference Include="..\..\services\CSSPDBServices\CSSPDBServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPDBAzureServices\CSSPDBAzureServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPModels\CSSPModels.csproj" />
     <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
-    <ProjectReference Include="..\..\services\CSSPWebModels\CSSPWebModels.csproj" />
+    <ProjectReference Include="..\..\services\CSSPServerLoggedInServices\CSSPServerLoggedInServices.csproj" />
   </ItemGroup>
  
   <ItemGroup>
-    <Content Update="appsettings_csspwebapis.json">
+    <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

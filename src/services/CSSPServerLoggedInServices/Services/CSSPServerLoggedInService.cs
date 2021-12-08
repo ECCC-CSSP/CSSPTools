@@ -1,54 +1,22 @@
-﻿using CSSPCultureServices.Resources;
-using CSSPCultureServices.Services;
-using CSSPDBModels;
-using CSSPHelperModels;
-using ManageServices;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+namespace CSSPServerLoggedInServices;
 
-namespace CSSPServerLoggedInServices
+public partial class CSSPServerLoggedInService : ICSSPServerLoggedInService
 {
-    public interface ICSSPServerLoggedInService
+    public LoggedInContactInfo LoggedInContactInfo { get; set; }
+
+    private IConfiguration Configuration { get; }
+    private CSSPDBContext dbAzure { get; }
+
+    public CSSPServerLoggedInService(IConfiguration Configuration, CSSPDBContext dbAzure)
     {
-        // properties
-        LoggedInContactInfo LoggedInContactInfo { get; set; }
+        if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
+        if (dbAzure == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "dbAzure") }");
 
-        // functions
-        Task<bool> SetLoggedInContactInfoAsync(string LoginEmail);
+        this.Configuration = Configuration;
+        this.dbAzure = dbAzure;
 
-    }
-    public partial class CSSPServerLoggedInService : ICSSPServerLoggedInService
-    {
-        #region Variables
-        #endregion Variables
-
-        #region Properties
-        public LoggedInContactInfo LoggedInContactInfo { get; set; }
-
-        private IConfiguration Configuration { get; }
-        private CSSPDBContext db { get; }
-        #endregion Properties
-
-        #region Constructors
-        public CSSPServerLoggedInService(IConfiguration Configuration, CSSPDBContext db)
-        {
-            if (Configuration == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "Configuration") }");
-            if (db == null) throw new Exception($"{ string.Format(CSSPCultureServicesRes._ShouldNotBeNullOrEmpty, "db") }");
-
-            this.Configuration = Configuration;
-            this.db = db;
-            
-            LoggedInContactInfo = new LoggedInContactInfo();
-        }
-        #endregion Constructors
-
-        #region Functions public
-        #endregion Functions public
-
-        #region Functions private
-        #endregion Functions private
+        LoggedInContactInfo = new LoggedInContactInfo();
     }
 }
+

@@ -46,7 +46,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
         CheckTVItemLanguage(webRoot.TVItemModel, DBCommandEnum.Original, "Root", LanguageEnum.en);
         CheckTVItemLanguage(webRoot.TVItemModel, DBCommandEnum.Original, "Base", LanguageEnum.fr);
 
-        CheckTVItem(tvItemModelRet, DBCommandEnum.Original);
+        CheckTVItem(tvItemModelRet, DBCommandEnum.Modified);
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 

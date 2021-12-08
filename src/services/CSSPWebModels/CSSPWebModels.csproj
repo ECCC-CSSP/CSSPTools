@@ -6,6 +6,105 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CSSPDBLocalModels\AppTaskLocalModel.cs" />
+    <Compile Remove="CSSPDBLocalModels\ClassificationLocalModel.cs" />
+    <Compile Remove="helpers\BaseGzFileService.cs" />
+    <Compile Remove="helpers\ToRecreate.cs" />
+    <Compile Remove="webmodels\AzureFileInfo.cs" />
+    <Compile Remove="webmodels\BoxModelModel.cs" />
+    <Compile Remove="webmodels\ChartXYNumbersModel.cs" />
+    <Compile Remove="webmodels\ChartXYTextNumberModel.cs" />
+    <Compile Remove="webmodels\ClassificationModel.cs" />
+    <Compile Remove="webmodels\ClimateSiteModel.cs" />
+    <Compile Remove="webmodels\ColorAndLetter.cs" />
+    <Compile Remove="webmodels\ContactModel.cs" />
+    <Compile Remove="webmodels\DrogueRunModel.cs" />
+    <Compile Remove="webmodels\EmailDistributionListContactModel.cs" />
+    <Compile Remove="webmodels\EmailDistributionListModel.cs" />
+    <Compile Remove="webmodels\HydrometricSiteModel.cs" />
+    <Compile Remove="webmodels\InfrastructrureItemValue.cs" />
+    <Compile Remove="webmodels\InfrastructureModel.cs" />
+    <Compile Remove="webmodels\InfrastructureModelPath.cs" />
+    <Compile Remove="webmodels\JsonLoadModel.cs" />
+    <Compile Remove="webmodels\LabSheetModel.cs" />
+    <Compile Remove="webmodels\LocalFileInfo.cs" />
+    <Compile Remove="webmodels\MapInfoModel.cs" />
+    <Compile Remove="webmodels\MikeBoundaryConditionModel.cs" />
+    <Compile Remove="webmodels\MikeScenarioModel.cs" />
+    <Compile Remove="webmodels\MikeSourceModel.cs" />
+    <Compile Remove="webmodels\MonitoringStatByMonth.cs" />
+    <Compile Remove="webmodels\MonitoringStatBySeason.cs" />
+    <Compile Remove="webmodels\MonitoringStatByYear.cs" />
+    <Compile Remove="webmodels\MonitoringStatsModel.cs" />
+    <Compile Remove="webmodels\MWQMRunDataTableModel.cs" />
+    <Compile Remove="webmodels\MWQMRunModel.cs" />
+    <Compile Remove="webmodels\MWQMRunModelSiteAndSampleModel.cs" />
+    <Compile Remove="webmodels\MWQMSampleModel.cs" />
+    <Compile Remove="webmodels\MWQMSiteModel.cs" />
+    <Compile Remove="webmodels\MWQMSiteModelAndSampleModel.cs" />
+    <Compile Remove="webmodels\MWQMSubsectorModel.cs" />
+    <Compile Remove="webmodels\PolSourceGroupingModel.cs" />
+    <Compile Remove="webmodels\PolSourceObservationModel.cs" />
+    <Compile Remove="webmodels\PolSourceSiteModel.cs" />
+    <Compile Remove="webmodels\RainExceedanceModel.cs" />
+    <Compile Remove="webmodels\RatingCurveModel.cs" />
+    <Compile Remove="webmodels\ReportTypeModel.cs" />
+    <Compile Remove="webmodels\SamplingPlanModel.cs" />
+    <Compile Remove="webmodels\SamplingPlanSubsectorModel.cs" />
+    <Compile Remove="webmodels\StatMWQMRun.cs" />
+    <Compile Remove="webmodels\StatMWQMSite.cs" />
+    <Compile Remove="webmodels\StatMWQMSiteSample.cs" />
+    <Compile Remove="webmodels\TableConvertToCSVModel.cs" />
+    <Compile Remove="webmodels\TideSiteModel.cs" />
+    <Compile Remove="webmodels\TVFileID_Text_Sort.cs" />
+    <Compile Remove="webmodels\TVFileModel.cs" />
+    <Compile Remove="webmodels\TVFileModelByPurpose.cs" />
+    <Compile Remove="webmodels\TVItemID_TVText_Sort.cs" />
+    <Compile Remove="webmodels\TVItemModel.cs" />
+    <Compile Remove="webmodels\TVItemModelInfrastructureModel.cs" />
+    <Compile Remove="webmodels\UserPreference.cs" />
+    <Compile Remove="webmodels\VPScenarioModel.cs" />
+    <Compile Remove="webmodels\WebAllAddresses.cs" />
+    <Compile Remove="webmodels\WebAllContacts.cs" />
+    <Compile Remove="webmodels\WebAllCountries.cs" />
+    <Compile Remove="webmodels\WebAllEmails.cs" />
+    <Compile Remove="webmodels\WebAllHelpDocs.cs" />
+    <Compile Remove="webmodels\WebAllMunicipalities.cs" />
+    <Compile Remove="webmodels\WebAllMWQMAnalysisReportParameters.cs" />
+    <Compile Remove="webmodels\WebAllMWQMLookupMPN.cs" />
+    <Compile Remove="webmodels\WebAllMWQMSubsectors.cs" />
+    <Compile Remove="webmodels\WebAllPolSourceGroupings.cs" />
+    <Compile Remove="webmodels\WebAllPolSourceSiteEffectTerms.cs" />
+    <Compile Remove="webmodels\WebAllProvinces.cs" />
+    <Compile Remove="webmodels\WebAllReportTypes.cs" />
+    <Compile Remove="webmodels\WebAllSearch.cs" />
+    <Compile Remove="webmodels\WebAllTels.cs" />
+    <Compile Remove="webmodels\WebAllTideLocations.cs" />
+    <Compile Remove="webmodels\WebAllUseOfSites.cs" />
+    <Compile Remove="webmodels\WebArea.cs" />
+    <Compile Remove="webmodels\WebClimateSites.cs" />
+    <Compile Remove="webmodels\WebCountry.cs" />
+    <Compile Remove="webmodels\WebDrogueRuns.cs" />
+    <Compile Remove="webmodels\WebHydrometricSites.cs" />
+    <Compile Remove="webmodels\WebLabSheets.cs" />
+    <Compile Remove="webmodels\WebMikeScenarios.cs" />
+    <Compile Remove="webmodels\WebMonitoringOtherStatsCountry.cs" />
+    <Compile Remove="webmodels\WebMonitoringOtherStatsProvince.cs" />
+    <Compile Remove="webmodels\WebMonitoringRoutineStatsCountry.cs" />
+    <Compile Remove="webmodels\WebMonitoringRoutineStatsProvince.cs" />
+    <Compile Remove="webmodels\WebMunicipality.cs" />
+    <Compile Remove="webmodels\WebMWQMRuns.cs" />
+    <Compile Remove="webmodels\WebMWQMSamples.cs" />
+    <Compile Remove="webmodels\WebMWQMSites.cs" />
+    <Compile Remove="webmodels\WebPolSourceSites.cs" />
+    <Compile Remove="webmodels\WebProvince.cs" />
+    <Compile Remove="webmodels\WebRoot.cs" />
+    <Compile Remove="webmodels\WebSector.cs" />
+    <Compile Remove="webmodels\WebSubsector.cs" />
+    <Compile Remove="webmodels\WebTideSites.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
@@ -28,7 +127,13 @@
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPEnums\CSSPEnums.csproj" />
-    <ProjectReference Include="..\CSSPHelperModels\CSSPHelperModels.csproj" />
+    <ProjectReference Include="..\CSSPModels\CSSPModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CSSPDBLocalModels\" />
+    <Folder Include="helpers\" />
+    <Folder Include="webmodels\" />
   </ItemGroup>
 
 </Project>

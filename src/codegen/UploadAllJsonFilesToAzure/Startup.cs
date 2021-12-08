@@ -1,7 +1,7 @@
 ﻿using CSSPCreateGzFileServices;
 using CSSPCultureServices.Services;
+using CSSPDBAzureServices;
 using CSSPDBModels;
-using CSSPDBServices;
 using CSSPEnums;
 using CSSPLocalLoggedInServices;
 using Microsoft.EntityFrameworkCore;
@@ -77,9 +77,9 @@ namespace UploadAllJsonFilesToAzure
 
             Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
             Services.AddSingleton<IEnums, Enums>();
-            Services.AddSingleton<IContactDBService, ContactDBService>();
+            Services.AddSingleton<IContactAzureService, ContactAzureService>();
             Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
-            Services.AddSingleton<ITVItemDBService, TVItemDBService>();
+            Services.AddSingleton<ITVItemAzureService, TVItemAzureService>();
 
             Provider = Services.BuildServiceProvider();
             if (Provider == null)

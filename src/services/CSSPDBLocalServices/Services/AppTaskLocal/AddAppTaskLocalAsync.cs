@@ -2,7 +2,7 @@ namespace CSSPDBLocalServices;
 
 public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
 {
-    public async Task<ActionResult<AppTaskLocalModel>> AddAppTaskLocalAsync(AppTaskLocalModel appTaskLocalModel)
+    public async Task<ActionResult<AppTaskModel>> AddAppTaskLocalAsync(AppTaskModel appTaskLocalModel)
     {
         string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(PostAppTaskModel appTaskModel)";
         CSSPLogService.FunctionLog(FunctionName);

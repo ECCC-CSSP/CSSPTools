@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPServerLoggedInServices\CSSPServerLoggedInServices.csproj" />
-    <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

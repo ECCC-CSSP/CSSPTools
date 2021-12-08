@@ -5,20 +5,14 @@ public partial class ServerTaskRunnerService : ControllerBase, IServerTaskRunner
     private IConfiguration Configuration { get; }
     private ICSSPCultureService CSSPCultureService { get; }
     private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
-    private ICSSPLogService CSSPLogService { get; }
-    private IEnums enums { get; }
-    private CSSPDBContext db { get; }
-    private CSSPDBManageContext dbManage { get; }
+    private CSSPDBContext dbAzure { get; }
 
-    public ServerTaskRunnerService(ICSSPCultureService CSSPCultureService, IEnums enums, ICSSPServerLoggedInService CSSPServerLoggedInService, 
-        ICSSPLogService CSSPLogService, CSSPDBContext db, CSSPDBManageContext dbManage)
+    public ServerTaskRunnerService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, 
+        ICSSPServerLoggedInService CSSPServerLoggedInService, CSSPDBContext dbAzure)
     {
         this.Configuration = Configuration;
         this.CSSPCultureService = CSSPCultureService;
         this.CSSPServerLoggedInService = CSSPServerLoggedInService;
-        this.CSSPLogService = CSSPLogService;
-        this.enums = enums;
-        this.db = db;
-        this.dbManage = dbManage;
+        this.dbAzure = dbAzure;
     }
 }

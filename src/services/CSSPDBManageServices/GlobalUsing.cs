@@ -8,6 +8,6 @@ global using Microsoft.AspNetCore.Mvc;
 global using System.Linq;
 global using System.Threading.Tasks;
 global using CSSPCultureServices.Services;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using Microsoft.Extensions.Configuration;
 global using System.Collections.Generic;

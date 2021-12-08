@@ -29,7 +29,6 @@
     <ProjectReference Include="..\CSSPDBModels\CSSPDBModels.csproj" />
     <ProjectReference Include="..\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
     <ProjectReference Include="..\CSSPScrambleServices\CSSPScrambleServices.csproj" />
-    <ProjectReference Include="..\CSSPWebModels\CSSPWebModels.csproj" />
   </ItemGroup>
 
 </Project>

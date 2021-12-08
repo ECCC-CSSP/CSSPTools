@@ -1,5 +1,5 @@
 ﻿global using CSSPCultureServices.Resources;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using CSSPLocalLoggedInServices;
 global using ManageServices;
 global using Microsoft.AspNetCore.Mvc;

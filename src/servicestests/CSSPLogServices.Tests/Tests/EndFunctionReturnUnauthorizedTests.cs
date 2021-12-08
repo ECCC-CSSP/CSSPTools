@@ -23,8 +23,6 @@ public partial class CSSPLogServiceTests
 
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbLog.ToString()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
-        Assert.Equal("CSSPLogService_AppName", CSSPLogService.CSSPAppName);
-        Assert.Equal("CSSPLogService_CommandName", CSSPLogService.CSSPCommandName);
 
         await CSSPLogService.Save();
 

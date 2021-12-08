@@ -2,21 +2,21 @@ namespace CSSPDBLocalServices;
 
 public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
 {
-    public async Task<ActionResult<List<AppTaskLocalModel>>> GetAllAppTaskLocalAsync()
+    public async Task<ActionResult<List<AppTaskModel>>> GetAllAppTaskLocalAsync()
     {
         string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
         CSSPLogService.FunctionLog(FunctionName);
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        List<AppTaskLocalModel> appTaskModelList = new List<AppTaskLocalModel>();
+        List<AppTaskModel> appTaskModelList = new List<AppTaskModel>();
 
         List<AppTask> appTaskList = (from c in dbLocal.AppTasks select c).ToList();
         List<AppTaskLanguage> appTaskLanguageList = (from c in dbLocal.AppTaskLanguages select c).ToList();
 
         foreach (AppTask appTask in appTaskList)
         {
-            appTaskModelList.Add(new AppTaskLocalModel()
+            appTaskModelList.Add(new AppTaskModel()
             {
                 AppTask = appTask,
                 AppTaskLanguageList = (from c in appTaskLanguageList

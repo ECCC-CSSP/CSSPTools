@@ -39,7 +39,7 @@ public partial class RootLocalServiceTest : CSSPDBLocalServiceTest
 
         Assert.NotNull(tvItemModelRet);
 
-        CheckTVItem(tvItemModelRet, DBCommandEnum.Original);
+        CheckTVItem(tvItemModelRet, DBCommandEnum.Modified);
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextEN, LanguageEnum.en);
         CheckTVItemLanguage(tvItemModelRet, DBCommandEnum.Modified, TVTextFR, LanguageEnum.fr);
 

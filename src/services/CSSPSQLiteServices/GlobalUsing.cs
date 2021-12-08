@@ -11,5 +11,5 @@ global using System.IO;
 global using System.Text;
 global using System.Threading.Tasks;
 global using ManageServices;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using Microsoft.EntityFrameworkCore;

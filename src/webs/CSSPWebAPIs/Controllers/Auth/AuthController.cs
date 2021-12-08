@@ -2,21 +2,22 @@
 
 [Route("api/{culture}/[controller]")]
 [ApiController]
-//[Authorize]
 public partial class AuthController : ControllerBase, IAuthController
 {
     private IConfiguration Configuration { get; }
     private ICSSPServerLoggedInService CSSPServerLoggedInService { get; }
     private ICSSPCultureService CSSPCultureService { get; }
-    private IContactDBService ContactDBService { get; }
+    private IContactAzureService ContactAzureService { get; }
+    private CSSPDBContext dbAzure { get; }
 
     public AuthController(IConfiguration Configuration, ICSSPServerLoggedInService CSSPServerLoggedInService, ICSSPCultureService CSSPCultureService,
-        IContactDBService ContactDBService)
+        IContactAzureService ContactAzureService, CSSPDBContext dbAzure)
     {
         this.Configuration = Configuration;
         this.CSSPServerLoggedInService = CSSPServerLoggedInService;
         this.CSSPCultureService = CSSPCultureService;
-        this.ContactDBService = ContactDBService;
+        this.ContactAzureService = ContactAzureService;
+        this.dbAzure = dbAzure; 
     }
 }
 

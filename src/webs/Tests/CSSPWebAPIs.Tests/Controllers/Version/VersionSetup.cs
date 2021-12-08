@@ -1,19 +1,10 @@
-namespace CSSPWebAPIs.VersionController.Tests;
+namespace CSSPWebAPIs.Tests;
 
-[Collection("Sequential")]
-public partial class CSSPWebAPIsVersionControllerTests
+public partial class VersionControllerTests : BaseControllerTests
 {
-    private IConfiguration Configuration { get; set; }
-
-    private async Task<bool> VersionSetup(string culture)
+    private async Task<bool> VersionControllerSetup(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapistests.json")
-           .AddUserSecrets("e43608c0-3ec4-4b6c-b995-a4be7848ec8b")
-           .Build();
-
-        Assert.NotNull(Configuration["CSSPAzureUrl"]);
+        await BaseControllerSetup(culture);
 
         return await Task.FromResult(true);
     }

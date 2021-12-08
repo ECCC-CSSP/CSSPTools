@@ -1,23 +1,89 @@
-namespace CSSPWebAPIs;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
-{
-    public static void Main(string[] args)
+// Add services to the container.
+//----------------------------------
+
+//IConfiguration Configuration = new ConfigurationBuilder()
+//        .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+//        //.AddJsonFile("appsettings_csspwebapis.json")
+//        //.AddUserSecrets("CSSPWebAPIs")
+//        .Build();
+
+builder.Services.AddCors();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
     {
-        CreateHostBuilder(args).Build().Start();
-    }
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.ConfigureAppConfiguration(configuration =>
-                {
-                    configuration.AddJsonFile("appsettings_csspwebapis.json");
-                    configuration.AddUserSecrets("41c4156a-4b42-42e9-923a-e9c8360dba12");
-                });
-                webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls("http://localhost:4448");
-            });
+string APISecret = builder.Configuration["APISecret"];
+byte[] key = Encoding.ASCII.GetBytes(APISecret);
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddDbContext<CSSPDBContext>(options =>
+    options.UseSqlServer(builder.Configuration["CSSPDBAzure"]));
+
+builder.Services.AddScoped<ICSSPCultureService, CSSPCultureService>();
+builder.Services.AddScoped<IEnums, Enums>();
+builder.Services.AddScoped<ICSSPScrambleService, CSSPScrambleService>();
+builder.Services.AddScoped<ICSSPServerLoggedInService, CSSPServerLoggedInService>();
+builder.Services.AddScoped<IAppTaskAzureService, AppTaskAzureService>();
+builder.Services.AddScoped<IContactAzureService, ContactAzureService>();
+builder.Services.AddScoped<ITVItemUserAuthorizationAzureService, TVItemUserAuthorizationAzureService>();
+builder.Services.AddScoped<ITVTypeUserAuthorizationAzureService, TVTypeUserAuthorizationAzureService>();
+
+//----------------------------------
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+app.UseDeveloperExceptionPage();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseHsts();
 }
 
+app.UseHttpsRedirection();
+
+//app.UseAuthorization();
+app.UseRouting();
+
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();

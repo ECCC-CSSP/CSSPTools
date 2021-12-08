@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSSPDBManageServices\CSSPDBManageServices.csproj" />
-    <ProjectReference Include="..\CSSPDBServices\CSSPDBServices.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,7 +26,7 @@ public partial class CSSPReadGzFileServiceTests
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
            .AddJsonFile("appsettings_csspreadgzfileservicestests.json")
-           .AddUserSecrets("dec2fcbb-e800-447d-859c-16f40cffb968")
+           .AddUserSecrets("CSSPReadGzFileServices_Tests")
            .Build();
 
         Services = new ServiceCollection();

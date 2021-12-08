@@ -29,7 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPLogServices\CSSPLogServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -25,6 +25,9 @@ public partial class CSSPAzureLoginServiceTests
             await CSSPSQLiteService.CreateSQLiteCSSPDBManageAsync();
         }
 
+        fiCSSPDBManage = new FileInfo(Configuration["CSSPDBManage"]);
+        Assert.True(fiCSSPDBManage.Exists); 
+
         CSSPAzureLoginService = Provider.GetService<ICSSPAzureLoginService>();
         Assert.NotNull(CSSPAzureLoginService);
 

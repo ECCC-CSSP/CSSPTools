@@ -2,7 +2,7 @@ namespace CSSPDBLocalServices;
 
 public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
 {
-    public async Task<ActionResult<AppTaskLocalModel>> DeleteAppTaskLocalAsync(int AppTaskID)
+    public async Task<ActionResult<AppTaskModel>> DeleteAppTaskLocalAsync(int AppTaskID)
     {
         string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(int AppTaskID) -- appTaskID: { AppTaskID }";
         CSSPLogService.FunctionLog(FunctionName);
@@ -68,7 +68,7 @@ public partial class AppTaskLocalService : ControllerBase, IAppTaskLocalService
 
         CSSPLogService.EndFunctionLog(FunctionName);
 
-        AppTaskLocalModel appTaskLocalModel = new AppTaskLocalModel()
+        AppTaskModel appTaskLocalModel = new AppTaskModel()
         {
              AppTask = appTaskToDelete,
              AppTaskLanguageList = appTaskLanguageListToDelete

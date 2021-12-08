@@ -2,7 +2,7 @@
 global using CSSPCultureServices.Services;
 global using CSSPDBModels;
 global using CSSPEnums;
-global using CSSPHelperModels;
+global using CSSPModels;
 global using CSSPServerLoggedInServices;
 global using CSSPWebModels;
 global using Microsoft.AspNetCore.Mvc;
