@@ -7,7 +7,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteClassificationLocal_Good_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -103,7 +103,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteClassificationLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 0;
         int ClassificationTVItemID = 0;
@@ -120,7 +120,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteClassificationLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 0;
         int ClassificationTVItemID = 0;
@@ -137,7 +137,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteClassificationLocal_SubsectorTVItemID_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 0;
         int ClassificationTVItemID = 0;

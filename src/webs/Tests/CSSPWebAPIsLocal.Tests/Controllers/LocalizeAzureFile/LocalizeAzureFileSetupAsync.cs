@@ -1,25 +1,19 @@
-namespace CSSPWebAPIsLocal.LocalizeAzureFileController.Tests;
+namespace CSSPWebAPIsLocal.Tests;
 
-public partial class CSSPWebAPIsLocalLocalizeAzureFileControllerTests
+public partial class LocalizeAzureFileControllerTests : CSSPWebAPIsLocalTests
 {
-    private IConfiguration Configuration { get; set; }
 
-    private string LocalUrl { get; set; }
-
-    public CSSPWebAPIsLocalLocalizeAzureFileControllerTests()
+    public LocalizeAzureFileControllerTests()
     {
+
     }
 
-    private async Task<bool> LocalizeAzureFileSetupAsync(string culture)
+    private async Task<bool> LocalizeAzureFileControllerSetupAsync(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapislocaltests.json")
-           .AddUserSecrets("CSSPWebAPIsLocal_Tests")
-           .Build();
+        //List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
-        LocalUrl = Configuration.GetValue<string>("LocalUrl");
-        Assert.NotNull(LocalUrl);
+        Assert.True(await CSSPWebAPIsLocalSetupAsync(culture));
+        //Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
         return await Task.FromResult(true);
     }

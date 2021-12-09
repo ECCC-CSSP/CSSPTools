@@ -7,7 +7,7 @@ public partial class TVItemLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task Constructor_Good_Test(string culture)
     {
-        Assert.True(await TVItemLocalServiceSetup(culture));
+        Assert.True(await TVItemLocalServiceSetupAsync(culture));
     }
 }
 

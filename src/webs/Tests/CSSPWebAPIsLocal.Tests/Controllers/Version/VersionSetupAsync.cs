@@ -1,24 +1,17 @@
-namespace CSSPWebAPIsLocal.VersionController.Tests;
+namespace CSSPWebAPIsLocal.Tests;
 
-public partial class CSSPWebAPIsLocalVersionControllerTests
+public partial class VersionControllerTests : CSSPWebAPIsLocalTests
 {
-    private IConfiguration Configuration { get; set; }
-    private string LocalUrl { get; set; }
-
-    public CSSPWebAPIsLocalVersionControllerTests()
+    public VersionControllerTests()
     {
     }
 
-    private async Task<bool> VersionSetupAsync(string culture)
+    private async Task<bool> VersionControllerSetupAsync(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapislocaltests.json")
-           .AddUserSecrets("CSSPWebAPIsLocal_Tests")
-           .Build();
+        //List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
-        LocalUrl = Configuration.GetValue<string>("LocalUrl");
-        Assert.NotNull(LocalUrl);
+        Assert.True(await CSSPWebAPIsLocalSetupAsync(culture));
+        //Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
         return await Task.FromResult(true);
     }

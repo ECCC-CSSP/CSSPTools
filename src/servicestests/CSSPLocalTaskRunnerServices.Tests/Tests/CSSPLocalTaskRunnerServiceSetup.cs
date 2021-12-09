@@ -1,17 +1,21 @@
-using CSSPLogServices;
-
 namespace CSSPLocalTaskRunnerServices.Tests;
 
-public partial class LocalTaskRunnerServiceTest
+[Collection("Sequential")]
+public partial class CSSPLocalTaskRunnerServiceTest
 {
     private IConfiguration Configuration { get; set; }
     private IServiceProvider Provider { get; set; }
     private IServiceCollection Services { get; set; }
     private ICSSPCultureService CSSPCultureService { get; set; }
+    private IEnums enums { get; set; }
+    private ICSSPScrambleService CSSPScrambleService { get; set; }
     private ICSSPLogService CSSPLogService { get; set; }
     private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-    private ICSSPLocalTaskRunnerService LocalTaskRunnerService { get; set; }
-    //private CSSPDBContext db { get; set; }
+    private ICSSPSQLiteService CSSPSQLiteService { get; set; }
+    private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
+    private CSSPDBManageContext dbManage { get; set; }
+
+    private ICSSPLocalTaskRunnerService CSSPLocalTaskRunnerService { get; set; }
 
     private async Task<bool> CSSPLocalTaskRunnerServiceSetup(string culture)
     {
@@ -25,59 +29,48 @@ public partial class LocalTaskRunnerServiceTest
 
         Services.AddSingleton<IConfiguration>(Configuration);
 
-        /* ---------------------------------------------------------------------------------
-         * CSSPDBManageContext
-         * ---------------------------------------------------------------------------------
-         */
-        string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-        Assert.NotNull(CSSPDBManage);
+        Assert.NotNull(Configuration["CSSPDB"]);
+        Assert.Contains("Server=.", Configuration["CSSPDB"]);
+        Assert.NotNull(Configuration["CSSPDBLocal"]);
+        Assert.Contains("Test", Configuration["CSSPDBLocal"]);
+        Assert.NotNull(Configuration["CSSPDBManage"]);
+        Assert.Contains("Test", Configuration["CSSPDBManage"]);
+        Assert.NotNull(Configuration["LoginEmail"]);
+        Assert.NotNull(Configuration["Password"]);
 
-        FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
+        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+        Services.AddSingleton<IEnums, Enums>();
+        Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
+        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+        Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+        Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
+        Services.AddSingleton<ICSSPLocalTaskRunnerService, LocalTaskRunnerService>();
+
+        CheckRequiredDirectories();
+
+        Services.AddDbContext<CSSPDBContext>(options =>
+        {
+            options.UseSqlServer(Configuration["CSSPDB"]);
+        });
 
         Services.AddDbContext<CSSPDBManageContext>(options =>
         {
-            options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
+            options.UseSqlite($"Data Source={ Configuration["CSSPDBManage"] }");
         });
 
-        ///* ---------------------------------------------------------------------------------
-        // * using CSSPDBAzure
-        // * ---------------------------------------------------------------------------------      
-        // */
-        //string CSSPDBAzure = Configuration.GetValue<string>("CSSPDBAzure");
-        //Assert.NotNull(CSSPDBAzure);
-
-        //Services.AddDbContext<CSSPDBContext>(options =>
-        //{
-        //    options.UseSqlServer(CSSPDBAzure);
-        //});
-
-        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-        Services.AddSingleton<IEnums, Enums>();
-        Services.AddSingleton<ICSSPLocalTaskRunnerService, LocalTaskRunnerService>();
+        Services.AddDbContext<CSSPDBLocalContext>(options =>
+        {
+            options.UseSqlite($"Data Source={ Configuration["CSSPDBLocal"] }");
+        });
 
         Provider = Services.BuildServiceProvider();
         Assert.NotNull(Provider);
 
-        CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-        Assert.NotNull(CSSPCultureService);
+        await GetProviderServices(culture);
 
-        CSSPCultureService.SetCulture(culture);
-
-        CSSPLogService = Provider.GetService<ICSSPLogService>();
-        Assert.NotNull(CSSPLogService);
-
-        CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-        Assert.NotNull(CSSPLocalLoggedInService);
-
-        Assert.True(await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync());
-
-        //db = Provider.GetService<CSSPDBContext>();
-        //Assert.NotNull(db);
-
-        LocalTaskRunnerService = Provider.GetService<ICSSPLocalTaskRunnerService>();
-        Assert.NotNull(LocalTaskRunnerService);
+        ClearCommandLogs();
+        ClearManageFiles();
 
         return await Task.FromResult(true);
     }

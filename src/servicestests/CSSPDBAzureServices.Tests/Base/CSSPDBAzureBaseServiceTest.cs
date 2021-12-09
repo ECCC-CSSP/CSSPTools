@@ -34,10 +34,13 @@ public partial class CSSPDBAzureBaseServiceTest
         Services.AddSingleton<IConfiguration>(Configuration);
 
         Assert.NotNull(Configuration["CSSPDBAzure"]);
-        Assert.Contains("CSSPTemporaryDBTest", Configuration["CSSPDBAzure"]);
+        Assert.Contains("CSSPTemporaryDB", Configuration["CSSPDBAzure"]);
         Assert.NotNull(Configuration["CSSPAzureUrl"]);
         Assert.NotNull(Configuration["LoginEmail"]);
         Assert.NotNull(Configuration["Password"]);
+        Assert.NotNull(Configuration["APISecret"]);
+        Assert.NotNull(Configuration["AzureStoreHash"]);
+        Assert.NotNull(Configuration["GoogleMapKeyHash"]);
 
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
         Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();

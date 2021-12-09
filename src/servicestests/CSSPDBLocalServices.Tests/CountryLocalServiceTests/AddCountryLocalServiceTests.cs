@@ -7,7 +7,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddCountryLocal_Good_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
         
         await CSSPCreateGzFileService.SetLocal(false);
 
@@ -125,7 +125,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddCountryLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 1;
 
@@ -141,7 +141,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddCountryLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         int ParentTVItemID = 1;
 
@@ -157,7 +157,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddCountryLocal_ParentTVItemID_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         var actionRes = await CountryLocalService.AddCountryLocalAsync(0);
         Assert.Equal(400, ((ObjectResult)actionRes.Result).StatusCode);

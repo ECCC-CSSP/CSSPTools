@@ -7,7 +7,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteCountryLocal_Good_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 
@@ -84,7 +84,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteCountryLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         int TVItemID = 1;
 
@@ -100,7 +100,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteCountryLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         int TVItemID = 1;
 
@@ -116,7 +116,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteCountryLocal_TVItemID_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         int TVItemID = 0;
 
@@ -130,7 +130,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteCountryLocal_CouldNotFind_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 
@@ -154,7 +154,7 @@ public partial class CountryLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteCountryLocal_Children_Exist_Error_Test(string culture)
     {
-        Assert.True(await CountryLocalServiceSetup(culture));
+        Assert.True(await CountryLocalServiceSetupAsync(culture));
 
         int TVItemID = 5;
 

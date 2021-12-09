@@ -1,24 +1,17 @@
-namespace CSSPWebAPIsLocal.LoggedInContactController.Tests;
+namespace CSSPWebAPIsLocal.Tests;
 
-public partial class CSSPWebAPIsLocalLoggedInContactControllerTests
+public partial class LoggedInContactControllerTests : CSSPWebAPIsLocalTests
 {
-    private IConfiguration Configuration { get; set; }
-    private string LocalUrl { get; set; }
-
-    public CSSPWebAPIsLocalLoggedInContactControllerTests()
+    public LoggedInContactControllerTests()
     {
     }
 
-    private async Task<bool> LoggedInContactSetupAsync(string culture)
+    private async Task<bool> LoggedInContactControllerSetupAsync(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapislocaltests.json")
-           .AddUserSecrets("CSSPWebAPIsLocal_Tests")
-           .Build();
+        //List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
-        LocalUrl = Configuration.GetValue<string>("LocalUrl");
-        Assert.NotNull(LocalUrl);
+        Assert.True(await CSSPWebAPIsLocalSetupAsync(culture));
+        //Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
         return await Task.FromResult(true);
     }

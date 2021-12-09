@@ -1,6 +1,7 @@
 ﻿global using Azure;
 global using Azure.Storage.Files.Shares;
 global using Azure.Storage.Files.Shares.Models;
+global using CSSPAzureLoginServices.Services;
 global using CSSPCreateGzFileServices;
 global using CSSPCultureServices.Resources;
 global using CSSPCultureServices.Services;
@@ -12,6 +13,7 @@ global using CSSPLogServices;
 global using CSSPModels;
 global using CSSPReadGzFileServices;
 global using CSSPScrambleServices;
+global using CSSPSQLiteServices;
 global using ManageServices;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;

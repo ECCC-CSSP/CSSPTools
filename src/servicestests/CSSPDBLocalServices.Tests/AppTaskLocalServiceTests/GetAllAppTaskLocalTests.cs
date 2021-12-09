@@ -7,7 +7,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task GetAllAppTaskLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
+        Assert.True(await AppTaskLocalServiceSetupAsync(culture));
 
         CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 

@@ -1,28 +1,17 @@
-namespace CSSPWebAPIsLocal.LocalFileInfoController.Tests;
+namespace CSSPWebAPIsLocal.Tests;
 
-public partial class CSSPWebAPIsLocalLocalFileInfoControllerTests
+public partial class LocalFileInfoControllerTests : CSSPWebAPIsLocalTests
 {
-    private IConfiguration Configuration { get; set; }
-    private string LocalUrl { get; set; }
-    private string CSSPFilesPath { get; set; }
-
-    public CSSPWebAPIsLocalLocalFileInfoControllerTests()
+    public LocalFileInfoControllerTests()
     {
     }
 
-    private async Task<bool> LocalFileInfoSetupAsync(string culture)
+    private async Task<bool> LocalFileInfoControllerSetupAsync(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapislocaltests.json")
-           .AddUserSecrets("CSSPWebAPIsLocal_Tests")
-           .Build();
+        //List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
-        LocalUrl = Configuration.GetValue<string>("LocalUrl");
-        Assert.NotNull(LocalUrl);
-
-        CSSPFilesPath = Configuration.GetValue<string>("CSSPFilesPath");
-        Assert.NotNull(CSSPFilesPath);
+        Assert.True(await CSSPWebAPIsLocalSetupAsync(culture));
+        //Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
         return await Task.FromResult(true);
     }

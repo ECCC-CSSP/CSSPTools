@@ -1,25 +1,17 @@
-namespace CSSPWebAPIsLocal.DownloadController.Tests;
+namespace CSSPWebAPIsLocal.Tests;
 
-public partial class CSSPWebAPIsLocalDownloadControllerTests
+public partial class DownloadControllerTests : CSSPWebAPIsLocalTests
 {
-    private IConfiguration Configuration { get; set; }
-
-    private string LocalUrl { get; set; }
-
-    public CSSPWebAPIsLocalDownloadControllerTests()
+    public DownloadControllerTests()
     {
     }
 
-    private async Task<bool> DownloadSetupAsync(string culture)
+    private async Task<bool> DownloadControllerSetupAsync(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapislocaltests.json")
-           .AddUserSecrets("CSSPWebAPIsLocal_Tests")
-           .Build();
+        //List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
-        LocalUrl = Configuration.GetValue<string>("LocalUrl");
-        Assert.NotNull(LocalUrl);
+        Assert.True(await CSSPWebAPIsLocalSetupAsync(culture));
+        //Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
         return await Task.FromResult(true);
     }

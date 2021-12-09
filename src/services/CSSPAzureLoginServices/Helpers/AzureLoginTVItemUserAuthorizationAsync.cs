@@ -9,7 +9,7 @@ public partial class CSSPAzureLoginService : ICSSPAzureLoginService
 
             // Getting TVItemUserAuthorization for the Contact
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.Token);
-            HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVItemUserAuthorization/GetWithContactTVItemID/{ CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID }").Result;
+            HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVItemUserAuthorizationAzure/{ CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID }").Result;
             if ((int)response.StatusCode != 200)
             {
                 if ((int)response.StatusCode == 401)

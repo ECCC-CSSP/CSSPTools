@@ -5,23 +5,23 @@ public partial class CSSPReadGzFileServiceTests
 {
     DateTime LastTime = DateTime.Now;
 
-    private IConfiguration Configuration { get; set; }
-    private IServiceProvider Provider { get; set; }
-    private IServiceCollection Services { get; set; }
-    private ICSSPCultureService CSSPCultureService { get; set; }
-    private IEnums enums { get; set; }
-    private IManageFileService ManageFileService { get; set; }
-    private ICSSPFileService CSSPFileService { get; set; }
-    private ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
-    private ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
-    private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-    private ICSSPScrambleService CSSPScrambleService { get; set; }
-    private ICSSPLogService CSSPLogService { get; set; }
-    private ICSSPSQLiteService CSSPSQLiteService { get; set; }
-    private ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
-    private CSSPDBManageContext dbManage { get; set; }
+    protected IConfiguration Configuration { get; set; }
+    protected IServiceProvider Provider { get; set; }
+    protected IServiceCollection Services { get; set; }
+    protected ICSSPCultureService CSSPCultureService { get; set; }
+    protected IEnums enums { get; set; }
+    protected IManageFileService ManageFileService { get; set; }
+    protected ICSSPFileService CSSPFileService { get; set; }
+    protected ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
+    protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
+    protected ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
+    protected ICSSPScrambleService CSSPScrambleService { get; set; }
+    protected ICSSPLogService CSSPLogService { get; set; }
+    protected ICSSPSQLiteService CSSPSQLiteService { get; set; }
+    protected ICSSPAzureLoginService CSSPAzureLoginService { get; set; }
+    protected CSSPDBManageContext dbManage { get; set; }
 
-    private async Task<bool> CSSPReadGzFileServiceSetup(string culture)
+    protected async Task<bool> CSSPReadGzFileServiceSetup(string culture)
     {
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)

@@ -1,11 +1,6 @@
-﻿global using CSSPCultureServices.Services;
-global using CSSPDBAzureServices;
-global using CSSPDBModels;
+﻿global using CSSPDBModels;
 global using CSSPEnums;
 global using CSSPModels;
-global using CSSPServerLoggedInServices;
-global using CSSPWebAPIs.BaseControllet.Tests;
-global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using System;

@@ -25,7 +25,7 @@ public partial class FileServiceTests
         Configuration = new ConfigurationBuilder()
            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
            .AddJsonFile("appsettings_csspfileservicestests.json")
-           .AddUserSecrets("CSSPFileServices.Tests")
+           .AddUserSecrets("CSSPFileServices_Tests")
            .Build();
 
         Services = new ServiceCollection();
@@ -50,7 +50,7 @@ public partial class FileServiceTests
         Assert.Contains("test", Configuration["AzureStoreCSSPFilesPath"]);
         Assert.NotNull(Configuration["AzureStoreCSSPJSONPath"]);
         Assert.Contains("test", Configuration["AzureStoreCSSPJSONPath"]);
-        Assert.NotNull(Configuration["LocalEmail"]);
+        Assert.NotNull(Configuration["LoginEmail"]);
         Assert.NotNull(Configuration["Password"]);
 
         Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();

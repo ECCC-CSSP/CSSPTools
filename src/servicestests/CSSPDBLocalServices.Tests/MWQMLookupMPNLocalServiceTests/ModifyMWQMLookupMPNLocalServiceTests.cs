@@ -7,7 +7,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_Existing_Good_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 
@@ -52,7 +52,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyHelpDocLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = new MWQMLookupMPN();
 
@@ -68,7 +68,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyHelpDocLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = new MWQMLookupMPN();
 
@@ -84,7 +84,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_MWQMLookupMPNID_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
@@ -100,7 +100,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_Tube10_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
@@ -116,7 +116,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_Tube1_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
@@ -132,7 +132,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_Tube01_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
@@ -148,7 +148,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_MPN_100ml_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         MWQMLookupMPN mwqmLookupMPN = FillMWQMLookupMPN();
 
@@ -164,7 +164,7 @@ public partial class MWQMLookupMPNLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task ModifyMWQMLookupMPNLocal_MWQMLookupMPNID_Not_Found_Error_Test(string culture)
     {
-        Assert.True(await MWQMLookupMPNLocalServiceSetup(culture));
+        Assert.True(await MWQMLookupMPNLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 

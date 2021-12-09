@@ -2,7 +2,7 @@ namespace CSSPReadGzFileServices.Tests;
 
 public partial class CSSPReadGzFileServiceTests
 {
-    private async Task DoFullReadJSONTest(WebTypeEnum webType, int TVItemID)
+    protected async Task DoFullReadJSONTest(WebTypeEnum webType, int TVItemID)
     {
         WriteTimeSpan(webType);
 

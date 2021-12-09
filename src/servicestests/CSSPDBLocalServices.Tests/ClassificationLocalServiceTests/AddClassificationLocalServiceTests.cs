@@ -7,7 +7,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Good_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -133,7 +133,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 0;
 
@@ -157,7 +157,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 0;
 
@@ -181,7 +181,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_SubsectorTVItemID_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 0;
 
@@ -203,7 +203,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_ClassificationTypeEnum_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -225,7 +225,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_coordList_null_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -249,7 +249,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_coordList_NeedAtLeast2Points_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -271,7 +271,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Lat_MinValueMinus90_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -293,7 +293,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Lat_MaxValue90_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -315,7 +315,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Lng_MinValueMinus180_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 
@@ -337,7 +337,7 @@ public partial class ClassificationLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddClassificationLocal_Lng_MaxValue180_Error_Test(string culture)
     {
-        Assert.True(await ClassificationLocalServiceSetup(culture));
+        Assert.True(await ClassificationLocalServiceSetupAsync(culture));
 
         int SubsectorTVItemID = 635;
 

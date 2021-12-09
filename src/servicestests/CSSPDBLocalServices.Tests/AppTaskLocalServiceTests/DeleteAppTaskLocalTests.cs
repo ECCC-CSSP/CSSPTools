@@ -7,7 +7,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteAppTaskModel_Good_Test(string culture)
     {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
+        Assert.True(await AppTaskLocalServiceSetupAsync(culture));
 
         AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
@@ -30,7 +30,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteAppTaskModel_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
+        Assert.True(await AppTaskLocalServiceSetupAsync(culture));
 
         AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
@@ -53,7 +53,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteAppTaskModel_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
+        Assert.True(await AppTaskLocalServiceSetupAsync(culture));
 
         AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
@@ -76,7 +76,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteAppTaskLocal_AppTaskID_Error_Test(string culture)
     {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
+        Assert.True(await AppTaskLocalServiceSetupAsync(culture));
 
         AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 
@@ -99,7 +99,7 @@ public partial class AppTaskLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task DeleteAppTaskLocal_AppTask_Not_Found_Error_Test(string culture)
     {
-        Assert.True(await AppTaskLocalServiceSetup(culture));
+        Assert.True(await AppTaskLocalServiceSetupAsync(culture));
 
         AppTaskModel appTaskLocalModel = FillAppTaskLocalModel();
 

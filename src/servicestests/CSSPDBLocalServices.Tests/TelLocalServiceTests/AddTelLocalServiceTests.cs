@@ -7,7 +7,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_Good_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 
@@ -147,7 +147,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel tel = FillTel();
 
@@ -165,7 +165,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel tel = FillTel();
 
@@ -183,7 +183,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_Tel_null_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel tel = FillTel();
 
@@ -201,7 +201,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_TelID_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel tel = FillTel();
 
@@ -219,7 +219,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_TelNumber_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel telLocal = FillTel();
 
@@ -237,7 +237,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_TelNumber_length_50_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel telLocal = FillTel();
 
@@ -255,7 +255,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_TelType_Error_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         Tel telLocal = FillTel();
 
@@ -273,7 +273,7 @@ public partial class TelLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddTelLocal_Return_Existing_Tel_As_It_Already_Exist_Test(string culture)
     {
-        Assert.True(await TelLocalServiceSetup(culture));
+        Assert.True(await TelLocalServiceSetupAsync(culture));
 
         List<ToRecreate> ToRecreateList = new List<ToRecreate>()
         {

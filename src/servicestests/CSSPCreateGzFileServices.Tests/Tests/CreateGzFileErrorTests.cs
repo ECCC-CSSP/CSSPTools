@@ -161,7 +161,7 @@ public partial class CSSPCreateGzFileServiceTests
         Assert.Equal(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                 "TVItem", TVItemID.ToString(), "TVType", TVTypeEnum.Municipality.ToString()), errRes.ErrList[0]);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task CreateGzFiles_WebMonitoringOtherStatsCountry_TVItemID_Error_Test(string culture)
@@ -179,7 +179,7 @@ public partial class CSSPCreateGzFileServiceTests
         Assert.Equal(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
             "TVItem", TVItemID.ToString(), "TVType", TVTypeEnum.Country.ToString()), errRes.ErrList[0]);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task CreateGzFiles_WebMonitoringOtherStatsProvince_TVItemID_Error_Test(string culture)
@@ -197,7 +197,7 @@ public partial class CSSPCreateGzFileServiceTests
         Assert.Equal(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
             "TVItem", TVItemID.ToString(), "TVType", TVTypeEnum.Province.ToString()), errRes.ErrList[0]);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task CreateGzFiles_WebMonitoringRoutineStatsCountry_TVItemID_Error_Test(string culture)
@@ -215,7 +215,7 @@ public partial class CSSPCreateGzFileServiceTests
         Assert.Equal(string.Format(CSSPCultureServicesRes._CouldNotBeFoundFor_Equal_And_Equal_,
                 "TVItem", TVItemID.ToString(), "TVType", TVTypeEnum.Country.ToString()), errRes.ErrList[0]);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task CreateGzFiles_WebMonitoringRoutineStatsProvince_TVItemID_Error_Test(string culture)

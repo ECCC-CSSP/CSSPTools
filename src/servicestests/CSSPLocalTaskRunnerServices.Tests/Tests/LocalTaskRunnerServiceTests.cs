@@ -1,14 +1,15 @@
 namespace CSSPLocalTaskRunnerServices.Tests;
 
-[Collection("Sequential")]
-public partial class LocalTaskRunnerServiceTest
+public partial class CSSPLocalTaskRunnerServiceTest
 {
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task LocalTaskRunnerService_Constructor_Good_Test(string culture)
+    public async Task Placeholder_Good_Test(string culture)
     {
         Assert.True(await CSSPLocalTaskRunnerServiceSetup(culture));
+
+        Assert.True(true);
     }
 }
 

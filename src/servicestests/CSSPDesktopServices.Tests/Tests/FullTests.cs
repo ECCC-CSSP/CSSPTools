@@ -2,7 +2,7 @@
 
 public partial class CSSPDesktopServiceTests
 {
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task Full_Good_Test(string culture)
@@ -25,34 +25,34 @@ public partial class CSSPDesktopServiceTests
         Assert.True(CSSPDesktopService.contact.IsLoggedIn);
         Assert.False(CSSPDesktopService.LoginRequired);
 
-        //Assert.True(await CSSPDesktopService.LogoffAsync());
-        //Assert.NotNull(CSSPDesktopService.contact);
-        //Assert.False(CSSPDesktopService.contact.IsLoggedIn);
-        //Assert.True(CSSPDesktopService.LoginRequired);
+        Assert.True(await CSSPDesktopService.LogoffAsync());
+        Assert.NotNull(CSSPDesktopService.contact);
+        Assert.False(CSSPDesktopService.contact.IsLoggedIn);
+        Assert.True(CSSPDesktopService.LoginRequired);
 
-        //Assert.True(await CSSPDesktopService.FillLoginRequiredAsync());
-        //Assert.NotNull(CSSPDesktopService.contact);
-        //Assert.False(CSSPDesktopService.contact.IsLoggedIn);
-        //Assert.True(CSSPDesktopService.LoginRequired);
+        Assert.True(await CSSPDesktopService.FillLoginRequiredAsync());
+        Assert.NotNull(CSSPDesktopService.contact);
+        Assert.False(CSSPDesktopService.contact.IsLoggedIn);
+        Assert.True(CSSPDesktopService.LoginRequired);
 
-        //Assert.True(await CSSPDesktopService.LoginAsync(loginModel));
-        //Assert.NotNull(CSSPDesktopService.contact);
-        //Assert.True(CSSPDesktopService.contact.IsLoggedIn);
-        //Assert.False(CSSPDesktopService.LoginRequired);
+        Assert.True(await CSSPDesktopService.LoginAsync(loginModel));
+        Assert.NotNull(CSSPDesktopService.contact);
+        Assert.True(CSSPDesktopService.contact.IsLoggedIn);
+        Assert.False(CSSPDesktopService.LoginRequired);
 
         Assert.True(await CSSPDesktopService.FillLoginRequiredAsync());
         Assert.NotNull(CSSPDesktopService.contact);
         Assert.True(CSSPDesktopService.contact.IsLoggedIn);
         Assert.False(CSSPDesktopService.LoginRequired);
 
-        //CSSPDesktopInstallPostBuildService.SetContact(CSSPDesktopService.contact);
-        //Assert.True(await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync());
-        //Assert.True(await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync());
-        //Assert.True(await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync());
+        CSSPDesktopInstallPostBuildService.SetContact(CSSPDesktopService.contact);
+        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPClientCompressAndSendToAzureAsync());
+        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPOtherFilesCompressAndSendToAzureAsync());
+        Assert.True(await CSSPDesktopInstallPostBuildService.CSSPWebAPIsLocalCompressAndSendToAzureAsync());
 
-        //await CopyAzureZipUpdateFilesToAzureTestDirectory();
+        await CopyAzureZipUpdateFilesToAzureTestDirectory();
 
-        //await CopyAzureJsonUpdateFilesToAzureTestDirectory();
+        await CopyAzureJsonUpdateFilesToAzureTestDirectory();
 
         Assert.True(await CSSPDesktopService.InstallUpdatesAsync());
 

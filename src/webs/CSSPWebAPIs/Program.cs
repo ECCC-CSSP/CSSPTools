@@ -1,13 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//----------------------------------
-
-//IConfiguration Configuration = new ConfigurationBuilder()
-//        .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-//        //.AddJsonFile("appsettings_csspwebapis.json")
-//        //.AddUserSecrets("CSSPWebAPIs")
-//        .Build();
 
 builder.Services.AddCors();
 builder.Services.AddControllers()
@@ -52,9 +45,7 @@ builder.Services.AddScoped<ITVTypeUserAuthorizationAzureService, TVTypeUserAutho
 //----------------------------------
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -63,8 +54,6 @@ app.UseDeveloperExceptionPage();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
 else
@@ -74,7 +63,6 @@ else
 
 app.UseHttpsRedirection();
 
-//app.UseAuthorization();
 app.UseRouting();
 
 app.UseCors(x => x

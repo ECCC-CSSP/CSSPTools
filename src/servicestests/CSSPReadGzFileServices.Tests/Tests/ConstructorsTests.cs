@@ -1,6 +1,6 @@
 namespace CSSPReadGzFileServices.Tests;
 
-public partial class CSSPReadGzFileServiceTests
+public partial class ConstructorTests : CSSPReadGzFileServiceTests
 {
     [Theory]
     [InlineData("en-CA")]

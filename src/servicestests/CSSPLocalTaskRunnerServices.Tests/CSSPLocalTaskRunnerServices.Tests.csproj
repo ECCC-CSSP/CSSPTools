@@ -30,7 +30,9 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPLocalTaskRunnerServices\CSSPLocalTaskRunnerServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-namespace CSSPWebAPIs.BaseControllet.Tests;
+namespace CSSPWebAPIs.Tests;
 
 [Collection("Sequential")]
 public partial class BaseControllerTests
@@ -20,9 +20,13 @@ public partial class BaseControllerTests
 
         Services.AddSingleton<IConfiguration>(Configuration);
 
+        Assert.NotNull(Configuration["CSSPAzureUrl"]);
+        Assert.NotNull(Configuration["APISecret"]);
         Assert.NotNull(Configuration["CSSPDBAzure"]);
         Assert.NotNull(Configuration["LoginEmail"]);
         Assert.NotNull(Configuration["Password"]);
+        Assert.NotNull(Configuration["AzureStoreHash"]);
+        Assert.NotNull(Configuration["GoogleMapKeyHash"]);
 
         Provider = Services.BuildServiceProvider();
         Assert.NotNull(Provider);

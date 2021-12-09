@@ -2,7 +2,7 @@ namespace CSSPReadGzFileServices.Tests;
 
 public partial class CSSPReadGzFileServiceTests
 {
-    private async Task DoFullGetUncompressTest(WebTypeEnum webType, int TVItemID)
+    protected async Task DoFullGetUncompressTest(WebTypeEnum webType, int TVItemID)
     {
         WriteTimeSpan(webType);
 

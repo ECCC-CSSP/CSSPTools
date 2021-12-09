@@ -2,82 +2,16 @@ namespace CSSPWebAPIsLocal.Tests;
 
 public partial class CreateFileControllerTests : CSSPWebAPIsLocalTests
 {
-    //private IConfiguration Configuration { get; set; }
-    private IServiceProvider Provider { get; set; }
-    private IServiceCollection Services { get; set; }
-    private ICSSPCultureService CSSPCultureService { get; set; }
-    private ICSSPScrambleService CSSPScrambleService { get; set; }
-    private ICSSPLogService CSSPLogService { get; set; }
-    private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
-    private ICSSPFileService FileService { get; set; }
-    private IManageFileService ManageFileService { get; set; }
-    private string LocalUrl { get; set; }
-    private string CSSPTempFilesPath { get; set; }
-    private Contact contact { get; set; }
-
     public CreateFileControllerTests() : base()
     {
     }
 
-    private async Task<bool> CreateFileSetupAsync(string culture)
+    private async Task<bool> CreateFileControllerSetupAsync(string culture)
     {
-        Configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-           .AddJsonFile("appsettings_csspwebapislocaltests.json")
-           .AddUserSecrets("CSSPWebAPIsLocal_Tests")
-           .Build();
+        //List<string> TableList = new List<string>() { "TVItems", "TVItemLanguages", "MapInfos", "MapInfoPoints" };
 
-        Services = new ServiceCollection();
-
-        Services.AddSingleton<IConfiguration>(Configuration);
-
-        LocalUrl = Configuration.GetValue<string>("LocalUrl");
-        Assert.NotNull(LocalUrl);
-
-        CSSPTempFilesPath = Configuration.GetValue<string>("CSSPTempFilesPath");
-        Assert.NotNull(CSSPTempFilesPath);
-
-        /* ---------------------------------------------------------------------------------
-         * CSSPDBManageContext
-         * ---------------------------------------------------------------------------------
-         */
-        string CSSPDBManage = Configuration.GetValue<string>("CSSPDBManage");
-        Assert.NotNull(CSSPDBManage);
-
-        FileInfo fiCSSPDBManage = new FileInfo(CSSPDBManage);
-
-        Services.AddDbContext<CSSPDBManageContext>(options =>
-        {
-            options.UseSqlite($"Data Source={ fiCSSPDBManage.FullName }");
-        });
-
-        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-        Services.AddSingleton<IEnums, Enums>();
-        Services.AddSingleton<ICSSPScrambleService, CSSPScrambleService>();
-        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-        Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-        Services.AddSingleton<IManageFileService, ManageFileService>();
-
-        Provider = Services.BuildServiceProvider();
-        Assert.NotNull(Provider);
-
-        CSSPCultureService = Provider.GetService<ICSSPCultureService>();
-        Assert.NotNull(CSSPCultureService);
-
-        CSSPCultureService.SetCulture(culture);
-
-        CSSPLocalLoggedInService = Provider.GetService<ICSSPLocalLoggedInService>();
-        Assert.NotNull(CSSPLocalLoggedInService);
-
-        await CSSPLocalLoggedInService.SetLocalLoggedInContactInfoAsync();
-        Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo);
-        Assert.NotNull(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact);
-
-        contact = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact;
-
-        FileService = Provider.GetService<ICSSPFileService>();
-        Assert.NotNull(FileService);
+        Assert.True(await CSSPWebAPIsLocalSetupAsync(culture));
+        //Assert.True(await ClearSomeTablesOfCSSPDBLocal(TableList));
 
         return await Task.FromResult(true);
     }

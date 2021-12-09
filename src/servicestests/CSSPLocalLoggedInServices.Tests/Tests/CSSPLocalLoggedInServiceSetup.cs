@@ -24,17 +24,18 @@ public partial class CSSPLocalLoggedInServicesTests
         Services = new ServiceCollection();
 
         Services.AddSingleton<IConfiguration>(Configuration);
-        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
-        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
-        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
-        Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
-        Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
         Assert.NotNull(Configuration["CSSPDBLocal"]);
         Assert.NotNull(Configuration["CSSPDBManage"]);
         Assert.NotNull(Configuration["CSSPAzureUrl"]);
         Assert.NotNull(Configuration["LoginEmail"]);
         Assert.NotNull(Configuration["Password"]);
+
+        Services.AddSingleton<ICSSPCultureService, CSSPCultureService>();
+        Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
+        Services.AddSingleton<ICSSPLogService, CSSPLogService>();
+        Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
+        Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();
 
         Services.AddDbContext<CSSPDBLocalContext>(options =>
         {

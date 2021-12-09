@@ -7,7 +7,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_Good_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 
@@ -147,7 +147,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -165,7 +165,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_Unauthorized2_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -183,7 +183,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_Email_null_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -201,7 +201,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_EmailID_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -219,7 +219,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_EmailAddress_Required_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -237,7 +237,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_EmailAddress_length_255_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -255,7 +255,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_EmailAddress_Valid_Email_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -273,7 +273,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_EmailType_Error_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         Email email = FillEmail();
 
@@ -291,7 +291,7 @@ public partial class EmailLocalServiceTest : CSSPDBLocalServiceTest
     //[InlineData("fr-CA")]
     public async Task AddEmailLocal_Return_Existing_Email_As_It_Already_Exist_Test(string culture)
     {
-        Assert.True(await EmailLocalServiceSetup(culture));
+        Assert.True(await EmailLocalServiceSetupAsync(culture));
 
         await CSSPCreateGzFileService.SetLocal(false);
 

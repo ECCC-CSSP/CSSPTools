@@ -1,6 +1,6 @@
 namespace CSSPReadGzFileServices.Tests;
 
-public partial class CSSPReadGzFileServiceTests
+public partial class GetUncompressJSONTests : CSSPReadGzFileServiceTests
 {
     [Theory]
     [InlineData("en-CA")]
@@ -290,7 +290,7 @@ public partial class CSSPReadGzFileServiceTests
 
         await DoFullGetUncompressTest(webType, TVItemID);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task GetUncompressJSON_WebMonitoringOtherStatsCountry_Good_Test(string culture)
@@ -302,7 +302,7 @@ public partial class CSSPReadGzFileServiceTests
 
         await DoFullGetUncompressTest(webType, TVItemID);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task GetUncompressJSON_WebMonitoringOtherStatsProvince_Good_Test(string culture)
@@ -314,7 +314,7 @@ public partial class CSSPReadGzFileServiceTests
 
         await DoFullGetUncompressTest(webType, TVItemID);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task GetUncompressJSON_WebMonitoringRoutineStatsCountry_Good_Test(string culture)
@@ -326,7 +326,7 @@ public partial class CSSPReadGzFileServiceTests
 
         await DoFullGetUncompressTest(webType, TVItemID);
     }
-    [Theory]
+    [Theory(Skip = "Temporary skipping because it takes a long time")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task GetUncompressJSON_WebMonitoringRoutineStatsProvince_Good_Test(string culture)
