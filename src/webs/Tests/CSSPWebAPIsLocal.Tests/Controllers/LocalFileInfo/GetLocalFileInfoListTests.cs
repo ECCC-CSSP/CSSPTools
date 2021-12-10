@@ -48,7 +48,7 @@ public partial class LocalFileInfoControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }api/{ culture }/LocalFileInfo/GetLocalFileInfoList/{ParentTVItemID}";
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/LocalFileInfo/GetLocalFileInfoList/{ParentTVItemID}";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();
@@ -116,7 +116,7 @@ public partial class LocalFileInfoControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }api/{ culture }/LocalFileInfo/GetLocalFileInfoList/{ParentTVItemID}";
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/LocalFileInfo/GetLocalFileInfoList/{ParentTVItemID}";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();
@@ -149,7 +149,7 @@ public partial class LocalFileInfoControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }api/{ culture }/LocalFileInfo/GetLocalFileInfoList/{TVItemID}";
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/LocalFileInfo/GetLocalFileInfoList/{TVItemID}";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();

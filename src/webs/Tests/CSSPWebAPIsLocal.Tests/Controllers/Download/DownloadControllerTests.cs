@@ -11,7 +11,7 @@ public partial class DownloadControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["LocalUrl"] }api/{ culture }/download/1/BarTopBottom.png").Result;
+            HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPLocalUrl"] }api/{ culture }/download/1/BarTopBottom.png").Result;
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();
             Assert.True(responseContent.Length > 0);

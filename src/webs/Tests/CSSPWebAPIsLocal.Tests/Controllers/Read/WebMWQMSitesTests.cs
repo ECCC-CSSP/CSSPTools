@@ -1,6 +1,6 @@
 namespace CSSPWebAPIsLocal.Tests;
 
-public partial class ReadControllerTests
+public partial class ReadControllerTests : CSSPWebAPIsLocalTests
 {
     [Theory]
     [InlineData("en-CA")]
@@ -9,12 +9,14 @@ public partial class ReadControllerTests
     {
         Assert.True(await ReadControllerSetupAsync(culture));
 
-        WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
         int TVItemID = 635;
+        WebTypeEnum webType = WebTypeEnum.WebMWQMSites;
+
+        await DoCreateGzFile(webType, TVItemID);
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }api/{ culture }/Read/{ webType }/{ TVItemID }";
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/Read/{ webType }/{ TVItemID }";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();

@@ -8,13 +8,16 @@ public partial interface IReadController
     Task<ActionResult<WebAllEmails>> WebAllEmailsAsync();
     Task<ActionResult<WebAllHelpDocs>> WebAllHelpDocsAsync();
     Task<ActionResult<WebAllMunicipalities>> WebAllMunicipalitiesAsync();
+    Task<ActionResult<WebAllMWQMAnalysisReportParameters>> WebAllMWQMAnalysisReportParametersAsync();
     Task<ActionResult<WebAllMWQMLookupMPNs>> WebAllMWQMLookupMPNsAsync();
+    Task<ActionResult<WebAllMWQMSubsectors>> WebAllMWQMSubsectorsAsync();
     Task<ActionResult<WebAllPolSourceGroupings>> WebAllPolSourceGroupingsAsync();
     Task<ActionResult<WebAllPolSourceSiteEffectTerms>> WebAllPolSourceSiteEffectTermsAsync();
     Task<ActionResult<WebAllProvinces>> WebAllProvincesAsync();
     Task<ActionResult<WebAllReportTypes>> WebAllReportTypesAsync();
     Task<ActionResult<WebAllTels>> WebAllTelsAsync();
     Task<ActionResult<WebAllTideLocations>> WebAllTideLocationsAsync();
+    Task<ActionResult<WebAllUseOfSites>> WebAllUseOfSitesAsync();
     Task<ActionResult<WebArea>> WebAreaAsync(int TVItemID);
     Task<ActionResult<WebClimateSites>> WebClimateSitesAsync(int TVItemID);
     Task<ActionResult<WebCountry>> WebCountryAsync(int TVItemID);

@@ -11,7 +11,7 @@ public partial class LocalizeAzureFileControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }api/{ culture }/LocalizeAzureFile/1/BarTopBottom.png";
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/LocalizeAzureFile/1/BarTopBottom.png";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

@@ -33,7 +33,7 @@ public partial class CreateFileControllerTests : CSSPWebAPIsLocalTests
 
             string stringData = JsonSerializer.Serialize(tableConvertToCSVModel);
             var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["LocalUrl"] }api/{ culture }/CreateFile/CreateTempCSV/", contentData).Result;
+            HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPLocalUrl"] }api/{ culture }/CreateFile/CreateTempCSV/", contentData).Result;
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 

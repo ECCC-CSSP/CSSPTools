@@ -11,7 +11,7 @@ public partial class VersionControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }Version";
+            string url = $"{ Configuration["CSSPLocalUrl"] }Version";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();

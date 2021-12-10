@@ -2,6 +2,7 @@ namespace CSSPWebAPIsLocal.Controllers;
 
 public partial class CountryLocalController : ControllerBase, ICountryLocalController
 {
+    [Route("{ParentTVItemID:int}")]
     [HttpPost]
     public async Task<ActionResult<TVItemModel>> AddCountryLocalAsync(int ParentTVItemID)
     {

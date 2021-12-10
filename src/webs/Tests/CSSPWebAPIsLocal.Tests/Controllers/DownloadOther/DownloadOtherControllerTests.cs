@@ -18,7 +18,7 @@ public partial class DownloadOtherControllerTests : CSSPWebAPIsLocalTests
         {
             foreach (string otherFile in otherFileList)
             {
-                string url = $"{ Configuration["LocalUrl"] }api/{ culture }/DownloadOther/{otherFile}";
+                string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/DownloadOther/{otherFile}";
                 var response = await httpClient.GetAsync(url);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 string responseContent = await response.Content.ReadAsStringAsync();

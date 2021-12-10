@@ -2,9 +2,9 @@ namespace CSSPWebAPIsLocal.Tests;
 
 public partial class CSSPWebAPIsLocalTests
 {
-    private void DeleteAllJsonFilesLocal()
+    private void DeleteAllJsonFiles()
     {
-        DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
+        DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPath"]);
         Assert.True(di.Exists);
 
         foreach (FileInfo fi in di.GetFiles())

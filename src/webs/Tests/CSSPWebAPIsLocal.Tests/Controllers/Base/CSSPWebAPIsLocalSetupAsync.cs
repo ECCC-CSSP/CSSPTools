@@ -100,6 +100,7 @@ public partial class CSSPWebAPIsLocalTests
         ClearManageFiles();
 
         DeleteAllJsonFilesInAzureTestStore();
+        DeleteAllJsonFiles();
         DeleteAllJsonFilesLocal();
         DeleteAllBackupFilesLocal();
 

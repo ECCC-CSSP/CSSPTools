@@ -13,20 +13,29 @@ public partial class CountryLocalControllerTests : CSSPWebAPIsLocalTests
 
         TVItemModel tvItemModel = new TVItemModel();
 
+        await CSSPCreateGzFileService.SetLocal(false);
+
+        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
+        {
+            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
+            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
+        };
+
+        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+
         using (HttpClient httpClient = new HttpClient())
         {
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-            string stringData = JsonSerializer.Serialize(ParentTVItemID);
+            string stringData = ""; // JsonSerializer.Serialize(ParentTVItemID);
             var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["LocalUrl"] }api/{ culture }/CountryLocal/", contentData).Result;
+            HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPLocalUrl"] }api/{ culture }/CountryLocal/{ ParentTVItemID }", contentData).Result;
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             string responseContent = await response.Content.ReadAsStringAsync();
             tvItemModel = JsonSerializer.Deserialize<TVItemModel>(responseContent);
             Assert.NotNull(tvItemModel);
-
         }
 
         DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPJSONPathLocal"] }");
@@ -47,8 +56,8 @@ public partial class CountryLocalControllerTests : CSSPWebAPIsLocalTests
                                                    select c).ToList();
 
         Assert.True(tvItemLanguageList.Count() == 2);
-        Assert.Equal(-1, tvItemLanguageList[0].TVItemID);
-        Assert.Equal(-2, tvItemLanguageList[1].TVItemID);
+        Assert.Equal(-1, tvItemLanguageList[0].TVItemLanguageID);
+        Assert.Equal(-2, tvItemLanguageList[1].TVItemLanguageID);
     }
 }
 

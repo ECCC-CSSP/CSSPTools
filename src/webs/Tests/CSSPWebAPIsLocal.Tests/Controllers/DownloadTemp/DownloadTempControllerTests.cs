@@ -15,7 +15,7 @@ public partial class DownloadTempControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
-            string url = $"{ Configuration["LocalUrl"] }api/{ culture }/DownloadTemp/{fi.Name}";
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/DownloadTemp/{fi.Name}";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();

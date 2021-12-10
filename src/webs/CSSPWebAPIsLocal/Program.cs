@@ -1,9 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
 
+string appSettings = "appsettings.json";
+
+if (builder.Environment.IsDevelopment())
+{
+    appSettings = "appsettingstests.json";
+}
+
 builder.WebHost.ConfigureAppConfiguration(configuration =>
-                {
-                    configuration.AddJsonFile("appsettings.json");
-                });
+{
+    configuration.AddJsonFile(appSettings);
+});
+
 builder.WebHost.UseUrls("http://localhost:4446");
 
 // Add services to the container.
