@@ -1,6 +1,6 @@
 namespace CSSPCreateGzFileServices.Tests;
 
-public partial class CSSPCreateGzFileServiceTests
+public partial class  CSSPCreateGzFileServiceTests
 {
     private void WriteTimeSpan(WebTypeEnum webTypeEnum)
     {

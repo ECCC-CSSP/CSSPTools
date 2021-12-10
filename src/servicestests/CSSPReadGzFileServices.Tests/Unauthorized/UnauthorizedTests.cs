@@ -63,6 +63,8 @@ public partial class UnauthorizedTests : CSSPReadGzFileServiceTests
             ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
 
+            errRes = new ErrRes();
+
             CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
             webType = webTypeToTry;
@@ -71,6 +73,8 @@ public partial class UnauthorizedTests : CSSPReadGzFileServiceTests
             Assert.Equal(401, ((UnauthorizedObjectResult)actionWeb.Result).StatusCode);
             errRes = (ErrRes)((UnauthorizedObjectResult)actionWeb.Result).Value;
             Assert.NotEmpty(errRes.ErrList);
+
+            errRes = new ErrRes();
         }
     }
 }

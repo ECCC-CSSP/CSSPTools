@@ -3,8 +3,7 @@ namespace CSSPCreateGzFileServices.Tests;
 [Collection("Sequential")]
 public partial class CSSPCreateGzFileServiceTests
 {
-    DateTime LastTime = DateTime.Now;
-
+    private DateTime LastTime = DateTime.Now;
     private IConfiguration Configuration { get; set; }
     private IServiceProvider Provider { get; set; }
     private IServiceCollection Services { get; set; }
