@@ -1,6 +1,5 @@
 namespace CSSPFileServices.Tests;
 
-//[Collection("Sequential")]
 public partial class FileServiceTests
 {
     [Theory]
@@ -8,73 +7,54 @@ public partial class FileServiceTests
     //[InlineData("fr-CA")]
     public async Task DownloadOtherFile_Good_Test(string culture)
     {
-        List<string> fileList = new List<string>()
-            {
-                "CssFamilyMaterial.css",
-                "IconFamilyMaterial.css",
-                "GoogleMap.js",
-                "flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
-            };
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
-        foreach (string fileName in fileList)
-        {
-            Assert.True(await CSSPFileServiceSetup(culture));
+        FileInfo fi = new FileInfo($"{ Configuration["CSSPOtherFilesPath"]}testing.txt");
 
-            CSSPLogService.CSSPAppName = "FileServiceTests";
-            CSSPLogService.CSSPCommandName = "Testing_DownloadOtherFile";
+        StreamWriter sw = fi.CreateText();
+        sw.WriteLine("bonjour");
+        sw.Close();
 
-            FileInfo fi = new FileInfo(Configuration["CSSPOtherFilesPath"] + $"{ fileName }");
-            Assert.True(fi.Exists);
+        fi = new FileInfo($"{ Configuration["CSSPOtherFilesPath"]}testing.txt");
+        Assert.True(fi.Exists);
 
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
-            var actionRes = await CSSPFileService.DownloadOtherFileAsync(fileName);
-            Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
-
-            await CSSPLogService.Save();
-
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
-        }
+        var actionRes = await CSSPFileService.DownloadOtherFileAsync("testing.txt");
+        Assert.NotNull(((PhysicalFileResult)actionRes).FileName);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task DownloadOtherFile_Unauthorized_Error_Test(string culture)
     {
-        List<string> otherFileList = new List<string>()
-            {
-                "CssFamilyMaterial.css", "IconFamilyMaterial.css", "GoogleMap.js", "flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
-            };
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
-        foreach (string fileName in otherFileList)
-        {
-            Assert.True(await CSSPFileServiceSetup(culture));
+        CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
-            FileInfo fi = new FileInfo(Configuration["CSSPOtherFilesPath"] + $"{ fileName }");
-            Assert.True(fi.Exists);
+        var actionRes = await CSSPFileService.DownloadOtherFileAsync("testing.txt");
+        Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
+        Assert.NotEmpty(errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
+    public async Task DownloadOtherFile_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
-            Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
 
-            CSSPLocalLoggedInService.LoggedInContactInfo = null;
-
-            var actionRes = await CSSPFileService.DownloadOtherFileAsync(fileName);
-            Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
-            ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
-            Assert.NotEmpty(errRes.ErrList);
-        }
-
-        await CSSPLogService.Save();
-
-        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
+        var actionRes = await CSSPFileService.DownloadOtherFileAsync("testing.txt");
+        Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
+        Assert.NotEmpty(errRes.ErrList);
     }
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task DownloadOtherFile_FileDoesNotExist_Error_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         string FileName = "NotExist.css";
 
@@ -82,10 +62,6 @@ public partial class FileServiceTests
         Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);
-
-        await CSSPLogService.Save();
-
-        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
 

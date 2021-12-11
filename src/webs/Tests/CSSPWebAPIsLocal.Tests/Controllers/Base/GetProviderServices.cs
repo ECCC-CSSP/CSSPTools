@@ -90,12 +90,7 @@ public partial class CSSPWebAPIsLocalTests
 
         CSSPFileService = Provider.GetService<ICSSPFileService>();
         Assert.NotNull(CSSPFileService);
-
-        CSSPCreateGzFileService = Provider.GetService<ICSSPCreateGzFileService>();
-        Assert.NotNull(CSSPCreateGzFileService);
-
-        await CSSPCreateGzFileService.SetLocal(false);
-
+        
         CSSPReadGzFileService = Provider.GetService<ICSSPReadGzFileService>();
         Assert.NotNull(CSSPReadGzFileService);
     }

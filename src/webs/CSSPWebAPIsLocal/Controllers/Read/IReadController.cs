@@ -31,8 +31,8 @@ public partial interface IReadController
     Task<ActionResult<WebMonitoringRoutineStatsProvince>> WebMonitoringRoutineStatsProvinceAsync(int TVItemID);
     Task<ActionResult<WebMunicipality>> WebMunicipalityAsync(int TVItemID);
     Task<ActionResult<WebMWQMRuns>> WebMWQMRunsAsync(int TVItemID);
-    Task<ActionResult<WebMWQMSamples>> WebMWQMSamples1980_2020Async(int TVItemID);
-    Task<ActionResult<WebMWQMSamples>> WebMWQMSamples2021_2060Async(int TVItemID);
+    Task<ActionResult<WebMWQMSamples1980_2020>> WebMWQMSamples1980_2020Async(int TVItemID);
+    Task<ActionResult<WebMWQMSamples2021_2060>> WebMWQMSamples2021_2060Async(int TVItemID);
     Task<ActionResult<WebMWQMSites>> WebMWQMSitesAsync(int TVItemID);
     Task<ActionResult<WebPolSourceSites>> WebPolSourceSitesAsync(int TVItemID);
     Task<ActionResult<WebProvince>> WebProvinceAsync(int TVItemID);

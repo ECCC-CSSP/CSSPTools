@@ -3,16 +3,16 @@ import { AnalysisCalculationTypeEnum } from 'src/app/enums/generated/AnalysisCal
 import { SampleTypeEnum } from 'src/app/enums/generated/SampleTypeEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
-import { ColorAndLetter } from 'src/app/models/generated/web/ColorAndLetter.model';
-import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
-import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/web/MWQMRunModelSiteAndSampleModel.model';
-import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.model';
-import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
-import { MWQMSiteModelAndSampleModel } from 'src/app/models/generated/web/MWQMSiteModelAndSampleModel.model';
-import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
-import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
-import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { ColorAndLetter } from 'src/app/models/generated/models/ColorAndLetter.model';
+import { MWQMRunModel } from 'src/app/models/generated/models/MWQMRunModel.model';
+import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/models/MWQMRunModelSiteAndSampleModel.model';
+import { MWQMSampleModel } from 'src/app/models/generated/models/MWQMSampleModel.model';
+import { MWQMSiteModel } from 'src/app/models/generated/models/MWQMSiteModel.model';
+import { MWQMSiteModelAndSampleModel } from 'src/app/models/generated/models/MWQMSiteModelAndSampleModel.model';
+import { StatMWQMRun } from 'src/app/models/generated/models/StatMWQMRun.model';
+import { StatMWQMSite } from 'src/app/models/generated/models/StatMWQMSite.model';
+import { StatMWQMSiteSample } from 'src/app/models/generated/models/StatMWQMSiteSample.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { SortMWQMRunListService } from './sort-mwqm-run-list-desc.service';
@@ -100,7 +100,7 @@ export class StatService {
     if (mwqmRunModelList !== undefined && mwqmRunModelList?.length > 0) {
       mwqmRunModelSiteAndSampleModel.MWQMRunModel = mwqmRunModelList[0];
 
-      let mwqmSampleModelList: MWQMSampleModel[] = this.appLoadedService.WebMWQMSamples?.MWQMSampleModelList?.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
+      let mwqmSampleModelList: MWQMSampleModel[] = this.appLoadedService.WebMWQMSamples1980_2020?.MWQMSampleModelList?.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID);
 
       let MWQMSiteModelActiveList: MWQMSiteModel[] = this.sortMWQMSiteModelListService.SortMWQMSiteModelListByTVTextAsc(this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.IsActive == true));
 
@@ -219,7 +219,7 @@ export class StatService {
 
     if (MWQMSiteModelList && MWQMSiteModelList?.length > 0) {
       let MWQMSiteSampleModelSortedList: MWQMSampleModel[] = this.sortMWQMSiteSampleModelListService.SortMWQMSiteSampleModelListDescByDate(
-        this.appLoadedService.WebMWQMSamples?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
+        this.appLoadedService.WebMWQMSamples1980_2020?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
       );
 
       if (MWQMSiteSampleModelSortedList && MWQMSiteSampleModelSortedList?.length > 0) {
@@ -406,7 +406,7 @@ export class StatService {
 
     if (MWQMSiteModelList && MWQMSiteModelList?.length > 0) {
       let MWQMSiteSampleModelSortedList: MWQMSampleModel[] = this.sortMWQMSiteSampleModelListService.SortMWQMSiteSampleModelListDescByDate(
-        this.appLoadedService.WebMWQMSamples?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
+        this.appLoadedService.WebMWQMSamples1980_2020?.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMSiteTVItemID == tvItemModel.TVItem.TVItemID)
       );
 
       if (MWQMSiteSampleModelSortedList && MWQMSiteSampleModelSortedList?.length > 0) {

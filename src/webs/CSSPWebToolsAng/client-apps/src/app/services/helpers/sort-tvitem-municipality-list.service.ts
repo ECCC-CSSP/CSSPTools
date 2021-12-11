@@ -4,11 +4,11 @@ import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
 import { PredicateDescByService } from 'src/app/services/helpers/predicate-desc-by.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppLoadedService } from '../app/app-loaded.service';
-import { TVItemID_TVText_Sort } from 'src/app/models/generated/web/TVItemID_TVText_Sort.model';
-import { TVItemModelInfrastructureModel } from 'src/app/models/generated/web/TVItemModelInfrastructureModel.model';
+import { TVItemID_TVText_Sort } from 'src/app/models/generated/models/TVItemID_TVText_Sort.model';
+import { TVItemModelInfrastructureModel } from 'src/app/models/generated/models/TVItemModelInfrastructureModel.model';
 
 @Injectable({
     providedIn: 'root'

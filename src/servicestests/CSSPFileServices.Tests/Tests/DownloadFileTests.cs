@@ -7,10 +7,12 @@ public partial class FileServiceTests
     //[InlineData("fr-CA")]
     public async Task DownloadFile_Good_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         int ParentTVItemID = 1;
         string FileName = "BarTopBottom.png";
+
+        GetFileFromAzure(ParentTVItemID, FileName);
 
         FileInfo fi = new FileInfo($@"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\{FileName}");
         Assert.True(fi.Exists);
@@ -23,13 +25,10 @@ public partial class FileServiceTests
     //[InlineData("fr-CA")]
     public async Task DownloadFile_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         int ParentTVItemID = 1;
         string FileName = "BarTopBottom.png";
-
-        FileInfo fi = new FileInfo($"{ Configuration["CSSPFilesPath"] }{ParentTVItemID}\\{FileName}");
-        Assert.True(fi.Exists);
 
         CSSPLocalLoggedInService.LoggedInContactInfo = null;
 
@@ -41,9 +40,26 @@ public partial class FileServiceTests
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
+    public async Task DownloadFile_Unauthorized2_Error_Test(string culture)
+    {
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
+
+        int ParentTVItemID = 1;
+        string FileName = "BarTopBottom.png";
+
+        CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact = null;
+
+        var actionRes = await CSSPFileService.DownloadFileAsync(ParentTVItemID, FileName);
+        Assert.Equal(401, ((UnauthorizedObjectResult)actionRes).StatusCode);
+        ErrRes errRes = (ErrRes)((UnauthorizedObjectResult)actionRes).Value;
+        Assert.NotEmpty(errRes.ErrList);
+    }
+    [Theory]
+    [InlineData("en-CA")]
+    //[InlineData("fr-CA")]
     public async Task DownloadFile_FileNotExist_Error_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -60,10 +76,6 @@ public partial class FileServiceTests
         Assert.Equal(400, ((BadRequestObjectResult)actionRes).StatusCode);
         ErrRes errRes = (ErrRes)((BadRequestObjectResult)actionRes).Value;
         Assert.NotEmpty(errRes.ErrList);
-
-        await CSSPLogService.Save();
-
-        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
 

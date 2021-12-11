@@ -10,7 +10,7 @@ namespace GenerateAngularCSSPHelperModels
 {
     public partial class Startup
     {
-        private void CreateTypeFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPHelperModelsList)
+        private void CreateTypeFile(DLLTypeInfo dllTypeInfoModels, List<DLLTypeInfo> DLLTypeInfoCSSPModelsList, List<DLLTypeInfo> DLLTypeInfoCSSPDBModelsList)
         {
             StringBuilder sb = new StringBuilder();
             List<string> fileNameUsedList = new List<string>();
@@ -36,13 +36,12 @@ namespace GenerateAngularCSSPHelperModels
                 }
             }
 
-            List<string> fileNameListDB = new List<string>()
-            {
-                "VPAmbient", "VPResult", "VPScenario", "LabSheet", "Contact", 
-                "TVItemUserAuthorization", "TVTypeUserAuthorization", "TVFile", 
-                "SamplingPlan", "TVItem", "TVItemLanguage", "TVItemLink", "MWQMSite"
-            };
+            List<string> fileNameListDB = new List<string>();
 
+            foreach(DLLTypeInfo dllTypeInfo in DLLTypeInfoCSSPDBModelsList)
+            {
+                fileNameListDB.Add(dllTypeInfo.Name);
+            }
 
             foreach (DLLPropertyInfo dllPropertyInfo in dllTypeInfoModels.PropertyInfoList.OrderBy(c => c.CSSPProp.PropName))
             {
@@ -78,7 +77,7 @@ namespace GenerateAngularCSSPHelperModels
                         {
                             if (dllTypeInfoModels.Name != fileName)
                             {
-                                sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/models/generated/helper/{ fileName }.model';");
+                                sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/models/generated/models/{ fileName }.model';");
                             }
                         }
                     }

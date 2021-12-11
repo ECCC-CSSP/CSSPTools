@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { BoxModelResultTypeEnum } from 'src/app/enums/generated/BoxModelResultTypeEnum';
-import { BoxModelModel } from 'src/app/models/generated/web/BoxModelModel.model';
-import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
+import { BoxModelModel } from 'src/app/models/generated/models/BoxModelModel.model';
+import { InfrastructureModelPath } from 'src/app/models/generated/models/InfrastructureModelPath.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';

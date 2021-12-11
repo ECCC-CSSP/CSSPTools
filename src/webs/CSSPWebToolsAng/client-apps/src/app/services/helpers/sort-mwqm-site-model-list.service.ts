@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PredicateAscByService } from 'src/app/services/helpers/predicate-asc-by.service';
-import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
+import { MWQMSiteModel } from 'src/app/models/generated/models/MWQMSiteModel.model';
 import { AppLanguageService } from '../app/app-language.service';
-import { TVItemID_TVText_Sort } from 'src/app/models/generated/web/TVItemID_TVText_Sort.model';
+import { TVItemID_TVText_Sort } from 'src/app/models/generated/models/TVItemID_TVText_Sort.model';
 
 @Injectable({
     providedIn: 'root'

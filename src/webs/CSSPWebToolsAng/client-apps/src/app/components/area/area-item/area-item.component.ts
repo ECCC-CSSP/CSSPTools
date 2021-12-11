@@ -10,7 +10,7 @@ import { ComponentShowService } from 'src/app/services/helpers/component-show.se
 import { GetSortOrderAngularEnum } from 'src/app/enums/generated/SortOrderAngularEnum';
 import { SortTVItemListService } from 'src/app/services/helpers/sort-tvitem-list.service';
 import { FilterService } from 'src/app/services/tvitem/filter.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { JsonLoadListService, JsonLoadAllService } from 'src/app/services/json';
 import { TVFileModelByPurposeService } from 'src/app/services/file';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { MWQMRunModel } from 'src/app/models/generated/web/MWQMRunModel.model';
+import { MWQMRunModel } from 'src/app/models/generated/models/MWQMRunModel.model';
 import { AppLanguageService } from '../app/app-language.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 
 @Injectable({
     providedIn: 'root'

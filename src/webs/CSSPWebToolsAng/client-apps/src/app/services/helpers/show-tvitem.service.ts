@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Injectable({

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { MonitoringStatsModel } from 'src/app/models/generated/web/MonitoringStatsModel.model';
+import { MonitoringStatsModel } from 'src/app/models/generated/models/MonitoringStatsModel.model';
 
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { StatCountService } from 'src/app/services/helpers/stat-count.service';
 

@@ -4,10 +4,10 @@ import { FacilityTypeEnum, FacilityTypeEnum_GetIDText } from 'src/app/enums/gene
 import { InfrastructureTypeEnum, InfrastructureTypeEnum_GetIDText } from 'src/app/enums/generated/InfrastructureTypeEnum';
 import { SampleTypeEnum_GetIDText } from 'src/app/enums/generated/SampleTypeEnum';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
-import { InfrastructureItemValue } from 'src/app/models/generated/web/InfrastructureItemValue.model';
-import { InfrastructureModel } from 'src/app/models/generated/web/InfrastructureModel.model';
-import { TableConvertToCSVModel } from 'src/app/models/generated/web/TableConvertToCSVModel.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { InfrastructureItemValue } from 'src/app/models/generated/models/InfrastructureItemValue.model';
+import { InfrastructureModel } from 'src/app/models/generated/models/InfrastructureModel.model';
+import { TableConvertToCSVModel } from 'src/app/models/generated/models/TableConvertToCSVModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';

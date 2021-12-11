@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Address } from 'src/app/models/generated/db/Address.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';
 

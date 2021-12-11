@@ -11,7 +11,7 @@ import { GetMapSizeEnum, MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
 
 @Component({

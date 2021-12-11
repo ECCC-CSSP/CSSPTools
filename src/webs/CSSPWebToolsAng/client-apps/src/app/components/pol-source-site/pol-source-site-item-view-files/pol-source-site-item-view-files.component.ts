@@ -3,9 +3,9 @@ import { FilePurposeEnum_GetIDText } from 'src/app/enums/generated/FilePurposeEn
 import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { PolSourceSiteModel } from 'src/app/models/generated/web/PolSourceSiteModel.model';
-import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { PolSourceSiteModel } from 'src/app/models/generated/models/PolSourceSiteModel.model';
+import { TVFileModelByPurpose } from 'src/app/models/generated/models/TVFileModelByPurpose.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';

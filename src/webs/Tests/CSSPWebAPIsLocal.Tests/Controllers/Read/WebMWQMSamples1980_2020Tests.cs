@@ -12,7 +12,9 @@ public partial class ReadControllerTests : CSSPWebAPIsLocalTests
         int TVItemID = 635;
         WebTypeEnum webType = WebTypeEnum.WebMWQMSamples1980_2020;
 
-        await DoCreateGzFile(webType, TVItemID);
+        string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
+        GetJsonGzFileFromAzure(FileName);
+        SendJsonGzFileToAzure(FileName);
 
         using (HttpClient httpClient = new HttpClient())
         {
@@ -20,9 +22,9 @@ public partial class ReadControllerTests : CSSPWebAPIsLocalTests
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             string responseContent = await response.Content.ReadAsStringAsync();
-            WebMWQMSamples webMWQMSample = JsonSerializer.Deserialize<WebMWQMSamples>(responseContent);
-            Assert.NotNull(webMWQMSample);
-            Assert.NotNull(webMWQMSample.MWQMSampleModelList);
+            WebMWQMSamples1980_2020 webMWQMSamples1980_2020 = JsonSerializer.Deserialize<WebMWQMSamples1980_2020>(responseContent);
+            Assert.NotNull(webMWQMSamples1980_2020);
+            Assert.NotNull(webMWQMSamples1980_2020.MWQMSampleModelList);
         }
     }
 }

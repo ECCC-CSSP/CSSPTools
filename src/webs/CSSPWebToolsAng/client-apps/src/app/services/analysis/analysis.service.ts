@@ -3,9 +3,9 @@ import { AnalysisCalculationTypeEnum, AnalysisCalculationTypeEnum_GetIDText, Ana
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { MWQMSiteLatestClassificationEnum } from 'src/app/enums/generated/MWQMSiteLatestClassificationEnum';
 import { TideTextEnum } from 'src/app/enums/generated/TideTextEnum';
-import { EnumIDAndText } from 'src/app/models/generated/helper/EnumIDAndText.model';
-import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
-import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
+import { EnumIDAndText } from 'src/app/models/generated/models/EnumIDAndText.model';
+import { StatMWQMRun } from 'src/app/models/generated/models/StatMWQMRun.model';
+import { StatMWQMSite } from 'src/app/models/generated/models/StatMWQMSite.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from '../app/app-language.service';
 import { StatService } from '../helpers/stat.service';

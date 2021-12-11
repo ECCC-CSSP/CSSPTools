@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppLanguageService } from '../app/app-language.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { ClassificationModel } from 'src/app/models/generated/web/ClassificationModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { ClassificationModel } from 'src/app/models/generated/models/ClassificationModel.model';
 
 @Injectable({
     providedIn: 'root'

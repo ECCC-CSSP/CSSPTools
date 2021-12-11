@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { PolSourceObservationIssue } from 'src/app/models/generated/db/PolSourceObservationIssue.model';
-import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourceObservationModel.model';
+import { PolSourceObservationModel } from 'src/app/models/generated/models/PolSourceObservationModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { PolSourceSiteService } from 'src/app/services/helpers/pol-source-site.service';

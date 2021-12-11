@@ -4,8 +4,8 @@ import { FilePurposeEnum_GetIDText } from 'src/app/enums/generated/FilePurposeEn
 import { FilesSortPropEnum, GetFilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { MikeScenarioModel } from 'src/app/models/generated/web/MikeScenarioModel.model';
-import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
+import { MikeScenarioModel } from 'src/app/models/generated/models/MikeScenarioModel.model';
+import { TVFileModelByPurpose } from 'src/app/models/generated/models/TVFileModelByPurpose.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';

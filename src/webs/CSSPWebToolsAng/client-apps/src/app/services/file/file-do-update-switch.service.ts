@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppLoadedService } from '../app/app-loaded.service';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
 @Injectable({

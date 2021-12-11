@@ -5,8 +5,8 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
-import { WebMWQMSites } from 'src/app/models/generated/web/WebMWQMSites.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { WebMWQMSites } from 'src/app/models/generated/models/WebMWQMSites.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 

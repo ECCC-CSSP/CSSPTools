@@ -13,15 +13,12 @@ public partial class CountryLocalControllerTests : CSSPWebAPIsLocalTests
 
         TVItemModel tvItemModel = new TVItemModel();
 
-        await CSSPCreateGzFileService.SetLocal(false);
-
-        List<ToRecreate> ToRecreateList = new List<ToRecreate>()
-        {
-            new ToRecreate() { WebType = WebTypeEnum.WebRoot, TVItemID = 0 },
-            new ToRecreate() { WebType = WebTypeEnum.WebAllCountries, TVItemID = 0 },
-        };
-
-        await CreateAndLocalizeJsonGzFileAsync(ToRecreateList);
+        string FileName = await BaseGzFileService.GetFileName(WebTypeEnum.WebRoot, 0);
+        GetJsonGzFileFromAzure(FileName);
+        SendJsonGzFileToAzure(FileName);
+        FileName = await BaseGzFileService.GetFileName(WebTypeEnum.WebAllCountries, 0);
+        GetJsonGzFileFromAzure(FileName);
+        SendJsonGzFileToAzure(FileName);
 
         using (HttpClient httpClient = new HttpClient())
         {

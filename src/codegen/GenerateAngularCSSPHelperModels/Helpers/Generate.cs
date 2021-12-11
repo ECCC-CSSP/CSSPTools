@@ -29,8 +29,9 @@ namespace GenerateAngularCSSPHelperModels
                 }
             }
 
-            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration.GetValue<string>("CSSPEnums"));
-            FileInfo fiCSSPHelperModelsDLL = new FileInfo(Configuration.GetValue<string>("CSSPHelperModels"));
+            FileInfo fiCSSPEnumsDLL = new FileInfo(Configuration["CSSPEnums"]);
+            FileInfo fiCSSPDBModelsDLL = new FileInfo(Configuration["CSSPDBModels"]);
+            FileInfo fiCSSPModelsDLL = new FileInfo(Configuration["CSSPModels"]);
 
 
             Console.WriteLine($"Reading [{ fiCSSPEnumsDLL.FullName }] ...");
@@ -43,16 +44,24 @@ namespace GenerateAngularCSSPHelperModels
             Console.WriteLine($"Loaded [{ fiCSSPEnumsDLL.FullName }] ...");
 
 
-            Console.WriteLine($"Reading [{ fiCSSPHelperModelsDLL.FullName }] ...");
-            List<DLLTypeInfo> DLLTypeInfoCSSPHelperModelsList = new List<DLLTypeInfo>();
-            if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPHelperModelsDLL, DLLTypeInfoCSSPHelperModelsList))
+            Console.WriteLine($"Reading [{ fiCSSPModelsDLL.FullName }] ...");
+            List<DLLTypeInfo> DLLTypeInfoCSSPModelsList = new List<DLLTypeInfo>();
+            if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPModelsDLL, DLLTypeInfoCSSPModelsList))
             {
                 Console.WriteLine($"Could not read file { diOutputGen.FullName }");
                 return false;
             }
-            Console.WriteLine($"Loaded [{ fiCSSPHelperModelsDLL.FullName }] ...");
+            Console.WriteLine($"Loaded [{ fiCSSPModelsDLL.FullName }] ...");
 
-            foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPHelperModelsList)
+            List<DLLTypeInfo> DLLTypeInfoCSSPDBModelsList = new List<DLLTypeInfo>();
+            if (GenerateCodeBase.FillDLLTypeInfoList(fiCSSPDBModelsDLL, DLLTypeInfoCSSPDBModelsList))
+            {
+                Console.WriteLine($"Could not read file { diOutputGen.FullName }");
+                return false;
+            }
+            Console.WriteLine($"Loaded [{ fiCSSPDBModelsDLL.FullName }] ...");
+
+            foreach (DLLTypeInfo dllTypeInfoModels in DLLTypeInfoCSSPModelsList)
             {
                 if (dllTypeInfoModels.Name != "LastUpdate" && GenerateCodeBase.SkipType(dllTypeInfoModels.Type))
                 {
@@ -64,7 +73,7 @@ namespace GenerateAngularCSSPHelperModels
                 //    continue;
                 //}
 
-                CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPHelperModelsList);
+                CreateTypeFile(dllTypeInfoModels, DLLTypeInfoCSSPModelsList, DLLTypeInfoCSSPDBModelsList);
             }
 
             CreateEnumIDAndText();

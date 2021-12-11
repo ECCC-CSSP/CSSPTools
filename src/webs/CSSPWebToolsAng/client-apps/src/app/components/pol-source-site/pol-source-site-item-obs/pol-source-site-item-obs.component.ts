@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
-import { PolSourceObservationModel } from 'src/app/models/generated/web/PolSourceObservationModel.model';
+import { ContactModel } from 'src/app/models/generated/models/ContactModel.model';
+import { PolSourceObservationModel } from 'src/app/models/generated/models/PolSourceObservationModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { DateFormatService } from 'src/app/services/helpers/date-format.service';

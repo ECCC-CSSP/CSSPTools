@@ -9,6 +9,12 @@ public partial class LocalizeAzureFileControllerTests : CSSPWebAPIsLocalTests
     {
         Assert.True(await LocalizeAzureFileControllerSetupAsync(culture));
 
+        int ParentTVItemID = 1;
+        string FileName = "BarTopBottom.png";
+
+        GetFileFromAzure(ParentTVItemID, FileName);
+        SendFileToAzure(ParentTVItemID, FileName);
+
         using (HttpClient httpClient = new HttpClient())
         {
             string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/LocalizeAzureFile/1/BarTopBottom.png";

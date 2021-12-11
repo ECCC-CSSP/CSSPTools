@@ -279,20 +279,20 @@ public partial class CSSPReadGzFileServiceTests
                 break;
             case WebTypeEnum.WebMWQMSamples1980_2020:
                 {
-                    var actionRes2 = await CSSPReadGzFileService.ReadJSONAsync<WebMWQMSamples>(webType, TVItemID);
+                    var actionRes2 = await CSSPReadGzFileService.ReadJSONAsync<WebMWQMSamples1980_2020>(webType, TVItemID);
                     Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
                     Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
-                    WebMWQMSamples webMWQMSamples = (WebMWQMSamples)((OkObjectResult)actionRes2.Result).Value;
-                    Assert.NotNull(webMWQMSamples);
+                    WebMWQMSamples1980_2020 webMWQMSamples1980_2020 = (WebMWQMSamples1980_2020)((OkObjectResult)actionRes2.Result).Value;
+                    Assert.NotNull(webMWQMSamples1980_2020);
                 }
                 break;
             case WebTypeEnum.WebMWQMSamples2021_2060:
                 {
-                    var actionRes2 = await CSSPReadGzFileService.ReadJSONAsync<WebMWQMSamples>(webType, TVItemID);
+                    var actionRes2 = await CSSPReadGzFileService.ReadJSONAsync<WebMWQMSamples2021_2060>(webType, TVItemID);
                     Assert.Equal(200, ((ObjectResult)actionRes2.Result).StatusCode);
                     Assert.NotNull(((OkObjectResult)actionRes2.Result).Value);
-                    WebMWQMSamples webMWQMSamples = (WebMWQMSamples)((OkObjectResult)actionRes2.Result).Value;
-                    Assert.NotNull(webMWQMSamples);
+                    WebMWQMSamples2021_2060 webMWQMSamples2021_2060 = (WebMWQMSamples2021_2060)((OkObjectResult)actionRes2.Result).Value;
+                    Assert.NotNull(webMWQMSamples2021_2060);
                 }
                 break;
             case WebTypeEnum.WebMWQMSites:

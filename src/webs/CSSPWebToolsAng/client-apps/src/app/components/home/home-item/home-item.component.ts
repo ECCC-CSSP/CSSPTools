@@ -7,7 +7,7 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { LoggedInContactService } from 'src/app/services/contact/logged-in-contact.service';
 import { JsonLoadAllService, JsonLoadListService } from 'src/app/services/json';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { JsonLoadModel } from 'src/app/models/generated/web/JsonLoadModel.model';
+import { JsonLoadModel } from 'src/app/models/generated/models/JsonLoadModel.model';
 
 @Component({
   selector: 'app-home-item',

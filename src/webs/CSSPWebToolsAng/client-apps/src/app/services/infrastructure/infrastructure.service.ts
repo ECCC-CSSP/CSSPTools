@@ -14,10 +14,10 @@ import { TreatmentTypeEnum_GetIDText } from 'src/app/enums/generated/TreatmentTy
 import { GetTVTypeEnum, TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { ValveTypeEnum_GetIDText } from 'src/app/enums/generated/ValveTypeEnum';
 import { TVItemLink } from 'src/app/models/generated/db/TVItemLink.model';
-import { InfrastructureItemValue } from 'src/app/models/generated/web/InfrastructureItemValue.model';
-import { InfrastructureModel } from 'src/app/models/generated/web/InfrastructureModel.model';
-import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
-import { MapInfoModel } from 'src/app/models/generated/web/MapInfoModel.model';
+import { InfrastructureItemValue } from 'src/app/models/generated/models/InfrastructureItemValue.model';
+import { InfrastructureModel } from 'src/app/models/generated/models/InfrastructureModel.model';
+import { InfrastructureModelPath } from 'src/app/models/generated/models/InfrastructureModelPath.model';
+import { MapInfoModel } from 'src/app/models/generated/models/MapInfoModel.model';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';

@@ -7,7 +7,7 @@ import { Chart, registerables } from 'chart.js';
 import { TableService } from 'src/app/services/table/table.service';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { GetMonthEnum } from 'src/app/enums/generated/MonthEnum';
 
 Chart.register(...registerables);

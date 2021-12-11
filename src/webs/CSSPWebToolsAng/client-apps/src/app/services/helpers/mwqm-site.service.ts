@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
+import { MWQMSiteModel } from 'src/app/models/generated/models/MWQMSiteModel.model';
 import { AppLanguageService } from '../app/app-language.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 
 @Injectable({
     providedIn: 'root'

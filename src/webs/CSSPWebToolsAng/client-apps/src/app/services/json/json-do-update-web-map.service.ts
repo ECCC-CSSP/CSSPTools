@@ -13,8 +13,8 @@ import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/Municipali
 import { SortTVItemListService } from '../helpers/sort-tvitem-list.service';
 import { FilterService } from '../tvitem/filter.service';
 import { SortTVItemMunicipalityListService } from '../helpers/sort-tvitem-municipality-list.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { MikeSourceModel } from 'src/app/models/generated/models/MikeSourceModel.model';
 import { ClassificationService } from '../helpers/classification.service';
 import { MWQMSiteService } from '../helpers/mwqm-site.service';
 import { MWQMRunService } from '../helpers/mwqm-run.service';

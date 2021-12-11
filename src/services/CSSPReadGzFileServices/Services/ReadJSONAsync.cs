@@ -241,10 +241,10 @@ public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileServ
                                 await MergeJsonWebMWQMRunsAsync(FromAzureStore as WebMWQMRuns, FromLocal as WebMWQMRuns);
                                 break;
                             case WebTypeEnum.WebMWQMSamples1980_2020:
-                                await MergeJsonWebMWQMSamples1980_2020Async(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
+                                await MergeJsonWebMWQMSamples1980_2020Async(FromAzureStore as WebMWQMSamples1980_2020, FromLocal as WebMWQMSamples1980_2020);
                                 break;
                             case WebTypeEnum.WebMWQMSamples2021_2060:
-                                await MergeJsonWebMWQMSamples2021_2060Async(FromAzureStore as WebMWQMSamples, FromLocal as WebMWQMSamples);
+                                await MergeJsonWebMWQMSamples2021_2060Async(FromAzureStore as WebMWQMSamples2021_2060, FromLocal as WebMWQMSamples2021_2060);
                                 break;
                             case WebTypeEnum.WebMWQMSites:
                                 await MergeJsonWebMWQMSitesAsync(FromAzureStore as WebMWQMSites, FromLocal as WebMWQMSites);

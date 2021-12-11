@@ -188,13 +188,12 @@ export class JsonDoUpdateSwitchService {
             case WebTypeEnum.WebMWQMSamples1980_2020:
                 {
                     this.appLoadedService.WebMWQMSamples1980_2020 = x;
-                    this.appLoadedService.WebMWQMSamples = x;
                 }
                 break;
             case WebTypeEnum.WebMWQMSamples2021_2060:
                 {
                     this.appLoadedService.WebMWQMSamples2021_2060 = x;
-                    this.appLoadedService.WebMWQMSamples.MWQMSampleModelList.concat(x.MWQMSampleModelList);
+                    this.appLoadedService.WebMWQMSamples1980_2020.MWQMSampleModelList.concat(x.MWQMSampleModelList);
                 }
                 break;
             case WebTypeEnum.WebMWQMSites:

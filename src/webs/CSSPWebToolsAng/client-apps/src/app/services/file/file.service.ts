@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FileTypeEnum, GetFileTypeEnum } from 'src/app/enums/generated/FileTypeEnum';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppLoadedService } from '../app/app-loaded.service';

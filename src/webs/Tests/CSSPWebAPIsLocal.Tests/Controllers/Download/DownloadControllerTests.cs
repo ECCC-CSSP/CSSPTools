@@ -9,6 +9,11 @@ public partial class DownloadControllerTests : CSSPWebAPIsLocalTests
     {
         Assert.True(await DownloadControllerSetupAsync(culture));
 
+        int ParentTVItemID = 1;
+        string FileName = "BarTopBottom.png";
+
+        GetFileFromAzure(ParentTVItemID, FileName);
+
         using (HttpClient httpClient = new HttpClient())
         {
             HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPLocalUrl"] }api/{ culture }/download/1/BarTopBottom.png").Result;

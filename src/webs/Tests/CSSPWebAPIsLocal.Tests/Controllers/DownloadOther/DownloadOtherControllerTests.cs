@@ -9,20 +9,16 @@ public partial class DownloadOtherControllerTests : CSSPWebAPIsLocalTests
     {
         Assert.True(await DownloadOtherControllerSetupAsync(culture));
 
-        List<string> otherFileList = new List<string>()
-        {
-            "CssFamilyMaterial.css", "IconFamilyMaterial.css", "GoogleMap.js", "flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2"
-        };
+        FileInfo fi = new FileInfo($"{ Configuration["CSSPOtherFilesPath"]}Testing.txt");
+
+        File.WriteAllText(fi.FullName, "bonjour");
 
         using (HttpClient httpClient = new HttpClient())
         {
-            foreach (string otherFile in otherFileList)
-            {
-                string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/DownloadOther/{otherFile}";
-                var response = await httpClient.GetAsync(url);
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                string responseContent = await response.Content.ReadAsStringAsync();
-            }
+            string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/DownloadOther/Testing.txt";
+            var response = await httpClient.GetAsync(url);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            string responseContent = await response.Content.ReadAsStringAsync();
         }
     }
 }

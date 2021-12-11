@@ -13,10 +13,10 @@ import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponent
 import { SubsectorSubComponentEnum } from 'src/app/enums/generated/SubsectorSubComponentEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { AnalysisCalculationTypeEnum } from '../../enums/generated/AnalysisCalculationTypeEnum';
-import { StatMWQMRun } from '../../models/generated/web/StatMWQMRun.model';
-import { TVFileModel } from '../../models/generated/web/TVFileModel.model';
-import { TVItemModel } from '../../models/generated/web/TVItemModel.model';
-import { UserPreferenceModel } from '../../models/generated/web/UserPreferenceModel.model';
+import { StatMWQMRun } from '../../models/generated/models/StatMWQMRun.model';
+import { TVFileModel } from '../../models/generated/models/TVFileModel.model';
+import { TVItemModel } from '../../models/generated/models/TVItemModel.model';
+import { UserPreferenceModel } from '../../models/generated/models/UserPreferenceModel.model';
 
 @Injectable({
   providedIn: 'root'

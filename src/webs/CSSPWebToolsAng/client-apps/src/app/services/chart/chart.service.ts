@@ -1,15 +1,15 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { AppStateService } from '../app/app-state.service';
 import { Chart, registerables } from 'chart.js';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
-import { MonitoringStatByYear } from 'src/app/models/generated/web/MonitoringStatByYear.model';
-import { ChartXYTextNumberModel } from 'src/app/models/generated/web/ChartXYTextNumberModel.model';
-import { MonitoringStatByMonth } from 'src/app/models/generated/web/MonitoringStatByMonth.model';
+import { MonitoringStatByYear } from 'src/app/models/generated/models/MonitoringStatByYear.model';
+import { ChartXYTextNumberModel } from 'src/app/models/generated/models/ChartXYTextNumberModel.model';
+import { MonitoringStatByMonth } from 'src/app/models/generated/models/MonitoringStatByMonth.model';
 import { MonthEnum } from 'src/app/enums/generated/MonthEnum';
-import { MonitoringStatBySeason } from 'src/app/models/generated/web/MonitoringStatBySeason.model';
+import { MonitoringStatBySeason } from 'src/app/models/generated/models/MonitoringStatBySeason.model';
 import { SeasonEnum } from 'src/app/enums/generated/SeasonEnum';
 import { PNGService } from './png.service';
 

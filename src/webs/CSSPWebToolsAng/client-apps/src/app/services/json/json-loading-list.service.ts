@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { JsonLoadModel } from 'src/app/models/generated/web/JsonLoadModel.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { JsonLoadModel } from 'src/app/models/generated/models/JsonLoadModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppStateService } from '../app/app-state.service';
 
 @Injectable({

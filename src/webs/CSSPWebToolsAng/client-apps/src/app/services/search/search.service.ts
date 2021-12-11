@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, tap } from 'rxjs/operators';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppLoadedService } from '../app/app-loaded.service';

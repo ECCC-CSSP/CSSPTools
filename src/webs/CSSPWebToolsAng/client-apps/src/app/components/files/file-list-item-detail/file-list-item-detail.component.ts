@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetFilePurposeEnum } from 'src/app/enums/generated/FilePurposeEnum';
 import { GetFileTypeEnum } from 'src/app/enums/generated/FileTypeEnum';
 
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 
 @Component({
   selector: 'app-file-list-item-detail',

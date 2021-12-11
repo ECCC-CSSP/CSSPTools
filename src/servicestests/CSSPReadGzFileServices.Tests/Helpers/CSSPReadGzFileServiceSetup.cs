@@ -12,7 +12,6 @@ public partial class CSSPReadGzFileServiceTests
     protected IEnums enums { get; set; }
     protected IManageFileService ManageFileService { get; set; }
     protected ICSSPFileService CSSPFileService { get; set; }
-    protected ICSSPCreateGzFileService CSSPCreateGzFileService { get; set; }
     protected ICSSPReadGzFileService CSSPReadGzFileService { get; set; }
     protected ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; set; }
     protected ICSSPScrambleService CSSPScrambleService { get; set; }
@@ -66,7 +65,6 @@ public partial class CSSPReadGzFileServiceTests
         Services.AddSingleton<ICSSPLocalLoggedInService, CSSPLocalLoggedInService>();
         Services.AddSingleton<IManageFileService, ManageFileService>();
         Services.AddSingleton<ICSSPFileService, CSSPFileService>();
-        Services.AddSingleton<ICSSPCreateGzFileService, CSSPCreateGzFileService>();
         Services.AddSingleton<ICSSPReadGzFileService, CSSPReadGzFileService>();
         Services.AddSingleton<ICSSPSQLiteService, CSSPSQLiteService>();
         Services.AddSingleton<ICSSPAzureLoginService, CSSPAzureLoginService>();

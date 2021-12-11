@@ -12,7 +12,9 @@ public partial class ReadControllerTests : CSSPWebAPIsLocalTests
         int TVItemID = 629;
         WebTypeEnum webType = WebTypeEnum.WebArea;
 
-        await DoCreateGzFile(webType, TVItemID);
+        string FileName = await BaseGzFileService.GetFileName(webType, TVItemID);
+        GetJsonGzFileFromAzure(FileName);
+        SendJsonGzFileToAzure(FileName);
 
         using (HttpClient httpClient = new HttpClient())
         {

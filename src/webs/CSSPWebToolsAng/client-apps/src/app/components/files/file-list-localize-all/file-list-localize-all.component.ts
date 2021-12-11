@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { TVFileModelByPurpose } from 'src/app/models/generated/web/TVFileModelByPurpose.model';
+import { TVFileModelByPurpose } from 'src/app/models/generated/models/TVFileModelByPurpose.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 import { FileLocalizeAllAzureFileService } from 'src/app/services/file';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { LocalFileInfoService } from 'src/app/services/file/local-file-info.service';

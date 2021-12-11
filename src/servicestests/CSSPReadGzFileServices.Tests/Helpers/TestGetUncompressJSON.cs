@@ -189,14 +189,14 @@ public partial class CSSPReadGzFileServiceTests
                 break;
             case WebTypeEnum.WebMWQMSamples1980_2020:
                 {
-                    WebMWQMSamples webMWQMSamples = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSamples>(webType, TVItemID);
-                    Assert.NotNull(webMWQMSamples);
+                    WebMWQMSamples1980_2020 webMWQMSamples1980_2020 = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSamples1980_2020>(webType, TVItemID);
+                    Assert.NotNull(webMWQMSamples1980_2020);
                 }
                 break;
             case WebTypeEnum.WebMWQMSamples2021_2060:
                 {
-                    WebMWQMSamples webMWQMSamples = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSamples>(webType, TVItemID);
-                    Assert.NotNull(webMWQMSamples);
+                    WebMWQMSamples2021_2060 webMWQMSamples2021_2060 = await CSSPReadGzFileService.GetUncompressJSONAsync<WebMWQMSamples2021_2060>(webType, TVItemID);
+                    Assert.NotNull(webMWQMSamples2021_2060);
                 }
                 break;
             case WebTypeEnum.WebMWQMSites:

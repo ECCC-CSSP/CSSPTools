@@ -4,7 +4,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { FileLocalizeSwitchService } from '.';
 import { AppLanguageService } from '../app/app-language.service';

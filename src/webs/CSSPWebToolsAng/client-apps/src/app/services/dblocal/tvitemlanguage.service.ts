@@ -8,7 +8,7 @@ import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 
 import { AppLanguageService } from '../app/app-language.service';
 import { TVItemLanguage } from 'src/app/models/generated/db/TVItemLanguage.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 
 
 @Injectable({

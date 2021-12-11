@@ -4,7 +4,7 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 
 @Component({
   selector: 'app-tvitem-view',

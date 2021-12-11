@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 
 @Injectable({

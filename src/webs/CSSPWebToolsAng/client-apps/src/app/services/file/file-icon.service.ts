@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FileTypeEnum } from 'src/app/enums/generated/FileTypeEnum';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
 
 @Injectable({
   providedIn: 'root'

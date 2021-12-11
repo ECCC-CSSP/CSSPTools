@@ -66,7 +66,7 @@ namespace GenerateAngularCSSPWebModels
                         {
                             if (dllTypeInfoModels.Name != dllPropertyInfo.CSSPProp.PropType)
                             {
-                                sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/models/generated/web/{ fileName }.model';");
+                                sb.AppendLine($"import {{ { dllPropertyInfo.CSSPProp.PropType } }} from 'src/app/models/generated/models/{ fileName }.model';");
                             }
                         }
                         else

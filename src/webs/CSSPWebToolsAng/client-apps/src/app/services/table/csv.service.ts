@@ -6,7 +6,7 @@ import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TableConvertToCSVModel } from 'src/app/models/generated/web/TableConvertToCSVModel.model';
+import { TableConvertToCSVModel } from 'src/app/models/generated/models/TableConvertToCSVModel.model';
 
 @Injectable({
     providedIn: 'root'

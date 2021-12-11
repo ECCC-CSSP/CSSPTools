@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/web/MWQMRunModelSiteAndSampleModel.model';
+import { MWQMRunModelSiteAndSampleModel } from 'src/app/models/generated/models/MWQMRunModelSiteAndSampleModel.model';
 
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 

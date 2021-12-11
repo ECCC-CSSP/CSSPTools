@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppLanguageService } from '../app/app-language.service';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { MikeScenarioModel } from 'src/app/models/generated/web/MikeScenarioModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { MikeScenarioModel } from 'src/app/models/generated/models/MikeScenarioModel.model';
 
 @Injectable({
     providedIn: 'root'

@@ -17,21 +17,21 @@ public partial class CSSPCreateGzFileService : ControllerBase, ICSSPCreateGzFile
             return await Task.FromResult(false);
         }
 
-        WebMWQMSamples webMWQMSamples = new WebMWQMSamples();
+        WebMWQMSamples1980_2020 webMWQMSamples1980_2020 = new WebMWQMSamples1980_2020();
 
         try
         {
-            if (!await FillTVItemModelAndParentTVItemModelListAsync(webMWQMSamples.TVItemModel, webMWQMSamples.TVItemModelParentList, TVItemSubsector)) return await Task.FromResult(false);
+            if (!await FillTVItemModelAndParentTVItemModelListAsync(webMWQMSamples1980_2020.TVItemModel, webMWQMSamples1980_2020.TVItemModelParentList, TVItemSubsector)) return await Task.FromResult(false);
 
-            if (!await FillMWQMSampleModelList1980_2020Async(webMWQMSamples.MWQMSampleModelList, TVItemSubsector)) return await Task.FromResult(false);
+            if (!await FillMWQMSampleModelList1980_2020Async(webMWQMSamples1980_2020.MWQMSampleModelList, TVItemSubsector)) return await Task.FromResult(false);
 
             if (Local)
             {
-                if (!await StoreLocalAsync<WebMWQMSamples>(webMWQMSamples, $"{ WebTypeEnum.WebMWQMSamples1980_2020 }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);
+                if (!await StoreLocalAsync<WebMWQMSamples1980_2020>(webMWQMSamples1980_2020, $"{ WebTypeEnum.WebMWQMSamples1980_2020 }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);
             }
             else
             {
-                if (!await StoreAsync<WebMWQMSamples>(webMWQMSamples, $"{ WebTypeEnum.WebMWQMSamples1980_2020 }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);
+                if (!await StoreAsync<WebMWQMSamples1980_2020>(webMWQMSamples1980_2020, $"{ WebTypeEnum.WebMWQMSamples1980_2020 }_{ SubsectorTVItemID }.gz")) return await Task.FromResult(false);
             }
         }
         catch (Exception ex)

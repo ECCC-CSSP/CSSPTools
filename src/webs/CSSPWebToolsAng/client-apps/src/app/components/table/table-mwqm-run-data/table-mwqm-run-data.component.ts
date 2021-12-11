@@ -7,10 +7,10 @@ import { Chart, registerables } from 'chart.js';
 import { TableService } from 'src/app/services/table/table.service';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
-import { MWQMRunDataTableModel } from 'src/app/models/generated/web/MWQMRunDataTableModel.model';
-import { MWQMSampleModel } from 'src/app/models/generated/web/MWQMSampleModel.model';
-import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { MWQMRunDataTableModel } from 'src/app/models/generated/models/MWQMRunDataTableModel.model';
+import { MWQMSampleModel } from 'src/app/models/generated/models/MWQMSampleModel.model';
+import { MWQMSiteModel } from 'src/app/models/generated/models/MWQMSiteModel.model';
 
 Chart.register(...registerables);
 
@@ -48,7 +48,7 @@ export class TableMWQMRunDataComponent implements OnInit, AfterViewInit, OnDestr
     this.tableTitle = this.tableService.GetTableTitle(this.TVItemModel, this.webChartAndTableType);
 
     let MWQMRunDataTableModelTempList: MWQMRunDataTableModel[] = [];
-    let MWQMSampleModelList: MWQMSampleModel[] = this.appLoadedService.WebMWQMSamples.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMRunTVItemID == this.TVItemModel.TVItem.TVItemID);
+    let MWQMSampleModelList: MWQMSampleModel[] = this.appLoadedService.WebMWQMSamples1980_2020.MWQMSampleModelList.filter(c => c.MWQMSample.MWQMRunTVItemID == this.TVItemModel.TVItem.TVItemID);
     for (let i = 0, count = MWQMSampleModelList?.length; i < count; i++) {
       let MWQMSiteModel: MWQMSiteModel = this.appLoadedService.WebMWQMSites.MWQMSiteModelList.filter(c => c.TVItemModel.TVItem.TVItemID == MWQMSampleModelList[i].MWQMSample.MWQMSiteTVItemID)[0];
       let MWQMRunDataTableModel: MWQMRunDataTableModel = <MWQMRunDataTableModel>{

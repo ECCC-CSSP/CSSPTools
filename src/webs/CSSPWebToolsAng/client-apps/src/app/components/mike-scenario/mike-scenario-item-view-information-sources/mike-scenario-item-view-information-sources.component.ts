@@ -1,8 +1,8 @@
 import { Input } from '@angular/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MikeSource } from 'src/app/models/generated/db/MikeSource.model';
-import { MikeScenarioModel } from 'src/app/models/generated/web/MikeScenarioModel.model';
-import { MikeSourceModel } from 'src/app/models/generated/web/MikeSourceModel.model';
+import { MikeScenarioModel } from 'src/app/models/generated/models/MikeScenarioModel.model';
+import { MikeSourceModel } from 'src/app/models/generated/models/MikeSourceModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';

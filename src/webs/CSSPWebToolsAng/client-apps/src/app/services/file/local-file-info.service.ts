@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { LocalFileInfo } from 'src/app/models/generated/web/LocalFileInfo.model';
+import { LocalFileInfo } from 'src/app/models/generated/models/LocalFileInfo.model';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppLanguageService } from '../app/app-language.service';
 import { AppStateService } from '../app/app-state.service';

@@ -3,9 +3,9 @@ import { GetAnalysisCalculationTypeEnum } from 'src/app/enums/generated/Analysis
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 
-import { StatMWQMRun } from 'src/app/models/generated/web/StatMWQMRun.model';
-import { StatMWQMSite } from 'src/app/models/generated/web/StatMWQMSite.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { StatMWQMRun } from 'src/app/models/generated/models/StatMWQMRun.model';
+import { StatMWQMSite } from 'src/app/models/generated/models/StatMWQMSite.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';

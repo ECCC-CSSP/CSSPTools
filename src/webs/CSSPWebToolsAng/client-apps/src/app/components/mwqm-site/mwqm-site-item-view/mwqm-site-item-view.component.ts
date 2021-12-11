@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetWebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
-import { MWQMSiteModel } from 'src/app/models/generated/web/MWQMSiteModel.model';
-import { StatMWQMSiteSample } from 'src/app/models/generated/web/StatMWQMSiteSample.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { MWQMSiteModel } from 'src/app/models/generated/models/MWQMSiteModel.model';
+import { StatMWQMSiteSample } from 'src/app/models/generated/models/StatMWQMSiteSample.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';

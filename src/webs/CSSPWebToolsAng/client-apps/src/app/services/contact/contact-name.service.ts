@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WebTypeEnum } from 'src/app/enums/generated/WebTypeEnum';
-import { ContactModel } from 'src/app/models/generated/web/ContactModel.model';
-import { TVFileModel } from 'src/app/models/generated/web/TVFileModel.model';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { ContactModel } from 'src/app/models/generated/models/ContactModel.model';
+import { TVFileModel } from 'src/app/models/generated/models/TVFileModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLoadedService } from '../app/app-loaded.service';

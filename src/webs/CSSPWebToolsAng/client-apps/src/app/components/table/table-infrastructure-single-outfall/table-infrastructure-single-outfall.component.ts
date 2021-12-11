@@ -7,8 +7,8 @@ import { Chart, registerables } from 'chart.js';
 import { TableService } from 'src/app/services/table/table.service';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
-import { InfrastructureItemValue } from 'src/app/models/generated/web/InfrastructureItemValue.model';
-import { InfrastructureModelPath } from 'src/app/models/generated/web/InfrastructureModelPath.model';
+import { InfrastructureItemValue } from 'src/app/models/generated/models/InfrastructureItemValue.model';
+import { InfrastructureModelPath } from 'src/app/models/generated/models/InfrastructureModelPath.model';
 
 Chart.register(...registerables);
 

@@ -1,6 +1,5 @@
 namespace CSSPFileServices.Tests;
 
-//[Collection("Sequential")]
 public partial class FileServiceTests
 {
     [Theory]
@@ -8,7 +7,7 @@ public partial class FileServiceTests
     //[InlineData("fr-CA")]
     public async Task DownloadTempFile_Good_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -40,7 +39,7 @@ public partial class FileServiceTests
     //[InlineData("fr-CA")]
     public async Task DownloadTempFile_Unauthorized_Error_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
@@ -64,7 +63,7 @@ public partial class FileServiceTests
     //[InlineData("fr-CA")]
     public async Task DownloadTempFile_FileDoesNotExist_Error_Test(string culture)
     {
-        Assert.True(await CSSPFileServiceSetup(culture));
+        Assert.True(await CSSPFileServiceSetupAsync(culture));
 
         Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 

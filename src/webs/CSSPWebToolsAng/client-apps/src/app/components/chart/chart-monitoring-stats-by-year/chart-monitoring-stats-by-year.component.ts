@@ -6,7 +6,7 @@ import { LoggedInContactService } from 'src/app/services/contact/logged-in-conta
 import { Chart, registerables } from 'chart.js';
 import { ChartService } from 'src/app/services/chart/chart.service';
 import { WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
-import { TVItemModel } from 'src/app/models/generated/web/TVItemModel.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 
 Chart.register(...registerables);
 
