@@ -51,8 +51,8 @@ import { WebMWQMSamples2021_2060 } from 'src/app/models/generated/models/WebMWQM
   providedIn: 'root'
 })
 export class AppLoadedService {
-  BaseApiUrl = 'http://localhost:4446/api/'; 
-  //BaseApiUrl = 'http://localhost:44348/api/';
+  BaseApiUrl = 'https://localhost:4446/api/'; 
+  //BaseApiUrl = 'https://localhost:44348/api/';
 
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];

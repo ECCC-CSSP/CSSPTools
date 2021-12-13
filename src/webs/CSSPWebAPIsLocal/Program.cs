@@ -12,7 +12,7 @@ builder.WebHost.ConfigureAppConfiguration(configuration =>
     configuration.AddJsonFile(appSettings);
 });
 
-builder.WebHost.UseUrls("http://localhost:4446");
+builder.WebHost.UseUrls("https://localhost:4446");
 
 // Add services to the container.
 
@@ -35,7 +35,6 @@ if (string.IsNullOrEmpty(builder.Configuration["CSSPTempFilesPath"])) throw new 
 if (string.IsNullOrEmpty(builder.Configuration["CSSPOtherFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPOtherFilesPath", "CSSPWebAPIsLocal") }");
 if (string.IsNullOrEmpty(builder.Configuration["AzureStoreCSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPJSONPath", "CSSPWebAPIsLocal") }");
 if (string.IsNullOrEmpty(builder.Configuration["AzureStoreCSSPFilesPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "AzureStoreCSSPFilesPath", "CSSPWebAPIsLocal") }");
-if (string.IsNullOrEmpty(builder.Configuration["LocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "LocalUrl", "CSSPWebAPIsLocal") }");
 if (string.IsNullOrEmpty(builder.Configuration["CSSPAzureUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPAzureUrl", "CSSPWebAPIsLocal") }");
 if (string.IsNullOrEmpty(builder.Configuration["CSSPLocalUrl"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPLocalUrl", "CSSPWebAPIsLocal") }");
 
@@ -86,7 +85,7 @@ builder.Services.Configure<FormOptions>(o =>
 //----------------------------------
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 

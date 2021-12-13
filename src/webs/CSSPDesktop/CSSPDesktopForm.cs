@@ -1,4 +1,6 @@
-﻿namespace CSSPDesktop;
+﻿using System.Collections.Generic;
+
+namespace CSSPDesktop;
 
 public partial class CSSPDesktopForm : Form
 {
@@ -80,6 +82,9 @@ public partial class CSSPDesktopForm : Form
     private void butUpdate_Click(object sender, EventArgs e)
     {
         butCancelUpdate.Enabled = false;
+        butCancelUpdate.Refresh();
+        Application.DoEvents();
+
         if (CSSPDesktopService.InstallUpdatesAsync().GetAwaiter().GetResult())
         {
             butShowUpdatePanel.Enabled = false;
@@ -460,7 +465,8 @@ public partial class CSSPDesktopForm : Form
     {
         Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-            .AddJsonFile("appsettings_csspdesktop.json")
+            .AddJsonFile("appsettings.json")
+            //.AddInMemoryCollection(Configuration)
             .Build();
 
         Services = new ServiceCollection();
