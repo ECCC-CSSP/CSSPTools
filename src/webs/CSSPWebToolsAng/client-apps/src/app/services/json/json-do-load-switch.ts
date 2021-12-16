@@ -39,6 +39,9 @@ import { WebMonitoringOtherStatsProvince } from 'src/app/models/generated/models
 import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/models/WebMonitoringRoutineStatsProvince.model';
 import { AppLoadedService } from '../app/app-loaded.service';
 import { MonitoringStatsModel } from 'src/app/models/generated/models/MonitoringStatsModel.model';
+import { WebAllUseOfSites } from 'src/app/models/generated/models/WebAllUseOfSites.model';
+import { WebAllMWQMSubsectors } from 'src/app/models/generated/models/WebAllMWQMSubsectors.model';
+import { WebAllMWQMAnalysisReportParameters } from 'src/app/models/generated/models/WebAllMWQMAnalysisReportParameters.model';
 
 
 @Injectable({
@@ -84,9 +87,19 @@ export class JsonDoLoadSwitchService {
                     this.appLoadedService.WebAllMunicipalities = <WebAllMunicipalities>{};
                 }
                 break;
+            case WebTypeEnum.WebAllMWQMAnalysisReportParameters:
+                {
+                    this.appLoadedService.WebAllMWQMAnalysisReportParameters = <WebAllMWQMAnalysisReportParameters>{};
+                }
+                break;
             case WebTypeEnum.WebAllMWQMLookupMPNs:
                 {
                     this.appLoadedService.WebAllMWQMLookupMPNs = <WebAllMWQMLookupMPNs>{};
+                }
+                break;
+            case WebTypeEnum.WebAllMWQMSubsectors:
+                {
+                    this.appLoadedService.WebAllMWQMSubsectors = <WebAllMWQMSubsectors>{};
                 }
                 break;
             case WebTypeEnum.WebAllPolSourceGroupings:
@@ -117,6 +130,11 @@ export class JsonDoLoadSwitchService {
             case WebTypeEnum.WebAllTideLocations:
                 {
                     this.appLoadedService.WebAllTideLocations = <WebAllTideLocations>{};
+                }
+                break;
+            case WebTypeEnum.WebAllUseOfSites:
+                {
+                    this.appLoadedService.WebAllUseOfSites = <WebAllUseOfSites>{};
                 }
                 break;
             case WebTypeEnum.WebArea:
@@ -268,4 +286,4 @@ export class JsonDoLoadSwitchService {
 
         return TVItemIDText;
     }
-    }
+}

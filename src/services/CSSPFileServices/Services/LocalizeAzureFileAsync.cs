@@ -38,7 +38,7 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
                 {
                     manageFile.LoadedOnce = true;
 
-                    var actionCSSPFileAdded = await ManageFileService.AddAsync(manageFile);
+                    var actionCSSPFileAdded = await ManageFileService.ModifyAsync(manageFile);
                     if (((ObjectResult)actionCSSPFileAdded.Result).StatusCode == 200)
                     {
                         manageFile = (ManageFile)((OkObjectResult)actionCSSPFileAdded.Result).Value;

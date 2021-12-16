@@ -11,7 +11,6 @@ import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEnum';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
-import { MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
@@ -112,7 +111,7 @@ export class UserPreferenceModel {
     MapPolylineColorInfrastructureLiftStationToWWTP: string;
     MapPolylineColorInfrastructureLineOverflowToOutfall: string;
     MapPolylineColorInfrastructureWWTPToOutfall: string;
-    MapSize: MapSizeEnum;
+    MapWidthText: string;
     MapVisible: boolean;
     MunicipalityContactsSortOrder: AscDescEnum;
     MunicipalityFilesSortByProp: FilesSortPropEnum;

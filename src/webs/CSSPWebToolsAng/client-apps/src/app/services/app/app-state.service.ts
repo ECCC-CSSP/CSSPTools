@@ -4,7 +4,6 @@ import { AreaSubComponentEnum } from 'src/app/enums/generated/AreaSubComponentEn
 import { AscDescEnum } from 'src/app/enums/generated/AscDescEnum';
 import { CountrySubComponentEnum } from 'src/app/enums/generated/CountrySubComponentEnum';
 import { FilesSortPropEnum } from 'src/app/enums/generated/FilesSortPropEnum';
-import { MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
 import { MunicipalitySubComponentEnum } from 'src/app/enums/generated/MunicipalitySubComponentEnum';
 import { ProvinceSubComponentEnum } from 'src/app/enums/generated/ProvinceSubComponentEnum';
 import { RootSubComponentEnum } from 'src/app/enums/generated/RootSubComponentEnum';
@@ -81,7 +80,7 @@ export class AppStateService {
       EditVisible: false,
       // map
       MapVisible: true,
-      MapSize: MapSizeEnum.Size50, // Size30 | Size40 | Size50 | Size60 | Size70
+      MapWidthText: '50%',
       MapMarkerColorArea: '#0ffff0',
       MapMarkerColorClimateSite: '#ff0000',
       MapMarkerColorCountry: '#00ff00',

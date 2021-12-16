@@ -477,14 +477,6 @@ public enum MapInfoDrawTypeEnum
     Polyline = 2,
     Polygon = 3,
 }
-public enum MapSizeEnum
-{
-    Size30 = 1,
-    Size40 = 2,
-    Size50 = 3,
-    Size60 = 4,
-    Size70 = 5,
-}
 public enum MikeBoundaryConditionLevelOrVelocityEnum
 {
     Level = 1,

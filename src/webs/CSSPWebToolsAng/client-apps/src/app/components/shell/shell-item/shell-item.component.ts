@@ -7,7 +7,6 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { GetLanguageEnum, LanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetShellSubComponentEnum, ShellSubComponentEnum } from 'src/app/enums/generated/ShellSubComponentEnum';
-import { GetMapSizeEnum, MapSizeEnum } from 'src/app/enums/generated/MapSizeEnum';
 import { TopComponentEnum } from 'src/app/enums/generated/TopComponentEnum';
 import { TogglesService } from 'src/app/services/helpers/toggles.service';
 import { TVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
@@ -23,7 +22,6 @@ export class ShellItemComponent implements OnInit, OnDestroy {
   subMapSize: Subscription;
   languageEnum = GetLanguageEnum();
   shellSubComponentEnum = GetShellSubComponentEnum();
-  mapSizeEnum = GetMapSizeEnum();
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -96,15 +94,13 @@ export class ShellItemComponent implements OnInit, OnDestroy {
     this.appLanguageService.SetLanguage(language);
   }
 
-  SetMapSize(mapSize: MapSizeEnum) {
+  SetMapSize() {
     let LeftSideNavVisible: boolean = !(this.appStateService.UserPreference.LeftSideNavVisible);
-    this.appStateService.UserPreference.MapSize = mapSize;
     this.appStateService.UserPreference.LeftSideNavVisible = LeftSideNavVisible;
 
     if (!this.subMapSize) {
       this.subMapSize = timer(300, 300).pipe(
         tap(() => {
-          this.appStateService.UserPreference.MapSize = mapSize;
           this.appStateService.UserPreference.LeftSideNavVisible = !LeftSideNavVisible
         })).subscribe();
     }
@@ -112,22 +108,13 @@ export class ShellItemComponent implements OnInit, OnDestroy {
       this.subMapSize.unsubscribe();
       this.subMapSize = timer(300, 300).pipe(
         tap(() => {
-          this.appStateService.UserPreference.MapSize = mapSize;
           this.appStateService.UserPreference.LeftSideNavVisible = !LeftSideNavVisible;
         })).subscribe();
     }
   }
 
-  ColorSelection(mapSize: MapSizeEnum) {
-    if (this.appStateService.UserPreference.MapSize == mapSize) {
-      return 'selected';
-    }
-    else {
-      return '';
-    }
-  }
-
-  GetMapSizeClass(): string {
-    return MapSizeEnum[this.appStateService.UserPreference.MapSize];
+  onDragEnded(event: any) {
+    this.appStateService.UserPreference.MapWidthText = '' + (window.innerWidth - event.dropPoint.x) / window.innerWidth * 100.0 + '%';
+    this.SetMapSize();
   }
 }

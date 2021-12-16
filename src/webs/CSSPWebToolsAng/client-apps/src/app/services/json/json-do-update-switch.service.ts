@@ -55,9 +55,19 @@ export class JsonDoUpdateSwitchService {
                     this.appLoadedService.WebAllMunicipalities = x;
                 }
                 break;
+            case WebTypeEnum.WebAllMWQMAnalysisReportParameters:
+                {
+                    this.appLoadedService.WebAllMWQMAnalysisReportParameters = x;
+                }
+                break;
             case WebTypeEnum.WebAllMWQMLookupMPNs:
                 {
                     this.appLoadedService.WebAllMWQMLookupMPNs = x;
+                }
+                break;
+            case WebTypeEnum.WebAllMWQMSubsectors:
+                {
+                    this.appLoadedService.WebAllMWQMSubsectors = x;
                 }
                 break;
             case WebTypeEnum.WebAllPolSourceGroupings:
@@ -90,6 +100,11 @@ export class JsonDoUpdateSwitchService {
                     this.appLoadedService.WebAllTideLocations = x;
                 }
                 break;
+            case WebTypeEnum.WebAllUseOfSites:
+                {
+                    this.appLoadedService.WebAllUseOfSites = x;
+                }
+                break;
             case WebTypeEnum.WebArea:
                 {
                     this.appLoadedService.WebArea = x;
@@ -103,7 +118,7 @@ export class JsonDoUpdateSwitchService {
                         this.jsonDoUpdateWebMapService.DoUpdateWebMap(WebType);
                     }
 
-                    
+
                 }
                 break;
             case WebTypeEnum.WebClimateSites:
@@ -170,7 +185,7 @@ export class JsonDoUpdateSwitchService {
                 {
                     this.appLoadedService.WebMunicipality = x;
                     this.appLoadedService.InfrastructureModelPathList = this.infrastructureService.GetInfrastructureModelPathList();
-                    
+
                     this.jsonDoUpdateBreadCrumbOnlyService.DoUpdateBreadCrumbOnly(WebType);
 
                     this.historyService.AddHistory(this.appLoadedService.WebMunicipality?.TVItemModel);
@@ -193,7 +208,7 @@ export class JsonDoUpdateSwitchService {
             case WebTypeEnum.WebMWQMSamples2021_2060:
                 {
                     this.appLoadedService.WebMWQMSamples2021_2060 = x;
-                    this.appLoadedService.WebMWQMSamples1980_2020.MWQMSampleModelList.concat(x.MWQMSampleModelList);
+                    this.appLoadedService.WebMWQMSamples1980_2020.MWQMSampleModelList.push(...x.MWQMSampleModelList);
                 }
                 break;
             case WebTypeEnum.WebMWQMSites:

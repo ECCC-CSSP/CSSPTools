@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 import { A11yModule } from '@angular/cdk/a11y';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTreeModule } from '@angular/cdk/tree';
@@ -39,12 +39,16 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
+import { NgModule } from '@angular/core';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+
 
 @NgModule({
   exports: [
     A11yModule,
+    CdkAccordionModule,
     CdkStepperModule,
     CdkTableModule,
     CdkTreeModule,
@@ -85,8 +89,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    OverlayModule,
     PortalModule,
-    ScrollingModule,
+    ScrollingModule,    
   ]
 })
 export class MaterialModule { }

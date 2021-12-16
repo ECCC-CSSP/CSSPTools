@@ -26,6 +26,8 @@
             <app-search></app-search>
         </span>
     </span>
+    <button mat-raised-button class="dragDrop" cdkDragLockAxis="x" (cdkDragEnded)="onDragEnded($event)" cdkDrag
+    title="Click and drag to resize the map">drag to resize map</button>
     <span class="right">
         <ng-container *ngIf="!appLoadedService.LoggedInContact?.HasInternetConnection">
             <button mat-button>
@@ -48,24 +50,6 @@
                 title="{{ appLanguageService.ShellShowMap[appLanguageService.LangID] }}">
                 <mat-icon>map</mat-icon>
             </button>
-            <button mat-button
-                title="{{ appLanguageService.ShellResizeMap[appLanguageService.LangID] }}"
-                *ngIf="(appStateService.UserPreference.MapVisible)" [matMenuTriggerFor]="mapMenu">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-menu #mapMenu="matMenu">
-                <h3>&nbsp;&nbsp;Map size</h3>
-                <button mat-menu-item [ngClass]="ColorSelection(mapSizeEnum.Size30)"
-                    (click)="SetMapSize(mapSizeEnum.Size30)">30 %</button>
-                <button mat-menu-item [ngClass]="ColorSelection(mapSizeEnum.Size40)"
-                    (click)="SetMapSize(mapSizeEnum.Size40)">40 %</button>
-                <button mat-menu-item [ngClass]="ColorSelection(mapSizeEnum.Size50)"
-                    (click)="SetMapSize(mapSizeEnum.Size50)">50 %</button>
-                <button mat-menu-item [ngClass]="ColorSelection(mapSizeEnum.Size60)"
-                    (click)="SetMapSize(mapSizeEnum.Size60)">60 %</button>
-                <button mat-menu-item [ngClass]="ColorSelection(mapSizeEnum.Size70)"
-                    (click)="SetMapSize(mapSizeEnum.Size70)">70 %</button>
-            </mat-menu>
         </ng-container>
     </span>
 </mat-toolbar>
@@ -75,7 +59,7 @@
         mode="side">
         <app-sidenav-menu></app-sidenav-menu>
     </mat-sidenav>
-    <mat-sidenav *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection" [ngClass]="GetMapSizeClass()"
+    <mat-sidenav *ngIf="appLoadedService.LoggedInContact?.HasInternetConnection" [ngStyle]="{'width': this.appStateService.UserPreference.MapWidthText  }"
         #rightSideNav [opened]="appStateService.UserPreference.MapVisible" mode="side" position="end">
         <app-map-item></app-map-item>
     </mat-sidenav>

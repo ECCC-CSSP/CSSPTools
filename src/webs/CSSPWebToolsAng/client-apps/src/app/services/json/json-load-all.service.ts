@@ -47,6 +47,9 @@ import { AppLanguageService } from '../app/app-language.service';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
+import { WebAllMWQMAnalysisReportParameters } from 'src/app/models/generated/models/WebAllMWQMAnalysisReportParameters.model';
+import { WebAllMWQMSubsectors } from 'src/app/models/generated/models/WebAllMWQMSubsectors.model';
+import { WebAllUseOfSites } from 'src/app/models/generated/models/WebAllUseOfSites.model';
 
 
 @Injectable({
@@ -83,13 +86,16 @@ export class JsonLoadAllService {
                 case WebTypeEnum.WebAllEmails: this.Load<WebAllEmails>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllHelpDocs: this.Load<WebAllHelpDocs>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllMunicipalities: this.Load<WebAllMunicipalities>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebAllMWQMAnalysisReportParameters: this.Load<WebAllMWQMAnalysisReportParameters>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllMWQMLookupMPNs: this.Load<WebAllMWQMLookupMPNs>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebAllMWQMSubsectors: this.Load<WebAllMWQMSubsectors>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllPolSourceGroupings: this.Load<WebAllPolSourceGroupings>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllPolSourceSiteEffectTerms: this.Load<WebAllPolSourceSiteEffectTerms>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllProvinces: this.Load<WebAllProvinces>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllReportTypes: this.Load<WebAllReportTypes>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllTels: this.Load<WebAllTels>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebAllTideLocations: this.Load<WebAllTideLocations>(this.WebType, this.ForceReload); break;
+                case WebTypeEnum.WebAllUseOfSites: this.Load<WebAllUseOfSites>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebArea: this.Load<WebArea>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebClimateSites: this.Load<WebClimateSites>(this.WebType, this.ForceReload); break;
                 case WebTypeEnum.WebCountry: this.Load<WebCountry>(this.WebType, this.ForceReload); break;

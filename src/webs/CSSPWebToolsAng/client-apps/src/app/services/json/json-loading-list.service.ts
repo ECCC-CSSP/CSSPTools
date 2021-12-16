@@ -118,7 +118,9 @@ export class JsonLoadListService {
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllEmails, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllHelpDocs, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllMunicipalities, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllMWQMAnalysisReportParameters, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllMWQMLookupMPNs, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllMWQMSubsectors, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllPolSourceGroupings, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllPolSourceSiteEffectTerms, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllProvinces, TVItemID: TVItemID, ForceReload: ForceReload });
@@ -126,6 +128,7 @@ export class JsonLoadListService {
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllSearch, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllTels, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllTideLocations, TVItemID: TVItemID, ForceReload: ForceReload });
+    this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebAllUseOfSites, TVItemID: TVItemID, ForceReload: ForceReload });
     this.JsonToLoadList.push(<JsonLoadModel>{ WebType: WebTypeEnum.WebRoot, TVItemID: TVItemID, ForceReload: ForceReload });
   }
 

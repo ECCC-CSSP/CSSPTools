@@ -29,7 +29,7 @@ import { WebMonitoringRoutineStatsProvince } from 'src/app/models/generated/mode
     providedIn: 'root'
 })
 export class JsonDataIsLoadedService {
-    
+
     constructor(private appStateService: AppStateService,
         private appLoadedService: AppLoadedService) {
     }
@@ -67,9 +67,19 @@ export class JsonDataIsLoadedService {
                     obj = this.appLoadedService.WebAllMunicipalities;
                     return (obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object)) ? false : true;
                 }
+            case WebTypeEnum.WebAllMWQMAnalysisReportParameters:
+                {
+                    obj = this.appLoadedService.WebAllMWQMAnalysisReportParameters;
+                    return (obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object)) ? false : true;
+                }
             case WebTypeEnum.WebAllMWQMLookupMPNs:
                 {
                     obj = this.appLoadedService.WebAllMWQMLookupMPNs;
+                    return (obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object)) ? false : true;
+                }
+            case WebTypeEnum.WebAllMWQMSubsectors:
+                {
+                    obj = this.appLoadedService.WebAllMWQMSubsectors;
                     return (obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object)) ? false : true;
                 }
             case WebTypeEnum.WebAllPolSourceGroupings:
@@ -100,6 +110,11 @@ export class JsonDataIsLoadedService {
             case WebTypeEnum.WebAllTideLocations:
                 {
                     obj = this.appLoadedService.WebAllTideLocations;
+                    return (obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object)) ? false : true;
+                }
+            case WebTypeEnum.WebAllUseOfSites:
+                {
+                    obj = this.appLoadedService.WebAllUseOfSites;
                     return (obj === undefined || (Object.keys(obj)?.length === 0 && obj.constructor === Object)) ? false : true;
                 }
             case WebTypeEnum.WebArea:

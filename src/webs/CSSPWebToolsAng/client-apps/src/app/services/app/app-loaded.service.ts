@@ -46,13 +46,16 @@ import { InfrastructureModelPath } from 'src/app/models/generated/models/Infrast
 import { MikeSourceModel } from 'src/app/models/generated/models/MikeSourceModel.model';
 import { WebMWQMSamples1980_2020 } from 'src/app/models/generated/models/WebMWQMSamples1980_2020.model';
 import { WebMWQMSamples2021_2060 } from 'src/app/models/generated/models/WebMWQMSamples2021_2060.model';
+import { WebAllMWQMAnalysisReportParameters } from 'src/app/models/generated/models/WebAllMWQMAnalysisReportParameters.model';
+import { WebAllMWQMSubsectors } from 'src/app/models/generated/models/WebAllMWQMSubsectors.model';
+import { WebAllUseOfSites } from 'src/app/models/generated/models/WebAllUseOfSites.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppLoadedService {
-  BaseApiUrl = 'https://localhost:4446/api/'; 
-  //BaseApiUrl = 'https://localhost:44348/api/';
+  //BaseApiUrl = 'https://localhost:4446/api/'; 
+  BaseApiUrl = 'https://localhost:44341/api/';
 
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];
@@ -78,13 +81,16 @@ export class AppLoadedService {
   WebAllEmails?: WebAllEmails;
   WebAllHelpDocs?: WebAllHelpDocs;
   WebAllMunicipalities?: WebAllMunicipalities;
+  WebAllMWQMAnalysisReportParameters?: WebAllMWQMAnalysisReportParameters;
   WebAllMWQMLookupMPNs?: WebAllMWQMLookupMPNs;
+  WebAllMWQMSubsectors?: WebAllMWQMSubsectors;
   WebAllPolSourceGroupings?: WebAllPolSourceGroupings;
   WebAllPolSourceSiteEffectTerms?: WebAllPolSourceSiteEffectTerms;
   WebAllProvinces?: WebAllProvinces;
   WebAllReportTypes?: WebAllReportTypes;
   WebAllTels?: WebAllTels;
   WebAllTideLocations?: WebAllTideLocations;
+  WebAllUseOfSites?: WebAllUseOfSites;
   WebArea?: WebArea;
   WebClimateSites?: WebClimateSites;
   WebCountry?: WebCountry;

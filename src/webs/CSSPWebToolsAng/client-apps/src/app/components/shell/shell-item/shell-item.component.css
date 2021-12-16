@@ -26,30 +26,12 @@
   width: 200px;
 }
 
-.sidenav-right {
-  width: 50%;
-}
-
-.Size30 {
-  width: 30%
-}
-
-.Size40 {
-  width: 40%
-}
-
-.Size50 {
-  width: 50%
-}
-
-.Size60 {
-  width: 60%
-}
-
-.Size70 {
-  width: 70%
-}
-
 .menuWidth {
   width: 800px;
+}
+
+.dragDrop
+{
+  z-index: 10000;
+  float: right;
 }

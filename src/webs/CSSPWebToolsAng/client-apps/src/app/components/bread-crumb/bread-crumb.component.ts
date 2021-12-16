@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GetWebChartAndTableTypeEnum, WebChartAndTableTypeEnum } from 'src/app/enums/generated/WebChartAndTableTypeEnum';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
@@ -17,7 +17,6 @@ export class BreadCrumbComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public subPageService: SubPageService) {
   }
-
 
   ngOnInit() {
   }

@@ -106,6 +106,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
         else
         {
             manageFile.AzureETag = shareFileProperties.ETag.ToString();
+            manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
             manageFile.LoadedOnce = true;
         }
 
