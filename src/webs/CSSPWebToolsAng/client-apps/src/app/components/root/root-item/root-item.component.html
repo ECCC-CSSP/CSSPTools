@@ -5,7 +5,8 @@
     {{ appStateService.Status }}
 </p>
 
-<button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Countries ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Countries ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.Countries)"
     title="{{ appLanguageService.RootShowCountries[appLanguageService.LangID] }}">
     <span>
@@ -27,7 +28,8 @@
     </span>
 </button>
 
-<button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Files ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Files ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.Files)"
     title="{{ appLanguageService.RootShowFiles[appLanguageService.LangID] }}">
     <span>
@@ -38,20 +40,26 @@
         </span>
     </span>
 </button>
-<button mat-button [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.ExportArcGIS ? 'selected' : ''"
+<button mat-button
+    [ngClass]="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.ExportArcGIS ? 'selected' : ''"
     (click)="componentShowService.ShowRoot(rootSubComponentEnum.ExportArcGIS)"
     title="{{ appLanguageService.RootShowExportArcGISTools[appLanguageService.LangID] }}">
     {{ appLanguageService.RootExportArcGIS[appLanguageService.LangID] }}
 </button>
 
-<app-country-tvitem-list-item *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Countries"
-    [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebRoot?.TVItemModelCountryList))">
-</app-country-tvitem-list-item>
+<ng-container *ngIf="appStateService.UserPreference?.RootSubComponent == rootSubComponentEnum.Countries">
+    <app-country-tvitem-list-item
+        [TVItemModelList]="sortTVItemListService.SortTVItemList(filterService.FilterTVItemModelList(appLoadedService.WebRoot?.TVItemModelCountryList))">
+    </app-country-tvitem-list-item>
+    <app-tvitem-create [ParentTVItemID]="this.appStateService?.UserPreference?.CurrentRootTVItemID"
+        [TVType]="tvTypeEnum.Country">
+    </app-tvitem-create>
+</ng-container>
 
-<app-file-list *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.Files"
+<app-file-list *ngIf="appStateService.UserPreference?.RootSubComponent == rootSubComponentEnum.Files"
     [TVType]="tvTypeEnum.Root">
 </app-file-list>
 
-<div *ngIf="appStateService.UserPreference.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
+<div *ngIf="appStateService.UserPreference?.RootSubComponent == rootSubComponentEnum.ExportArcGIS">
     <app-export-arc-gis></app-export-arc-gis>
 </div>

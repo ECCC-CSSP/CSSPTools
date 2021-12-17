@@ -60,8 +60,7 @@ public partial class UserPreferenceModel
     public bool LeftSideNavVisible { get; set; }
     public bool EditVisible { get; set; }
     public bool MapVisible { get; set; }
-    [CSSPEnumType]
-    public MapSizeEnum MapSize { get; set; }
+    public string MapWidthText { get; set; }
     public string MapMarkerColorArea { get; set; }
     public string MapMarkerColorClimateSite { get; set; }
     public string MapMarkerColorCountry { get; set; }

@@ -5,6 +5,9 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
+import { CountryService } from 'src/app/services/dblocal/country.service';
+import { WebRoot } from 'src/app/models/generated/models/WebRoot.model';
 
 @Component({
   selector: 'app-tvitem-modify',
@@ -16,21 +19,29 @@ export class TVItemModifyComponent implements OnInit, OnDestroy {
 
   formTVItemModify: FormGroup;
 
+  tvTypeEnum = GetTVTypeEnum();
+
   get f() { return this.formTVItemModify.controls; }
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private countryService: CountryService) {
 
   }
 
   ngOnInit(): void {
     this.formTVItemModify = this.fb.group({
-      TVText: [this.TVItemModel.TVItemLanguageList[this.appLanguageService.LangID]?.TVText,
+      TVItemID: [this.TVItemModel.TVItem.TVItemID],
+      TVType: [this.TVItemModel.TVItem.TVType],
+      TVTextEN: [this.TVItemModel.TVItemLanguageList[0]?.TVText,
       [
         Validators.required,
-        //Validators.email,
+      ]],
+      TVTextFR: [this.TVItemModel.TVItemLanguageList[1]?.TVText,
+      [
+        Validators.required,
       ]],
     });
   }
@@ -39,9 +50,15 @@ export class TVItemModifyComponent implements OnInit, OnDestroy {
   }
 
   Modify() {
-    console.debug(this.formTVItemModify.value);
-    console.debug(this.TVItemModel);
-    alert(this.appLanguageService.NotImplementedYet[this.appLanguageService.LangID]);
+    if (this.formTVItemModify.value.TVType == this.tvTypeEnum.Country) {
+      this.countryService.ModifyTVTextCountry(this.formTVItemModify.value.TVItemID, this.formTVItemModify.value.TVType,
+        this.formTVItemModify.value.TVTextEN, this.formTVItemModify.value.TVTextFR);
+      this.appLoadedService.WebRoot = <WebRoot>{};
+    }
+    else {
+      alert(this.appLanguageService.NotImplementedYet[this.appLanguageService.LangID] + '\r\n' +
+        this.tvTypeEnum[this.formTVItemModify.value.TVType].toString());
+    }
   }
 
 }

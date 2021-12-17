@@ -7,22 +7,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GetTVTypeEnum, TVTypeEnum, TVTypeEnum_GetIDText } from 'src/app/enums/generated/TVTypeEnum';
 import { CountryService } from 'src/app/services/dblocal/country.service';
 import { WebRoot } from 'src/app/models/generated/models/WebRoot.model';
+import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 
 @Component({
-  selector: 'app-tvitem-create',
-  templateUrl: './tvitem-create.component.html',
-  styleUrls: ['./tvitem-create.component.css']
+  selector: 'app-tvitem-delete',
+  templateUrl: './tvitem-delete.component.html',
+  styleUrls: ['./tvitem-delete.component.css']
 })
-export class TVItemCreateComponent implements OnInit, OnDestroy {
-  @Input() ParentTVItemID: number;
-  @Input() TVType: TVTypeEnum;
+export class TVItemDeleteComponent implements OnInit, OnDestroy {
+  @Input() TVItemModel: TVItemModel;
 
   tvTypeEnum = GetTVTypeEnum();
 
+  formTVItemDelete: FormGroup;
 
-  formTVItemCreate: FormGroup;
-
-  get f() { return this.formTVItemCreate.controls; }
+  get f() { return this.formTVItemDelete.controls; }
 
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
@@ -33,24 +32,24 @@ export class TVItemCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.formTVItemCreate = this.fb.group({
-      ParentTVItemID: [this.ParentTVItemID],
-      TVType: [this.TVType],
+    this.formTVItemDelete = this.fb.group({
+      TVItemID: [this.TVItemModel.TVItem.TVItemID],
+      TVType: [this.TVItemModel.TVItem.TVType],
     });
-    this.GetTVTypeEnum_GetIDText(this.TVType);
+    this.GetTVTypeEnum_GetIDText(this.TVItemModel.TVItem.TVItemID);
   }
 
   ngOnDestroy(): void {
   }
 
-  Create() {
-    if (this.formTVItemCreate.value.TVType == this.tvTypeEnum.Country) {
-      this.countryService.AddCountry(this.formTVItemCreate.value.ParentTVItemID, this.formTVItemCreate.value.TVType);
+  Delete() {
+    if (this.formTVItemDelete.value.TVType == this.tvTypeEnum.Country) {
+      this.countryService.DeleteCountry(this.formTVItemDelete.value.TVItemID, this.formTVItemDelete.value.TVType);
       this.appLoadedService.WebRoot = <WebRoot>{};
     }
     else {
       alert(this.appLanguageService.NotImplementedYet[this.appLanguageService.LangID] + '\r\n' +
-      this.tvTypeEnum[this.formTVItemCreate.value.TVType].toString());
+      this.tvTypeEnum[this.formTVItemDelete.value.TVType].toString());
     }
   }
 

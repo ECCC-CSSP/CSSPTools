@@ -18,7 +18,7 @@ export class TVItemMenuOpenComponent implements OnInit, OnDestroy {
 
   ViewVisible: boolean = true;
   ModifyVisible: boolean = false;
-  CreateVisible: boolean = false;
+  DeleteVisible: boolean = false;
 
   tvTypeEnum = GetTVTypeEnum();
 

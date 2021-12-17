@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DBCommandEnum } from 'src/app/enums/generated/DBCommandEnum';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 
@@ -11,7 +12,7 @@ export class FilterService {
   }
 
   FilterTVItemModelList(tvItemModelList: TVItemModel[]) {
-    if (!(typeof(tvItemModelList) == "undefined" || tvItemModelList == null)) {
+    if (!(typeof (tvItemModelList) == "undefined" || tvItemModelList == null)) {
       if (!this.appStateService.UserPreference.InactVisible) {
         return tvItemModelList.filter(c => c.TVItem.IsActive == true);
       }

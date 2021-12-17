@@ -2,6 +2,7 @@ namespace CSSPWebAPIsLocal.Controllers;
 
 public partial class CountryLocalController : ControllerBase, ICountryLocalController
 {
+    [Route("{TVItemID:int}")]
     [HttpDelete]
     public async Task<ActionResult<TVItemModel>> DeleteCountryLocalAsync(int TVItemID)
     {

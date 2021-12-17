@@ -2,7 +2,8 @@
     <app-tvitem-menu [TVItemModel]="tvItemModel">
     </app-tvitem-menu>
 
-    <app-tvitem-item  [TVItemModel]="tvItemModel" [Index]="i"></app-tvitem-item>
+    <app-tvitem-item [TVItemModel]="tvItemModel" [Index]="i">
+    </app-tvitem-item>
 
     <app-tvitem-menu-open *ngIf="showTVItemService.TVItemVisible(tvItemModel)" [TVItemModel]="tvItemModel">
     </app-tvitem-menu-open>

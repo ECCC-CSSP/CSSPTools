@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { DBCommandEnum } from 'src/app/enums/generated/DBCommandEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
@@ -7,6 +8,7 @@ import { AppStateService } from 'src/app/services/app/app-state.service';
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { SubPageService } from 'src/app/services/helpers/sub-page.service';
 import { MapService } from 'src/app/services/map/map.service';
+import { TVItemService } from 'src/app/services/tvitem/tvitem.service';
 
 @Component({
   selector: 'app-country-tvitem-list-item',
@@ -31,4 +33,6 @@ export class CountryTVItemListItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
+
+
 }

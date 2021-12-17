@@ -76,6 +76,7 @@ import { FileListItemModifyComponent } from './components/files/file-list-item-m
 import { FileListItemCreateComponent } from './components/files/file-list-item-create/file-list-item-create.component';
 import { FileListItemViewComponent } from './components/files/file-list-item-view/file-list-item-view.component';
 import { TVItemCreateComponent } from './components/tvitem/tvitem-create/tvitem-create.component';
+import { TVItemDeleteComponent } from './components/tvitem/tvitem-delete/tvitem-delete.component';
 import { TVItemModifyComponent } from './components/tvitem/tvitem-modify/tvitem-modify.component';
 import { TVItemViewComponent } from './components/tvitem/tvitem-view/tvitem-view.component';
 import { TVItemMenuOpenComponent } from './components/tvitem/tvitem-menu-open/tvitem-menu-open.component';
@@ -298,6 +299,7 @@ import { PolSourceSiteLocalizeAllComponent } from './components/pol-source-site/
     TableMWQMSiteFCStatsComponent,
     TelComponent,
     TVItemCreateComponent,
+    TVItemDeleteComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,
     TVItemMenuComponent,
@@ -464,6 +466,7 @@ import { PolSourceSiteLocalizeAllComponent } from './components/pol-source-site/
     TableMWQMSiteFCStatsComponent,
     TelComponent,
     TVItemCreateComponent,
+    TVItemDeleteComponent,
     TVItemItemComponent,
     TVItemLastUpdateComponent,
     TVItemMenuComponent,

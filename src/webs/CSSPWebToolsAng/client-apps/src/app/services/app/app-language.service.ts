@@ -143,7 +143,7 @@ export class AppLanguageService {
   CurrentSpeed: string[] = ['Current Speed', 'Vitesse du courant'];
   DecayRate_per_day: string[] = ['Decay Rate (/day)', 'Taux de décroissance (/jour)'];
   DegCelciusTitle: string[] = ['Degree Celcius', 'Dégré Celcius'];
-
+  Delete: string[] = ['Delete', 'Effacer'];
   DateJanuary: string[] = ['January', 'janvier'];
   DateFebruary: string[] = ['February', 'février'];
   DateMarch: string[] = ['March', 'mars'];
@@ -197,6 +197,7 @@ export class AppLanguageService {
   EffluentTemperature: string[] = ['Effluent Temperature', 'Température de l\'effluent'];
   Emails: string[] = ['Emails', 'Courriels'];
   EndDateAndTime: string[] = ['End Date and Time', 'Date et l\'heure de la fin'];
+  English: string[] = ['English', 'Anglais'];
   Entered: string[] = ['Entered', 'Entré'];
 
   ExtraComments: string[] = ['Extra Comments', 'Extra commentaires'];
@@ -228,7 +229,7 @@ export class AppLanguageService {
   FlowStart: string[] = ['Flow start', 'Débit de départ'];
   FlowStartDate: string[] = ['Flow start date', 'Date du débit de départ'];
   ForceReload: string[] = ['Force Reload', 'Téléchargement forcé'];
-
+  French: string[] = ['French', 'Français'];
   GeneralParameters: string[] = ['General Parameters', 'Paramètres généraux'];
   GMInit: string[] = ['GM', "MG"];
   GMInitTitle: string[] = ['Geometric mean', 'Moyenne géométrique'];
@@ -261,6 +262,9 @@ export class AppLanguageService {
   Issue: string[] = ['Issue', 'Item'];
 
   Item: string[] = ['Item', "Item"];
+  ItemIsCreatedLocal: string[] = ['Item is created local', 'l\'item est créer locale']
+  ItemIsDeletedLocal: string[] = ['Item is deleted local', 'l\'item est effacer locale']
+  ItemIsModifiedLocal: string[] = ['Item is modified local', 'l\'item est modifier locale']
   ItemName: string[] = ['Item Name', 'Nom de l\'item']
   IsMechanicallyAerated: string[] = ['Is mechanically aerated', 'Est mécaniquement aéré'];
 
@@ -318,6 +322,7 @@ export class AppLanguageService {
   NearFieldVelocity_m_s: string[] = ['Near Field Velocity (m/s)', 'Vitesse en champ rapproché (m/s)'];
   NewItemName: string[] = ['New item name', 'Nom du nouveau item'];
   Next: string[] = ['Next', 'Prochain'];
+  new: string[] = ['new', 'nouveau'];
   No: string[] = ['No', 'Non'];
   NoAddress: string[] = ['No address', 'Aucune adresse'];
   NoAlarmSystem: string[] = ['No alarm system', 'Aucune système d\'alarme'];

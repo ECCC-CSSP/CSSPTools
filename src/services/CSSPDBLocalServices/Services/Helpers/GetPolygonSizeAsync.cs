@@ -15,7 +15,7 @@ public partial class HelperLocalService : ControllerBase, IHelperLocalService
             case TVTypeEnum.ClimateSite:
                 return await Task.FromResult(0.1D);
             case TVTypeEnum.Country:
-                return await Task.FromResult(0.1D);
+                return await Task.FromResult(10.0D);
             case TVTypeEnum.Email:
                 return await Task.FromResult(0.1D);
             case TVTypeEnum.EmailDistributionList:

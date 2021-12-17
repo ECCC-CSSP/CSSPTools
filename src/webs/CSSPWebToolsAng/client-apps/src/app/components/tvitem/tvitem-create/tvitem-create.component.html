@@ -1,14 +1,13 @@
-<mat-card>
-    <mat-card-content>
+<!-- <mat-card>
+    <mat-card-content> -->
+        <br>
+        <hr>
         <form [formGroup]="formTVItemCreate" (ngSubmit)="Create()">
-            <mat-form-field>
-                <mat-label>{{ appLanguageService.NewItemName[appLanguageService.LangID] }}</mat-label>
-                <input matInput formControlName="TVText" />
-                <mat-error *ngIf="f.TVText?.errors?.required">{{ appLanguageService.Required[appLanguageService.LangID] }}</mat-error>
-            </mat-form-field>
-            <button mat-raised-button type="submit" [disabled]="!formTVItemCreate.valid">{{ appLanguageService.Create[appLanguageService.LangID] }}</button>
+            <button mat-raised-button type="submit">
+                {{ appLanguageService.Create[appLanguageService.LangID] }} 
+                {{ appLanguageService.new[appLanguageService.LangID] }} 
+                {{ GetTVTypeEnum_GetIDText(this.TVType) }}
+            </button>
         </form>
-    </mat-card-content>
-</mat-card>
-
-<app-not-implemented-yet></app-not-implemented-yet>
+    <!-- </mat-card-content>
+</mat-card> -->

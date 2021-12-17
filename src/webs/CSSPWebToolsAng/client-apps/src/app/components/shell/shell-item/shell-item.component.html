@@ -26,8 +26,7 @@
             <app-search></app-search>
         </span>
     </span>
-    <button mat-raised-button class="dragDrop" cdkDragLockAxis="x" (cdkDragEnded)="onDragEnded($event)" cdkDrag
-    title="Click and drag to resize the map">drag to resize map</button>
+    <button mat-raised-button class="dragDrop" cdkDragLockAxis="x" (cdkDragEnded)="onDragEnded($event)" cdkDrag>{{ appLanguageService.ShellResizeMap[appLanguageService.LangID] }}</button>
     <span class="right">
         <ng-container *ngIf="!appLoadedService.LoggedInContact?.HasInternetConnection">
             <button mat-button>

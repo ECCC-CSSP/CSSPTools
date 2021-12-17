@@ -30,8 +30,8 @@ public partial class CountryLocalService : ControllerBase, ICountryLocalService
 
         List<TVItemModel> tvItemModelCountryList = webRoot.TVItemModelCountryList;
 
-        string StartTextEN = "New Country";
-        string StartTextFR = "Nouveau Pays";
+        string StartTextEN = "__ New Country";
+        string StartTextFR = "__ Nouveau Pays";
 
         string TVTextEN = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelCountryList, LanguageEnum.en, StartTextEN);
         string TVTextFR = await HelperLocalService.GetUniqueTVTextAsync(tvItemModelCountryList, LanguageEnum.fr, StartTextFR);

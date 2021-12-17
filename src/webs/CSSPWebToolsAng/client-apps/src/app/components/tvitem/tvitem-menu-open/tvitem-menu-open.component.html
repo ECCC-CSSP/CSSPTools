@@ -8,13 +8,13 @@
             {{ appLanguageService.Modify[appLanguageService.LangID] }}
         </button>
         <span>&nbsp;&nbsp;</span>
-        <button mat-raised-button (click)="CreateVisible = !CreateVisible" [ngClass]="CreateVisible ? 'selected' : ''">
-            {{ appLanguageService.Create[appLanguageService.LangID] }}
+        <button mat-raised-button (click)="DeleteVisible = !DeleteVisible" [ngClass]="DeleteVisible ? 'selected' : ''">
+            {{ appLanguageService.Delete[appLanguageService.LangID] }}
         </button>
 
         <app-tvitem-view *ngIf="ViewVisible" [TVItemModel]="TVItemModel"></app-tvitem-view>
         <app-tvitem-modify *ngIf="ModifyVisible" [TVItemModel]="TVItemModel"></app-tvitem-modify>
-        <app-tvitem-create *ngIf="CreateVisible" [TVItemModel]="TVItemModel"></app-tvitem-create>
+        <app-tvitem-delete *ngIf="DeleteVisible" [TVItemModel]="TVItemModel"></app-tvitem-delete>
 
     </mat-card-content>
 </mat-card>

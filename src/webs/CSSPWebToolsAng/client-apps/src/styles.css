@@ -107,3 +107,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   white-space: nowrap;
   text-align: center;
 }
+
+
+.tvItemDeletedColor {
+  background-color: red;
+}
+
+.tvItemCreatedColor {
+  background-color: green;
+}
+
+.tvItemModifiedColor {
+  background-color: blue;
+}
