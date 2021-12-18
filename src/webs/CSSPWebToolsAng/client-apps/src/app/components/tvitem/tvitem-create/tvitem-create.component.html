@@ -1,13 +1,9 @@
-<!-- <mat-card>
-    <mat-card-content> -->
-        <br>
-        <hr>
-        <form [formGroup]="formTVItemCreate" (ngSubmit)="Create()">
-            <button mat-raised-button type="submit">
-                {{ appLanguageService.Create[appLanguageService.LangID] }} 
-                {{ appLanguageService.new[appLanguageService.LangID] }} 
-                {{ GetTVTypeEnum_GetIDText(this.TVType) }}
-            </button>
-        </form>
-    <!-- </mat-card-content>
-</mat-card> -->
+<br>
+<hr>
+<form [formGroup]="formTVItemCreate" (ngSubmit)="Create()">
+    <button mat-raised-button type="submit">
+        {{ appLanguageService.Create[appLanguageService.LangID] }}
+        {{ appLanguageService.new[appLanguageService.LangID] }}
+        {{ GetTVTypeEnum_GetIDText(this.TVType) }}
+    </button>
+</form>

@@ -69,7 +69,7 @@ export class DateFormatService {
     return this.GetDateFromDateText(tvFileModel?.TVFile?.FileCreatedDate_UTC.toString(), false);
   }
 
-  private GetDateFromDateText(DateText: string, DateOnly: boolean) {
+  GetDateFromDateText(DateText: string, DateOnly: boolean) {
     let Year: number = parseInt(DateText.substring(0, 4));
     let Month: number = parseInt(DateText.substring(5, 7));
     let Day: number = parseInt(DateText.substring(8, 10));

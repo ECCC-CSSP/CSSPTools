@@ -27,6 +27,7 @@ export class AppLanguageService {
   Language?: LanguageEnum = LanguageEnum.en;
   LangID?: number = 0;
 
+  Active: string[] = ['Active', 'Actif'];
   Address: string[] = ['Address', 'Adresse'];
   Addresses: string[] = ['Addresses', 'Adresses'];
 
@@ -92,6 +93,7 @@ export class AppLanguageService {
   BackgroundConcentration: string[] = ['Background Concentration', 'Concentration de fond'];
   BoxModels: string[] = ['Box Models', 'Modèles boite'];
 
+  by: string[] = ['by', 'par'];
   ByMonth: string[] = ['by month', 'par mois'];
   BySeason: string[] = ['by season', 'par saison'];
   ByYear: string[] = ['by year', 'par année'];
@@ -235,6 +237,7 @@ export class AppLanguageService {
   GMInitTitle: string[] = ['Geometric mean', 'Moyenne géométrique'];
 
   Google: string[] = ['Google', 'Google'];
+  Inactive: string[] = ['Inactive', 'Inactif'];
   Input: string[] = ['Input', 'Intrants'];
   HasBackupPower: string[] = ['Has backup power', 'A une alimentation de secours'];
   Hide: string[] = ['Hide', 'Cacher'];
@@ -270,6 +273,7 @@ export class AppLanguageService {
 
   KB: string[] = ['KB', 'Ko'];
   kmPerhours: string[] = ['km/h', 'km/h'];
+  LastUpdate: string[] = ['Last update', 'Dernière mise à jour'];
   LatitudeLongitude: string[] = ['Latitude Longitude', 'Latitude Longitude'];
   Loading: string[] = ['Loading', 'Téléchargement'];
   Localize: string[] = ['Localize', 'Localiser'];

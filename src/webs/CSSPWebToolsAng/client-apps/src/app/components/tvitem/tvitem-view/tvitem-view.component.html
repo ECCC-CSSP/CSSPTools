@@ -1,1 +1,43 @@
-<app-not-implemented-yet></app-not-implemented-yet>
+<mat-card>
+    <mat-card-header>
+        <h3>{{ appLanguageService.View[appLanguageService.LangID] }}</h3>
+    </mat-card-header>
+    <mat-card-content>
+        <strong *ngIf="TVItemModel.TVItem.IsActive">{{ appLanguageService.Active[appLanguageService.LangID] }}</strong>
+        <strong *ngIf="!TVItemModel.TVItem.IsActive">{{ appLanguageService.Inactive[appLanguageService.LangID] }}</strong>
+        <span>&nbsp;&nbsp;&nbsp;</span>
+        <span>{{ appLanguageService.LastUpdate[appLanguageService.LangID] }}:</span>
+        <strong>{{  dateFormatService.GetDateFromDateText(TVItemModel?.TVItem?.LastUpdateDate_UTC.toString(), false) }}</strong>
+        <span>{{ appLanguageService.by[appLanguageService.LangID] }}:</span>
+        <strong>{{ contactNameService.GetContactName(TVItemModel.TVItem.LastUpdateContactTVItemID) }}</strong>
+        
+        <p>DBCommand : {{ TVItemModel.TVItem.DBCommand }}</p>
+        <p>IsActive : {{ TVItemModel.TVItem.IsActive }}</p>
+        <p>LastUpdateContactTVItemID : {{ TVItemModel.TVItem.LastUpdateContactTVItemID }}</p>
+        <p>LastUpdateDate_UTC : {{ TVItemModel.TVItem.LastUpdateDate_UTC }}</p>
+        <p>ParentID : {{ TVItemModel.TVItem.ParentID }}</p>
+        <p>TVItemID : {{ TVItemModel.TVItem.TVItemID }}</p>
+        <p>TVLevel : {{ TVItemModel.TVItem.TVLevel }}</p>
+        <p>TVPath : {{ TVItemModel.TVItem.TVPath }}</p>
+        <p>TVType : {{ TVItemModel.TVItem.TVType }}</p>
+        <h3>English</h3>
+        <p>DBCommand : {{ TVItemModel.TVItemLanguageList[0].DBCommand }}</p>
+        <p>Language : {{ TVItemModel.TVItemLanguageList[0].Language }}</p>
+        <p>LastUpdateContactTVItemID : {{ TVItemModel.TVItemLanguageList[0].LastUpdateContactTVItemID }}</p>
+        <p>LastUpdateDate_UTC : {{ TVItemModel.TVItemLanguageList[0].LastUpdateDate_UTC }}</p>
+        <p>TranslationStatus : {{ TVItemModel.TVItemLanguageList[0].TranslationStatus }}</p>
+        <p>TVItemID : {{ TVItemModel.TVItemLanguageList[0].TVItemID }}</p>
+        <p>TVItemLanguageID : {{ TVItemModel.TVItemLanguageList[0].TVItemLanguageID }}</p>
+        <p>TVText : {{ TVItemModel.TVItemLanguageList[0].TVText }}</p>
+        <h3>French</h3>
+        <p>DBCommand : {{ TVItemModel.TVItemLanguageList[1].DBCommand }}</p>
+        <p>Language : {{ TVItemModel.TVItemLanguageList[1].Language }}</p>
+        <p>LastUpdateContactTVItemID : {{ TVItemModel.TVItemLanguageList[1].LastUpdateContactTVItemID }}</p>
+        <p>LastUpdateDate_UTC : {{ TVItemModel.TVItemLanguageList[1].LastUpdateDate_UTC }}</p>
+        <p>TranslationStatus : {{ TVItemModel.TVItemLanguageList[1].TranslationStatus }}</p>
+        <p>TVItemID : {{ TVItemModel.TVItemLanguageList[1].TVItemID }}</p>
+        <p>TVItemLanguageID : {{ TVItemModel.TVItemLanguageList[1].TVItemLanguageID }}</p>
+        <p>TVText : {{ TVItemModel.TVItemLanguageList[1].TVText }}</p>
+
+    </mat-card-content>
+</mat-card>

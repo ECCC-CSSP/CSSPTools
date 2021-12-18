@@ -8,6 +8,7 @@ import { GetTVTypeEnum, TVTypeEnum, TVTypeEnum_GetIDText } from 'src/app/enums/g
 import { CountryService } from 'src/app/services/dblocal/country.service';
 import { WebRoot } from 'src/app/models/generated/models/WebRoot.model';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 
 @Component({
   selector: 'app-tvitem-delete',
@@ -27,7 +28,8 @@ export class TVItemDeleteComponent implements OnInit, OnDestroy {
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
     private fb: FormBuilder,
-    private countryService: CountryService) {
+    private countryService: CountryService,
+    private showTVItemService: ShowTVItemService) {
 
   }
 
@@ -44,6 +46,7 @@ export class TVItemDeleteComponent implements OnInit, OnDestroy {
 
   Delete() {
     if (this.formTVItemDelete.value.TVType == this.tvTypeEnum.Country) {
+      this.appStateService.ShowTVItemModelList = [];
       this.countryService.DeleteCountry(this.formTVItemDelete.value.TVItemID, this.formTVItemDelete.value.TVType);
       this.appLoadedService.WebRoot = <WebRoot>{};
     }

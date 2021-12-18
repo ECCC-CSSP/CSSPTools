@@ -27,7 +27,7 @@ export class ContactNameService {
     return this.GetContactName(tvFileModel?.TVFile?.LastUpdateContactTVItemID);
   }
 
-  private GetContactName(LastUpdateContactTVItemID: number)
+  GetContactName(LastUpdateContactTVItemID: number)
   {
     if (this.jsonDataIsLoadedService.DataIsLoaded(WebTypeEnum.WebAllContacts)) {
       let contactModelList: ContactModel[] = this.appLoadedService.WebAllContacts.ContactModelList.filter(c => c.Contact != null && c.Contact.ContactTVItemID == LastUpdateContactTVItemID);

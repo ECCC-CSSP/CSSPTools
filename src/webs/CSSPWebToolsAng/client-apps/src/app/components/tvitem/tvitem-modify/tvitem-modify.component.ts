@@ -51,6 +51,7 @@ export class TVItemModifyComponent implements OnInit, OnDestroy {
 
   Modify() {
     if (this.formTVItemModify.value.TVType == this.tvTypeEnum.Country) {
+      this.appStateService.ShowTVItemModelList = [];
       this.countryService.ModifyTVTextCountry(this.formTVItemModify.value.TVItemID, this.formTVItemModify.value.TVType,
         this.formTVItemModify.value.TVTextEN, this.formTVItemModify.value.TVTextFR);
       this.appLoadedService.WebRoot = <WebRoot>{};

@@ -5,6 +5,8 @@ import { AppLanguageService } from 'src/app/services/app/app-language.service';
 
 import { ShowTVItemService } from 'src/app/services/helpers/show-tvitem.service';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
+import { ContactNameService } from 'src/app/services/contact/contact-name.service';
+import { DateFormatService } from 'src/app/services/helpers/date-format.service';
 
 @Component({
   selector: 'app-tvitem-view',
@@ -18,7 +20,9 @@ export class TVItemViewComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    public showTVItemService: ShowTVItemService) {
+    public showTVItemService: ShowTVItemService,
+    public dateFormatService: DateFormatService,
+    public contactNameService: ContactNameService) {
 
   }
 
