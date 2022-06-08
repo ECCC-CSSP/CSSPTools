@@ -11,12 +11,8 @@ public partial class UpdateServiceTests
 
         DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_TVFile().AddDays(-1);
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedTVFileAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorTVItemIDList.Count > 0);
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
     [Theory]
     [InlineData("en-CA")]
@@ -27,12 +23,8 @@ public partial class UpdateServiceTests
 
         DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_TVFile().AddDays(1);
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         List<int> SubsectorTVItemIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedTVFileAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorTVItemIDList.Count == 0);
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
 
     private DateTime GetLastUpdateDate_UTC_TVFile()

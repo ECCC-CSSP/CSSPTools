@@ -9,8 +9,6 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
@@ -33,8 +31,6 @@ public partial class UpdateServiceTests
     public async Task RunCommand_UpdateChangedTVItemStats_Good_Test(string culture)
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
@@ -62,8 +58,6 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
@@ -86,8 +80,6 @@ public partial class UpdateServiceTests
     public async Task RunCommand_CommandDoesNotExistWithDate_Error_Test(string culture)
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
@@ -115,8 +107,6 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
@@ -142,8 +132,6 @@ public partial class UpdateServiceTests
     public async Task RunCommand_UpdateChangedTVItemStats_Date_Month_Error_Test(string culture)
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
@@ -171,8 +159,6 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
@@ -198,8 +184,6 @@ public partial class UpdateServiceTests
     public async Task RunCommand_UpdateChangedTVItemStats_Date_Month_Not_Equal_Error_Test(string culture)
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
@@ -227,8 +211,6 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
@@ -254,8 +236,6 @@ public partial class UpdateServiceTests
     public async Task RunCommand_UpdateChangedTVItemStats_Date_Day_Bigger_Than_Now_Error_Test(string culture)
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";

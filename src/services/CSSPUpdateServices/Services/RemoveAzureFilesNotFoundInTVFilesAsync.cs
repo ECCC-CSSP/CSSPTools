@@ -4,25 +4,20 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 {
     public async Task<ActionResult<bool>> RemoveAzureFilesNotFoundInTVFilesAsync()
     {
-        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+        string FunctionName = $"{this.GetType().Name}.{CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name)}()";
         CSSPLogService.FunctionLog(FunctionName);
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
-
-        DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"]);
-        if (!di.Exists)
-        {
-            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
-
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-            return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-        }
 
         List<TVItem> TVItemList = (from c in db.TVItems
                                    where c.TVType == TVTypeEnum.File
                                    orderby c.TVLevel
                                    select c).AsNoTracking().ToList();
+
+        List<int> ParentIDList = (from c in TVItemList
+                                  orderby c.ParentID
+                                  select (int)c.ParentID).Distinct().ToList();
+
 
         List<TVFile> TVFileList = (from c in db.TVFiles
                                    select c).AsNoTracking().ToList();
@@ -40,70 +35,68 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             }
 
             TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
-            if (tvItem == null)
+            if (tvItem != null)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
-
-                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
             }
-
-
-            ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
         }
 
-        List<int> ParentIDList = (from c in ParentAndFileNameList
-                                      //where c.ParentID == 1
-                                  orderby c.ParentID
-                                  select c.ParentID).Distinct().ToList();
+        // ---------------------------------------------
+        // Cleaning Azure drive (files)
+        //----------------------------------------------
 
+        ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
+        ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
-        count = 0;
-        total = ParentIDList.Count;
-        foreach (int ParentID in ParentIDList)
+        Pageable<ShareFileItem> shareFileItemList = directory.GetFilesAndDirectories();
+
+        foreach (ShareFileItem shareFileItem in shareFileItemList)
         {
-            ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
-            ShareDirectoryClient directory = shareClient.GetDirectoryClient(ParentID.ToString());
+            int? ParentIDExist = (from c in ParentIDList
+                                  where c.ToString() == shareFileItem.Name
+                                  select c).FirstOrDefault();
 
-            count += 1;
-            if (count % 1 == 0)
+            if (ParentIDExist != null)
             {
-                Console.WriteLine($"Count -> {count}/{total} doing ParentID {ParentID}");
-            }
-
-            DirectoryInfo diParent = new DirectoryInfo($@"{di.FullName}{ParentID}\");
-            List<FileInfo> FileInfoList = new List<FileInfo>();
-            if (diParent.Exists)
-            {
-                FileInfoList = diParent.GetFiles().ToList();
-            }
-
-
-            List<ParentAndFileName> parentAndFileNameList = (from c in ParentAndFileNameList
-                                                             where c.ParentID == ParentID
-                                                             orderby c.ServerFileName
-                                                             select c).ToList();
-
-            foreach (FileInfo fileInfo in FileInfoList)
-            {
-                if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfo.Name).Any())
+                if (shareFileItem.Name == "WebTide")
                 {
+                    continue;
+                }
 
-                    if (directory.Exists())
+                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DoingAzureDirectory_, shareFileItem.Name)}");
+
+                if (shareFileItem.IsDirectory)
+                {
+                    ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
+                    ShareDirectoryClient directorySub = shareClientSub.GetDirectoryClient(shareFileItem.Name);
+
+                    if (directorySub.Exists())
                     {
-                        ShareFileClient file = directory.GetFileClient(fileInfo.Name);
-
-                        Response<bool> response = file.DeleteIfExists();
-
-                        string dirFile = $@"{ Configuration["AzureStoreCSSPFilesPath"] }\{ ParentID }\{ fileInfo.Name }";
-                        if (response.Value)
+                        foreach (ShareFileItem shareFileItemSub in directorySub.GetFilesAndDirectories())
                         {
-                            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletedAzureFile_, dirFile) }");
-                        }
-                        else
-                        {
-                            CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.CouldNotFindFileNotDeletedAzureFile_, dirFile) }");
+                            ParentAndFileName parentAndFileName = (from c in ParentAndFileNameList
+                                                                   where c.ServerFileName == shareFileItemSub.Name
+                                                                   select c).FirstOrDefault();
+
+                            if (parentAndFileName == null)
+                            {
+                                ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
+
+                                string dirFile = $@"{shareFileItem.Name}\{shareFileItemSub.Name}";
+                                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingAzureFile_, dirFile)}");
+
+                                Response<bool> responseFile = file.DeleteIfExists();
+
+                                if (responseFile.Value)
+                                {
+                                    CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletedAzureFile_, dirFile)}");
+                                }
+                                else
+                                {
+                                    CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorDeletingAzureFile_, dirFile)}");
+                                }
+
+                            }
                         }
                     }
                 }
@@ -115,4 +108,3 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
         return await Task.FromResult(Ok(true));
     }
 }
-

@@ -11,11 +11,7 @@ public partial class UpdateServiceTests
 
         DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Country().AddDays(-1);
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         Assert.True(await CSSPUpdateService.GetNeedToChangedWebAllCountriesAsync(LastUpdateDate_UTC));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
     [Theory]
     [InlineData("en-CA")]
@@ -26,11 +22,7 @@ public partial class UpdateServiceTests
 
         DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_Country().AddDays(1);
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         Assert.False(await CSSPUpdateService.GetNeedToChangedWebAllCountriesAsync(LastUpdateDate_UTC));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
 
     private DateTime GetLastUpdateDate_UTC_Country()

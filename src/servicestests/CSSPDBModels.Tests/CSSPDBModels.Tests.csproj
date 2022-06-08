@@ -50,7 +50,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\CSSPAzureLoginServices\CSSPAzureLoginServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPCreateGzFileServices\CSSPCreateGzFileServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPDBModels\CSSPDBModels.csproj" />
+    <ProjectReference Include="..\..\services\CSSPLocalLoggedInServices\CSSPLocalLoggedInServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPLogServices\CSSPLogServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPScrambleServices\CSSPScrambleServices.csproj" />
+    <ProjectReference Include="..\..\services\CSSPSQLiteServices\CSSPSQLiteServices.csproj" />
   </ItemGroup>
 
 </Project>

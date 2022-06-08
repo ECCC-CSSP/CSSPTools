@@ -38,7 +38,7 @@ public partial class CountryLocalControllerTests : CSSPWebAPIsLocalTests
         DirectoryInfo di = new DirectoryInfo($"{ Configuration["CSSPJSONPathLocal"] }");
         Assert.True(di.Exists);
         List<FileInfo> fiList = di.GetFiles().ToList();
-        Assert.True(fiList.Count() > 0);
+        Assert.True(fiList.Count > 0);
         Assert.True(fiList.Where(c => c.Name.Contains("-1.gz")).Any());
 
         TVItem tvItem = (from c in dbLocal.TVItems
@@ -52,7 +52,7 @@ public partial class CountryLocalControllerTests : CSSPWebAPIsLocalTests
                                                    where c.TVItemID == -1
                                                    select c).ToList();
 
-        Assert.True(tvItemLanguageList.Count() == 2);
+        Assert.True(tvItemLanguageList.Count == 2);
         Assert.Equal(-1, tvItemLanguageList[0].TVItemLanguageID);
         Assert.Equal(-2, tvItemLanguageList[1].TVItemLanguageID);
     }

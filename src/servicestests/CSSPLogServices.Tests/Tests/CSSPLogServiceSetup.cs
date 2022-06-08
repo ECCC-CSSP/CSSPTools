@@ -1,6 +1,3 @@
-using CSSPAzureLoginServices.Services;
-using CSSPSQLiteServices;
-
 namespace CSSPLogServices.Tests;
 
 [Collection("Sequential")]

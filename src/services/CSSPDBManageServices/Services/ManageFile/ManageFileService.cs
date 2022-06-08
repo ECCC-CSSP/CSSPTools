@@ -2,8 +2,8 @@ namespace ManageServices;
 
 public partial class ManageFileService : ControllerBase, IManageFileService
 {
-    private CSSPDBManageContext dbManage { get; set; }
-    private ErrRes errRes { get; set; } = new ErrRes();
+    private CSSPDBManageContext DbManage { get; set; }
+    private ErrRes ErrResult { get; set; } = new ErrRes();
 
     public ManageFileService(IConfiguration Configuration, ICSSPCultureService CSSPCultureService, CSSPDBManageContext dbManage)
     {
@@ -13,7 +13,7 @@ public partial class ManageFileService : ControllerBase, IManageFileService
 
         if (string.IsNullOrEmpty(Configuration["CSSPDBManage"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPDBManage", "CSSPLogService") }");
 
-        this.dbManage = dbManage;
+        DbManage = dbManage ?? null;
     }
 }
 

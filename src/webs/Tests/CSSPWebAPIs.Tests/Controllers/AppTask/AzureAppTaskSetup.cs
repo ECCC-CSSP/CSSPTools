@@ -10,7 +10,7 @@ public partial class AppTaskAzureControllerTests : BaseControllerTests
         {
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ContactTest.Token);
 
             HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/en-CA/AppTaskAzure").Result;
             Assert.Equal(200, (int)response.StatusCode);
@@ -20,7 +20,7 @@ public partial class AppTaskAzureControllerTests : BaseControllerTests
 
             foreach (AppTaskModel appTaskModel in appTaskModelList.Where(c => c.AppTask.AppTaskStatus == AppTaskStatusEnum.Completed))
             {
-                HttpResponseMessage responseDel = httpClient.DeleteAsync($"{ Configuration["CSSPAzureUrl"] }api/en-CA/AppTaskAzure/{ appTaskModel.AppTask.AppTaskID }").Result;
+                HttpResponseMessage responseDel = httpClient.DeleteAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/AppTaskAzure/{ appTaskModel.AppTask.AppTaskID }").Result;
                 Assert.Equal(200, (int)responseDel.StatusCode);
                 string jsonStrDel = await responseDel.Content.ReadAsStringAsync();
                 AppTaskModel appTaskModelDel = JsonSerializer.Deserialize<AppTaskModel>(jsonStrDel);

@@ -1104,4 +1104,7 @@
   <data name="_NeedsAtLeast2Points" xml:space="preserve">
     <value>{0} needs at least 2 points</value>
   </data>
+  <data name="DoingAzureDirectory_" xml:space="preserve">
+    <value>Doing Azure directory --&gt; {0}</value>
+  </data>
 </root>

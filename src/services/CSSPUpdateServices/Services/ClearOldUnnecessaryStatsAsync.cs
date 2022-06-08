@@ -9,9 +9,17 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         // should not be running this function on the original database CSSPDB
         // remove the next line when you are sure
-        return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+        bool a = true;
+        if (a)
+        {
+            CSSPLogService.AppendError($"This function has been disabled until the database has been completely converted to the new system { DateTime.Now }");
+            return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+        }
 
-        if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+        if (!await CSSPLogService.CheckLogin(FunctionName))
+        {
+            return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+        }
 
         List<TVItemStat> TVItemStatList = (from c in db.TVItemStats
                                            where !(c.TVType == TVTypeEnum.Root

@@ -2100,49 +2100,49 @@ namespace CSSPEnums.Tests
                 }
             }
         }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task GetResValueForTypeAndID_ForEnum_MapSizeEnum_Test(string culture)
-        {
-            Assert.True(await EnumsSetup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        //public async Task GetResValueForTypeAndID_ForEnum_MapSizeEnum_Test(string culture)
+        //{
+        //    Assert.True(await EnumsSetup(culture));
 
-            string retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), -100);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+        //    string retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), -100);
+        //    Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
 
-            retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), 10000000);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+        //    retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), 10000000);
+        //    Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
 
-            retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+        //    retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), null);
+        //    Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
 
-            retStr = enums.GetResValueForTypeAndID(typeof(string), null);
-            Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
+        //    retStr = enums.GetResValueForTypeAndID(typeof(string), null);
+        //    Assert.Equal(CSSPCultureEnumsRes.Empty, retStr);
 
-            foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
-            {
-                retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), i);
+        //    foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
+        //    {
+        //        retStr = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), i);
 
-                switch ((MapSizeEnum)i)
-                {
-                    case MapSizeEnum.Size30:
-                        Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize30, retStr);
-                        break;
-                    case MapSizeEnum.Size40:
-                        Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize40, retStr);
-                        break;
-                    case MapSizeEnum.Size50:
-                        Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize50, retStr);
-                        break;
-                    case MapSizeEnum.Size60:
-                        Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize60, retStr);
-                        break;
-                    case MapSizeEnum.Size70:
-                        Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize70, retStr);
-                        break;
-                }
-            }
-        }
+        //        switch ((MapSizeEnum)i)
+        //        {
+        //            case MapSizeEnum.Size30:
+        //                Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize30, retStr);
+        //                break;
+        //            case MapSizeEnum.Size40:
+        //                Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize40, retStr);
+        //                break;
+        //            case MapSizeEnum.Size50:
+        //                Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize50, retStr);
+        //                break;
+        //            case MapSizeEnum.Size60:
+        //                Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize60, retStr);
+        //                break;
+        //            case MapSizeEnum.Size70:
+        //                Assert.Equal(CSSPCultureEnumsRes.MapSizeEnumSize70, retStr);
+        //                break;
+        //        }
+        //    }
+        //}
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
@@ -7243,41 +7243,41 @@ namespace CSSPEnums.Tests
                 }
             }
         }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_MapSizeOK_Test(string culture)
-        {
-            Assert.True(await EnumsSetup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        //public async Task Enums_MapSizeOK_Test(string culture)
+        //{
+        //    Assert.True(await EnumsSetup(culture));
 
-            string retStr = enums.EnumTypeOK(typeof(MapSizeEnum), null);
-            Assert.Equal("", retStr);
+        //    string retStr = enums.EnumTypeOK(typeof(MapSizeEnum), null);
+        //    Assert.Equal("", retStr);
 
-            retStr = enums.EnumTypeOK(typeof(MapSizeEnum), -100);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MapSizeEnum"), retStr);
+        //    retStr = enums.EnumTypeOK(typeof(MapSizeEnum), -100);
+        //    Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MapSizeEnum"), retStr);
 
-            retStr = enums.EnumTypeOK(typeof(MapSizeEnum), 10000000);
-            Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MapSizeEnum"), retStr);
+        //    retStr = enums.EnumTypeOK(typeof(MapSizeEnum), 10000000);
+        //    Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MapSizeEnum"), retStr);
 
-            foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
-            {
-                retStr = enums.EnumTypeOK(typeof(MapSizeEnum), i);
+        //    foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
+        //    {
+        //        retStr = enums.EnumTypeOK(typeof(MapSizeEnum), i);
 
-                switch ((MapSizeEnum)i)
-                {
-                     case MapSizeEnum.Size30:
-                     case MapSizeEnum.Size40:
-                     case MapSizeEnum.Size50:
-                     case MapSizeEnum.Size60:
-                     case MapSizeEnum.Size70:
-                        Assert.Equal("", retStr);
-                        break;
-                    default:
-                        Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MapSizeEnum"), retStr);
-                        break;
-                }
-            }
-        }
+        //        switch ((MapSizeEnum)i)
+        //        {
+        //             case MapSizeEnum.Size30:
+        //             case MapSizeEnum.Size40:
+        //             case MapSizeEnum.Size50:
+        //             case MapSizeEnum.Size60:
+        //             case MapSizeEnum.Size70:
+        //                Assert.Equal("", retStr);
+        //                break;
+        //            default:
+        //                Assert.Equal(string.Format(CSSPCultureEnumsRes._IsRequired, "MapSizeEnum"), retStr);
+        //                break;
+        //        }
+        //    }
+        //}
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]
@@ -12371,32 +12371,32 @@ namespace CSSPEnums.Tests
                 Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
             }
         }
-        [Theory]
-        [InlineData("en-CA")]
-        [InlineData("fr-CA")]
-        public async Task Enums_MapSizeEnumTextOrdered_Test(string culture)
-        {
-            Assert.True(await EnumsSetup(culture));
+        //[Theory]
+        //[InlineData("en-CA")]
+        //[InlineData("fr-CA")]
+        //public async Task Enums_MapSizeEnumTextOrdered_Test(string culture)
+        //{
+        //    Assert.True(await EnumsSetup(culture));
 
-            List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
-            foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
-            {
-                enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), i) });
-            }
-            enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
+        //    List<EnumIDAndText> enumTextOrderedList = new List<EnumIDAndText>();
+        //    foreach (int i in Enum.GetValues(typeof(MapSizeEnum)))
+        //    {
+        //        enumTextOrderedList.Add(new EnumIDAndText() { EnumID = i, EnumText = enums.GetResValueForTypeAndID(typeof(MapSizeEnum), i) });
+        //    }
+        //    enumTextOrderedList = enumTextOrderedList.OrderBy(c => c.EnumText).ToList();
 
-            List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MapSizeEnum));
-            Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
+        //    List<EnumIDAndText> enumTextOrderedList2 = enums.GetEnumTextOrderedList(typeof(MapSizeEnum));
+        //    Assert.Equal(enumTextOrderedList.Count, enumTextOrderedList2.Count);
 
-            EnumIDAndText enumTextOrdered = new EnumIDAndText();
-            Assert.NotNull(enumTextOrdered);
+        //    EnumIDAndText enumTextOrdered = new EnumIDAndText();
+        //    Assert.NotNull(enumTextOrdered);
 
-            for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
-            {
-                Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
-                Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
-            }
-        }
+        //    for (int i = 0, count = enumTextOrderedList.Count; i < count; i++)
+        //    {
+        //        Assert.Equal(enumTextOrderedList[i].EnumText, enumTextOrderedList2[i].EnumText);
+        //        Assert.Equal(enumTextOrderedList[i].EnumID, enumTextOrderedList2[i].EnumID);
+        //    }
+        //}
         [Theory]
         [InlineData("en-CA")]
         [InlineData("fr-CA")]

@@ -53,7 +53,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
             CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVPath"));
         }
 
-        string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvType);
+        string retStr = Enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvType);
         if (!string.IsNullOrWhiteSpace(retStr))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvType"));
@@ -84,7 +84,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         await AddTVItemParentLocalAsync(tvItemModelParentList);
 
         #region TVItem
-        int TVItemIDNew = (from c in dbLocal.TVItems
+        int TVItemIDNew = (from c in DbLocal.TVItems
                            where c.TVItemID < 0
                            orderby c.TVItemID ascending
                            select c.TVItemID).FirstOrDefault() - 1;
@@ -104,8 +104,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
         try
         {
-            dbLocal.TVItems.Add(tvItemNew);
-            dbLocal.SaveChanges();
+            DbLocal.TVItems.Add(tvItemNew);
+            DbLocal.SaveChanges();
         }
         catch (Exception ex)
         {
@@ -116,7 +116,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         #region TVItemLanguage EN
-        int TVItemLanguageIDNewEN = (from c in dbLocal.TVItemLanguages
+        int TVItemLanguageIDNewEN = (from c in DbLocal.TVItemLanguages
                                      where c.TVItemLanguageID < 0
                                      orderby c.TVItemLanguageID ascending
                                      select c.TVItemLanguageID).FirstOrDefault() - 1;
@@ -135,8 +135,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
         try
         {
-            dbLocal.TVItemLanguages.Add(tvItemLanguageNewEN);
-            dbLocal.SaveChanges();
+            DbLocal.TVItemLanguages.Add(tvItemLanguageNewEN);
+            DbLocal.SaveChanges();
         }
         catch (Exception ex)
         {
@@ -147,7 +147,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         #region TVItemLanguage FR
-        int TVItemLanguageIDNewFR = (from c in dbLocal.TVItemLanguages
+        int TVItemLanguageIDNewFR = (from c in DbLocal.TVItemLanguages
                                      where c.TVItemLanguageID < 0
                                      orderby c.TVItemLanguageID ascending
                                      select c.TVItemLanguageID).FirstOrDefault() - 1;
@@ -166,8 +166,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
         try
         {
-            dbLocal.TVItemLanguages.Add(tvItemLanguageNewFR);
-            dbLocal.SaveChanges();
+            DbLocal.TVItemLanguages.Add(tvItemLanguageNewFR);
+            DbLocal.SaveChanges();
         }
         catch (Exception ex)
         {

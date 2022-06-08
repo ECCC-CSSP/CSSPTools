@@ -11,12 +11,8 @@ public partial class UpdateServiceTests
 
         DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_UseOfSite().AddDays(-1);
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSiteAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorUseOfSiteIDList.Count > 0);
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
     [Theory]
     [InlineData("en-CA")]
@@ -27,12 +23,8 @@ public partial class UpdateServiceTests
 
         DateTime LastUpdateDate_UTC = GetLastUpdateDate_UTC_UseOfSite().AddDays(1);
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         List<int> SubsectorUseOfSiteIDList = await CSSPUpdateService.GetTVItemIDListAllOfChangedUseOfSiteAsync(LastUpdateDate_UTC);
         Assert.True(SubsectorUseOfSiteIDList.Count == 0);
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
     }
 
     private DateTime GetLastUpdateDate_UTC_UseOfSite()

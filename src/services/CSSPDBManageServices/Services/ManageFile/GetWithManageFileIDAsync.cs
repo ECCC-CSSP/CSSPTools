@@ -4,7 +4,7 @@ public partial class ManageFileService : ControllerBase, IManageFileService
 {
     public async Task<ActionResult<ManageFile>> GetWithManageFileIDAsync(int ManageFileID)
     {
-        ManageFile manageFile = (from c in dbManage.ManageFiles.AsNoTracking()
+        ManageFile manageFile = (from c in DbManage.ManageFiles.AsNoTracking()
                                  where c.ManageFileID == ManageFileID
                                  select c).FirstOrDefault();
 

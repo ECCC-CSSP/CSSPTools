@@ -4,7 +4,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 {
     public async Task<ActionResult<bool>> RemoveLocalFilesNotFoundInTVFilesAsync()
     {
-        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }()";
+        string FunctionName = $"{this.GetType().Name}.{CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name)}()";
         CSSPLogService.FunctionLog(FunctionName);
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
@@ -12,7 +12,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
         DirectoryInfo diLocal = new DirectoryInfo(Configuration["LocalAppDataPath"]);
         if (!diLocal.Exists)
         {
-            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, diLocal.FullName) }");
+            CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, diLocal.FullName)}");
 
             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
@@ -23,6 +23,10 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                                    where c.TVType == TVTypeEnum.File
                                    orderby c.TVLevel
                                    select c).AsNoTracking().ToList();
+
+        List<int> ParentIDList = (from c in TVItemList
+                                  orderby c.ParentID
+                                  select (int)c.ParentID).Distinct().ToList();
 
         List<TVFile> TVFileList = (from c in db.TVFiles
                                    select c).AsNoTracking().ToList();
@@ -40,41 +44,31 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             }
 
             TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
-            if (tvItem == null)
+            if (tvItem != null)
             {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
-
-                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
             }
-
-
-            ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
         }
 
-        List<int> ParentIDList = (from c in ParentAndFileNameList
-                                      //where c.ParentID == 1
-                                  orderby c.ParentID
-                                  select c.ParentID).Distinct().ToList();
-
-
+        List<DirectoryInfo> diLocalList = diLocal.GetDirectories().ToList();
         count = 0;
-        total = ParentIDList.Count;
-        foreach (int ParentID in ParentIDList)
+        total = diLocalList.Count;
+        foreach (DirectoryInfo diLocalChild in diLocalList)
         {
             count += 1;
             if (count % 1 == 0)
             {
-                Console.WriteLine($"Count -> {count}/{total} doing ParentID {ParentID}");
+                Console.WriteLine($"Count -> {count}/{total} doing local directory {diLocalChild.Name}");
             }
 
-            DirectoryInfo diParentLocal = new DirectoryInfo($@"{diLocal.FullName}{ParentID}\");
+            DirectoryInfo diParentLocal = new DirectoryInfo($@"{diLocal.FullName}{diLocalChild.Name}\");
             List<FileInfo> FileInfoLocalList = new List<FileInfo>();
             if (diParentLocal.Exists)
             {
                 FileInfoLocalList = diParentLocal.GetFiles().ToList();
             }
+
+            int ParentID = int.Parse(diLocalChild.Name);
 
             List<ParentAndFileName> parentAndFileNameList = (from c in ParentAndFileNameList
                                                              where c.ParentID == ParentID
@@ -85,9 +79,9 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             {
                 if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfoNat.Name).Any())
                 {
-                    string DirNat = $@"{ParentID}\{fileInfoNat.Name}";
+                    string DirNat = $@"{diLocalChild.Name}\{fileInfoNat.Name}";
 
-                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingLocalFile_, DirNat) }");
+                    CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingLocalFile_, DirNat)}");
 
                     try
                     {
@@ -95,7 +89,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                     }
                     catch (Exception ex)
                     {
-                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingLocalFile_Error_, DirNat, ex.Message) }");
+                        CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorDeletingLocalFile_Error_, DirNat, ex.Message)}");
 
                         CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 

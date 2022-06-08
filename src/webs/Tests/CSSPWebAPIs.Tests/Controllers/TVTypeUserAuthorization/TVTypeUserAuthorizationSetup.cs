@@ -8,7 +8,7 @@ public partial class TVTypeUserAuthorizationAzureControllerTests : BaseControlle
 
         using (HttpClient httpClient = new HttpClient())
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ContactTest.Token);
 
             HttpResponseMessage response = await httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/TVTypeUserAuthorizationAzure/{ 1 }");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

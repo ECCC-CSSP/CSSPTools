@@ -4,7 +4,7 @@ string appSettings = "appsettings.json";
 
 if (builder.Environment.IsDevelopment())
 {
-    //appSettings = "appsettingstests.json";
+    appSettings = "appsettingstests.json";
 }
 
 builder.WebHost.ConfigureAppConfiguration(configuration =>

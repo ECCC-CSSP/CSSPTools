@@ -18,6 +18,7 @@ public partial class ReadControllerTests : CSSPWebAPIsLocalTests
 
         using (HttpClient httpClient = new HttpClient())
         {
+
             string url = $"{ Configuration["CSSPLocalUrl"] }api/{ culture }/Read/{ webType }";
             var response = await httpClient.GetAsync(url);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

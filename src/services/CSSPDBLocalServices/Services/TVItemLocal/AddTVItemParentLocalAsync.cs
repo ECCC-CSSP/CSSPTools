@@ -6,14 +6,14 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
     {
         foreach (TVItemModel tvItemModel in tvItemModelParent)
         {
-            if (!(from c in dbLocal.TVItems
+            if (!(from c in DbLocal.TVItems
                   where c.TVItemID == tvItemModel.TVItem.TVItemID
                   select c).Any())
             {
                 try
                 {
-                    dbLocal.TVItems.Add(tvItemModel.TVItem);
-                    dbLocal.SaveChanges();
+                    DbLocal.TVItems.Add(tvItemModel.TVItem);
+                    DbLocal.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -24,7 +24,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
                 foreach (LanguageEnum lang in new List<LanguageEnum>() { LanguageEnum.en, LanguageEnum.fr })
                 {
-                    if (!(from c in dbLocal.TVItemLanguages
+                    if (!(from c in DbLocal.TVItemLanguages
                           where c.TVItemID == tvItemModel.TVItem.TVItemID
                           && c.Language == lang
                           select c).Any())
@@ -32,8 +32,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
                         try
                         {
-                            dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang - 1]);
-                            dbLocal.SaveChanges();
+                            DbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[(int)lang - 1]);
+                            DbLocal.SaveChanges();
                         }
                         catch (Exception ex)
                         {

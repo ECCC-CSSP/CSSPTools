@@ -9,8 +9,8 @@ public partial class AuthControllerTests
     {
         Assert.True(await AuthControllerSetup(culture));
 
-        Assert.NotNull(contact);
-        Assert.NotEmpty(contact.Token);
+        Assert.NotNull(ContactTest);
+        Assert.NotEmpty(ContactTest.Token);
     }
     [Theory]
     [InlineData("en-CA")]
@@ -19,8 +19,8 @@ public partial class AuthControllerTests
     {
         Assert.True(await AuthControllerSetup(culture));
 
-        Assert.NotNull(contact);
-        Assert.NotEmpty(contact.Token);
+        Assert.NotNull(ContactTest);
+        Assert.NotEmpty(ContactTest.Token);
 
         List<LoginModel> loginModelList = new List<LoginModel>()
             {
@@ -32,8 +32,8 @@ public partial class AuthControllerTests
 
         foreach (LoginModel loginModel in loginModelList)
         {
-            Assert.NotNull(contact);
-            Assert.NotEmpty(contact.Token);
+            Assert.NotNull(ContactTest);
+            Assert.NotEmpty(ContactTest.Token);
 
             using (HttpClient httpClient = new HttpClient())
             {

@@ -6,61 +6,61 @@ public partial class ManageFileService : ControllerBase, IManageFileService
     {
         if (manageFile == null)
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "manageFile"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._IsNullOrEmpty, "manageFile"));
         }
 
-        if (errRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(errRes));
+        if (ErrResult.ErrList.Count > 0) return await Task.FromResult(BadRequest(ErrResult));
 
         if (manageFile.ManageFileID == 0)
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ManageFileID"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "ManageFileID"));
         }
 
         // doing AzureStorage
         if (string.IsNullOrWhiteSpace(manageFile.AzureStorage))
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureStorage"));
         }
         else
         {
             if (manageFile.AzureStorage.Length > 100)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100"));
+                ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureStorage", "100"));
             }
         }
 
         // doing AzureFileName
         if (string.IsNullOrWhiteSpace(manageFile.AzureFileName))
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureFileName"));
         }
         else
         {
             if (manageFile.AzureFileName.Length > 200)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200"));
+                ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureFileName", "200"));
             }
         }
 
         // doing AzureETag
         if (string.IsNullOrWhiteSpace(manageFile.AzureETag))
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "AzureETag"));
         }
         else
         {
             if (manageFile.AzureETag.Length > 100)
             {
-                errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"));
+                ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._MaxLengthIs_, "AzureETag", "100"));
             }
         }
 
         if (manageFile.AzureCreationTimeUTC.Year < 1980)
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._YearShouldBeBiggerThan_, "AzureCreationTimeUTC", "1980"));
         }
 
-        ManageFile manageFileExist = (from c in dbManage.ManageFiles
+        ManageFile manageFileExist = (from c in DbManage.ManageFiles
                                       where c.AzureFileName == manageFile.AzureFileName
                                       && c.AzureStorage == manageFile.AzureStorage
                                       && c.ManageFileID != manageFile.ManageFileID
@@ -68,23 +68,23 @@ public partial class ManageFileService : ControllerBase, IManageFileService
 
         if (manageFileExist != null)
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExistsWithDifferent_, "ManageFile", "ManageFileID"));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes._AlreadyExistsWithDifferent_, "ManageFile", "ManageFileID"));
         }
 
-        if (errRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(errRes));
+        if (ErrResult.ErrList.Count > 0) return await Task.FromResult(BadRequest(ErrResult));
 
         ManageFile manageFileModify = new ManageFile();
 
-        manageFileModify = (from c in dbManage.ManageFiles
+        manageFileModify = (from c in DbManage.ManageFiles
                             where c.ManageFileID == manageFile.ManageFileID
                             select c).FirstOrDefault();
 
         if (manageFileModify == null)
         {
-            errRes.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", manageFile.ManageFileID.ToString()));
+            ErrResult.ErrList.Add(string.Format(CSSPCultureServicesRes.CouldNotFind_With_Equal_, "ManageFile", "ManageFileID", manageFile.ManageFileID.ToString()));
         }
 
-        if (errRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(errRes));
+        if (ErrResult.ErrList.Count > 0) return await Task.FromResult(BadRequest(ErrResult));
 
         manageFileModify.AzureCreationTimeUTC = manageFile.AzureCreationTimeUTC;
         manageFileModify.AzureETag = manageFile.AzureETag;
@@ -94,14 +94,14 @@ public partial class ManageFileService : ControllerBase, IManageFileService
 
         try
         {
-            dbManage.SaveChanges();
+            DbManage.SaveChanges();
         }
         catch (DbUpdateException ex)
         {
-            errRes.ErrList.Add(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
+            ErrResult.ErrList.Add(ex.Message + (ex.InnerException != null ? " Inner: " + ex.InnerException.Message : ""));
         }
 
-        if (errRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(errRes));
+        if (ErrResult.ErrList.Count > 0) return await Task.FromResult(BadRequest(ErrResult));
 
         return await Task.FromResult(Ok(manageFileModify));
     }

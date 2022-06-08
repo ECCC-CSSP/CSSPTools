@@ -4,10 +4,10 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 {
     private IConfiguration Configuration { get; }
     private ICSSPCultureService CSSPCultureService { get; }
-    private IEnums enums { get; }
+    private IEnums Enums { get; }
     private ICSSPLocalLoggedInService CSSPLocalLoggedInService { get; }
     private ICSSPLogService CSSPLogService { get; }
-    private CSSPDBLocalContext dbLocal { get; }
+    private CSSPDBLocalContext DbLocal { get; }
     private ICSSPReadGzFileService CSSPReadGzFileService { get; }
     private ICSSPCreateGzFileService CSSPCreateGzFileService { get; }
     private IHelperLocalService HelperLocalService { get; }
@@ -35,15 +35,16 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         if (string.IsNullOrEmpty(Configuration["CSSPJSONPath"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPath", "TVItemLocalService") }");
         if (string.IsNullOrEmpty(Configuration["CSSPJSONPathLocal"])) throw new Exception($"{ string.Format(CSSPCultureServicesRes.CouldNotFindParameter_InConfigFilesOfService_, "CSSPJSONPathLocal", "TVItemLocalService") }");
 
-        this.Configuration = Configuration;
-        this.CSSPCultureService = CSSPCultureService;
-        this.enums = enums;
-        this.CSSPLocalLoggedInService = CSSPLocalLoggedInService;
-        this.CSSPLogService = CSSPLogService;
-        this.dbLocal = dbLocal;
-        this.CSSPReadGzFileService = CSSPReadGzFileService;
-        this.CSSPCreateGzFileService = CSSPCreateGzFileService;
-        this.HelperLocalService = HelperLocalService;
+        this.Configuration = Configuration ?? null;
+        this.CSSPCultureService = CSSPCultureService ?? null;
+        this.Enums = enums ?? null;
+        this.CSSPLocalLoggedInService = CSSPLocalLoggedInService ?? null;
+        this.CSSPLogService = CSSPLogService ?? null;
+        this.DbLocal = dbLocal ?? null;
+        this.CSSPReadGzFileService = CSSPReadGzFileService ?? null;
+        this.CSSPCreateGzFileService = CSSPCreateGzFileService ?? null;
+        this.HelperLocalService = HelperLocalService ?? null;
+        
         ToRecreateList = new List<ToRecreate>();
     }
 }

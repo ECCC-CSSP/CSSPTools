@@ -9,8 +9,6 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
-
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 

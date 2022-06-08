@@ -38,7 +38,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
             CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVItemID"));
         }
 
-        string retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItemParent.TVType);
+        string retStr = Enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItemParent.TVType);
         if (!string.IsNullOrWhiteSpace(retStr))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemParent.TVType"));
@@ -49,7 +49,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
             CSSPLogService.AppendError(string.Format(CSSPCultureServicesRes._IsRequired, "tvItem.TVItemID"));
         }
 
-        retStr = enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItemModel.TVItem.TVType);
+        retStr = Enums.EnumTypeOK(typeof(TVTypeEnum), (int?)tvItemModel.TVItem.TVType);
         if (!string.IsNullOrWhiteSpace(retStr))
         {
             CSSPLogService.ErrRes.ErrList.Add(string.Format(CSSPCultureServicesRes._IsRequired, "tvItemModel.TVItem.TVType"));
@@ -110,7 +110,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         if (CSSPLogService.ErrRes.ErrList.Count > 0) return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
 
         #region TVItem
-        TVItem tvItem = (from c in dbLocal.TVItems
+        TVItem tvItem = (from c in DbLocal.TVItems
                          where c.TVItemID == tvItemModel.TVItem.TVItemID
                          select c).FirstOrDefault();
 
@@ -124,8 +124,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
                 tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
                 tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
 
-                dbLocal.TVItems.Add(tvItem);
-                dbLocal.SaveChanges();
+                DbLocal.TVItems.Add(tvItem);
+                DbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -144,7 +144,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
                 tvItem.LastUpdateContactTVItemID = CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.ContactTVItemID;
                 tvItem.LastUpdateDate_UTC = DateTime.UtcNow;
 
-                dbLocal.SaveChanges();
+                DbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -156,7 +156,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         #endregion TVItem
 
         #region TVItemLanguage EN
-        TVItemLanguage tvItemLanguageEN = (from c in dbLocal.TVItemLanguages
+        TVItemLanguage tvItemLanguageEN = (from c in DbLocal.TVItemLanguages
                                            where c.TVItemID == tvItemModel.TVItem.TVItemID
                                            && c.Language == LanguageEnum.en
                                            select c).FirstOrDefault();
@@ -170,8 +170,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
             try
             {
-                dbLocal.TVItemLanguages.Add(tvItemLanguageEN);
-                dbLocal.SaveChanges();
+                DbLocal.TVItemLanguages.Add(tvItemLanguageEN);
+                DbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -194,7 +194,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
                 try
                 {
-                    dbLocal.SaveChanges();
+                    DbLocal.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -206,7 +206,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
         #endregion TVItemLanguage EN
 
         #region TVItemLanguage FR
-        TVItemLanguage tvItemLanguageFR = (from c in dbLocal.TVItemLanguages
+        TVItemLanguage tvItemLanguageFR = (from c in DbLocal.TVItemLanguages
                                            where c.TVItemID == tvItemModel.TVItem.TVItemID
                                            && c.Language == LanguageEnum.fr
                                            select c).FirstOrDefault();
@@ -220,8 +220,8 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
             try
             {
-                dbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[1]);
-                dbLocal.SaveChanges();
+                DbLocal.TVItemLanguages.Add(tvItemModel.TVItemLanguageList[1]);
+                DbLocal.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -244,7 +244,7 @@ public partial class TVItemLocalService : ControllerBase, ITVItemLocalService
 
                 try
                 {
-                    dbLocal.SaveChanges();
+                    DbLocal.SaveChanges();
                 }
                 catch (Exception ex)
                 {

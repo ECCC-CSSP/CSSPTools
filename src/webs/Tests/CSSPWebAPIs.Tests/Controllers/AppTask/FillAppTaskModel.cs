@@ -22,7 +22,7 @@ public partial class AppTaskAzureControllerTests
             EstimatedLength_second = null,
             RemainingTime_second = null,
             LastUpdateDate_UTC = DateTime.UtcNow,
-            LastUpdateContactTVItemID = contact.ContactTVItemID,
+            LastUpdateContactTVItemID = ContactTest.ContactTVItemID,
         };
 
         appTaskModel.AppTask = appTask;
@@ -39,7 +39,7 @@ public partial class AppTaskAzureControllerTests
                 StatusText = "This is the status text",
                 TranslationStatus = TranslationStatusEnum.Translated,
                 LastUpdateDate_UTC = DateTime.UtcNow,
-                LastUpdateContactTVItemID = contact.ContactTVItemID,
+                LastUpdateContactTVItemID = ContactTest.ContactTVItemID,
             };
 
             appTaskModel.AppTaskLanguageList.Add(appTaskLanguage);

@@ -9,15 +9,15 @@ public partial class AuthControllerTests
     {
         Assert.True(await AuthControllerSetup(culture));
 
-        Assert.NotNull(contact);
-        Assert.NotEmpty(contact.Token);
+        Assert.NotNull(ContactTest);
+        Assert.NotEmpty(ContactTest.Token);
 
         using (HttpClient httpClient = new HttpClient())
         {
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             httpClient.DefaultRequestHeaders.Accept.Add(contentType);
 
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ContactTest.Token);
             HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/GoogleMapKeyHash").Result;
             Assert.True((int)response.StatusCode == 200);
             string GoogleMapKeyHash = response.Content.ReadAsStringAsync().Result;
@@ -31,12 +31,12 @@ public partial class AuthControllerTests
     {
         Assert.True(await AuthControllerSetup(culture));
 
-        Assert.NotNull(contact);
-        Assert.NotEmpty(contact.Token);
+        Assert.NotNull(ContactTest);
+        Assert.NotEmpty(ContactTest.Token);
 
         using (HttpClient httpClient = new HttpClient())
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", contact.Token + "notworking");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ContactTest.Token + "notworking");
             HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/Auth/GoogleMapKeyHash").Result;
             Assert.Equal(401, (int)response.StatusCode);
             string jsonStr = await response.Content.ReadAsStringAsync();

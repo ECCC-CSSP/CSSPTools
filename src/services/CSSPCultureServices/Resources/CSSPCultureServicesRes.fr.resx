@@ -1101,4 +1101,7 @@
   <data name="_NeedsAtLeast2Points" xml:space="preserve">
     <value>{0} requiert au moins 2 points</value>
   </data>
+  <data name="DoingAzureDirectory_" xml:space="preserve">
+    <value>En Train de faire le directoire d'Azure --&gt; {0}</value>
+  </data>
 </root>

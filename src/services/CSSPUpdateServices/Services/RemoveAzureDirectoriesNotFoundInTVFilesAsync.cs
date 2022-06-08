@@ -9,16 +9,6 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"]);
-        if (!di.Exists)
-        {
-            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, di.FullName) }");
-
-            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-            return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-        }
-
         List<TVItem> TVItemList = (from c in db.TVItems
                                    where c.TVType == TVTypeEnum.File
                                    orderby c.TVLevel
@@ -31,7 +21,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
 
         // ---------------------------------------------
-        // Cleaning Azure drive
+        // Cleaning Azure drive (directory)
         //----------------------------------------------
 
         ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);

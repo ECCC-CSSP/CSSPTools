@@ -4,7 +4,7 @@ public partial class ManageFileService : ControllerBase, IManageFileService
 {
     public async Task<ActionResult<ManageFile>> GetWithAzureStorageAndAzureFileNameAsync(string AzureStorage, string AzureFileName)
     {
-        ManageFile manageFile = (from c in dbManage.ManageFiles.AsNoTracking()
+        ManageFile manageFile = (from c in DbManage.ManageFiles.AsNoTracking()
                                  where c.AzureStorage == AzureStorage
                                  && c.AzureFileName == AzureFileName
                                  select c).FirstOrDefault();

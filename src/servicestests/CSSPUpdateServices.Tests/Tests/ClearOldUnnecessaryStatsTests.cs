@@ -2,14 +2,12 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    [Theory]
+    [Theory(Skip = "Skipping this test until we officially convert to the new/final CSSPDB which would not need all the stats info from the TVItemStats table")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task ClearOldUnnecessaryStats_Good_Test(string culture)
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
-
-        Assert.Equal(0, (from c in dbManage.CommandLogs select c).Count());
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";

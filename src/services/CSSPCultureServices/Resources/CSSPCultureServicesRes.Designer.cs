@@ -1546,6 +1546,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Doing Azure directory --&gt; {0}.
+        /// </summary>
+        public static string DoingAzureDirectory_ {
+            get {
+                return ResourceManager.GetString("DoingAzureDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         public static string Done {

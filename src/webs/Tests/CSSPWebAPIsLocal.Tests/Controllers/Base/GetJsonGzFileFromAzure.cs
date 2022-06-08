@@ -35,10 +35,8 @@ public partial class CSSPWebAPIsLocalTests
         }
 
         ShareFileDownloadInfo download = shareFileClient.Download();
-        using (FileStream stream = File.OpenWrite(fiDownload.FullName))
-        {
-            download.Content.CopyTo(stream);
-        }
+        using FileStream stream = File.OpenWrite(fiDownload.FullName);
+        download.Content.CopyTo(stream);
     }
 }
 

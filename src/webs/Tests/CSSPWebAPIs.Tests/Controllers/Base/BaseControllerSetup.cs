@@ -6,7 +6,7 @@ public partial class BaseControllerTests
     protected IConfiguration Configuration { get; set; }
     protected IServiceProvider Provider { get; set; }
     protected IServiceCollection Services { get; set; }
-    protected Contact contact { get; set; }
+    protected Contact ContactTest { get; set; }
 
     protected async Task<bool> BaseControllerSetup(string culture)
     {
@@ -31,6 +31,25 @@ public partial class BaseControllerTests
         Provider = Services.BuildServiceProvider();
         Assert.NotNull(Provider);
 
+        using (HttpClient httpClient = new HttpClient())
+        {
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            httpClient.DefaultRequestHeaders.Accept.Add(contentType);
+
+            try
+            {
+                HttpResponseMessage response = httpClient.GetAsync($"{ Configuration["CSSPAzureUrl"] }version").Result;
+                Assert.True((int)response.StatusCode == 200);
+            }
+            catch (Exception)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"Http server is probably not running. Please run server { Configuration["CSSPAzureUrl"] }");
+                sb.AppendLine($"You will need to open another solution with CSSPWebAPIs set CSSPWebAPIs as Default startup and press F5");
+                Assert.True(false, sb.ToString());
+            }
+        }
+
         LoginModel loginModel = new LoginModel()
         {
             LoginEmail = Configuration["LoginEmail"],
@@ -44,11 +63,11 @@ public partial class BaseControllerTests
 
             string stringData = JsonSerializer.Serialize(loginModel);
             var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPAzureUrl"] }api/en-CA/auth/token", contentData).Result;
+            HttpResponseMessage response = httpClient.PostAsync($"{ Configuration["CSSPAzureUrl"] }api/{ culture }/auth/token", contentData).Result;
             Assert.True((int)response.StatusCode == 200);
 
-            contact = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
-            Assert.NotNull(contact);
+            ContactTest = JsonSerializer.Deserialize<Contact>(response.Content.ReadAsStringAsync().Result);
+            Assert.NotNull(ContactTest);
         }
 
         return await Task.FromResult(true);

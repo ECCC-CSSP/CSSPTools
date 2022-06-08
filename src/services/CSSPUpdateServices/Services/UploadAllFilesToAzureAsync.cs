@@ -14,7 +14,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"]);
 
-        List<DirectoryInfo> diList = di.GetDirectories().ToList().Skip(0).Take(10000).ToList();
+        List<DirectoryInfo> diList = di.GetDirectories().ToList().Skip(0).Take(20000).ToList();
 
         int count = 0;
         foreach (DirectoryInfo d in diList)
