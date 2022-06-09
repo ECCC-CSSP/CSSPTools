@@ -9,6 +9,7 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
+        string LocalAppDataPath = Configuration["LocalAppDataPath"];
         string FullCSSPFilesPath = Configuration["CSSPFilesPath"];
         string FullAzureFilesPath = Configuration["AzureStoreCSSPFilesPath"];
 
@@ -110,7 +111,7 @@ public partial class UpdateServiceTests
 
         Assert.True(directory2.Exists());
 
-        FileInfo fi2 = new FileInfo(FullCSSPFilesPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
+        FileInfo fi2 = new FileInfo(LocalAppDataPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
         Assert.True(fi2.Exists);
 
         ShareFileClient file2 = directory2.GetFileClient(a.f.ServerFileName);
