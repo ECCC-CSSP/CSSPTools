@@ -2,7 +2,7 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    private void DeleteAllBackupFilesLocal()
+    private void DeleteAllTestBackupFilesLocal()
     {
         Assert.True(Configuration["azure_csspjson_backup_uncompress"].Contains("test"), "azure_csspjson_backup_uncompress config parameter must contain 'test");
         Assert.True(Configuration["azure_csspjson_backup"].Contains("test"), "azure_csspjson_backup config parameter must contain 'test");

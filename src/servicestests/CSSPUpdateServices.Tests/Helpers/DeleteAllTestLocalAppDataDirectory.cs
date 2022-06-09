@@ -2,7 +2,7 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    private void DeleteTestLocalAppDataDirectory()
+    private void DeleteAllTestLocalAppDataDirectory()
     {
         Assert.True(Configuration["LocalAppDataPath"].Contains("_Test"), "LocalAppDataPath config parameter must contain '_Test");
 

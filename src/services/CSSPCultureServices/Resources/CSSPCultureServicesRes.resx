@@ -1107,4 +1107,22 @@
   <data name="DoingAzureDirectory_" xml:space="preserve">
     <value>Doing Azure directory --&gt; {0}</value>
   </data>
+  <data name="ExternalHardDriveAppDataPathDoesNotExist_" xml:space="preserve">
+    <value>ExternalHardDriveAppDataPath does not exist {0}</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DeletingExternalHardDriveDirectory_" xml:space="preserve">
+    <value>Deleting external hard drive directory {0}</value>
+  </data>
+  <data name="DeletingExternalHardDriveFile_" xml:space="preserve">
+    <value>\tDeleting external hard drive file --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingExternalHardDriveDirectory_Error_" xml:space="preserve">
+    <value>\tError deleting external hard drive directory --&gt; {0}. Error: {1}</value>
+  </data>
+  <data name="ErrorDeletingExternalHardDriveFile_Error_" xml:space="preserve">
+    <value>\tError deleting external hard drive file --&gt; {0}. Error: {1}</value>
+  </data>
 </root>

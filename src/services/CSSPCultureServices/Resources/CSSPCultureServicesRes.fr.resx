@@ -1104,4 +1104,19 @@
   <data name="DoingAzureDirectory_" xml:space="preserve">
     <value>En Train de faire le directoire d'Azure --&gt; {0}</value>
   </data>
+  <data name="ExternalHardDriveAppDataPathDoesNotExist_" xml:space="preserve">
+    <value>ExternalHardDriveAppDataPath n'existe pas {0}</value>
+  </data>
+  <data name="DeletingExternalHardDriveDirectory_" xml:space="preserve">
+    <value>Suppression du directoire du disque dur externe --&gt; {0}</value>
+  </data>
+  <data name="DeletingExternalHardDriveFile_" xml:space="preserve">
+    <value>\tSuppression de la filière du disque dur externe --&gt; {0}</value>
+  </data>
+  <data name="ErrorDeletingExternalHardDriveDirectory_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du disque dur externe --&gt; {0}. Erreur: {1}</value>
+  </data>
+  <data name="ErrorDeletingExternalHardDriveFile_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression de la filière du disque dur externe --&gt; {0}. Erreur: {1}</value>
+  </data>
 </root>

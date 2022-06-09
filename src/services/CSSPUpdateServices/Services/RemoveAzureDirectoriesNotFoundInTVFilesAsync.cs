@@ -46,8 +46,8 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
                 if (shareFileItem.IsDirectory)
                 {
-                    ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
-                    ShareDirectoryClient directorySub = shareClientSub.GetDirectoryClient(shareFileItem.Name);
+                    //ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
+                    ShareDirectoryClient directorySub = shareClient.GetDirectoryClient(shareFileItem.Name);
 
                     if (directorySub.Exists())
                     {

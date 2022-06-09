@@ -1384,6 +1384,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting external hard drive directory {0}.
+        /// </summary>
+        public static string DeletingExternalHardDriveDirectory_ {
+            get {
+                return ResourceManager.GetString("DeletingExternalHardDriveDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tDeleting external hard drive file --&gt; {0}.
+        /// </summary>
+        public static string DeletingExternalHardDriveFile_ {
+            get {
+                return ResourceManager.GetString("DeletingExternalHardDriveFile_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleting local directory {0}.
         /// </summary>
         public static string DeletingLocalDirectory_ {
@@ -1681,6 +1699,24 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to \tError deleting external hard drive directory --&gt; {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorDeletingExternalHardDriveDirectory_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingExternalHardDriveDirectory_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \tError deleting external hard drive file --&gt; {0}. Error: {1}.
+        /// </summary>
+        public static string ErrorDeletingExternalHardDriveFile_Error_ {
+            get {
+                return ResourceManager.GetString("ErrorDeletingExternalHardDriveFile_Error_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to \tError deleting local directory --&gt; {0}. Error: {1}.
         /// </summary>
         public static string ErrorDeletingLocalDirectory_Error_ {
@@ -1893,6 +1929,15 @@ namespace CSSPCultureServices.Resources {
         public static string ExistOnColumnGroup {
             get {
                 return ResourceManager.GetString("ExistOnColumnGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExternalHardDriveAppDataPath does not exist {0}.
+        /// </summary>
+        public static string ExternalHardDriveAppDataPathDoesNotExist_ {
+            get {
+                return ResourceManager.GetString("ExternalHardDriveAppDataPathDoesNotExist_", resourceCulture);
             }
         }
         
@@ -2694,6 +2739,15 @@ namespace CSSPCultureServices.Resources {
         public static string StartingAzureDirectoryCleanup {
             get {
                 return ResourceManager.GetString("StartingAzureDirectoryCleanup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

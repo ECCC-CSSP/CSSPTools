@@ -2,7 +2,7 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    private void DeleteAllJsonFilesInAzureTestStore()
+    private void DeleteAllTestJsonFilesInAzure()
     {
         Assert.True(Configuration["AzureStoreCSSPJSONPath"].Contains("test"), "AzureStoreCSSPJSONPath config parameter must contain 'test");
 
@@ -14,11 +14,21 @@ public partial class UpdateServiceTests
 
         foreach (ShareFileItem shareFileItem in directory.GetFilesAndDirectories())
         {
-            ShareFileClient file = directory.GetFileClient(shareFileItem.Name);
-            Assert.NotNull(file);
+            ShareDirectoryClient directorySub = shareClient.GetDirectoryClient(shareFileItem.Name);
 
-            Response<bool> responseFile = file.DeleteIfExists();
-            Assert.True(responseFile.Value);
+            if (directorySub.Exists())
+            {
+                foreach (ShareFileItem shareFileItemSub in directorySub.GetFilesAndDirectories())
+                {
+                    ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
+
+                    Response<bool> responseFile = file.DeleteIfExists();
+
+                    Assert.True(responseFile.Value);
+                }
+            }
+
+            Response<bool> responseDir = directorySub.DeleteIfExists();
         }
 
         Assert.Empty(directory.GetFilesAndDirectories());

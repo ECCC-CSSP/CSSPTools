@@ -2,7 +2,7 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    private void DeleteTestNationalBackupAppDataDirectory()
+    private void DeleteAllTestNationalBackupAppDataDirectory()
     {
         if (Environment.MachineName.ToLower() == "wmon01dtchlebl2")
         {

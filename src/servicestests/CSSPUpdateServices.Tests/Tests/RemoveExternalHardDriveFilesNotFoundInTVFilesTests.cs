@@ -5,17 +5,18 @@ public partial class UpdateServiceTests
     [Theory]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
-    public async Task RemoveNationalBackupFilesNotFoundInTVFiles_Good_Test(string culture)
+    public async Task RemoveExternalHardDriveFilesNotFoundInTVFilesTests_Good_Test(string culture)
     {
-        if (Environment.MachineName.ToLower() == "wmon01dtchlebl2")
+        Assert.True(await CSSPUpdateServiceSetup(culture));
+
+        string FullAppDataPath = Configuration["ExternalHardDriveBackkupAppDataPath"];
+
+        CSSPLogService.CSSPAppName = "AppNameTest";
+        CSSPLogService.CSSPCommandName = "CommandNameTest";
+
+        DirectoryInfo diExistTest = new DirectoryInfo(Configuration["ExternalHardDriveBackkupAppDataPath"].Replace("_Test", ""));
+        if (diExistTest.Exists)
         {
-            Assert.True(await CSSPUpdateServiceSetup(culture));
-
-            string FullAppDataPath = Configuration["NationalBackupAppDataPath"];
-
-            CSSPLogService.CSSPAppName = "AppNameTest";
-            CSSPLogService.CSSPCommandName = "CommandNameTest";
-
             List<string> dirNameList = new List<string>() { "1", "2" };
             string testFileName = "testUnique29347.txt";
 
@@ -90,7 +91,7 @@ public partial class UpdateServiceTests
                 Assert.True(false, ex.Message);
             }
 
-            var actionRes = await CSSPUpdateService.RemoveNationalBackupFilesNotFoundInTVFilesAsync();
+            var actionRes = await CSSPUpdateService.RemoveExternalHardDriveFilesNotFoundInTVFilesAsync();
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
             foreach (string dirName in dirNameList)
@@ -105,11 +106,11 @@ public partial class UpdateServiceTests
 
             fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
             Assert.True(fiDest.Exists);
-
-            await CSSPLogService.Save();
-
-            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
+
+        await CSSPLogService.Save();
+
+        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
 

@@ -9,6 +9,8 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
+        string FullAppDataPath = Configuration["LocalAppDataPath"];
+
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
@@ -17,7 +19,7 @@ public partial class UpdateServiceTests
 
         foreach (string dirName in dirNameList)
         {
-            DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"] + dirName + "\\");
+            DirectoryInfo di = new DirectoryInfo(FullAppDataPath + dirName + "\\");
             if (!di.Exists)
             {
                 try
@@ -30,7 +32,7 @@ public partial class UpdateServiceTests
                 }
             }
 
-            di = new DirectoryInfo(Configuration["LocalAppDataPath"] + dirName + "\\");
+            di = new DirectoryInfo(FullAppDataPath + dirName + "\\");
             Assert.True(di.Exists);
 
             FileInfo fi = new FileInfo(di + testFileName);
@@ -46,15 +48,61 @@ public partial class UpdateServiceTests
             Assert.True(fi.Exists);
         }
 
+        var a = (from c in db.TVItems
+                 from f in db.TVFiles
+                 where c.TVItemID == f.TVFileTVItemID
+                 && c.ParentID == 1
+                 orderby f.FileSize_kb
+                 select new { c, f }).FirstOrDefault();
+
+        Assert.NotNull(a);
+
+        DirectoryInfo di2 = new DirectoryInfo(FullAppDataPath + "1\\");
+
+        if (!di2.Exists)
+        {
+            try
+            {
+                di2.Create();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(!false, ex.Message);
+            }
+        }
+
+        di2 = new DirectoryInfo(FullAppDataPath + "1\\");
+        Assert.True(di2.Exists);
+
+        FileInfo fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
+
+        FileInfo fiOrigin = new FileInfo(FullAppDataPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
+        Assert.True(fiOrigin.Exists);
+
+        try
+        {
+            File.Copy(fiOrigin.FullName, fiDest.FullName, true);
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, ex.Message);
+        }
+
         var actionRes = await CSSPUpdateService.RemoveLocalFilesNotFoundInTVFilesAsync();
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         foreach (string dirName in dirNameList)
         {
-            DirectoryInfo di = new DirectoryInfo(Configuration["LocalAppDataPath"] + dirName + "\\");
+            DirectoryInfo di = new DirectoryInfo(FullAppDataPath + dirName + "\\");
             FileInfo fi = new FileInfo(di + testFileName);
             Assert.False(fi.Exists);
         }
+
+        DirectoryInfo diDest = new DirectoryInfo(FullAppDataPath + "1\\");
+        Assert.True(diDest.Exists);
+
+        fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
+        Assert.True(fiDest.Exists);
 
         await CSSPLogService.Save();
 

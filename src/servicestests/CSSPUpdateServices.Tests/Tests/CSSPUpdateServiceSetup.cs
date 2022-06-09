@@ -100,15 +100,17 @@ public partial class UpdateServiceTests
         ClearCommandLogs();
         ClearManageFiles();
 
-        DeleteAllJsonFilesInAzureTestStore();
-
-        DeleteAllJsonFilesLocal();
-
-        DeleteAllBackupFilesLocal();
-
-        DeleteTestLocalAppDataDirectory();
-
-        DeleteTestNationalBackupAppDataDirectory();
+        DeleteAllTestBackupFilesLocal();
+        DeleteAllTestFiles();
+        DeleteAllTestFilesInAzure();
+        DeleteAllTestJsonFiles();
+        DeleteAllTestJsonFilesInAzure();
+        DeleteAllTestJsonFilesLocal();
+        DeleteAllTestLocalAppDataDirectory();
+        DeleteAllTestExternalHardDriveAppDataDirectory();
+        DeleteAllTestNationalBackupAppDataDirectory();
+        DeleteAllTestOtherFiles();
+        DeleteAllTestTempFiles();
 
         return await Task.FromResult(true);
     }

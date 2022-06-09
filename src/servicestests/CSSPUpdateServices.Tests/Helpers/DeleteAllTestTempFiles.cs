@@ -2,11 +2,11 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    private void DeleteAllJsonFilesLocal()
+    private void DeleteAllTestTempFiles()
     {
-        Assert.True(Configuration["CSSPJSONPathLocal"].Contains("Test"), "CSSPJSONPathLocal config parameter must contain 'Test");
+        Assert.True(Configuration["CSSPTempFilesPath"].Contains("Test"), "CSSPTempFilesPath config parameter must contain 'Test");
 
-        DirectoryInfo di = new DirectoryInfo(Configuration["CSSPJSONPathLocal"]);
+        DirectoryInfo di = new DirectoryInfo(Configuration["CSSPTempFilesPath"]);
         Assert.True(di.Exists);
 
         foreach (FileInfo fi in di.GetFiles())

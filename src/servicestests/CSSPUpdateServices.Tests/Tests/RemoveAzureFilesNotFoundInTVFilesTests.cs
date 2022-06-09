@@ -9,17 +9,20 @@ public partial class UpdateServiceTests
     {
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
+        string FullCSSPFilesPath = Configuration["CSSPFilesPath"];
+        string FullAzureFilesPath = Configuration["AzureStoreCSSPFilesPath"];
+
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> dirNameList = new List<string>() { "1", "2" };
         string testFileName = "testunique8726346.txt";
 
-        ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
+        ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), FullAzureFilesPath);
 
         foreach (string dirName in dirNameList)
         {
-            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPFilesPath"] + dirName + "\\");
+            DirectoryInfo di = new DirectoryInfo(FullCSSPFilesPath + dirName + "\\");
             if (!di.Exists)
             {
                 try
@@ -32,7 +35,7 @@ public partial class UpdateServiceTests
                 }
             }
 
-            di = new DirectoryInfo(Configuration["CSSPFilesPath"] + dirName + "\\");
+            di = new DirectoryInfo(FullCSSPFilesPath + dirName + "\\");
             Assert.True(di.Exists);
 
             FileInfo fi = new FileInfo(di + testFileName);
@@ -80,12 +83,56 @@ public partial class UpdateServiceTests
             }
         }
 
+        var a = (from c in db.TVItems
+                 from f in db.TVFiles
+                 where c.TVItemID == f.TVFileTVItemID
+                 && c.ParentID == 1
+                 orderby f.FileSize_kb
+                 select new { c, f }).FirstOrDefault();
+
+        Assert.NotNull(a);
+
+        ShareDirectoryClient directory2 = shareClient.GetDirectoryClient("1");
+
+        if (!directory2.Exists())
+        {
+            try
+            {
+                directory2.Create();
+            }
+            catch (Exception ex)
+            {
+                Assert.True(!false, ex.Message);
+            }
+        }
+
+        directory2 = shareClient.GetDirectoryClient("1");
+
+        Assert.True(directory2.Exists());
+
+        FileInfo fi2 = new FileInfo(FullCSSPFilesPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
+        Assert.True(fi2.Exists);
+
+        ShareFileClient file2 = directory2.GetFileClient(a.f.ServerFileName);
+        using (FileStream stream = File.OpenRead(fi2.FullName))
+        {
+            try
+            {
+                file2.Create(stream.Length);
+                file2.Upload(stream);
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+        }
+
         var actionRes = await CSSPUpdateService.RemoveAzureFilesNotFoundInTVFilesAsync();
         Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
         foreach (string dirName in dirNameList)
         {
-            DirectoryInfo di = new DirectoryInfo(Configuration["CSSPFilesPath"] + dirName + "\\");
+            DirectoryInfo di = new DirectoryInfo(FullCSSPFilesPath + dirName + "\\");
             FileInfo fi = new FileInfo(di + testFileName);
 
             ShareDirectoryClient directory = shareClient.GetDirectoryClient(dirName);
@@ -95,6 +142,12 @@ public partial class UpdateServiceTests
             ShareFileClient file = directory.GetFileClient(fi.Name);
             Assert.False(file.Exists());
         }
+
+        directory2 = shareClient.GetDirectoryClient("1");
+        Assert.True(directory2.Exists());
+
+        file2 = directory2.GetFileClient(a.f.ServerFileName);
+        Assert.True(file2.Exists());
 
         await CSSPLogService.Save();
 

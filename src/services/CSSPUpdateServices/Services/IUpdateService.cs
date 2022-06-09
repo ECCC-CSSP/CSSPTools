@@ -6,6 +6,8 @@ public interface ICSSPUpdateService
     Task<ActionResult<bool>> ClearOldUnnecessaryStatsAsync();
     Task<ActionResult<bool>> RemoveAzureDirectoriesNotFoundInTVFilesAsync();
     Task<ActionResult<bool>> RemoveAzureFilesNotFoundInTVFilesAsync();
+    Task<ActionResult<bool>> RemoveExternalHardDriveDirectoriesNotFoundInTVFilesAsync();
+    Task<ActionResult<bool>> RemoveExternalHardDriveFilesNotFoundInTVFilesAsync();
     Task<ActionResult<bool>> RemoveLocalDirectoriesNotFoundInTVFilesAsync();
     Task<ActionResult<bool>> RemoveLocalFilesNotFoundInTVFilesAsync();
     Task<ActionResult<bool>> RemoveNationalBackupDirectoriesNotFoundInTVFilesAsync();
