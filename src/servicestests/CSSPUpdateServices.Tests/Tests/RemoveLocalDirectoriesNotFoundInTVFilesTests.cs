@@ -17,7 +17,7 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        DirectoryInfo diExistTest = new DirectoryInfo(Configuration["ExternalHardDriveBackkupAppDataPath"].Replace("_Test", ""));
+        DirectoryInfo diExistTest = new DirectoryInfo(Configuration["LocalAppDataPath"].Replace("_Test", ""));
         if (diExistTest.Exists)
         {
       
