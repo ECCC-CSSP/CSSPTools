@@ -981,17 +981,17 @@
   <data name="DeletingAzureFile_" xml:space="preserve">
     <value>\tDeleting Azure file --&gt; {0}</value>
   </data>
-  <data name="DeletingLocalDirectory_" xml:space="preserve">
-    <value>Deleting local directory {0}</value>
+  <data name="DeletingLocalHardDriveDirectory_" xml:space="preserve">
+    <value>Deleting local hard drive directory {0}</value>
   </data>
-  <data name="DeletingLocalFile_" xml:space="preserve">
-    <value>\tDeleting local file --&gt; {0}</value>
+  <data name="DeletingLocalHardDriveFile_" xml:space="preserve">
+    <value>\tDeleting local hard drive file --&gt; {0}</value>
   </data>
-  <data name="DeletingNationalDirectory_" xml:space="preserve">
-    <value>Deleting national directory {0}</value>
+  <data name="DeletingNationalSharedDriveDirectory_" xml:space="preserve">
+    <value>Deleting national shared drive directory {0}</value>
   </data>
-  <data name="DeletingNationalFile_" xml:space="preserve">
-    <value>\tDeleting national file --&gt; {0}</value>
+  <data name="DeletingNationalSharedDriveFile_" xml:space="preserve">
+    <value>\tDeleting national shared drive file --&gt; {0}</value>
   </data>
   <data name="DeletingTVFileAndTVItem_" xml:space="preserve">
     <value>Deleting TVFile and TVItem ---&gt; {0}</value>
@@ -1005,17 +1005,17 @@
   <data name="ErrorDeletingAzureFile_" xml:space="preserve">
     <value>\tError deleting Azure file --&gt; {0}</value>
   </data>
-  <data name="ErrorDeletingLocalDirectory_Error_" xml:space="preserve">
-    <value>\tError deleting local directory --&gt; {0}. Error: {1}</value>
+  <data name="ErrorDeletingLocalHardDriveDirectory_Error_" xml:space="preserve">
+    <value>\tError deleting local hard drive directory --&gt; {0}. Error: {1}</value>
   </data>
-  <data name="ErrorDeletingLocalFile_Error_" xml:space="preserve">
-    <value>\tError deleting local file --&gt; {0}. Error: {1}</value>
+  <data name="ErrorDeletingLocalHardDriveFile_Error_" xml:space="preserve">
+    <value>\tError deleting local hard drive file --&gt; {0}. Error: {1}</value>
   </data>
-  <data name="ErrorDeletingNationalDirectory_Error_" xml:space="preserve">
-    <value>\tError deleting national directory --&gt; {0}. Error: {1}</value>
+  <data name="ErrorDeletingNationalSharedDriveDirectory_Error_" xml:space="preserve">
+    <value>\tError deleting national shared drive directory --&gt; {0}. Error: {1}</value>
   </data>
-  <data name="ErrorDeletingNationalFile_Error_" xml:space="preserve">
-    <value>\tError deleting national file --&gt; {0}. Error: {1}</value>
+  <data name="ErrorDeletingNationalSharedDriveFile_Error_" xml:space="preserve">
+    <value>\tError deleting national shared drive file --&gt; {0}. Error: {1}</value>
   </data>
   <data name="ErrorInClearOldUnnecessaryStatsFrom_" xml:space="preserve">
     <value>Error in ClearOldUnnecessaryState from {0}</value>
@@ -1124,5 +1124,14 @@
   </data>
   <data name="ErrorDeletingExternalHardDriveFile_Error_" xml:space="preserve">
     <value>\tError deleting external hard drive file --&gt; {0}. Error: {1}</value>
+  </data>
+  <data name="DoingExternalHardDriveDirectory_" xml:space="preserve">
+    <value>Doing External Hard Drive directory --&gt; {0}</value>
+  </data>
+  <data name="DoingLocalHardDriveDirectory_" xml:space="preserve">
+    <value>Doing Local Hard Drive directory --&gt; {0}</value>
+  </data>
+  <data name="DoingNationalSharedDriveDirectory_" xml:space="preserve">
+    <value>Doing National Shared Drive directory --&gt; {0}</value>
   </data>
 </root>

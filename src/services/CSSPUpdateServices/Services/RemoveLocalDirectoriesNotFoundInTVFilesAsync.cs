@@ -9,32 +9,26 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        DirectoryInfo diLocal = new DirectoryInfo(Configuration["LocalAppDataPath"]);
-        if (!diLocal.Exists)
+        DirectoryInfo diLocalHardDrive = new DirectoryInfo(Configuration["LocalAppDataPath"]);
+        if (!diLocalHardDrive.Exists)
         {
-            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, diLocal.FullName) }");
+            CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.LocalAppDataPathDoesNotExist_, diLocalHardDrive.FullName) }");
 
             CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
 
             return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
         }
 
-        List<TVItem> TVItemList = (from c in db.TVItems
-                                   where c.TVType == TVTypeEnum.File
-                                   orderby c.TVLevel
-                                   select c).AsNoTracking().ToList();
-
-
-        List<int> ParentIDList = (from c in TVItemList
-                                  orderby c.ParentID
+        List<int> ParentIDList = (from c in db.TVItems
+                                  where c.TVType == TVTypeEnum.File
+                                  orderby c.TVLevel
                                   select (int)c.ParentID).Distinct().ToList();
 
-        // ---------------------------------------------
-        // Cleaning Local drive
-        //----------------------------------------------
+        // -------------------------------------------------------------------
+        // Cleaning Local hard drive directory not found in TVItems table
+        //--------------------------------------------------------------------
 
-        List<DirectoryInfo> diLocalSubList = diLocal.GetDirectories().OrderBy(c => c.Name).ToList();
+        List<DirectoryInfo> diLocalSubList = diLocalHardDrive.GetDirectories().OrderBy(c => c.Name).ToList();
 
         foreach (DirectoryInfo diSub in diLocalSubList)
         {
@@ -49,7 +43,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                     continue;
                 }
 
-                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingLocalDirectory_, diSub.FullName) }");
+                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingLocalHardDriveDirectory_, diSub.FullName) }");
 
                 try
                 {
@@ -57,7 +51,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingLocalDirectory_Error_, diSub.FullName, ex.Message) }");
+                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingLocalHardDriveDirectory_Error_, diSub.FullName, ex.Message) }");
 
                     CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 

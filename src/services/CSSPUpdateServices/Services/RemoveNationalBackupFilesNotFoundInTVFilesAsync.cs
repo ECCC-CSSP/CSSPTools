@@ -27,79 +27,60 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
         List<TVFile> TVFileList = (from c in db.TVFiles
                                    select c).AsNoTracking().ToList();
 
-        List<ParentAndFileName> ParentAndFileNameList = new List<ParentAndFileName>();
+        // --------------------------------------------------------------
+        // Cleaning National shared drive files not found in TVItems table
+        //---------------------------------------------------------------
 
-        int count = 0;
-        int total = TVFileList.Count;
-        foreach (TVFile tvFile in TVFileList)
+        List<DirectoryInfo> diNatList = diNat.GetDirectories().ToList();
+
+        foreach (DirectoryInfo diNatSub in diNatList)
         {
-            count += 1;
-            if (count % 1000 == 0)
+            int? ParentIDExist = (from c in TVItemList
+                                  where c.ParentID.ToString() == diNatSub.Name
+                                  select c.ParentID).FirstOrDefault();
+
+            if (ParentIDExist != null)
             {
-                Console.WriteLine($"Count -> {count}/{total}");
-            }
-
-            TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
-            if (tvItem == null)
-            {
-                CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.CouldNotFindTVItemForTVFile_TVFileTVItemIDEqual_, tvFile.TVFileTVItemID) }");
-
-                CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
-
-                return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
-            }
-
-
-            ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
-        }
-
-        List<int> ParentIDList = (from c in ParentAndFileNameList
-                                      //where c.ParentID == 1
-                                  orderby c.ParentID
-                                  select c.ParentID).Distinct().ToList();
-
-
-        count = 0;
-        total = ParentIDList.Count;
-        foreach (int ParentID in ParentIDList)
-        {
-            count += 1;
-            if (count % 1 == 0)
-            {
-                Console.WriteLine($"Count -> {count}/{total} doing ParentID {ParentID}");
-            }
-
-            DirectoryInfo diParentNat = new DirectoryInfo($@"{diNat.FullName}{ParentID}\");
-            List<FileInfo> FileInfoNatList = new List<FileInfo>();
-            if (diParentNat.Exists)
-            {
-                FileInfoNatList = diParentNat.GetFiles().ToList();
-            }
-
-            List<ParentAndFileName> parentAndFileNameList = (from c in ParentAndFileNameList
-                                                             where c.ParentID == ParentID
-                                                             orderby c.ServerFileName
-                                                             select c).ToList();
-
-            foreach (FileInfo fileInfoNat in FileInfoNatList)
-            {
-                if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfoNat.Name).Any())
+                if (diNatSub.Name == "WebTide")
                 {
-                    string DirNat = $@"{ParentID}\{fileInfoNat.Name}";
+                    continue;
+                }
 
-                    CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingNationalFile_, DirNat) }");
+                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DoingNationalSharedDriveDirectory_, diNatSub.Name)}");
 
-                    try
+                foreach (FileInfo fi in diNatSub.GetFiles().ToList())
+                {
+                    List<TVItem> tvItemList2 = (from c in TVItemList
+                                                where c.ParentID == ParentIDExist
+                                                select c).ToList();
+
+                    List<TVFile> tvFileList2 = (from c in TVFileList
+                                                where c.ServerFileName == fi.Name
+                                                select c).ToList();
+
+                    TVFile tvFile = (from c in tvFileList2
+                                     from t in tvItemList2
+                                     where t.TVItemID == c.TVFileTVItemID
+                                     && t.ParentID == ParentIDExist
+                                     && c.ServerFileName == fi.Name
+                                     select c).FirstOrDefault();
+
+                    if (tvFile == null)
                     {
-                        fileInfoNat.Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalFile_Error_, DirNat, ex.Message) }");
+                        CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingNationalSharedDriveFile_, fi.FullName)}");
 
-                        CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                        try
+                        {
+                            fi.Delete();
+                        }
+                        catch (Exception ex)
+                        {
+                            CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorDeletingNationalSharedDriveFile_Error_, fi.FullName, ex.Message)}");
 
-                        return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                            return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                        }
                     }
                 }
             }

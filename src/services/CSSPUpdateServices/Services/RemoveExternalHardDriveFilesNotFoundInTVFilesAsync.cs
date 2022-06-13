@@ -24,76 +24,63 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                                    orderby c.TVLevel
                                    select c).AsNoTracking().ToList();
 
-        List<int> ParentIDList = (from c in TVItemList
-                                  orderby c.ParentID
-                                  select (int)c.ParentID).Distinct().ToList();
-
         List<TVFile> TVFileList = (from c in db.TVFiles
                                    select c).AsNoTracking().ToList();
 
-        List<ParentAndFileName> ParentAndFileNameList = new List<ParentAndFileName>();
-
-        int count = 0;
-        int total = TVFileList.Count;
-        foreach (TVFile tvFile in TVFileList)
-        {
-            count += 1;
-            if (count % 1000 == 0)
-            {
-                Console.WriteLine($"Count -> {count}/{total}");
-            }
-
-            TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
-            if (tvItem != null)
-            {
-                ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
-            }
-        }
+        // --------------------------------------------------------------
+        // Cleaning External hard drive files not found in TVItems table
+        //---------------------------------------------------------------
 
         List<DirectoryInfo> diLocalList = diExternalHardDrive.GetDirectories().ToList();
-        count = 0;
-        total = diLocalList.Count;
-        foreach (DirectoryInfo diLocalChild in diLocalList)
+
+        foreach (DirectoryInfo diLocal in diLocalList)
         {
-            count += 1;
-            if (count % 1 == 0)
+            int? ParentIDExist = (from c in TVItemList
+                                  where c.ParentID.ToString() == diLocal.Name
+                                  select c.ParentID).FirstOrDefault();
+
+            if (ParentIDExist != null)
             {
-                Console.WriteLine($"Count -> {count}/{total} doing local directory {diLocalChild.Name}");
-            }
-
-            DirectoryInfo diParentLocal = new DirectoryInfo($@"{diExternalHardDrive.FullName}{diLocalChild.Name}\");
-            List<FileInfo> FileInfoLocalList = new List<FileInfo>();
-            if (diParentLocal.Exists)
-            {
-                FileInfoLocalList = diParentLocal.GetFiles().ToList();
-            }
-
-            int ParentID = int.Parse(diLocalChild.Name);
-
-            List<ParentAndFileName> parentAndFileNameList = (from c in ParentAndFileNameList
-                                                             where c.ParentID == ParentID
-                                                             orderby c.ServerFileName
-                                                             select c).ToList();
-
-            foreach (FileInfo fileInfoNat in FileInfoLocalList)
-            {
-                if (!parentAndFileNameList.Where(c => c.ServerFileName == fileInfoNat.Name).Any())
+                if (diLocal.Name == "WebTide")
                 {
-                    string DirNat = $@"{diLocalChild.Name}\{fileInfoNat.Name}";
+                    continue;
+                }
 
-                    CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingExternalHardDriveFile_, DirNat)}");
+                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DoingExternalHardDriveDirectory_, diLocal.Name)}");
 
-                    try
+                foreach (FileInfo fi in diLocal.GetFiles().ToList())
+                {
+                    List<TVItem> tvItemList2 = (from c in TVItemList
+                                                where c.ParentID == ParentIDExist
+                                                select c).ToList();
+
+                    List<TVFile> tvFileList2 = (from c in TVFileList
+                                                where c.ServerFileName == fi.Name
+                                                select c).ToList();
+
+                    TVFile tvFile = (from c in tvFileList2
+                                     from t in tvItemList2
+                                     where t.TVItemID == c.TVFileTVItemID
+                                     && t.ParentID == ParentIDExist
+                                     && c.ServerFileName == fi.Name
+                                     select c).FirstOrDefault();
+
+                    if (tvFile == null)
                     {
-                        fileInfoNat.Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorDeletingExternalHardDriveFile_Error_, DirNat, ex.Message)}");
+                        CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingExternalHardDriveFile_, fi.FullName)}");
 
-                        CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+                        try
+                        {
+                            fi.Delete();
+                        }
+                        catch (Exception ex)
+                        {
+                            CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorDeletingExternalHardDriveFile_Error_, fi.FullName, ex.Message)}");
 
-                        return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                            CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
+                            return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
+                        }
                     }
                 }
             }

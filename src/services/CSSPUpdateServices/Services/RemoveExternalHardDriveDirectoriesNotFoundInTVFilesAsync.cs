@@ -20,19 +20,15 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
         }
 
-        List<TVItem> TVItemList = (from c in db.TVItems
-                                   where c.TVType == TVTypeEnum.File
-                                   orderby c.TVLevel
-                                   select c).AsNoTracking().ToList();
-
-
-        List<int> ParentIDList = (from c in TVItemList
-                                  orderby c.ParentID
+        List<int> ParentIDList = (from c in db.TVItems
+                                  where c.TVType == TVTypeEnum.File
+                                  orderby c.TVLevel
                                   select (int)c.ParentID).Distinct().ToList();
 
-        // ---------------------------------------------
-        // Cleaning Local drive
-        //----------------------------------------------
+
+        // -------------------------------------------------------------------
+        // Cleaning External hard drive directory not found in TVItems table
+        //--------------------------------------------------------------------
 
         List<DirectoryInfo> diLocalSubList = diExternalHardDrive.GetDirectories().OrderBy(c => c.Name).ToList();
 

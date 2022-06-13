@@ -19,23 +19,18 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
         }
 
-        List<TVItem> TVItemList = (from c in db.TVItems
-                                   where c.TVType == TVTypeEnum.File
-                                   orderby c.TVLevel
-                                   select c).AsNoTracking().ToList();
-
-
-        List<int> ParentIDList = (from c in TVItemList
-                                  orderby c.ParentID
+        List<int> ParentIDList = (from c in db.TVItems
+                                  where c.TVType == TVTypeEnum.File
+                                  orderby c.TVLevel
                                   select (int)c.ParentID).Distinct().ToList();
 
-        // ---------------------------------------------
-        // Cleaning National drive
-        //----------------------------------------------
+        // -------------------------------------------------------------------
+        // Cleaning National Shared drive directory not found in TVItems table
+        //--------------------------------------------------------------------
 
-        List<DirectoryInfo> diNatSubList = diNat.GetDirectories().OrderBy(c => c.Name).ToList();
+        List<DirectoryInfo> diLocalSubList = diNat.GetDirectories().OrderBy(c => c.Name).ToList();
 
-        foreach (DirectoryInfo diSub in diNatSubList)
+        foreach (DirectoryInfo diSub in diLocalSubList)
         {
             int? ParentIDExist = (from c in ParentIDList
                                   where c.ToString() == diSub.Name
@@ -48,7 +43,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                     continue;
                 }
 
-                CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.DeletingNationalDirectory_, diSub.Name) }");
+                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingNationalSharedDriveDirectory_, diSub.FullName)}");
 
                 try
                 {
@@ -56,15 +51,15 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                 }
                 catch (Exception ex)
                 {
-                    CSSPLogService.AppendError($"{ String.Format(CSSPCultureServicesRes.ErrorDeletingNationalDirectory_Error_, diSub.Name, ex.Message) }");
+                    CSSPLogService.AppendError($"{String.Format(CSSPCultureServicesRes.ErrorDeletingNationalSharedDriveDirectory_Error_, diSub.FullName, ex.Message)}");
 
                     CSSPLogService.EndFunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
+
 
                     return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                 }
             }
         }
-
         CSSPLogService.EndFunctionLog(FunctionName);
 
         return await Task.FromResult(Ok(true));

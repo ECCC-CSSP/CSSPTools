@@ -14,75 +14,62 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                                    orderby c.TVLevel
                                    select c).AsNoTracking().ToList();
 
-        List<int> ParentIDList = (from c in TVItemList
-                                  orderby c.ParentID
-                                  select (int)c.ParentID).Distinct().ToList();
-
-
         List<TVFile> TVFileList = (from c in db.TVFiles
                                    select c).AsNoTracking().ToList();
 
-        List<ParentAndFileName> ParentAndFileNameList = new List<ParentAndFileName>();
-
-        int count = 0;
-        int total = TVFileList.Count;
-        foreach (TVFile tvFile in TVFileList)
-        {
-            count += 1;
-            if (count % 1000 == 0)
-            {
-                Console.WriteLine($"Count -> {count}/{total}");
-            }
-
-            TVItem tvItem = TVItemList.Where(c => c.TVItemID == tvFile.TVFileTVItemID).FirstOrDefault();
-            if (tvItem != null)
-            {
-                ParentAndFileNameList.Add(new ParentAndFileName() { ParentID = (int)tvItem.ParentID, ServerFileName = tvFile.ServerFileName, TVFileID = tvFile.TVFileID, TVItemID = tvFile.TVFileTVItemID });
-            }
-        }
-
-        // ---------------------------------------------
-        // Cleaning Azure drive (files)
-        //----------------------------------------------
+        // --------------------------------------------------
+        // Cleaning Azure files not found in TVItems table
+        //---------------------------------------------------
 
         ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
         ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
 
-        Pageable<ShareFileItem> shareFileItemList = directory.GetFilesAndDirectories();
+        Pageable<ShareFileItem> shareFileItemDirList = directory.GetFilesAndDirectories();
 
-        foreach (ShareFileItem shareFileItem in shareFileItemList)
+        foreach (ShareFileItem shareFileItemDir in shareFileItemDirList)
         {
-            int? ParentIDExist = (from c in ParentIDList
-                                  where c.ToString() == shareFileItem.Name
-                                  select c).FirstOrDefault();
+            int? ParentIDExist = (from c in TVItemList
+                                  where c.ParentID.ToString() == shareFileItemDir.Name
+                                  select c.ParentID).FirstOrDefault();
 
             if (ParentIDExist != null)
             {
-                if (shareFileItem.Name == "WebTide")
+                if (shareFileItemDir.Name == "WebTide")
                 {
                     continue;
                 }
 
-                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DoingAzureDirectory_, shareFileItem.Name)}");
+                CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DoingAzureDirectory_, shareFileItemDir.Name)}");
 
-                if (shareFileItem.IsDirectory)
+                if (shareFileItemDir.IsDirectory)
                 {
                     ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
-                    ShareDirectoryClient directorySub = shareClientSub.GetDirectoryClient(shareFileItem.Name);
+                    ShareDirectoryClient directorySub = shareClientSub.GetDirectoryClient(shareFileItemDir.Name);
 
                     if (directorySub.Exists())
                     {
                         foreach (ShareFileItem shareFileItemSub in directorySub.GetFilesAndDirectories())
                         {
-                            ParentAndFileName parentAndFileName = (from c in ParentAndFileNameList
-                                                                   where c.ServerFileName == shareFileItemSub.Name
-                                                                   select c).FirstOrDefault();
+                            List<TVItem> tvItemList2 = (from c in TVItemList
+                                                        where c.ParentID == ParentIDExist
+                                                        select c).ToList();
 
-                            if (parentAndFileName == null)
+                            List<TVFile> tvFileList2 = (from c in TVFileList
+                                                        where c.ServerFileName == shareFileItemSub.Name
+                                                        select c).ToList();
+
+                            TVFile tvFile = (from c in tvFileList2
+                                             from t in tvItemList2
+                                             where t.TVItemID == c.TVFileTVItemID
+                                             && t.ParentID == ParentIDExist
+                                             && c.ServerFileName == shareFileItemSub.Name
+                                             select c).FirstOrDefault();
+
+                            if (tvFile == null)
                             {
                                 ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
 
-                                string dirFile = $@"{shareFileItem.Name}\{shareFileItemSub.Name}";
+                                string dirFile = $@"{shareFileItemDir.Name}\{shareFileItemSub.Name}";
                                 CSSPLogService.AppendLog($"{String.Format(CSSPCultureServicesRes.DeletingAzureFile_, dirFile)}");
 
                                 Response<bool> responseFile = file.DeleteIfExists();

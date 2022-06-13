@@ -10,6 +10,9 @@ public partial class UpdateServiceTests
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
         string FullAppDataPath = Configuration["ExternalHardDriveBackkupAppDataPath"];
+        List<string> dirNameList = new List<string>() { "1", "2" };
+        string testFileName = "testUnique29347.txt";
+        string testFileNameExist = "";
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
@@ -17,9 +20,6 @@ public partial class UpdateServiceTests
         DirectoryInfo diExistTest = new DirectoryInfo(Configuration["ExternalHardDriveBackkupAppDataPath"].Replace("_Test", ""));
         if (diExistTest.Exists)
         {
-            List<string> dirNameList = new List<string>() { "1", "2" };
-            string testFileName = "testUnique29347.txt";
-
             foreach (string dirName in dirNameList)
             {
                 DirectoryInfo di = new DirectoryInfo(FullAppDataPath + dirName + "\\");
@@ -60,6 +60,8 @@ public partial class UpdateServiceTests
 
             Assert.NotNull(a);
 
+            testFileNameExist = a.f.ServerFileName;
+
             DirectoryInfo di2 = new DirectoryInfo(FullAppDataPath + "1\\");
 
             if (!di2.Exists)
@@ -77,9 +79,9 @@ public partial class UpdateServiceTests
             di2 = new DirectoryInfo(FullAppDataPath + "1\\");
             Assert.True(di2.Exists);
 
-            FileInfo fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
+            FileInfo fiDest = new FileInfo(FullAppDataPath + "1\\" + testFileNameExist);
 
-            FileInfo fiOrigin = new FileInfo(FullAppDataPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
+            FileInfo fiOrigin = new FileInfo(FullAppDataPath.Replace("_Test", "") + "1\\" + testFileNameExist);
             Assert.True(fiOrigin.Exists);
 
             try
@@ -94,23 +96,27 @@ public partial class UpdateServiceTests
             var actionRes = await CSSPUpdateService.RemoveExternalHardDriveFilesNotFoundInTVFilesAsync();
             Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
 
-            foreach (string dirName in dirNameList)
-            {
-                DirectoryInfo di = new DirectoryInfo(FullAppDataPath + dirName + "\\");
-                FileInfo fi = new FileInfo(di + testFileName);
-                Assert.False(fi.Exists);
-            }
+            // one file should be deleted in directory 1
+            DirectoryInfo di3 = new DirectoryInfo(FullAppDataPath + "1" + "\\");
+            Assert.True(di3.Exists);
 
-            DirectoryInfo diDest = new DirectoryInfo(FullAppDataPath + "1\\");
-            Assert.True(diDest.Exists);
+            FileInfo fi3 = new FileInfo(di3.FullName + testFileName);
+            Assert.False(fi3.Exists);
 
-            fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
-            Assert.True(fiDest.Exists);
+            fi3 = new FileInfo(di3.FullName + testFileNameExist);
+            Assert.True(fi3.Exists);
+
+            // No file should be deleted in directory 2
+            DirectoryInfo di4 = new DirectoryInfo(FullAppDataPath + "2" + "\\");
+            Assert.True(di4.Exists);
+
+            FileInfo fi4 = new FileInfo(di4.FullName + testFileName);
+            Assert.True(fi4.Exists);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-
-        await CSSPLogService.Save();
-
-        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
 

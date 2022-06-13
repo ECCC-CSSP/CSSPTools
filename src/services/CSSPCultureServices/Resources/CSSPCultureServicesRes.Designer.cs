@@ -1402,38 +1402,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting local directory {0}.
+        ///   Looks up a localized string similar to Deleting local hard drive directory {0}.
         /// </summary>
-        public static string DeletingLocalDirectory_ {
+        public static string DeletingLocalHardDriveDirectory_ {
             get {
-                return ResourceManager.GetString("DeletingLocalDirectory_", resourceCulture);
+                return ResourceManager.GetString("DeletingLocalHardDriveDirectory_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tDeleting local file --&gt; {0}.
+        ///   Looks up a localized string similar to \tDeleting local hard drive file --&gt; {0}.
         /// </summary>
-        public static string DeletingLocalFile_ {
+        public static string DeletingLocalHardDriveFile_ {
             get {
-                return ResourceManager.GetString("DeletingLocalFile_", resourceCulture);
+                return ResourceManager.GetString("DeletingLocalHardDriveFile_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting national directory {0}.
+        ///   Looks up a localized string similar to Deleting national shared drive directory {0}.
         /// </summary>
-        public static string DeletingNationalDirectory_ {
+        public static string DeletingNationalSharedDriveDirectory_ {
             get {
-                return ResourceManager.GetString("DeletingNationalDirectory_", resourceCulture);
+                return ResourceManager.GetString("DeletingNationalSharedDriveDirectory_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tDeleting national file --&gt; {0}.
+        ///   Looks up a localized string similar to \tDeleting national shared drive file --&gt; {0}.
         /// </summary>
-        public static string DeletingNationalFile_ {
+        public static string DeletingNationalSharedDriveFile_ {
             get {
-                return ResourceManager.GetString("DeletingNationalFile_", resourceCulture);
+                return ResourceManager.GetString("DeletingNationalSharedDriveFile_", resourceCulture);
             }
         }
         
@@ -1569,6 +1569,33 @@ namespace CSSPCultureServices.Resources {
         public static string DoingAzureDirectory_ {
             get {
                 return ResourceManager.GetString("DoingAzureDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing External Hard Drive directory --&gt; {0}.
+        /// </summary>
+        public static string DoingExternalHardDriveDirectory_ {
+            get {
+                return ResourceManager.GetString("DoingExternalHardDriveDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing Local Hard Drive directory --&gt; {0}.
+        /// </summary>
+        public static string DoingLocalHardDriveDirectory_ {
+            get {
+                return ResourceManager.GetString("DoingLocalHardDriveDirectory_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doing National Shared Drive directory --&gt; {0}.
+        /// </summary>
+        public static string DoingNationalSharedDriveDirectory_ {
+            get {
+                return ResourceManager.GetString("DoingNationalSharedDriveDirectory_", resourceCulture);
             }
         }
         
@@ -1717,38 +1744,38 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tError deleting local directory --&gt; {0}. Error: {1}.
+        ///   Looks up a localized string similar to \tError deleting local hard drive directory --&gt; {0}. Error: {1}.
         /// </summary>
-        public static string ErrorDeletingLocalDirectory_Error_ {
+        public static string ErrorDeletingLocalHardDriveDirectory_Error_ {
             get {
-                return ResourceManager.GetString("ErrorDeletingLocalDirectory_Error_", resourceCulture);
+                return ResourceManager.GetString("ErrorDeletingLocalHardDriveDirectory_Error_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tError deleting local file --&gt; {0}. Error: {1}.
+        ///   Looks up a localized string similar to \tError deleting local hard drive file --&gt; {0}. Error: {1}.
         /// </summary>
-        public static string ErrorDeletingLocalFile_Error_ {
+        public static string ErrorDeletingLocalHardDriveFile_Error_ {
             get {
-                return ResourceManager.GetString("ErrorDeletingLocalFile_Error_", resourceCulture);
+                return ResourceManager.GetString("ErrorDeletingLocalHardDriveFile_Error_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tError deleting national directory --&gt; {0}. Error: {1}.
+        ///   Looks up a localized string similar to \tError deleting national shared drive directory --&gt; {0}. Error: {1}.
         /// </summary>
-        public static string ErrorDeletingNationalDirectory_Error_ {
+        public static string ErrorDeletingNationalSharedDriveDirectory_Error_ {
             get {
-                return ResourceManager.GetString("ErrorDeletingNationalDirectory_Error_", resourceCulture);
+                return ResourceManager.GetString("ErrorDeletingNationalSharedDriveDirectory_Error_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \tError deleting national file --&gt; {0}. Error: {1}.
+        ///   Looks up a localized string similar to \tError deleting national shared drive file --&gt; {0}. Error: {1}.
         /// </summary>
-        public static string ErrorDeletingNationalFile_Error_ {
+        public static string ErrorDeletingNationalSharedDriveFile_Error_ {
             get {
-                return ResourceManager.GetString("ErrorDeletingNationalFile_Error_", resourceCulture);
+                return ResourceManager.GetString("ErrorDeletingNationalSharedDriveFile_Error_", resourceCulture);
             }
         }
         

@@ -18,6 +18,7 @@ public partial class UpdateServiceTests
 
         List<string> dirNameList = new List<string>() { "test", "test2" };
         string testFileName = "testUnique8273746.txt";
+        string testFileNameExist = "";
 
         ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), FullAzureFilesPath);
 
@@ -94,6 +95,8 @@ public partial class UpdateServiceTests
 
         Assert.NotNull(a);
 
+        testFileNameExist = a.f.ServerFileName;
+
         ShareDirectoryClient directory2 = shareClient.GetDirectoryClient("1");
 
         if (!directory2.Exists())
@@ -112,10 +115,10 @@ public partial class UpdateServiceTests
 
         Assert.True(directory2.Exists());
 
-        FileInfo fi2 = new FileInfo(LocalAppDataPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
+        FileInfo fi2 = new FileInfo(LocalAppDataPath.Replace("_Test", "") + "1\\" + testFileNameExist);
         Assert.True(fi2.Exists);
 
-        ShareFileClient file2 = directory2.GetFileClient(a.f.ServerFileName);
+        ShareFileClient file2 = directory2.GetFileClient(testFileNameExist);
         using (FileStream stream = File.OpenRead(fi2.FullName))
         {
             try
@@ -141,7 +144,7 @@ public partial class UpdateServiceTests
         directory2 = shareClient.GetDirectoryClient("1");
         Assert.True(directory2.Exists());
 
-        file2 = directory2.GetFileClient(a.f.ServerFileName);
+        file2 = directory2.GetFileClient(testFileNameExist);
         Assert.True(file2.Exists());
 
         await CSSPLogService.Save();

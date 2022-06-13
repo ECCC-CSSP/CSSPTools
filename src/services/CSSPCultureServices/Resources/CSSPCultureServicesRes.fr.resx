@@ -975,17 +975,17 @@
   <data name="DeletingAzureFile_" xml:space="preserve">
     <value>\tSuppression de la filière Azure --&gt; {0}</value>
   </data>
-  <data name="DeletingLocalDirectory_" xml:space="preserve">
-    <value>Suppression du directoire local --&gt; {0}</value>
+  <data name="DeletingLocalHardDriveDirectory_" xml:space="preserve">
+    <value>Suppression du directoire du disque dur local --&gt; {0}</value>
   </data>
-  <data name="DeletingLocalFile_" xml:space="preserve">
-    <value>\tSuppression de la filière local --&gt; {0}</value>
+  <data name="DeletingLocalHardDriveFile_" xml:space="preserve">
+    <value>\tSuppression de la filière du disque dur local --&gt; {0}</value>
   </data>
-  <data name="DeletingNationalDirectory_" xml:space="preserve">
-    <value>Suppression du directoire national --&gt; {0}</value>
+  <data name="DeletingNationalSharedDriveDirectory_" xml:space="preserve">
+    <value>Suppression du sous-directoire du directoire partagé national --&gt; {0}</value>
   </data>
-  <data name="DeletingNationalFile_" xml:space="preserve">
-    <value>\tSuppression de la filière national --&gt; {0}</value>
+  <data name="DeletingNationalSharedDriveFile_" xml:space="preserve">
+    <value>\tSuppression de la filière du directoire partagé national --&gt; {0}</value>
   </data>
   <data name="DeletingTVFileAndTVItem_" xml:space="preserve">
     <value>Suppression de TVFile et TVItem ---&gt; {0}</value>
@@ -1002,17 +1002,17 @@
   <data name="ErrorDeletingAzureFile_" xml:space="preserve">
     <value>\tErreur lors de la suppression de la filière Azure --&gt; {0}</value>
   </data>
-  <data name="ErrorDeletingLocalDirectory_Error_" xml:space="preserve">
-    <value>\tErreur lors de la suppression du répertoire local --&gt; {0}. Erreur: {1}</value>
+  <data name="ErrorDeletingLocalHardDriveDirectory_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du répertoire du disque dur local --&gt; {0}. Erreur: {1}</value>
   </data>
-  <data name="ErrorDeletingLocalFile_Error_" xml:space="preserve">
-    <value>\tErreur lors de la suppression de la filière local --&gt; {0}. Erreur: {1}</value>
+  <data name="ErrorDeletingLocalHardDriveFile_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression de la filière du disque dur local --&gt; {0}. Erreur: {1}</value>
   </data>
-  <data name="ErrorDeletingNationalDirectory_Error_" xml:space="preserve">
-    <value>\tErreur lors de la suppression du directoire national --&gt; {0}. Erreur: {1}</value>
+  <data name="ErrorDeletingNationalSharedDriveDirectory_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression du sous-directoire du directoire national partagé --&gt; {0}. Erreur: {1}</value>
   </data>
-  <data name="ErrorDeletingNationalFile_Error_" xml:space="preserve">
-    <value>\tErreur lors de la suppression de la filière national --&gt; {0}. Erreur {1}</value>
+  <data name="ErrorDeletingNationalSharedDriveFile_Error_" xml:space="preserve">
+    <value>\tErreur lors de la suppression de la filière du directoire national partagé --&gt; {0}. Erreur {1}</value>
   </data>
   <data name="ErrorInClearOldUnnecessaryStatsFrom_" xml:space="preserve">
     <value>Erreur dans ClearOldUnnecessaryState de {0}</value>
@@ -1118,5 +1118,14 @@
   </data>
   <data name="ErrorDeletingExternalHardDriveFile_Error_" xml:space="preserve">
     <value>\tErreur lors de la suppression de la filière du disque dur externe --&gt; {0}. Erreur: {1}</value>
+  </data>
+  <data name="DoingExternalHardDriveDirectory_" xml:space="preserve">
+    <value>En Train de faire le directoire du disque dur externe --&gt; {0}</value>
+  </data>
+  <data name="DoingLocalHardDriveDirectory_" xml:space="preserve">
+    <value>En Train de faire le directoire du disque dur local --&gt; {0}</value>
+  </data>
+  <data name="DoingNationalSharedDriveDirectory_" xml:space="preserve">
+    <value>En Train de faire le directoire du répertoire partagé national --&gt; {0}</value>
   </data>
 </root>

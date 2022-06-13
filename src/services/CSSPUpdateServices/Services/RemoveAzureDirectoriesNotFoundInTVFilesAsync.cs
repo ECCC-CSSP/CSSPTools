@@ -9,20 +9,15 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        List<TVItem> TVItemList = (from c in db.TVItems
-                                   where c.TVType == TVTypeEnum.File
-                                   orderby c.TVLevel
-                                   select c).AsNoTracking().ToList();
-
-
-        List<int> ParentIDList = (from c in TVItemList
-                                  orderby c.ParentID
+        List<int> ParentIDList = (from c in db.TVItems
+                                  where c.TVType == TVTypeEnum.File
+                                  orderby c.TVLevel
                                   select (int)c.ParentID).Distinct().ToList();
 
 
-        // ---------------------------------------------
-        // Cleaning Azure drive (directory)
-        //----------------------------------------------
+        // -----------------------------------------------------
+        // Cleaning Azure directory not found in TVItems table
+        //------------------------------------------------------
 
         ShareClient shareClient = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
         ShareDirectoryClient directory = shareClient.GetRootDirectoryClient();
@@ -46,7 +41,6 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
                 if (shareFileItem.IsDirectory)
                 {
-                    //ShareClient shareClientSub = new ShareClient(CSSPScrambleService.Descramble(CSSPLocalLoggedInService.LoggedInContactInfo.LoggedInContact.AzureStoreHash), Configuration["AzureStoreCSSPFilesPath"]);
                     ShareDirectoryClient directorySub = shareClient.GetDirectoryClient(shareFileItem.Name);
 
                     if (directorySub.Exists())

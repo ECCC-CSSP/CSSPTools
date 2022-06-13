@@ -10,16 +10,16 @@ public partial class UpdateServiceTests
         Assert.True(await CSSPUpdateServiceSetup(culture));
 
         string FullAppDataPath = Configuration["ExternalHardDriveBackkupAppDataPath"];
+        List<string> dirNameList = new List<string>() { "test", "test2" };
+        string testFileName = "testUnique287436.txt";
+        string testFileNameExist = "";
 
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
-
+ 
         DirectoryInfo diExistTest = new DirectoryInfo(Configuration["ExternalHardDriveBackkupAppDataPath"].Replace("_Test", ""));
         if (diExistTest.Exists)
         {
-            List<string> dirNameList = new List<string>() { "test", "test2" };
-            string testFileName = "testUnique287436.txt";
-
             foreach (string dirName in dirNameList)
             {
                 DirectoryInfo di = new DirectoryInfo(FullAppDataPath + dirName + "\\");
@@ -60,6 +60,8 @@ public partial class UpdateServiceTests
 
             Assert.NotNull(a);
 
+            testFileNameExist = a.f.ServerFileName;
+
             DirectoryInfo di2 = new DirectoryInfo(FullAppDataPath + "1\\");
 
             if (!di2.Exists)
@@ -77,9 +79,9 @@ public partial class UpdateServiceTests
             di2 = new DirectoryInfo(FullAppDataPath + "1\\");
             Assert.True(di2.Exists);
 
-            FileInfo fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
+            FileInfo fiDest = new FileInfo(FullAppDataPath + "1\\" + testFileNameExist);
 
-            FileInfo fiOrigin = new FileInfo(FullAppDataPath.Replace("_Test", "") + "1\\" + a.f.ServerFileName);
+            FileInfo fiOrigin = new FileInfo(FullAppDataPath.Replace("_Test", "") + "1\\" + testFileNameExist);
             Assert.True(fiOrigin.Exists);
 
             try
@@ -103,13 +105,13 @@ public partial class UpdateServiceTests
             DirectoryInfo diDest = new DirectoryInfo(FullAppDataPath + "1\\");
             Assert.True(diDest.Exists);
 
-            fiDest = new FileInfo(FullAppDataPath + "1\\" + a.f.ServerFileName);
-            Assert.True(fiDest.Exists);
+            FileInfo fiDest2 = new FileInfo(FullAppDataPath + "1\\" + testFileNameExist);
+            Assert.True(fiDest2.Exists);
+
+            await CSSPLogService.Save();
+
+            Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
         }
-
-        await CSSPLogService.Save();
-
-        Assert.Equal(1, (from c in dbManage.CommandLogs select c).Count());
     }
 }
 
