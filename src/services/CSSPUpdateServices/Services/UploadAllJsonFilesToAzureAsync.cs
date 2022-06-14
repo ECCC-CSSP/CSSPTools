@@ -8,6 +8,13 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
         CSSPLogService.FunctionLog(FunctionName);
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
+        
+        if (Environment.MachineName.ToLower() != "wmon01dtchlebl2")
+        {
+            CSSPLogService.AppendError($"{CSSPCultureServicesRes.CanOnlyBeRunFromComputer_wmon01dtchlebl2}:");
+            CSSPLogService.EndFunctionLog(FunctionName);
+            return await Task.FromResult(Ok(true));
+        }
 
         var actionRes = await CreateGzFileService.CreateAllGzFilesAsync();
         if (((ObjectResult)actionRes.Result).StatusCode != 200)

@@ -1134,4 +1134,7 @@
   <data name="DoingNationalSharedDriveDirectory_" xml:space="preserve">
     <value>Doing National Shared Drive directory --&gt; {0}</value>
   </data>
+  <data name="CanOnlyBeRunFromComputer_wmon01dtchlebl2" xml:space="preserve">
+    <value>Can only be run from computer wmon01dtchlebl2</value>
+  </data>
 </root>

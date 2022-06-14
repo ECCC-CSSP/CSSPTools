@@ -4,36 +4,43 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 {
     public async Task<bool> RunCommandAsync(string[] args)
     {
-        string FunctionName = $"{ this.GetType().Name }.{ CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name) }(string[] args) -- { string.Join("  ", args) }";
+        string FunctionName = $"{this.GetType().Name}.{CSSPLogService.GetFunctionName(MethodBase.GetCurrentMethod().DeclaringType.Name)}(string[] args) -- {string.Join("  ", args)}";
         CSSPLogService.FunctionLog(FunctionName);
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(false);
 
+        if (Environment.MachineName.ToLower() != "wmon01dtchlebl2")
+        {
+            CSSPLogService.AppendError($"{CSSPCultureServicesRes.CanOnlyBeRunFromComputer_wmon01dtchlebl2}:");
+            CSSPLogService.EndFunctionLog(FunctionName);
+            return await Task.FromResult(true);
+        }
+
         List<string> AllowableCSSPCommandNameFor1ArgsList = new List<string>()
-            {
-                "ClearOldUnnecessaryStats",
-                "RemoveAzureDirectoriesNotFoundInTVFiles",
-                "RemoveAzureFilesNotFoundInTVFiles",
-                "RemoveLocalDirectoriesNotFoundInTVFiles",
-                "RemoveLocalFilesNotFoundInTVFiles",
-                "RemoveNationalBackupDirectoriesNotFoundInTVFiles",
-                "RemoveNationalBackupFilesNotFoundInTVFiles",
-                "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile",
-                "RemoveTVItemsNoAssociatedWithTVFiles",
-                "UpdateAllTVItemStats",
-                "UpdateChangedTVItemStats",
-                "UploadAllFilesToAzure",
-                "UploadAllJsonFilesToAzure",
-                "UploadChangedFilesToAzure",
-                "UploadChangedJsonFilesToAzure",
-            };
+        {
+            "ClearOldUnnecessaryStats",
+            "RemoveAzureDirectoriesNotFoundInTVFiles",
+            "RemoveAzureFilesNotFoundInTVFiles",
+            "RemoveLocalDirectoriesNotFoundInTVFiles",
+            "RemoveLocalFilesNotFoundInTVFiles",
+            "RemoveNationalBackupDirectoriesNotFoundInTVFiles",
+            "RemoveNationalBackupFilesNotFoundInTVFiles",
+            "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile",
+            "RemoveTVItemsNoAssociatedWithTVFiles",
+            "UpdateAllTVItemStats",
+            "UpdateChangedTVItemStats",
+            "UploadAllFilesToAzure",
+            "UploadAllJsonFilesToAzure",
+            "UploadChangedFilesToAzure",
+            "UploadChangedJsonFilesToAzure",
+        };
 
         List<string> AllowableCSSPCommandNameFor4ArgsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                "UploadChangedFilesToAzure",
-                "UploadChangedJsonFilesToAzure",
-            };
+        {
+            "UpdateChangedTVItemStats",
+            "UploadChangedFilesToAzure",
+            "UploadChangedJsonFilesToAzure",
+        };
 
         if (args.Count() == 1)
         {
@@ -147,8 +154,8 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             }
             catch (Exception ex)
             {
-                string inner = ex.InnerException != null ? $"Inner: { ex.InnerException.Message }" : "";
-                CSSPLogService.AppendError($"{ ex.Message } { inner }");
+                string inner = ex.InnerException != null ? $"Inner: {ex.InnerException.Message}" : "";
+                CSSPLogService.AppendError($"{ex.Message} {inner}");
 
                 return await Task.FromResult(false);
             }
@@ -187,7 +194,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             Console.WriteLine($"{CSSPCultureServicesRes.AllowableCommandsAre}:");
             foreach (string CSSPCommandName in AllowableCSSPCommandNameFor1ArgsList)
             {
-                CSSPLogService.AppendError($"CSSPUpdate.exe { CSSPCommandName } yyyy MM dd");
+                CSSPLogService.AppendError($"CSSPUpdate.exe {CSSPCommandName} yyyy MM dd");
             }
         }
 

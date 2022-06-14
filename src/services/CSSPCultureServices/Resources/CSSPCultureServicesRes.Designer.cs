@@ -646,6 +646,15 @@ namespace CSSPCultureServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can only be run from computer wmon01dtchlebl2.
+        /// </summary>
+        public static string CanOnlyBeRunFromComputer_wmon01dtchlebl2 {
+            get {
+                return ResourceManager.GetString("CanOnlyBeRunFromComputer_wmon01dtchlebl2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t remove {0} because there are {1} underneath.
         /// </summary>
         public static string CantRemove_BecauseThereAre_Underneath {

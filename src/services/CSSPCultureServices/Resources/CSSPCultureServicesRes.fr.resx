@@ -1128,4 +1128,7 @@
   <data name="DoingNationalSharedDriveDirectory_" xml:space="preserve">
     <value>En Train de faire le directoire du répertoire partagé national --&gt; {0}</value>
   </data>
+  <data name="CanOnlyBeRunFromComputer_wmon01dtchlebl2" xml:space="preserve">
+    <value>Ne peut &#x1E;être executer a partir de l'ordinateur wmon01dtchlebl2</value>
+  </data>
 </root>
