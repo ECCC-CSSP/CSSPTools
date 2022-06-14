@@ -20,12 +20,12 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             WebMonitoringRoutineStatsCountry webMonitoringRoutineStatsCountry;
             WebMonitoringOtherStatsCountry webMonitoringOtherStatsCountry;
 
-            using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringRoutineStatsCountry_{tvItem.TVItemID}.json"))
+            using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringRoutineStatsCountry_{tvItem.TVItemID.ToString()}.json"))
             {
                 webMonitoringRoutineStatsCountry = JsonSerializer.Deserialize<WebMonitoringRoutineStatsCountry>(srLocal.ReadToEnd());
             }
 
-            using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringOtherStatsCountry_{tvItem.TVItemID}.json"))
+            using (StreamReader srLocal = new StreamReader($@"{Configuration["azure_csspjson_backup_uncompress"]}WebMonitoringOtherStatsCountry_{tvItem.TVItemID.ToString()}.json"))
             {
                 webMonitoringOtherStatsCountry = JsonSerializer.Deserialize<WebMonitoringOtherStatsCountry>(srLocal.ReadToEnd());
             }

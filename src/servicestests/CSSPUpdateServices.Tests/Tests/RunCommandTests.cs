@@ -2,7 +2,7 @@ namespace UpdateServices.Tests;
 
 public partial class UpdateServiceTests
 {
-    [Theory]
+    [Theory(Skip = "Temporary disabled because we should not remove old stats from the current database")]
     [InlineData("en-CA")]
     //[InlineData("fr-CA")]
     public async Task RunCommand_ClearOldUnnecessaryStats_Good_Test(string culture)
@@ -13,9 +13,9 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "ClearOldUnnecessaryStats"
-            };
+        {
+            "ClearOldUnnecessaryStats"
+        };
 
         Assert.True(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -36,12 +36,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                DateTime.Now.Year.ToString(),
-                DateTime.Now.Month.ToString(),
-                DateTime.Now.Day.ToString(),
-            };
+        {
+            "UpdateChangedTVItemStats",
+            DateTime.Now.Year.ToString(),
+            DateTime.Now.Month.ToString(),
+            DateTime.Now.Day.ToString(),
+        };
 
         Assert.True(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.True(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -62,9 +62,9 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "CommandDoesNotExist"
-            };
+        {
+            "CommandDoesNotExist"
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -85,12 +85,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "CommandDoesNotExist",
-                DateTime.Now.Year.ToString(),
-                DateTime.Now.Month.ToString(),
-                DateTime.Now.Day.ToString(),
-            };
+        {
+            "CommandDoesNotExist",
+            DateTime.Now.Year.ToString(),
+            DateTime.Now.Month.ToString(),
+            DateTime.Now.Day.ToString(),
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -111,12 +111,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                (DateTime.Now.Year + 5).ToString(),
-                DateTime.Now.Month.ToString(),
-                DateTime.Now.Day.ToString(),
-            };
+        {
+            "UpdateChangedTVItemStats",
+            (DateTime.Now.Year + 5).ToString(),
+            DateTime.Now.Month.ToString(),
+            DateTime.Now.Day.ToString(),
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -137,12 +137,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                DateTime.Now.Year.ToString(),
-                (DateTime.Now.Month + 13).ToString(),
-                DateTime.Now.Day.ToString(),
-            };
+        {
+            "UpdateChangedTVItemStats",
+            DateTime.Now.Year.ToString(),
+            (DateTime.Now.Month + 13).ToString(),
+            DateTime.Now.Day.ToString(),
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -163,12 +163,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                (DateTime.Now.Year - 1).ToString(),
-                "12",
-                "32",
-            };
+        {
+            "UpdateChangedTVItemStats",
+            (DateTime.Now.Year - 1).ToString(),
+            "12",
+            "32",
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -189,12 +189,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                (DateTime.Now.Year - 1).ToString(),
-                "1",
-                "32",
-            };
+        {
+            "UpdateChangedTVItemStats",
+            (DateTime.Now.Year - 1).ToString(),
+            "1",
+            "32",
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -215,12 +215,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                (DateTime.Now.Year - 1).ToString(),
-                "2",
-                "30",
-            };
+        {
+            "UpdateChangedTVItemStats",
+            (DateTime.Now.Year - 1).ToString(),
+            "2",
+            "30",
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));
@@ -241,12 +241,12 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
         List<string> argsList = new List<string>()
-            {
-                "UpdateChangedTVItemStats",
-                DateTime.Now.AddDays(1).Year.ToString(),
-                DateTime.Now.AddDays(1).Year.ToString(),
-                DateTime.Now.AddDays(1).Year.ToString(),
-            };
+        {
+            "UpdateChangedTVItemStats",
+            DateTime.Now.AddDays(1).Year.ToString(),
+            DateTime.Now.AddDays(1).Year.ToString(),
+            DateTime.Now.AddDays(1).Year.ToString(),
+        };
 
         Assert.False(await CSSPUpdateService.RunCommandAsync(argsList.ToArray()));
         Assert.False(string.IsNullOrWhiteSpace(CSSPLogService.sbError.ToString()));

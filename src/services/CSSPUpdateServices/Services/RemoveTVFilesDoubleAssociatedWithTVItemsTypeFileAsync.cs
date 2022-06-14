@@ -9,10 +9,10 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        List<TVItem> TVItemList = (from c in db.TVItems
-                                   where c.TVType == TVTypeEnum.File
-                                   orderby c.TVLevel
-                                   select c).ToList();
+        //List<TVItem> TVItemList = (from c in db.TVItems
+        //                           where c.TVType == TVTypeEnum.File
+        //                           orderby c.TVLevel
+        //                           select c).ToList();
 
         List<TVFile> TVFileList = (from c in db.TVFiles
                                    orderby c.TVFileTVItemID
