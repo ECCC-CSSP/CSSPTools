@@ -21,6 +21,8 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             "ClearOldUnnecessaryStats",
             "RemoveAzureDirectoriesNotFoundInTVFiles",
             "RemoveAzureFilesNotFoundInTVFiles",
+            "RemoveExternalHardDriveDirectoriesNotFoundInTVFiles",
+            "RemoveExternalHardDriveFilesNotFoundInTVFiles",
             "RemoveLocalDirectoriesNotFoundInTVFiles",
             "RemoveLocalFilesNotFoundInTVFiles",
             "RemoveNationalBackupDirectoriesNotFoundInTVFiles",
@@ -65,6 +67,12 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                     break;
                 case "RemoveAzureFilesNotFoundInTVFiles":
                     await RemoveAzureFilesNotFoundInTVFilesAsync();
+                    break;
+                case "RemoveExternalHardDriveDirectoriesNotFoundInTVFiles":
+                    await RemoveExternalHardDriveDirectoriesNotFoundInTVFilesAsync();
+                    break;
+                case "RemoveExternalHardDriveFilesNotFoundInTVFiles":
+                    await RemoveExternalHardDriveFilesNotFoundInTVFilesAsync();
                     break;
                 case "RemoveLocalDirectoriesNotFoundInTVFiles":
                     await RemoveLocalDirectoriesNotFoundInTVFilesAsync();

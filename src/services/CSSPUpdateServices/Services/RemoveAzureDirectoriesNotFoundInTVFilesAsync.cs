@@ -30,7 +30,7 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
                                   where c.ToString() == shareFileItem.Name
                                   select c).FirstOrDefault();
 
-            if (ParentIDExist == 0)
+            if (ParentIDExist == null)
             {
                 if (shareFileItem.Name == "WebTide")
                 {
