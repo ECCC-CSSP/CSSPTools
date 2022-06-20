@@ -11,13 +11,6 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         if (!await CSSPLogService.CheckLogin(FunctionName)) return await Task.FromResult(Unauthorized(CSSPLogService.ErrRes));
 
-        if (Environment.MachineName.ToLower() != "wmon01dtchlebl2")
-        {
-            CSSPLogService.AppendError($"{CSSPCultureServicesRes.CanOnlyBeRunFromComputer_wmon01dtchlebl2}:");
-            CSSPLogService.EndFunctionLog(FunctionName);
-            return await Task.FromResult(Ok(true));
-        }
-
         CSSPLogService.AppendLog($"{ String.Format(CSSPCultureServicesRes.Reading_, "TVItems") } { DateTime.Now }");
         List<TVItem> TVItemList = (from c in db.TVItems
                                    select c).AsNoTracking().ToList();

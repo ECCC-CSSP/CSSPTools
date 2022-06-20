@@ -79,6 +79,8 @@ public partial class CSSPDBAzureBaseServiceTest
 
         await CSSPServerLoggedInService.SetLoggedInContactInfoAsync(Configuration["LoginEmail"]);
         Assert.NotNull(CSSPServerLoggedInService.LoggedInContactInfo);
+        Assert.NotNull(CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact);
+        Assert.True(CSSPServerLoggedInService.LoggedInContactInfo.LoggedInContact.ContactID > 0);
 
         dbTempAzureTest = Provider.GetService<CSSPDBContext>();
         Assert.NotNull(dbTempAzureTest);

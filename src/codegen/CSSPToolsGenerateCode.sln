@@ -45,10 +45,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateRepopulateTestDB", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCSSPSQLiteServices", "GenerateCSSPSQLiteServices\GenerateCSSPSQLiteServices.csproj", "{96306DD0-8B7D-47F1-8264-2B8D27A7E794}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCSSPHelperModels_Tests", "GenerateCSSPHelperModels_Tests\GenerateCSSPHelperModels_Tests.csproj", "{4AEBE068-9AB4-415C-BF14-426040788FEC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCSSPHelperModels_TestsGenerated", "GenerateCSSPHelperModels_TestsGenerated\GenerateCSSPHelperModels_TestsGenerated.csproj", "{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCSSPHelperServices", "GenerateCSSPHelperServices\GenerateCSSPHelperServices.csproj", "{F983A662-1A40-449A-A3AE-D803801AD8C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateCSSPHelperServices_Tests", "GenerateCSSPHelperServices_Tests\GenerateCSSPHelperServices_Tests.csproj", "{74B2F50F-D753-4A92-B698-B5EA09C0B4B9}"
@@ -363,30 +359,6 @@ Global
 		{96306DD0-8B7D-47F1-8264-2B8D27A7E794}.Release|x64.Build.0 = Release|Any CPU
 		{96306DD0-8B7D-47F1-8264-2B8D27A7E794}.Release|x86.ActiveCfg = Release|Any CPU
 		{96306DD0-8B7D-47F1-8264-2B8D27A7E794}.Release|x86.Build.0 = Release|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Debug|x64.Build.0 = Debug|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Debug|x86.Build.0 = Debug|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Release|x64.ActiveCfg = Release|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Release|x64.Build.0 = Release|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Release|x86.ActiveCfg = Release|Any CPU
-		{4AEBE068-9AB4-415C-BF14-426040788FEC}.Release|x86.Build.0 = Release|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Debug|x64.Build.0 = Debug|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Debug|x86.Build.0 = Debug|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Release|x64.ActiveCfg = Release|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Release|x64.Build.0 = Release|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Release|x86.ActiveCfg = Release|Any CPU
-		{7BD0CF33-F08F-4383-BEFC-96FFAC615BF9}.Release|x86.Build.0 = Release|Any CPU
 		{F983A662-1A40-449A-A3AE-D803801AD8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F983A662-1A40-449A-A3AE-D803801AD8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F983A662-1A40-449A-A3AE-D803801AD8C8}.Debug|x64.ActiveCfg = Debug|Any CPU
