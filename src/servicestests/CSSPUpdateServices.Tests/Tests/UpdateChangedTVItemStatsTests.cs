@@ -12,10 +12,17 @@ public partial class UpdateServiceTests
         CSSPLogService.CSSPAppName = "AppNameTest";
         CSSPLogService.CSSPCommandName = "CommandNameTest";
 
-        if (Environment.MachineName.ToLower() == "wmon01dtchlebl2")
+        // should not run this test everytime as it takes a very long time
+        // run this test in debug mode with break points to stop the app
+        // and test some parts
+        bool a = false;
+        if (a)
         {
-            var actionRes = await CSSPUpdateService.UpdateChangedTVItemStatsAsync(DateTime.Now.AddDays(-10));
-            Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            if (Environment.MachineName.ToLower() == "wmon01dtchlebl2")
+            {
+                var actionRes = await CSSPUpdateService.UpdateChangedTVItemStatsAsync(DateTime.Now.AddDays(-10));
+                Assert.Equal(200, ((ObjectResult)actionRes.Result).StatusCode);
+            }
         }
 
         await CSSPLogService.Save();
