@@ -14,21 +14,9 @@ public partial class UpdateServiceTests
 
         foreach (ShareFileItem shareFileItem in directory.GetFilesAndDirectories())
         {
-            ShareDirectoryClient directorySub = shareClient.GetDirectoryClient(shareFileItem.Name);
-
-            if (directorySub.Exists())
-            {
-                foreach (ShareFileItem shareFileItemSub in directorySub.GetFilesAndDirectories())
-                {
-                    ShareFileClient file = directorySub.GetFileClient(shareFileItemSub.Name);
-
-                    Response<bool> responseFile = file.DeleteIfExists();
-
-                    Assert.True(responseFile.Value);
-                }
-            }
-
-            Response<bool> responseDir = directorySub.DeleteIfExists();
+            ShareFileClient sharedFileClient = directory.GetFileClient(shareFileItem.Name);
+            Response<bool> responseFile = sharedFileClient.DeleteIfExists();
+            Assert.True(responseFile.Value);
         }
 
         Assert.Empty(directory.GetFilesAndDirectories());
