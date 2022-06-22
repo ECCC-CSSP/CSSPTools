@@ -4,16 +4,12 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 {
     public async Task<ActionResult<bool>> GetRunSiteSampleStatsUnderProvinceAsync(List<TVItem> TVItemList, List<TVItem> TVItemProvList, List<TVItemStat> TVItemStat2List)
     {
-        // NOTE: before running this function you should create both GzFiles
-        // WebTypeEnum.WebMonitoringRoutineStatsProvince and WebTypeEnum.WebMonitoringOtherStatsProvince
-        //
-
         CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
         foreach (TVItem tvItem in TVItemProvList)
         {
-            //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
-            //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
+            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringRoutineStatsProvince, tvItem.TVItemID);
+            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringOtherStatsProvince, tvItem.TVItemID);
 
             WebMonitoringRoutineStatsProvince webMonitoringRoutineStatsProvince;
             WebMonitoringOtherStatsProvince webMonitoringOtherStatsProvince;

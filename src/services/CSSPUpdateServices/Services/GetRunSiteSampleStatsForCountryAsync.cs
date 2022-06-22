@@ -4,18 +4,15 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 {
     public async Task<ActionResult<bool>> GetRunSiteSampleStatsForCountryAsync(List<TVItemStat> TVItemStat2List)
     {
-        // NOTE: before running this function you should create both GzFiles
-        // WebTypeEnum.WebMonitoringRoutineStatsCountry and WebTypeEnum.WebMonitoringOtherStatsCountry
-        //
         CSSPLogService.FunctionLog(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
         foreach (TVItem tvItem in (from c in db.TVItems
                                    where c.TVType == TVTypeEnum.Country
                                    select c).ToList())
         {
-            //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
+            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringRoutineStatsCountry, tvItem.TVItemID);
 
-            //await CreateGzFileService.CreateGzFile(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
+            await CreateGzFileService.CreateGzFileAsync(WebTypeEnum.WebMonitoringOtherStatsCountry, tvItem.TVItemID);
 
             WebMonitoringRoutineStatsCountry webMonitoringRoutineStatsCountry;
             WebMonitoringOtherStatsCountry webMonitoringOtherStatsCountry;

@@ -30,11 +30,11 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
             "RemoveTVFilesDoubleAssociatedWithTVItemsTypeFile",
             "RemoveTVItemsNoAssociatedWithTVFiles",
             "UpdateAllTVItemStats",
-            //"UpdateChangedTVItemStats",
+            "UpdateChangedTVItemStats",
             "UploadAllFilesToAzure",
             "UploadAllJsonFilesToAzure",
-            //"UploadChangedFilesToAzure",
-            //"UploadChangedJsonFilesToAzure",
+            "UploadChangedFilesToAzure",
+            "UploadChangedJsonFilesToAzure",
         };
 
         List<string> AllowableCSSPCommandNameFor4ArgsList = new List<string>()

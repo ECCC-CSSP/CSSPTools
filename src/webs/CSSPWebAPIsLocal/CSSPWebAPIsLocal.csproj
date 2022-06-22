@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\services\CSSPDBLocalServices\CSSPDBLocalServices.csproj" />
-    <ProjectReference Include="..\..\services\CSSPHelperServices\CSSPHelperServices.csproj" />
     <ProjectReference Include="..\..\services\CSSPReadGzFileServices\CSSPReadGzFileServices.csproj" />
   </ItemGroup>
 

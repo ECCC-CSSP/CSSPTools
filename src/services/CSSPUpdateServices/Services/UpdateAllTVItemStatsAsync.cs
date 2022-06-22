@@ -80,9 +80,14 @@ public partial class CSSPUpdateService : ControllerBase, ICSSPUpdateService
 
         int count = 0;
         int total = TVItemForStatList.Count;
-        foreach (TVItem tvItem in TVItemForStatList.Take(5))
+        foreach (TVItem tvItem in TVItemForStatList) //.Take(5))
         {
             count += 1;
+
+            if (count % 100 == 0)
+            {
+                CSSPLogService.AppendLog($"doing ... {count}/{total} - {DateTime.Now}");
+            }
 
             List<TVTypeEnum> SubTVTypeList = GetSubTVTypeForTVItemStatAsync(tvItem.TVType);
 
