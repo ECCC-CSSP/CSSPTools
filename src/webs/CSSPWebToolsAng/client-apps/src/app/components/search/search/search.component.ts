@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
@@ -14,7 +14,7 @@ import { JsonLoadListService } from 'src/app/services/json/json-loading-list.ser
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  myControl = new FormControl();
+  myControl = new UntypedFormControl();
   options = [];
   searchResult: TVItemModel;
   formFieldWidthClass: string = '';

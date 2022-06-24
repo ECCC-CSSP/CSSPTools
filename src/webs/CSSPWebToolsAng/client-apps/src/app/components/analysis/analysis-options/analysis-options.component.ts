@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { GetAnalysisCalculationTypeEnum } from 'src/app/enums/generated/AnalysisCalculationTypeEnum';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
@@ -24,7 +24,7 @@ export class AnalysisOptionsComponent implements OnInit, OnDestroy {
   @Input() StatMWQMSiteList: StatMWQMSite[] = [];
   @Input() StatMWQMRunList: StatMWQMRun[] = [];
 
-  formStat: FormGroup;
+  formStat: UntypedFormGroup;
 
   languageEnum = GetLanguageEnum();
   tvTypeEnum = GetTVTypeEnum();
@@ -41,7 +41,7 @@ export class AnalysisOptionsComponent implements OnInit, OnDestroy {
     public togglesService: TogglesService,
     public appLanguageService: AppLanguageService,
     public dateFormatService: DateFormatService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public analysisService: AnalysisService) { }
 
   ngOnInit(): void {

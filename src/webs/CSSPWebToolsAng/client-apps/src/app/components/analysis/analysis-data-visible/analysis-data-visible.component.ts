@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { GetLanguageEnum } from 'src/app/enums/generated/LanguageEnum';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
@@ -15,7 +15,7 @@ import { DateFormatService } from 'src/app/services/helpers/date-format.service'
 export class AnalysisDataVisibleComponent implements OnInit, OnDestroy {
 
 
-  formDataVisible: FormGroup;
+  formDataVisible: UntypedFormGroup;
 
   languageEnum = GetLanguageEnum();
   language: number;
@@ -25,7 +25,7 @@ export class AnalysisDataVisibleComponent implements OnInit, OnDestroy {
     public analysisService: AnalysisService,
     public appLanguageService: AppLanguageService,
     public dateFormatService: DateFormatService,
-    private fb: FormBuilder) { };
+    private fb: UntypedFormBuilder) { };
 
   ngOnInit(): void {
     this.language = <number>this.appLanguageService.Language;

@@ -1,6 +1,6 @@
 import { _isNumberValue } from '@angular/cdk/coercion';
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, tap } from 'rxjs/operators';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
@@ -18,7 +18,7 @@ export class SearchService {
         private appLanguageService: AppLanguageService) {
     }
 
-    GetSearch(myControl: FormControl) {
+    GetSearch(myControl: UntypedFormControl) {
         return myControl.valueChanges.pipe(
             startWith(''),
             debounceTime(500),

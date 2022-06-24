@@ -3,7 +3,7 @@ import { AppLoadedService } from 'src/app/services/app/app-loaded.service';
 import { AppStateService } from 'src/app/services/app/app-state.service';
 import { AppLanguageService } from 'src/app/services/app/app-language.service';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TVItemModel } from 'src/app/models/generated/models/TVItemModel.model';
 import { GetTVTypeEnum } from 'src/app/enums/generated/TVTypeEnum';
 import { CountryService } from 'src/app/services/dblocal/country.service';
@@ -17,7 +17,7 @@ import { WebRoot } from 'src/app/models/generated/models/WebRoot.model';
 export class TVItemModifyComponent implements OnInit, OnDestroy {
   @Input() TVItemModel: TVItemModel;
 
-  formTVItemModify: FormGroup;
+  formTVItemModify: UntypedFormGroup;
 
   tvTypeEnum = GetTVTypeEnum();
 
@@ -26,7 +26,7 @@ export class TVItemModifyComponent implements OnInit, OnDestroy {
   constructor(public appStateService: AppStateService,
     public appLoadedService: AppLoadedService,
     public appLanguageService: AppLanguageService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private countryService: CountryService) {
 
   }
