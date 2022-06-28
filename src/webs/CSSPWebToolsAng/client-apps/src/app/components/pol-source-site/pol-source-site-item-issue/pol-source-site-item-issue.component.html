@@ -1,18 +1,16 @@
 <blockquote>
-    <p *ngIf="PolSourceObservationModel?.PolSourceObservation?.Observation_ToBeDeleted">
+    <p *ngIf="PolSourceObservationModel?.PolSourceObservation?.Observation_ToBeDeleted?.length > 5">
         <strong>{{ appLanguageService.WrittenDescription[appLanguageService.LangID] }}:</strong>
         &nbsp;&nbsp;
         <span>{{ PolSourceObservationModel?.PolSourceObservation?.Observation_ToBeDeleted }}</span>
     </p>
-    <ng-container *ngIf="!PolSourceObservationModel?.PolSourceObservation?.Observation_ToBeDeleted">
-        <h3>{{ appLanguageService.Issue[appLanguageService.LangID] }} ({{ PolSourceObservationIssue.Ordinal + 1 }})</h3>
-        <blockquote>
-            <p innerHTML="{{ polSourceSiteService.GetSentence(PolSourceObservationIssue.ObservationInfo) }}"></p>
-            <p *ngIf="PolSourceObservationIssue?.ExtraComment">
-                <strong>{{ appLanguageService.ExtraComments[appLanguageService.LangID] }}:</strong>
-                &nbsp;&nbsp;
-                <span>{{ PolSourceObservationIssue?.ExtraComment }}</span>
-            </p>
-        </blockquote>
-    </ng-container>
+    <h3>{{ appLanguageService.Issue[appLanguageService.LangID] }} ({{ PolSourceObservationIssue.Ordinal + 1 }})</h3>
+    <blockquote>
+        <p innerHTML="{{ polSourceSiteService.GetSentence(PolSourceObservationIssue.ObservationInfo) }}"></p>
+        <p *ngIf="PolSourceObservationIssue?.ExtraComment">
+            <strong>{{ appLanguageService.ExtraComments[appLanguageService.LangID] }}:</strong>
+            &nbsp;&nbsp;
+            <span>{{ PolSourceObservationIssue?.ExtraComment }}</span>
+        </p>
+    </blockquote>
 </blockquote>

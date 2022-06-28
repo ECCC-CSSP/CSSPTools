@@ -12,7 +12,7 @@ partial class Program
         Configuration = new ConfigurationBuilder()
                           .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
                           .AddJsonFile("appsettings_csspdesktopinstallpostbuild.json")
-                          .AddUserSecrets("99fb69d6-bde6-4d4e-b42e-5a36c6a6e9a5")
+                          .AddUserSecrets("CSSPDesktopInstallPostBuild")
                           .Build();
 
         Services = new ServiceCollection();
