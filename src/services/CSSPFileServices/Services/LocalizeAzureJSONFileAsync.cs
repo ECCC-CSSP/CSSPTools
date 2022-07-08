@@ -28,6 +28,8 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
         FileInfo fiDownload = new FileInfo($"{ Configuration["CSSPJSONPath"] }{FileName}");
         bool ShouldDownload = false;
 
+        string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
         if (fiDownload.Exists)
         {
             var manageFileExist = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPJSONPath"], $"{FileName}");
@@ -53,8 +55,8 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
                     }
 
                 }
-
-                if (manageFile.AzureETag != shareFileProperties.ETag.ToString().Replace("\"", ""))
+           
+                if (manageFile.AzureETag != eTag)
                 {
                     ShouldDownload = true;
 
@@ -122,7 +124,7 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
                     ManageFileID = 0,
                     AzureStorage = Configuration["AzureStoreCSSPJSONPath"],
                     AzureFileName = $"{FileName}",
-                    AzureETag = shareFileProperties.ETag.ToString().Replace("\"", ""),
+                    AzureETag = eTag,
                     AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
                     LoadedOnce = true,
                 };
@@ -143,7 +145,7 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
             }
             else
             {
-                manageFile.AzureETag = shareFileProperties.ETag.ToString().Replace("\"", "");
+                manageFile.AzureETag = eTag;
                 manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
                 manageFile.LoadedOnce = true;
 

@@ -41,7 +41,9 @@ public partial class CSSPDesktopService : ICSSPDesktopService
                                      && c.AzureFileName == zipFileName
                                      select c).FirstOrDefault();
 
-            if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+            string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
+            if (manageFile == null || eTag != manageFile.AzureETag)
             {
                 AppendStatus(new AppendEventArgs(string.Format(CSSPCultureDesktopRes.AzureFile_Changed, zipFileName)));
                 UpdateIsNeeded = true;
