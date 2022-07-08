@@ -85,6 +85,8 @@ public partial class CSSPDesktopService : ICSSPDesktopService
                                  && c.AzureFileName == zipFileName
                                  select c).FirstOrDefault();
 
+        string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
         if (manageFile == null)
         {
             int LastID = (from c in dbManage.ManageFiles
@@ -96,7 +98,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
                 ManageFileID = LastID + 1,
                 AzureStorage = Configuration["AzureStoreCSSPWebAPIsLocalPath"],
                 AzureFileName = zipFileName,
-                AzureETag = shareFileProperties.ETag.ToString(),
+                AzureETag = eTag,
                 AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
                 LoadedOnce = true,
             };
@@ -105,7 +107,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
         }
         else
         {
-            manageFile.AzureETag = shareFileProperties.ETag.ToString();
+            manageFile.AzureETag = eTag;
             manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
             manageFile.LoadedOnce = true;
         }

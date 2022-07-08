@@ -42,7 +42,9 @@ public partial class CSSPDesktopService : ICSSPDesktopService
                                  && c.AzureFileName == zipFileName
                                  select c).FirstOrDefault();
 
-        if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+        string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
+        if (manageFile == null || eTag != manageFile.AzureETag)
         {
             ShareFileDownloadInfo download = shareFileClient.Download();
             using (FileStream stream = File.OpenWrite(fi.FullName))

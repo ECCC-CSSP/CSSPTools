@@ -43,7 +43,9 @@ public partial class CSSPDesktopService : ICSSPDesktopService
                                  && c.AzureFileName == jsonFileName
                                  select c).FirstOrDefault();
 
-        if (manageFile == null || shareFileProperties.ETag.ToString().Replace("\"", "") != manageFile.AzureETag)
+        string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
+        if (manageFile == null || eTag != manageFile.AzureETag)
         {
             ShareFileDownloadInfo download = shareFileClient.Download();
             using (FileStream stream = File.OpenWrite(fi.FullName))
@@ -62,7 +64,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
                     ManageFileID = LastID + 1,
                     AzureStorage = Configuration["AzureStoreCSSPJSONPath"],
                     AzureFileName = jsonFileName,
-                    AzureETag = shareFileProperties.ETag.ToString(),
+                    AzureETag = eTag,
                     AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
                     LoadedOnce = true,
                 };
@@ -71,7 +73,7 @@ public partial class CSSPDesktopService : ICSSPDesktopService
             }
             else
             {
-                manageFile.AzureETag = shareFileProperties.ETag.ToString();
+                manageFile.AzureETag = eTag;
                 manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
                 manageFile.LoadedOnce = true;
             }

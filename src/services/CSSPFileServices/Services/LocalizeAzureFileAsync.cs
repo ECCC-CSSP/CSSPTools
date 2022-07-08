@@ -54,7 +54,9 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
 
                 }
 
-                if (manageFile.AzureETag != shareFileProperties.ETag.ToString().Replace("\"", ""))
+                string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
+                if (manageFile.AzureETag != eTag)
                 {
                     ShouldDownload = true;
 
@@ -115,6 +117,8 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
             var actionCSSPFile = await ManageFileService.GetWithAzureStorageAndAzureFileNameAsync(Configuration["AzureStoreCSSPFilesPath"], $"{ ParentTVItemID}\\{FileName}");
             ManageFile manageFile = (ManageFile)((OkObjectResult)actionCSSPFile.Result).Value;
 
+            string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
             if (manageFile == null)
             {
                 manageFile = new ManageFile()
@@ -122,7 +126,7 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
                     ManageFileID = 0,
                     AzureStorage = Configuration["AzureStoreCSSPFilesPath"],
                     AzureFileName = $"{ParentTVItemID}\\{FileName}",
-                    AzureETag = shareFileProperties.ETag.ToString().Replace("\"", ""),
+                    AzureETag = eTag,
                     AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString()),
                     LoadedOnce = true,
                 };
@@ -143,7 +147,7 @@ public partial class CSSPFileService : ControllerBase, ICSSPFileService
             }
             else
             {
-                manageFile.AzureETag = shareFileProperties.ETag.ToString().Replace("\"", "");
+                manageFile.AzureETag = eTag;
                 manageFile.AzureCreationTimeUTC = DateTime.Parse(shareFileProperties.LastModified.ToString());
                 manageFile.LoadedOnce = true;
 

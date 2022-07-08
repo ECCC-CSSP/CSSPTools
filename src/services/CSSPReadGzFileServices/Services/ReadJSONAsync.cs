@@ -69,6 +69,8 @@ public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileServ
                         return await Task.FromResult(BadRequest(CSSPLogService.ErrRes));
                     }
 
+                    string eTag = shareFileProperties.ETag.ToString().Replace("\"", "");
+
                     if (gzExistLocaly)
                     {
                         ManageFile manageFile = null;
@@ -102,7 +104,7 @@ public partial class CSSPReadGzFileService : ControllerBase, ICSSPReadGzFileServ
 
                             }
 
-                            if (shareFileProperties.ETag.ToString().Replace("\"", "") == manageFile.AzureETag)
+                            if (eTag == manageFile.AzureETag)
                             {
                                 gzLocalIsUpToDate = true;
                             }
