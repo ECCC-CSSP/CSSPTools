@@ -55,7 +55,7 @@ import { WebAllUseOfSites } from 'src/app/models/generated/models/WebAllUseOfSit
 })
 export class AppLoadedService {
   BaseApiUrl = 'https://localhost:4446/api/'; 
-  //BaseApiUrl = 'https://localhost:44341/api/';
+  //BaseApiUrl = 'https://localhost:44328/api/';
 
   LoggedInContact?: Contact;
   BreadCrumbTVItemModelList?: TVItemModel[];
